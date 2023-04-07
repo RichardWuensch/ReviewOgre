@@ -4,7 +4,9 @@ class Review {
     author = {}
     moderator = {}
     notary = {}
-    reviewer = []
+    reviewers = []
+
+    possibleParticipants = []
 
     constructor(author) {
         this.author = author

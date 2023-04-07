@@ -4,6 +4,8 @@ class Participant {
     role = "";
     group;
 
+    activeInSlots = []
+
     constructor(name, group) {
         this.name = name
         this.group = group

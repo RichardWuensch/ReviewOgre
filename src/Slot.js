@@ -1,13 +1,12 @@
 class Slot {
     startTime = {}
     endTime = {}
-    review = {}
 
-    participants = []
-    possibleParticipants = []
+    rooms = []
 
-    constructor(startTime, endTime) {
+    constructor(startTime, endTime, rooms) {
         this.startTime = startTime
         this.endTime = endTime
+        this.rooms = rooms
     }
 }
