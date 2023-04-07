@@ -57,18 +57,18 @@ function algo() {
         fillPossibleParticipantsOfReview(slot, room.review);
         assignModeratorToReview(slot, room.review);
         assignNotaryToReview(slot, room.review);
-        assignReviewersToReview(slot, room.review)
-          .then(() => {
-            error = false;
-          })
-          .catch((typeError) => {
-            console.log(typeError);
-            error = true;
-          });
+        try {
+          assignReviewersToReview(slot, room.review);
+          error = false;
+        } catch (error) {
+          console.log("Error")
+          error = true;
+        }
       }
     }
     console.log(slots);
   }
+  
 }
 
 function prechecks() {
@@ -142,10 +142,11 @@ function assignNotaryToReview(slot, review) {
 }
 
 function assignReviewersToReview(slot, review) {
-  console.log(review.possibleParticipants);
+  //console.log(review.possibleParticipants);
   for (i = 0; i < reviewerCount; i++) {
+    try{
     rand = Math.floor(Math.random() * review.possibleParticipants.length);
-    const reviewer = review.possibleParticipants[rand];
+    let reviewer = review.possibleParticipants[rand];
     review.reviewers.push(reviewer);
     reviewer.role = "Reviewer";
     reviewer.activeInSlots.push(slot);
@@ -154,6 +155,10 @@ function assignReviewersToReview(slot, review) {
       1
     );
   }
+  catch(errorr){
+    throw new Error("noSolution");
+  }
+}
 }
 
 function calculateReviewerCount() {
