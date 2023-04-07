@@ -36,6 +36,7 @@ slots = [
 ];
 
 reviewerCount = 0;
+const authorIsNotary = false;
 
 algo();
 
@@ -61,14 +62,13 @@ function algo() {
           assignReviewersToReview(slot, room.review);
           error = false;
         } catch (error) {
-          console.log("no Solution")
+          console.log("no Solution");
           error = true;
         }
       }
     }
     console.log(slots);
   }
-  
 }
 
 function prechecks() {
@@ -92,7 +92,7 @@ function setAuthorOfRandomGroupMember() {
     groupParticipants = participants.filter((p) => p.group == group);
     rand = Math.floor(Math.random() * groupParticipants.length);
     author = groupParticipants[rand];
-    author.role = "Author";
+    // author.role = "Author";
     newReview = new Review(author);
 
     roomFound = false;
@@ -122,7 +122,7 @@ function fillPossibleParticipantsOfReview(slot, review) {
 function assignModeratorToReview(slot, review) {
   rand = Math.floor(Math.random() * review.possibleParticipants.length);
   review.moderator = review.possibleParticipants[rand];
-  review.moderator.role = "Moderator";
+  // review.moderator.role = "Moderator";
   review.moderator.activeInSlots.push(slot);
   review.possibleParticipants.splice(
     review.possibleParticipants.indexOf(review.moderator),
@@ -131,9 +131,13 @@ function assignModeratorToReview(slot, review) {
 }
 
 function assignNotaryToReview(slot, review) {
-  rand = Math.floor(Math.random() * review.possibleParticipants.length);
-  review.notary = review.possibleParticipants[rand];
-  review.notary.role = "Notary";
+  if (authorIsNotary == false) {
+    rand = Math.floor(Math.random() * review.possibleParticipants.length);
+    review.notary = review.possibleParticipants[rand];
+  }else{
+    review.notary = review.author;
+  }
+  //  review.notary.role = "Notary";
   review.notary.activeInSlots.push(slot);
   review.possibleParticipants.splice(
     review.possibleParticipants.indexOf(review.notary),
@@ -144,21 +148,20 @@ function assignNotaryToReview(slot, review) {
 function assignReviewersToReview(slot, review) {
   //console.log(review.possibleParticipants);
   for (i = 0; i < reviewerCount; i++) {
-    try{
-    rand = Math.floor(Math.random() * review.possibleParticipants.length);
-    let reviewer = review.possibleParticipants[rand];
-    review.reviewers.push(reviewer);
-    reviewer.role = "Reviewer";
-    reviewer.activeInSlots.push(slot);
-    review.possibleParticipants.splice(
-      review.possibleParticipants.indexOf(reviewer),
-      1
-    );
+    try {
+      rand = Math.floor(Math.random() * review.possibleParticipants.length);
+      let reviewer = review.possibleParticipants[rand];
+      review.reviewers.push(reviewer);
+      //   reviewer.role = "Reviewer";
+      reviewer.activeInSlots.push(slot);
+      review.possibleParticipants.splice(
+        review.possibleParticipants.indexOf(reviewer),
+        1
+      );
+    } catch (error) {
+      throw new Error("noSolution");
+    }
   }
-  catch(errorr){
-    throw new Error("noSolution");
-  }
-}
 }
 
 function calculateReviewerCount() {

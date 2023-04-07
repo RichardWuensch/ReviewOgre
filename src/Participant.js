@@ -1,7 +1,7 @@
 class Participant {
     name;
     reviewCount = 0;
-    role = "";
+    //role = "";
     group;
 
     activeInSlots = []
