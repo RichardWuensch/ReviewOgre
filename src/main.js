@@ -61,7 +61,7 @@ function algo() {
           assignReviewersToReview(slot, room.review);
           error = false;
         } catch (error) {
-          console.log("Error")
+          console.log("no Solution")
           error = true;
         }
       }
