@@ -1,5 +1,5 @@
 //setup
-let participants = [
+/*let participants = [
   new Participant("Richard", 1),
   new Participant("Basti", 1),
   new Participant("Daniel", 1),
@@ -15,9 +15,11 @@ let participants = [
 ];
 
 let startDate1 = new Date();
+console.log(startDate1)
 startDate1.setHours(14);
 let endDate1 = new Date();
 endDate1.setHours(16);
+
 
 let startDate2 = new Date();
 startDate2.setHours(17);
@@ -33,7 +35,9 @@ slots = [
     new Room("I.2.2", true),
     new Room("I.2.3", true),
   ]),
-];
+];*/
+let participants = new TestData().participants;
+let slots= new TestData().slots;
 
 reviewerCount = 0;
 const authorIsNotary = false;
@@ -165,5 +169,9 @@ function assignReviewersToReview(slot, review) {
 }
 
 function calculateReviewerCount() {
-  reviewerCount = (2 * participants.length) / groups.length - 3;
+  if(authorIsNotary){
+    reviewerCount = (2 * participants.length) / groups.length - 2;
+  }else{    
+    reviewerCount = (2 * participants.length) / groups.length - 3;
+  }
 }

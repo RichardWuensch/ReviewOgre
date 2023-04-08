@@ -1,12 +1,14 @@
 class Slot {
-    startTime = {}
-    endTime = {}
+  date = {};
+  startTime = {};
+  endTime = {};
 
-    rooms = []
+  rooms = [];
 
-    constructor(startTime, endTime, rooms) {
-        this.startTime = startTime
-        this.endTime = endTime
-        this.rooms = rooms
-    }
+  constructor(date, startTime, endTime, rooms) {
+    this.date = date;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.rooms = rooms;
+  }
 }

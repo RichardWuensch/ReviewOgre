@@ -1,14 +1,17 @@
 class Participant {
-    name;
+    firstName;
+    lastName;
     reviewCount = 0;
     //role = "";
     group;
+    email;
 
     activeInSlots = []
 
-    constructor(name, group) {
-        this.name = name
+    constructor(firstName, lastName, email, group) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.email=email
         this.group = group
-        
     }
 }
