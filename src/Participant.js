@@ -1,12 +1,16 @@
 class Participant {
     firstName;
     lastName;
-    reviewCount = 0;
     //role = "";
     group;
     email;
-
-    activeInSlots = []
+    
+    reviewerCount = 0;
+    authorCount = 0; //kann man auch weg lassen, ist entweder 0 oder 1
+    notaryCount=0;
+    moderatorCount=0;
+    
+    activeInSlots = [];
 
     constructor(firstName, lastName, email, group) {
         this.firstName = firstName

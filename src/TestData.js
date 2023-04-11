@@ -115,7 +115,7 @@ class TestData {
     ];
 
     this.slots = [
-    new Slot(new Date(2014, 10, 19), new Date(2014, 10, 19,19,0,0), new Date(2014, 10, 19,20,40,0), [       //Date, startTime, EndTime
+    new Slot(new Date(2014, 10, 19), new Date(2014, 10, 19, 19, 0, 0), new Date(2014, 10, 19, 20, 40, 0), [       //Date, startTime, EndTime
             new Room("1.212", false),
             new Room("1.014", false),
             new Room("1.020", false),
@@ -124,13 +124,13 @@ class TestData {
             new Room("0.457", false),
             new Room("0.447", false),
     ]),
-    new Slot(new Date(2014, 10, 20), new Date(2014, 10, 20,17,20,0), new Date(2014, 10, 20,19,0,0), [
+    new Slot(new Date(2014, 10, 20), new Date(2014, 10, 20, 17, 20, 0), new Date(2014, 10, 20, 19, 0, 0), [
             new Room("1.212", false),
             new Room("1.014", false),
             new Room("1.020", false),
             new Room("1.168", false),
     ]),
-    new Slot(new Date(2014, 10, 20), new Date(2014, 10, 20,19,0,0), new Date(2014, 10, 20,20,40,0), [
+    new Slot(new Date(2014, 10, 20), new Date(2014, 10, 20, 19, 0, 0), new Date(2014, 10, 20, 20, 40, 0), [
             new Room("1.212", false),
             new Room("1.014", false),
             new Room("1.020", false),

@@ -72,7 +72,22 @@ function algo() {
       }
     }
     console.log(slots);
-  }
+    for(s of slots){
+      console.log(s);
+      for(room of s.rooms){
+        console.log(room.review.author)
+        console.log(room.review.moderator)
+        console.log(room.review.notary)
+        for(reviewer of room.review.reviewers){
+          console.log(reviewer)
+        }
+      }
+    }
+    xyz= participants.sort((a,b) => a.activeInSlots.length - b.activeInSlots.length)
+    for(p of xyz){
+      console.log(p);
+    }
+}
 }
 
 function prechecks() {
@@ -108,6 +123,7 @@ function setAuthorOfRandomGroupMember() {
         if (room.review == null) {
           room.review = newReview;
           author.activeInSlots.push(slot);
+          author.authorCount++;
           roomFound = true;
           break;
         }
@@ -128,6 +144,7 @@ function assignModeratorToReview(slot, review) {
   review.moderator = review.possibleParticipants[rand];
   // review.moderator.role = "Moderator";
   review.moderator.activeInSlots.push(slot);
+  review.moderator.moderatorCount++;
   review.possibleParticipants.splice(
     review.possibleParticipants.indexOf(review.moderator),
     1
@@ -143,6 +160,7 @@ function assignNotaryToReview(slot, review) {
   }
   //  review.notary.role = "Notary";
   review.notary.activeInSlots.push(slot);
+  review.notary.notaryCount++;
   review.possibleParticipants.splice(
     review.possibleParticipants.indexOf(review.notary),
     1
@@ -158,6 +176,7 @@ function assignReviewersToReview(slot, review) {
       review.reviewers.push(reviewer);
       //   reviewer.role = "Reviewer";
       reviewer.activeInSlots.push(slot);
+      reviewer.reviewerCount++;
       review.possibleParticipants.splice(
         review.possibleParticipants.indexOf(reviewer),
         1
