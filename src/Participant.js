@@ -18,4 +18,14 @@ class Participant {
         this.email=email
         this.group = group
     }
+
+    isActiveInSlot(slot) {
+        for(let activeInSlot of this.activeInSlots) {
+            if(slot.date == activeInSlot.date 
+                && slot.endTime == activeInSlot.endTime 
+                && slot.startTime == activeInSlot.startTime )     
+            return true;
+        }
+        return false;
+    }
 }
