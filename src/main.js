@@ -1,5 +1,5 @@
 //setup
-let participants = [
+/*let participants = [
   new Participant("Richard", "", "", 1),
   new Participant("Basti", "", "", 1),
   new Participant("Daniel", "", "", 1),
@@ -33,12 +33,12 @@ let roomSlots = [
     new Room("I.2.2", true),
     new Room("I.2.3", true),
   ]),
-];
+];*/
 
-/*let participants = new TestData().participants;
-let roomSlots = new TestData().roomSlots;*/
+let participants = new TestData().participants;
+let roomSlots = new TestData().roomSlots;
 
-let reviewerCount = 0;
+let numberOfReviewer = 0;
 const authorIsNotary = false;
 
 algo();
@@ -49,9 +49,9 @@ function algo() {
   const groups = getAllGroups();
 
   errorFound = true;
-  while (errorFound) {
+  while (errorFound) {                    //run as long as no solution is found
     setAuthorOfRandomGroupMember(groups);
-    calculateReviewerCount(groups);
+    calculateNumberOfReviewer(groups);
     for (roomSlot of roomSlots) {
       for (room of roomSlot.rooms) {
         if (room.review == null) {
@@ -74,31 +74,13 @@ function algo() {
       }
     }
   }
+  printAll(roomSlots);
 
-  console.log(roomSlots);
-  for (s of roomSlots) {
-    console.log(s);
-    for (room of s.rooms) {
-      if (room.review == null) {
-        continue;
-      }
-      console.log(room.review.author);
-      console.log(room.review.moderator);
-      console.log(room.review.notary);
-      for (reviewer of room.review.reviewers) {
-        console.log(reviewer);
-      }
-    }
-  }
+  printReviews(roomSlots);
 
-  xyz = participants.sort(
-    (a, b) => a.activeInSlots.length - b.activeInSlots.length
-  );
-  for (p of xyz) {
-    console.log(p);
-  }
+  printParticipantsSortByAmountOfActiveInSlots(participants)
 
-  localStorage.setItem("roomSlots", JSON.stringify(roomSlots));
+  printJSONinLocalStorage(roomSlots)
 }
 
 function prechecks() {
@@ -125,7 +107,6 @@ function setAuthorOfRandomGroupMember(groups) {
     groupParticipants = participants.filter((p) => p.group == group);
     rand = Math.floor(Math.random() * groupParticipants.length);
     author = groupParticipants[rand];
-    // author.role = "Author";
     newReview = new Review(author);
 
     roomFound = false;
@@ -143,20 +124,30 @@ function setAuthorOfRandomGroupMember(groups) {
         }
       }
     }
-    //if author == notary is checked -> review.notary = author
-  });
+    });
 }
 
 function fillPossibleParticipantsOfReview(slot, review) {
+  //search all possible participants for this review (Participant should not be in the same group as the author and should not already active in the slot of this review)
   review.possibleParticipants = participants.filter(
     (p) => review.author.group != p.group && !p.isActiveInSlot(slot)
   );
 }
 
 function assignModeratorToReview(roomSlot, review) {
-  rand = Math.floor(Math.random() * review.possibleParticipants.length);
-  review.moderator = review.possibleParticipants[rand];
-  // review.moderator.role = "Moderator";
+  //set the notary for the review 
+  counter = 1;
+  while (true) {
+    filteredModerator = review.possibleParticipants.filter(
+      (m) => m.moderatorCount < counter
+    );
+    if (filteredModerator.length > 0) {
+      rand = Math.floor(Math.random() * filteredModerator.length);
+      review.moderator = filteredModerator[rand];
+      break;
+    }
+    counter++;
+  }
   review.moderator.activeInSlots.push(getSlotFromRoomSlot(roomSlot));
   review.moderator.moderatorCount++;
   review.possibleParticipants.splice(
@@ -166,32 +157,54 @@ function assignModeratorToReview(roomSlot, review) {
 }
 
 function assignNotaryToReview(roomSlot, review) {
+  //set the notary for the review 
   if (authorIsNotary == false) {
-    rand = Math.floor(Math.random() * review.possibleParticipants.length);
-    review.notary = review.possibleParticipants[rand];
+    counter = 1;
+    while (true) {
+      filteredNotary = review.possibleParticipants.filter(
+        (n) => n.notaryCount < counter
+      );
+      if (filteredNotary.length > 0) {
+        rand = Math.floor(Math.random() * filteredNotary.length);
+        review.notary = filteredNotary[rand];
+        break;
+      }
+      counter++;
+    }
     review.notary.activeInSlots.push(getSlotFromRoomSlot(roomSlot));
     review.notary.notaryCount++;
     review.possibleParticipants.splice(
       review.possibleParticipants.indexOf(review.notary),
       1
     );
-  } else {
+  } else {        //if the author schould be the notary 
     review.notary = review.author;
   }
-  //  review.notary.role = "Notary";
 }
 
 function assignReviewersToReview(roomSlot, review) {
-  if (review.possibleParticipants.length < reviewerCount) {
+  //set the reviewers for the review
+  //if there is noSolution possible a Error is thrown
+  if (review.possibleParticipants.length < numberOfReviewer) {    //check if there are enougth possibleParticipants
     throw new Error("noSolution");
   }
 
-  for (i = 0; i < reviewerCount; i++) {
+  for (i = 0; i < numberOfReviewer; i++) {
     try {
-      rand = Math.floor(Math.random() * review.possibleParticipants.length);
-      let reviewer = review.possibleParticipants[rand];
+      let reviewer={};
+      counter = 1;
+      while (true) {      //iterates over the pariticipants and select one as reviewer from a List with the lowest reviewerCount
+        filteredReviewer = review.possibleParticipants.filter(
+          (n) => n.reviewerCount < counter
+        );
+        if (filteredReviewer.length > 0) {
+          rand = Math.floor(Math.random() * filteredReviewer.length);
+          reviewer = filteredReviewer[rand];
+          break;
+        }
+        counter++;
+      }
       review.reviewers.push(reviewer);
-      //   reviewer.role = "Reviewer";
       reviewer.activeInSlots.push(getSlotFromRoomSlot(roomSlot));
       reviewer.reviewerCount++;
       review.possibleParticipants.splice(
@@ -204,15 +217,17 @@ function assignReviewersToReview(roomSlot, review) {
   }
 }
 
-function calculateReviewerCount(groups) {
+function calculateNumberOfReviewer(groups) {
+  //calculates how many reviews a necessary
   if (authorIsNotary) {
-    reviewerCount = (2 * participants.length) / groups.length - 2;
+    numberOfReviewer = (2 * participants.length) / groups.length - 2;
   } else {
-    reviewerCount = (2 * participants.length) / groups.length - 3;
+    numberOfReviewer = (2 * participants.length) / groups.length - 3;
   }
 }
 
 function clearReviews() {
+  //clear the Slots and the statistic values from the participants
   for (let roomSlot of roomSlots) {
     for (let room of roomSlot.rooms) {
       room.review = null;
@@ -229,6 +244,7 @@ function clearReviews() {
 }
 
 function getSlotFromRoomSlot(roomSlot) {
+  //returns only the upper class Slot from a room slot
   newSlot = new Slot();
   newSlot.date = roomSlot.date;
   newSlot.startTime = roomSlot.startTime;
@@ -236,3 +252,38 @@ function getSlotFromRoomSlot(roomSlot) {
 
   return newSlot;
 }
+
+function printAll(roomSlots){
+  //print the complete resultstack
+  console.log(roomSlots);
+}
+
+function printReviews(roomSlots){
+  //print the Review without unneccesary attributs
+  for (s of roomSlots) {
+    console.log(s);
+    for (room of s.rooms) {
+      if (room.review == null) {
+        continue;
+      }
+      console.log(room.review.author);
+      console.log(room.review.moderator);
+      console.log(room.review.notary);
+      for (reviewer of room.review.reviewers) {
+        console.log(reviewer);
+      }
+    }
+  }
+}
+
+function printParticipantsSortByAmountOfActiveInSlots(participants){
+  //print all participants sorted by the amount of activities
+  participants.sort((a, b) => a.activeInSlots.length - b.activeInSlots.length).forEach(p=>console.log(p));
+}
+
+function printJSONinLocalStorage(roomSlots){
+  //load the result as JSON-String in the LocalStorage of the Browser
+  //it is possible to have a nicer look of the result with a formatter
+  localStorage.setItem("roomSlots", JSON.stringify(roomSlots));
+}
+
