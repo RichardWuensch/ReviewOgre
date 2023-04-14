@@ -44,4 +44,4 @@ deploy:
     name: prod
   only:
     - main
-    - 55-create-ci-pipeline
+    - 55-create-ci-pipline
