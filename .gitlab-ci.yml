@@ -1,7 +1,9 @@
+
 stages:
   - build
   - test
   - lint
+  - deploy
 
 cache:
   - paths:
@@ -31,3 +33,15 @@ lint:
   image: node:latest
   script:
     - npm run lint
+
+# deploy stage: will be completed later
+deploy:
+  stage: deploy
+  image: node:latest
+  script:
+    - npm run build && [ \"$?\" -eq 0 ] && scp -i $AWS_KEY_PAIR -r build/* ec2-user@<EC34.224.64.68:http/reviewoger || echo 'Build unsuccessful, skipping deployment'
+  environment:
+    name: prod
+  only:
+    - main
+    - 55-create-ci-pipeline
