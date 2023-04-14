@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - lint
 
 cache:
   - paths:
@@ -23,3 +24,10 @@ test:
   image: node:latest
   script:
     - npm run test
+
+# run eslint
+lint:
+  stage: lint
+  image: node:latest
+  script:
+    - npm run lint
