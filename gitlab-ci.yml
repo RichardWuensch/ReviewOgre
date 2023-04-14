@@ -1,0 +1,25 @@
+stages:
+  - build
+  - test
+
+cache:
+  - paths:
+      - node_modules/
+
+before_script:
+  - npm install
+  - npm ci
+
+# build stage
+build:
+  stage: build
+  image: node:latest
+  script:
+    - npm run build
+
+# test stage
+test:
+  stage: test
+  image: node:latest
+  script:
+    - npm run test
