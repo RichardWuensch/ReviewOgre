@@ -39,7 +39,7 @@ deploy:
   stage: deploy
   image: node:latest
   script:
-    - npm run build && scp -i $AWS_KEY_PAIR -r build/* ec2-user@<EC34.224.64.68:http/reviewoger
+    - npm run build && scp -i $AWS_KEY_PAIR -r build/* ec2-user@34.224.64.68:http/reviewoger
   environment:
     name: prod
   only:
