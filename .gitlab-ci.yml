@@ -34,14 +34,17 @@ lint:
   script:
     - npm run lint
 
-# deploy stage: will be completed later
+# deploy stage
 deploy:
   stage: deploy
-  image: node:latest
   script:
-    - npm run build && scp -i $AWS_KEY_PAIR -r build/* ec2-user@34.224.64.68:http/reviewoger
-  environment:
-    name: prod
+    - npm install -g netlify-cli
+    - netlify --version
+    - npm run build
+    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod --dir build/
+  artifacts:
+    paths:
+      - build
   only:
     - main
     - 55-create-ci-pipline
