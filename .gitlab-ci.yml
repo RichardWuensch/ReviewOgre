@@ -33,6 +33,9 @@ lint:
   image: node:latest
   script:
     - npm run lint
+  artifacts:
+    paths:
+      - eslint-report.xml # Generate eslint-report.xml artifact for ESLint output
 
 # deploy stage
 deploy:
@@ -48,3 +51,6 @@ deploy:
   only:
     - main
     - 55-create-ci-pipline
+  rules:
+    - exists:
+        - build #check whether build was successful
