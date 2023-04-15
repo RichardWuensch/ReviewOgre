@@ -50,7 +50,3 @@ deploy:
       - build
   only:
     - main
-    - 55-create-ci-pipline
-  rules:
-    - exists:
-        - build #check whether build was successful
