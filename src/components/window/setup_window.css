@@ -1,0 +1,11 @@
+.setupWindow{
+    margin-right: 20px;
+    width: 45vw;
+}
+.setupContainer{
+    margin-top: 5px;
+    height: 15vh;
+    border-radius: 5px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
