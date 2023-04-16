@@ -2,7 +2,7 @@
     width: 100vw;
     height: 100vh;
     background-color: #f5f5f5;
-    padding: 50px;
+    padding: 20px 50px;
     border: 1px solid #ddd;
 }
 .body{
@@ -17,8 +17,11 @@
 .button-group{
     display: flex;
     margin-top: 10px;
+    margin-bottom: 20px;
+    width: 45vw;
+    justify-content: space-between;
 }
-/* Rectangle 8 */
+
 .button-container-green {
     display: flex;
     align-items: center;
@@ -28,7 +31,6 @@
     background: #B0D7AF;
     border-radius: 5px;
     padding: 5px;
-    margin-right: 30px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .button-container-white {
@@ -40,7 +42,6 @@
     background: #FFFFFF;
     border-radius: 5px;
     padding: 5px;
-    margin-right: 30px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .button-text {
@@ -75,6 +76,41 @@
 
     color: #363A3F;
 }
+
+.participant-slots-container{
+    display:flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+.setup-start-container{
+    display:flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+.button-start{
+    display: flex;
+    align-self: end;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 40px;
+    background: #B0D7AF;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.button-start-text{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 18px;
+    color: #363A3F;
+    margin-left:10px;
+}
+
 
 
 
