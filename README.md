@@ -9,7 +9,12 @@ Netlify: [ReviewOger Reloaded](https://reviewogerreloaded.netlify.app)
 
 ## Available Scripts
 
+
 In the project directory, you can run:
+
+### `npm run lint:fix`
+
+Run this script to enforce coding conventions. Eslint will throw an error if coding styles are not followed.
 
 ### `npm start`
 
