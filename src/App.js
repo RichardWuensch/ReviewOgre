@@ -1,7 +1,7 @@
 import './App.css';
 import MainPage from '../src/components/window/MainPage'
 
-function App() {
+function App () {
   return (
       <div>
           <MainPage />

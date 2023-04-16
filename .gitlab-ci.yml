@@ -1,0 +1,52 @@
+
+stages:
+  - build
+  - test
+  - lint
+  - deploy
+
+cache:
+  - paths:
+      - node_modules/
+
+before_script:
+  - npm install
+  - npm ci
+
+# build stage
+build:
+  stage: build
+  image: node:latest
+  script:
+    - npm run build
+
+# test stage
+test:
+  stage: test
+  image: node:latest
+  script:
+    - npm run test
+
+# run eslint
+lint:
+  stage: lint
+  image: node:latest
+  script:
+    - npm run lint
+  artifacts:
+    paths:
+      - eslint-report.xml # Generate eslint-report.xml artifact for ESLint output
+
+# deploy stage
+deploy:
+  stage: deploy
+  script:
+    - npm install -g netlify-cli
+    - netlify --version
+    - npm run build
+    - npx netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod --dir build/
+  artifacts:
+    paths:
+      - build
+  only:
+    - main
