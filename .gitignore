@@ -26,3 +26,6 @@ yarn-error.log*
 /.idea
 # Local Netlify folder
 .netlify
+
+#eslint reports
+eslint-report.txt
