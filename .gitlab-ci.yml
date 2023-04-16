@@ -12,6 +12,7 @@ cache:
 before_script:
   - npm install
   - npm ci
+  - npm run lint:fix
 
 # build stage
 build:
@@ -32,10 +33,10 @@ lint:
   stage: lint
   image: node:latest
   script:
-    - npm run lint
+    - npm run lint:txt
   artifacts:
     paths:
-      - eslint-report.xml # Generate eslint-report.xml artifact for ESLint output
+      - eslint-report.txt # Generate eslint-report.txt artifact for ESLint output
 
 # deploy stage
 deploy:
