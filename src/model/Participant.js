@@ -17,8 +17,8 @@ class Participant {
     this.#lastName = lastName;
     this.#email = email;
     this.#group = group;
-    this.#topic = topic;                          //to know on which topic the Participant worked (A-/B-Review)
-    this.#languageLevel = languageLevel;          //should this part of the constructor or will the user always set this attribute later?
+    this.#topic = topic; //to know on which topic the Participant worked (A-/B-Review)
+    this.#languageLevel = languageLevel; //should this part of the constructor or will the user always set this attribute later?
 
     this.#reviewerCount = 0;
     this.#authorCount = 0;

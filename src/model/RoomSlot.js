@@ -6,10 +6,10 @@ class RoomSlot extends Slot {
     this.#rooms = rooms;
   }
 
-  getRooms(){
+  getRooms() {
     return this.#rooms;
   }
-  setRooms(rooms){
-    this.#rooms= rooms;
+  setRooms(rooms) {
+    this.#rooms = rooms;
   }
 }

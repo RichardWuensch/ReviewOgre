@@ -47,8 +47,8 @@ class Review {
   setReviewer(reviewers) {
     this.#reviewers = reviewers;
   }
-  addReviewer(participant){
-    this.#reviewers.push(participant)
+  addReviewer(participant) {
+    this.#reviewers.push(participant);
   }
 
   getPossibleParticipants() {
@@ -57,10 +57,10 @@ class Review {
   setPossibleParticipants(possibleParticipants) {
     this.#possibleParticipants = possibleParticipants;
   }
-  deleteParticipantFromPossibleParticipants(participant){
+  deleteParticipantFromPossibleParticipants(participant) {
     this.#possibleParticipants.splice(
-        this.#possibleParticipants.indexOf(participant),
-        1
-      );
+      this.#possibleParticipants.indexOf(participant),
+      1
+    );
   }
 }
