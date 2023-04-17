@@ -1,11 +1,15 @@
 class RoomSlot extends Slot {
-  rooms = [];
+  #rooms = [];
 
   constructor(date, startTime, endTime, rooms) {
-    super();
-    this.date = date;
-    this.startTime = startTime;
-    this.endTime = endTime;
-    this.rooms = rooms;
+    super(date, startTime, endTime);
+    this.#rooms = rooms;
+  }
+
+  getRooms(){
+    return this.#rooms;
+  }
+  setRooms(rooms){
+    this.#rooms= rooms;
   }
 }
