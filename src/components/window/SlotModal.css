@@ -1,0 +1,60 @@
+
+.modal-header{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    color: #82868B;
+}
+.modal-header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 10px;
+}
+.modal-header-icon{
+    width: 20px;
+    height: 20px;
+    color: #82868B;
+}
+
+.date-container{
+    display:flex;
+    justify-content: center;
+
+}
+.input-date-container{
+    width: 90vw;
+    background: #FFFFFF;
+    padding: 5px;
+    border: 1px solid #363A3F;
+    border-radius: 5px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.footer{
+    display:flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+.add-slot-button{
+    margin-top: 20px;
+    width: 150px;
+    height: 30px;
+    background: #B0D7AF;
+    border-radius: 5px;
+    border-style: none;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+.add-slot-text{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 100;
+    font-size: 15px;
+    line-height: 14px;
+
+    color: #363A3F;
+}
+
+
+
