@@ -3,7 +3,7 @@ import './MainPage.css';
 import './participants_window.css';
 import './setup_window.css';
 import './slotsWindow.css';
-import SlotModal from './addSlotRoomModal';
+import SlotModal from '../modals/addSlotRoomModal';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';

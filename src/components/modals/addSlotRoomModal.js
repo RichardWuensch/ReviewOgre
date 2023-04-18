@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import '../window/SlotModal.css';
-import exit from '../../../src/assets/media/x-circle.svg';
+import './SlotModal.css';
+import exit from '../../assets/media/x-circle.svg';
 import add from '../../assets/media/plus-circle.svg';
 
 function SlotModal (props) {
