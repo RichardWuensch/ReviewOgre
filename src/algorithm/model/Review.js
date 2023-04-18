@@ -1,4 +1,4 @@
-class Review {
+export default class Review {
   #groupName;
 
   #author = {};
@@ -8,56 +8,64 @@ class Review {
 
   #possibleParticipants = [];
 
-  constructor(author) {
+  constructor (author) {
     this.#author = author;
     this.#groupName = author.getGroup();
   }
 
-  getGroupName() {
+  getGroupName () {
     return this.#groupName;
   }
-  setGroupName(groupName) {
+
+  setGroupName (groupName) {
     this.#groupName = groupName;
   }
 
-  getAuthor() {
+  getAuthor () {
     return this.#author;
   }
-  setAuthor(author) {
+
+  setAuthor (author) {
     this.#author = author;
   }
 
-  getModerator() {
+  getModerator () {
     return this.#moderator;
   }
-  setModerator(moderator) {
+
+  setModerator (moderator) {
     this.#moderator = moderator;
   }
 
-  getNotary() {
+  getNotary () {
     return this.#notary;
   }
-  setNotary(notary) {
+
+  setNotary (notary) {
     this.#notary = notary;
   }
 
-  getReviewer() {
+  getReviewer () {
     return this.#reviewers;
   }
-  setReviewer(reviewers) {
+
+  setReviewer (reviewers) {
     this.#reviewers = reviewers;
   }
-  addReviewer(participant) {
+
+  addReviewer (participant) {
     this.#reviewers.push(participant);
   }
 
-  getPossibleParticipants() {
+  getPossibleParticipants () {
     return this.#possibleParticipants;
   }
-  setPossibleParticipants(possibleParticipants) {
+
+  setPossibleParticipants (possibleParticipants) {
     this.#possibleParticipants = possibleParticipants;
   }
-  deleteParticipantFromPossibleParticipants(participant) {
+
+  deleteParticipantFromPossibleParticipants (participant) {
     this.#possibleParticipants.splice(
       this.#possibleParticipants.indexOf(participant),
       1

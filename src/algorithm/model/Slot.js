@@ -1,32 +1,35 @@
-class Slot {
+export default class Slot {
   #date;
   #startTime;
   #endTime;
 
-  constructor(date, startTime, endTime) {
+  constructor (date, startTime, endTime) {
     this.#date = date;
     this.#startTime = startTime;
     this.#endTime = endTime;
   }
 
-  getDate() {
+  getDate () {
     return this.#date;
   }
-  setDate(date) {
+
+  setDate (date) {
     this.#date = date;
   }
 
-  getStartTime() {
+  getStartTime () {
     return this.#startTime;
   }
-  setStartTime(startTime) {
+
+  setStartTime (startTime) {
     this.#startTime = startTime;
   }
 
-  getEndTime() {
+  getEndTime () {
     return this.#endTime;
   }
-  setEndTime(endTime) {
+
+  setEndTime (endTime) {
     this.#endTime = endTime;
   }
 }

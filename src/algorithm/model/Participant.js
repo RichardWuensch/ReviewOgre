@@ -1,4 +1,4 @@
-class Participant {
+export default class Participant {
   #firstName;
   #lastName;
   #email;
@@ -12,13 +12,13 @@ class Participant {
   #moderatorCount;
   #activeInSlots;
 
-  constructor(firstName, lastName, email, group, topic, languageLevel) {
+  constructor (firstName, lastName, email, group, topic, languageLevel) {
     this.#firstName = firstName;
     this.#lastName = lastName;
     this.#email = email;
     this.#group = group;
-    this.#topic = topic; //to know on which topic the Participant worked (A-/B-Review)
-    this.#languageLevel = languageLevel; //should this part of the constructor or will the user always set this attribute later?
+    this.#topic = topic; // to know on which topic the Participant worked (A-/B-Review)
+    this.#languageLevel = languageLevel; // should this part of the constructor or will the user always set this attribute later?
 
     this.#reviewerCount = 0;
     this.#authorCount = 0;
@@ -27,113 +27,130 @@ class Participant {
     this.#activeInSlots = [];
   }
 
-  getFirstName() {
+  getFirstName () {
     return this.#firstName;
   }
-  setFirstName(firstName) {
+
+  setFirstName (firstName) {
     this.#firstName = firstName;
   }
 
-  getLastName() {
+  getLastName () {
     return this.#lastName;
   }
-  setLastName(lastName) {
+
+  setLastName (lastName) {
     this.#lastName = lastName;
   }
 
-  getEmail() {
+  getEmail () {
     return this.#email;
   }
-  setEmail(email) {
+
+  setEmail (email) {
     this.#email = email;
   }
 
-  getGroup() {
+  getGroup () {
     return this.#group;
   }
-  setGroup(group) {
+
+  setGroup (group) {
     this.#group = group;
   }
 
-  getTopic() {
+  getTopic () {
     return this.#topic;
   }
-  setTopic(topic) {
+
+  setTopic (topic) {
     this.#topic = topic;
   }
 
-  getLanguageLevel() {
+  getLanguageLevel () {
     return this.#languageLevel;
   }
-  setLanguageLevel(languageLevel) {
+
+  setLanguageLevel (languageLevel) {
     this.#languageLevel = languageLevel;
   }
 
-  getReviewerCount() {
+  getReviewerCount () {
     return this.#reviewerCount;
   }
-  resetReviewerCount() {
+
+  resetReviewerCount () {
     this.#reviewerCount = 0;
   }
-  increaseReviewerCount() {
+
+  increaseReviewerCount () {
     this.#reviewerCount++;
   }
 
-  getAuthorCount() {
+  getAuthorCount () {
     return this.#authorCount;
   }
-  resetAuthorCount() {
+
+  resetAuthorCount () {
     this.#authorCount = 0;
   }
-  increaseAuthorCount() {
+
+  increaseAuthorCount () {
     this.#authorCount++;
   }
 
-  getNotaryCount() {
+  getNotaryCount () {
     return this.#notaryCount;
   }
-  resetNotaryCount() {
+
+  resetNotaryCount () {
     this.#notaryCount = 0;
   }
-  increaseNotaryCount() {
+
+  increaseNotaryCount () {
     this.#notaryCount++;
   }
 
-  getModeratorCount() {
+  getModeratorCount () {
     return this.#moderatorCount;
   }
-  resetModeratorCount() {
+
+  resetModeratorCount () {
     this.#moderatorCount = 0;
   }
-  increaseModeratorCount() {
+
+  increaseModeratorCount () {
     this.#moderatorCount++;
   }
 
-  addSlotToActiveList(slot) {
+  addSlotToActiveList (slot) {
     this.#activeInSlots.push(slot);
   }
-  getActiveSlots() {
+
+  getActiveSlots () {
     return this.#activeInSlots;
   }
-  resetActiveInSlot() {
+
+  resetActiveInSlot () {
     this.#activeInSlots = [];
   }
-  isActiveInSlot(slot) {
-    for (let activeInSlot of this.#activeInSlots) {
+
+  isActiveInSlot (slot) {
+    for (const activeInSlot of this.#activeInSlots) {
       if (
-        slot.getDate() == activeInSlot.getDate() &&
-        slot.getEndTime() == activeInSlot.getEndTime() &&
-        slot.getStartTime() == activeInSlot.getStartTime()
-      )
-        return true;
+        slot.getDate() === activeInSlot.getDate() &&
+        slot.getEndTime() === activeInSlot.getEndTime() &&
+        slot.getStartTime() === activeInSlot.getStartTime()
+      ) { return true; }
     }
     return false;
   }
 
-  resetStatistics() {
+  resetStatistics () {
     this.resetReviewerCount();
     this.resetAuthorCount();
     this.resetModeratorCount();
     this.resetNotaryCount();
+    this.resetActiveInSlot();
   }
 }

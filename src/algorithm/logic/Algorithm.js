@@ -1,28 +1,31 @@
-class Algorithm {
+import Review from '../model/Review';
+import Slot from '../model/Slot';
+
+export default class Algorithm {
   #numberOfReviewers = 0;
 
   #participants;
   #roomSlots;
   #authorIsNotary;
 
-  constructor(participants, roomSlots, authorIsNotary) {
+  constructor (participants, roomSlots, authorIsNotary) {
     this.#participants = participants;
     this.#roomSlots = roomSlots;
     this.#authorIsNotary = authorIsNotary;
   }
 
-  run() {
+  run () {
     this.#prechecks();
 
     const groups = this.#getAllGroups();
     let errorFound = true;
     while (errorFound) {
-      //run as long as no solution is found
+      // run as long as no solution is found
       this.#setAuthorOfRandomGroupMember(groups);
       this.#calculateNumberOfReviewer(groups);
-      for (let roomSlot of this.#roomSlots) {
-        for (let room of roomSlot.getRooms()) {
-          if (room.getReview() == null) {
+      for (const roomSlot of this.#roomSlots) {
+        for (const room of roomSlot.getRooms()) {
+          if (room.getReview() === null) {
             continue;
           }
           this.#fillPossibleParticipantsOfReview(
@@ -44,17 +47,17 @@ class Algorithm {
     }
   }
 
-  #prechecks() {
-    //if count of rooms >= count of groups
-    //are there enough groups for the calculation?
-    //do slot times overlap?
+  #prechecks () {
+    // if count of rooms >= count of groups
+    // are there enough groups for the calculation?
+    // do slot times overlap?
   }
 
-  #getAllGroups() {
-    let groups = [];
+  #getAllGroups () {
+    const groups = [];
 
-    //get all groups out of participants
-    for (let p of this.#participants) {
+    // get all groups out of participants
+    for (const p of this.#participants) {
       if (!groups.includes(p.getGroup())) {
         groups.push(p.getGroup());
       }
@@ -62,23 +65,23 @@ class Algorithm {
     return groups;
   }
 
-  #setAuthorOfRandomGroupMember(groups) {
-    //select an author out of every group and add him in a new review
+  #setAuthorOfRandomGroupMember (groups) {
+    // select an author out of every group and add him in a new review
     groups.forEach((group) => {
       const groupParticipants = this.#participants.filter(
-        (p) => p.getGroup() == group
+        (p) => p.getGroup() === group
       );
       const rand = Math.floor(Math.random() * groupParticipants.length);
-      let author = groupParticipants[rand];
-      let newReview = new Review(author);
+      const author = groupParticipants[rand];
+      const newReview = new Review(author);
 
       let roomFound = false;
-      for (let roomSlot of this.#roomSlots) {
+      for (const roomSlot of this.#roomSlots) {
         if (roomFound) {
           break;
         }
-        for (let room of roomSlot.getRooms()) {
-          if (room.getReview() == null) {
+        for (const room of roomSlot.getRooms()) {
+          if (room.getReview() === null) {
             room.setReview(newReview);
             author.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot));
             author.increaseAuthorCount();
@@ -90,22 +93,22 @@ class Algorithm {
     });
   }
 
-  #fillPossibleParticipantsOfReview(slot, review) {
-    //search all possible participants for this review (Participant should not be in the same group as the author and should not already active in the slot of this review)
+  #fillPossibleParticipantsOfReview (slot, review) {
+    // search all possible participants for this review (Participant should not be in the same group as the author and should not already active in the slot of this review)
     review.setPossibleParticipants(
       this.#participants.filter(
         (p) =>
-          review.getAuthor().getGroup() != p.getGroup() &&
+          review.getAuthor().getGroup() !== p.getGroup() &&
           !p.isActiveInSlot(slot)
       )
     );
   }
 
-  #assignModeratorToReview(roomSlot, review) {
-    //set the notary for the review
+  #assignModeratorToReview (roomSlot, review) {
+    // set the notary for the review
     let counter = 1;
     while (true) {
-      let filteredModerator = review
+      const filteredModerator = review
         .getPossibleParticipants()
         .filter((m) => m.getModeratorCount() < counter);
       if (filteredModerator.length > 0) {
@@ -122,16 +125,16 @@ class Algorithm {
     review.deleteParticipantFromPossibleParticipants(review.getModerator());
   }
 
-  #assignNotaryToReview(roomSlot, review) {
-    //set the notary for the review
-    if (this.#authorIsNotary == false) {
+  #assignNotaryToReview (roomSlot, review) {
+    // set the notary for the review
+    if (this.#authorIsNotary === false) {
       let counter = 1;
       while (true) {
-        let filteredNotary = review
+        const filteredNotary = review
           .getPossibleParticipants()
           .filter((n) => n.getNotaryCount() < counter);
         if (filteredNotary.length > 0) {
-          let rand = Math.floor(Math.random() * filteredNotary.length);
+          const rand = Math.floor(Math.random() * filteredNotary.length);
           review.setNotary(filteredNotary[rand]);
           break;
         }
@@ -143,18 +146,18 @@ class Algorithm {
       review.getNotary().increaseNotaryCount();
       review.deleteParticipantFromPossibleParticipants(review.getNotary());
     } else {
-      //if the author schould be the notary
+      // if the author schould be the notary
       review.setNotary(review.getAuthor());
       review.getNotary().increaseNotaryCount();
     }
   }
 
-  #assignReviewersToReview(roomSlot, review) {
-    //set the reviewers for the review
-    //if there is noSolution possible a Error is thrown
+  #assignReviewersToReview (roomSlot, review) {
+    // set the reviewers for the review
+    // if there is noSolution possible a Error is thrown
     if (review.getPossibleParticipants().length < this.#numberOfReviewers) {
-      //check if there are enougth possibleParticipants
-      throw new Error("noSolution");
+      // check if there are enougth possibleParticipants
+      throw new Error('noSolution');
     }
 
     for (let i = 0; i < this.#numberOfReviewers; i++) {
@@ -162,8 +165,8 @@ class Algorithm {
         let reviewer = {};
         let counter = 1;
         while (true) {
-          //iterates over the pariticipants and select one as reviewer from a List with the lowest reviewerCount
-          let filteredReviewer = review
+          // iterates over the pariticipants and select one as reviewer from a List with the lowest reviewerCount
+          const filteredReviewer = review
             .getPossibleParticipants()
             .filter((n) => n.getReviewerCount() < counter);
           if (filteredReviewer.length > 0) {
@@ -179,13 +182,13 @@ class Algorithm {
         review.deleteParticipantFromPossibleParticipants(reviewer);
       } catch (error) {
         console.log(error.message);
-        throw new Error("noSolution");
+        throw new Error('noSolution');
       }
     }
   }
 
-  #calculateNumberOfReviewer(groups) {
-    //calculates how many reviews a necessary
+  #calculateNumberOfReviewer (groups) {
+    // calculates how many reviews a necessary
     if (this.#authorIsNotary) {
       this.#numberOfReviewers =
         (2 * this.#participants.length) / groups.length - 2;
@@ -195,22 +198,22 @@ class Algorithm {
     }
   }
 
-  #clearReviews() {
-    //clear the Slots and the statistic values from the participants
-    for (let roomSlot of this.#roomSlots) {
-      for (let room of roomSlot.getRooms()) {
+  #clearReviews () {
+    // clear the Slots and the statistic values from the participants
+    for (const roomSlot of this.#roomSlots) {
+      for (const room of roomSlot.getRooms()) {
         room.setReview(null);
       }
     }
 
-    for (let p of this.#participants) {
+    for (const p of this.#participants) {
       p.resetActiveInSlot();
       p.resetStatistics();
     }
   }
 
-  #getSlotFromRoomSlot(roomSlot) {
-    //returns only the upper class Slot from a room slot
+  #getSlotFromRoomSlot (roomSlot) {
+    // returns only the upper class Slot from a room slot
     return new Slot(
       roomSlot.getDate(),
       roomSlot.getStartTime(),
@@ -218,39 +221,39 @@ class Algorithm {
     );
   }
 
-  printResult() {
-    //print the complete resultstack
+  printResult () {
+    // print the complete resultstack
     console.log(this.#roomSlots);
   }
 
-  printReviews() {
-    //print the Review without unneccesary attributs
-    for (let s of this.#roomSlots) {
+  printReviews () {
+    // print the Review without unneccesary attributs
+    for (const s of this.#roomSlots) {
       console.log(s);
-      for (room of s.getRooms()) {
-        if (room.getReview() == null) {
+      for (const room of s.getRooms()) {
+        if (room.getReview() === null) {
           continue;
         }
         console.log(room.getReview().getAuthor());
         console.log(room.getReview().getModerator());
         console.log(room.getReview().getNotary());
-        for (reviewer of room.getReview().getReviewer()) {
+        for (const reviewer of room.getReview().getReviewer()) {
           console.log(reviewer);
         }
       }
     }
   }
 
-  printParticipantsSortByAmountOfActiveInSlots() {
-    //print all participants sorted by the amount of activities
+  printParticipantsSortByAmountOfActiveInSlots () {
+    // print all participants sorted by the amount of activities
     this.#participants
       .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
       .forEach((p) => console.log(p));
   }
 
-  printJSONinLocalStorage() {
-    //load the result as JSON-String in the LocalStorage of the Browser
-    //it is possible to have a nicer look of the result with a formatter
-    localStorage.setItem("roomSlots", JSON.stringify(this.#roomSlots));
+  printJSONinLocalStorage () {
+    // load the result as JSON-String in the LocalStorage of the Browser
+    // it is possible to have a nicer look of the result with a formatter
+    localStorage.setItem('roomSlots', JSON.stringify(this.#roomSlots));
   }
 }

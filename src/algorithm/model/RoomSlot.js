@@ -1,15 +1,18 @@
-class RoomSlot extends Slot {
+import Slot from './Slot';
+
+export default class RoomSlot extends Slot {
   #rooms = [];
 
-  constructor(date, startTime, endTime, rooms) {
+  constructor (date, startTime, endTime, rooms) {
     super(date, startTime, endTime);
     this.#rooms = rooms;
   }
 
-  getRooms() {
+  getRooms () {
     return this.#rooms;
   }
-  setRooms(rooms) {
+
+  setRooms (rooms) {
     this.#rooms = rooms;
   }
 }

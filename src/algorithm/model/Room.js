@@ -1,31 +1,34 @@
-class Room {
+export default class Room {
   #name;
   #beamer;
   #review = null;
 
-  constructor(name, beamer) {
+  constructor (name, beamer) {
     this.#name = name;
     this.#beamer = beamer;
   }
 
-  getName() {
+  getName () {
     return this.#name;
   }
-  setName(name) {
+
+  setName (name) {
     this.#name = name;
   }
 
-  hasBeamer() {
+  hasBeamer () {
     return this.#beamer;
   }
-  setHasBeamer(beamer) {
+
+  setHasBeamer (beamer) {
     this.#beamer = beamer;
   }
 
-  getReview() {
+  getReview () {
     return this.#review;
   }
-  setReview(review) {
+
+  setReview (review) {
     this.#review = review;
   }
 }
