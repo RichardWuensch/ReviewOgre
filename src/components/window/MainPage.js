@@ -16,36 +16,36 @@ function MainPage () {
   return (
         <div className={'main-page'}>
             <div className={'title-box'}>
-                <img src={logo} alt={'icon'} height={100} width={100}/>
+                <img src={logo} alt={'icon'} height={50} width={50}/>
                 <span className={'title-text'}>ReviewOgre Reloaded</span>
             </div>
             <h2 className={'title-subheadline'}>Sort your review peers in groups for better Technical Reviews!</h2>
-            <span className={'title-subheadline'} style={{ fontSize: 12 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
+            <span className={'title-subheadline'} style={{ fontSize: 10 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
             <div className={'button-group'}>
                 <button className={'button-container-green'}>
-                    <img src={download} alt={'icon1'}/>
+                    <img src={download} alt={'icon1'} height={12} width={12}/>
                     <span className={'button-text'}>Import Configuration</span>
                 </button>
                 <button className={'button-container-green'}>
-                    <img src={download} alt={'icon2'}/>
+                    <img src={download} alt={'icon2'} height={12} width={12}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
                 <button className={'button-container-white'}>
-                    <img src={file} alt={'icon3'}/>
+                    <img src={file} alt={'icon3'} height={12} width={12}/>
                     <span className={'button-text'}>Save Configuration</span>
                 </button>
             </div>
             <div className={'participant-slots-container'}>
                 {/* replace with component */}
                 <div className={'participantWindow'}>
-                    <span>Participants</span>
+                    <span className={'title-subheadline'} style={{ fontSize: 10 }}>Participants</span>
                     <div className={'participant-button-container'}>
                         <button className={'button-container-green-participants'}>
-                            <img src={add} alt={'addParticipantIcon'}/>
+                            <img src={add} alt={'addParticipantIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Participant</span>
                         </button>
-                        <button className={'button-container-green-participants'} style={{ width: 100 }}>
-                            <img src={edit} alt={'editListIcon'}/>
+                        <button className={'button-container-green-participants'}>
+                            <img src={edit} alt={'editListIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Edit List</span>
                         </button>
                     </div>
@@ -62,10 +62,10 @@ function MainPage () {
                 {/* end */}
                 {/* replace with component */}
                 <div className={'slotsWindow'}>
-                    <span>Slots</span>
+                    <span className={'title-subheadline'} style={{ fontSize: 10 }}>Slots</span>
                     <div className={'slots-button-container'}>
                         <button className={'button-container-green-slots'} onClick={() => setModalShow(true)}>
-                            <img src={add} alt={'addParticipantIcon'}/>
+                            <img src={add} alt={'addSlotIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Slot</span>
                         </button>
                     </div>
@@ -77,7 +77,7 @@ function MainPage () {
             <div className={'setup-start-container'}>
                 {/* replace with component */}
                 <div className={'setupWindow'}>
-                    <span style={{ fontFamily: 'Roboto, sans-serif' }}>Setup</span>
+                    <span className={'title-subheadline'} style={{ fontSize: 10 }}>Setup</span>
                     <div className={'setupContainer'}></div>
                 </div>
                 {/* end */}
