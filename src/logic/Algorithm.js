@@ -125,13 +125,13 @@ class Algorithm {
   #assignNotaryToReview(roomSlot, review) {
     //set the notary for the review
     if (this.#authorIsNotary == false) {
-      counter = 1;
+      let counter = 1;
       while (true) {
-        filteredNotary = review
+        let filteredNotary = review
           .getPossibleParticipants()
           .filter((n) => n.getNotaryCount() < counter);
         if (filteredNotary.length > 0) {
-          rand = Math.floor(Math.random() * filteredNotary.length);
+          let rand = Math.floor(Math.random() * filteredNotary.length);
           review.setNotary(filteredNotary[rand]);
           break;
         }
@@ -145,6 +145,7 @@ class Algorithm {
     } else {
       //if the author schould be the notary
       review.setNotary(review.getAuthor());
+      review.getNotary().increaseNotaryCount();
     }
   }
 
@@ -203,6 +204,7 @@ class Algorithm {
     }
 
     for (let p of this.#participants) {
+      p.resetActiveInSlot();
       p.resetStatistics();
     }
   }
