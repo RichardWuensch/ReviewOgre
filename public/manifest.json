@@ -1,0 +1,45 @@
+{
+  "short_name": "ReviewOger Reloaded",
+  "name": "ReviewOger Reloaded",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "ogre48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "ogre96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "ogre152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "ogre180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "ogre192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "ogre512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

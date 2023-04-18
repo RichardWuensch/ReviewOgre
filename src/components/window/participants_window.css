@@ -1,0 +1,42 @@
+.participantWindow{
+    margin: 10px 0 20px;
+    width: 45vw;
+}
+.participant-button-container{
+    display:flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.button-container-green-participants {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 29px;
+    background: #B0D7AF;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.list-description{
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 19px;
+    color: #82868B;
+    margin-bottom: 5px;
+    padding: 0 10px 0 10px;
+}
+
+.participant-list-container{
+    height: 20vh;
+    border-radius: 5px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+

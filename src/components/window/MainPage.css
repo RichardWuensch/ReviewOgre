@@ -1,0 +1,121 @@
+.main-page {
+    width: 100vw;
+    height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px 50px;
+    border: 1px solid #ddd;
+}
+.body{
+    padding: 10px;
+}
+.title-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.button-group{
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 45vw;
+    justify-content: space-between;
+}
+
+.button-container-green {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 29px;
+    background: #B0D7AF;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.button-container-white {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 29px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.button-text {
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 100;
+    font-size: 12px;
+    line-height: 18px;
+    color: #363A3F;
+    margin-left:10px;
+}
+
+/* ReviewOger reloaded */
+.title-text{
+    margin-left: 30px;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 42px;
+
+    color: #363A3F;
+}
+
+/* Sort your review peers in groups for better Technical Reviews! Visit the HowTo Guide to learn more about this platform */
+.title-subheadline{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 100;
+    font-size: 15px;
+    line-height: 23px;
+
+    color: #363A3F;
+}
+
+.participant-slots-container{
+    display:flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+.setup-start-container{
+    display:flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+.button-start{
+    display: flex;
+    align-self: end;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 40px;
+    background: #B0D7AF;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.button-start-text{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 18px;
+    color: #363A3F;
+    margin-left:10px;
+}
+
+
+
+
+
+
+
+
+
