@@ -99,7 +99,7 @@ export default class Algorithm {
       this.#participants.filter(
         (p) =>
           review.getAuthor().getGroup() !== p.getGroup() &&
-          !p.isActiveInSlot(slot)
+              !p.isActiveInSlot(slot)
       )
     );
   }
@@ -226,22 +226,45 @@ export default class Algorithm {
     console.log(this.#roomSlots);
   }
 
-  printReviews () {
+  printLikeOldRevOger () {
     // print the Review without unneccesary attributs
     for (const s of this.#roomSlots) {
-      console.log(s);
+      // console.log(s);
       for (const room of s.getRooms()) {
         if (room.getReview() === null) {
           continue;
         }
-        console.log(room.getReview().getAuthor());
-        console.log(room.getReview().getModerator());
-        console.log(room.getReview().getNotary());
+        console.log('Review: ' + room.getReview().getGroupName() +
+                     ' am ' + this.getDataDDmmYYYYforPrinting(s.getDate()) +
+                     ' von ' + this.getTimeHHmm(s.getStartTime()) +
+                     ' bis ' + this.getTimeHHmm(s.getEndTime()) +
+                     ' in ' + room.getName());
+        console.log(room.hasBeamer() ? 'Beamer verfügbar' : 'Kein Beamer verfügbar');
+        console.log('Author: ', this.getParticipantAttriburesForPrinting(room.getReview().getAuthor()));
+        console.log('Moderator: ', this.getParticipantAttriburesForPrinting(room.getReview().getModerator()));
+        console.log('Noray: ', this.getParticipantAttriburesForPrinting(room.getReview().getNotary()));
         for (const reviewer of room.getReview().getReviewer()) {
-          console.log(reviewer);
+          console.log('Reviewer: ', this.getParticipantAttriburesForPrinting(reviewer));
         }
+        console.log('*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x');
       }
     }
+  }
+
+  getDataDDmmYYYYforPrinting (date) {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    return ((day < 10) ? ('0' + day) : day) + '.' + ((month < 10) ? ('0' + month) : month) + '.' + date.getFullYear();
+  }
+
+  getTimeHHmm (time) {
+    const hour = time.getHours();
+    const min = time.getMinutes();
+    return ((hour < 10) ? ('0' + hour) : hour) + ':' + ((min < 10) ? ('0' + min) : min) + 'Uhr';
+  }
+
+  getParticipantAttriburesForPrinting (participant) {
+    return participant.getFirstName() + ' ' + participant.getLastName() + ' ' + participant.getEmail() + ' Gruppe ' + participant.getGroup();
   }
 
   printParticipantsSortByAmountOfActiveInSlots () {
