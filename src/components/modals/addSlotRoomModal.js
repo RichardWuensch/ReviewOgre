@@ -9,14 +9,14 @@ import React, { useState } from 'react';
 import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
 
 function ToggleRoom ({ eventKey }) {
-  const [icon, setIcon] = useState('up');
+  const [open, setOpen] = useState(false);
   const openAccordion = useAccordionButton(eventKey, () =>
     console.log('totally custom!')
   );
 
   const expandAndToggle = () => {
     openAccordion(undefined);
-    setIcon(icon === 'up' ? 'down' : 'up');
+    setOpen(prevOpen => prevOpen !== true);
   };
 
   return (
@@ -25,7 +25,13 @@ function ToggleRoom ({ eventKey }) {
             onClick={expandAndToggle}
             className={'expand-chevron-button'}
         >
-            {icon === 'up' ? <img src={chevronDown} alt={'chevron down'} /> : <img src={chevronUp} alt={'chevron up'} /> }
+            {open
+              ? (
+                <img src={chevronUp} alt={'chevron up'} />
+                )
+              : (
+                <img src={chevronDown} alt={'chevron down'} />
+                )}
         </button>
   );
 }
@@ -41,12 +47,17 @@ function SlotModal (props) {
   const [items, setItems] = useState([]);
 
   const addItem = () => {
-    setItems([...items, { text: 'Room', beamer: false }]);
+    setItems([...items, { text: '', beamer: false }]);
   };
 
   const handleInputChange = (index, event) => {
     const newItems = [...items];
     newItems[index].text = event.target.value;
+    setItems(newItems);
+  };
+  const handleBeamerChange = (index, event) => {
+    const newItems = [...items];
+    newItems[index].beamer = event.target.value;
     setItems(newItems);
   };
 
@@ -60,7 +71,7 @@ function SlotModal (props) {
 
   return (
         <Modal
-            onHide={handleClose}
+            onExit={handleClose}
             show={showModal}
             {...props}
             size="sm"
@@ -70,17 +81,17 @@ function SlotModal (props) {
             <Modal.Body>
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
-                        <h2 className={'modal-header'}>New Time Slot</h2>
-                        <img src={exit} alt={'exitSlotModal'} className={'modal-header-icon'} onClick={props.onHide}/>
+                        <span className={'modal-header'}>New Time Slot</span>
+                        <img src={exit} alt={'exitSlotModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'date-container '}>
                         <input type={'date'} className={'input-date-container'} value={date} onChange={(e) => setDate(e.target.value)} />
                     </div>
                     <div className={'time-container'}>
                         <span>From:</span>
-                        <input className={'input-time-container'} type={'time'} placeholder={'--:--'} value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+                        <input className={'input-time-container'} type={'time'} value={startTime} onChange={(e) => setStartTime(e.target.value)} />
                         <span>To:</span>
-                        <input className={'input-time-container'} type={'time'} placeholder={'--:--'} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+                        <input className={'input-time-container'} type={'time'} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
                     </div>
                     <div className={'room-container'}>
                         <span>Create Rooms for this Time Slot:</span>
@@ -92,14 +103,14 @@ function SlotModal (props) {
                                             <li key={index}>
                                                 <Card>
                                                     <Card.Header className={'list-item'}>
-                                                            <input className={'item-text'} type="text" value={item.text} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
-                                                            <ToggleRoom eventKey={index}></ToggleRoom>
+                                                            <input className={'item-text'} type="text" value={item.text} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
+                                                            <ToggleRoom eventKey={index} ></ToggleRoom>
                                                     </Card.Header>
                                                     <Accordion.Collapse eventKey={index}>
                                                         <Card.Body>
                                                             <div className={'beamer-properties'}>
                                                                 <label className={'switch'}>
-                                                                    <input type="checkbox"/>
+                                                                    <input type="checkbox" value={item.beamer} onClick={(event) => handleBeamerChange(index, event)}/>
                                                                     <span className={'slider round'}></span>
                                                                 </label>
                                                                 <span style={{ paddingLeft: 5 }}>Beamer</span>
@@ -129,7 +140,7 @@ function SlotModal (props) {
   );
 }
 SlotModal.propTypes = {
-  onHide: PropTypes.string,
-  eventKey: PropTypes.string.isRequired
+  eventKey: PropTypes.string.isRequired,
+  onHide: PropTypes.string
 };
 export default SlotModal;
