@@ -2,22 +2,25 @@
     width: 100vw;
     height: 100vh;
     background-color: #f5f5f5;
-    padding: 20px 50px;
+    padding: 2% 5%;
     border: 1px solid #ddd;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-size: 50%;
 }
 .body{
-    padding: 10px;
+    padding: 1%;
 }
 .title-box {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 1%;
 }
 
 .button-group{
     display: flex;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 1%;
+    margin-bottom: 1%;
     width: 45vw;
     justify-content: space-between;
 }
@@ -26,43 +29,38 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 150px;
-    height: 29px;
+    width: 30%;
+    height: 5vh;
     background: #B0D7AF;
     border-radius: 5px;
-    padding: 5px;
+    border-style: none;
+    padding: 2%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .button-container-white {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 150px;
-    height: 29px;
+    width: 30%;
+    height: 5vh;
     background: #FFFFFF;
     border-radius: 5px;
-    padding: 5px;
+    border-style: none;
+    padding: 2%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .button-text {
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 100;
-    font-size: 12px;
-    line-height: 18px;
+    font-weight: 300;
+    font-size: 1em;
     color: #363A3F;
-    margin-left:10px;
+    margin-left:10%;
 }
 
 /* ReviewOger reloaded */
 .title-text{
-    margin-left: 30px;
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
+    margin-left: 3vw;
     font-weight: 700;
-    font-size: 25px;
-    line-height: 42px;
-
+    font-size: 1.5rem;
     color: #363A3F;
 }
 
@@ -71,15 +69,12 @@
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 100;
-    font-size: 15px;
-    line-height: 23px;
-
+    font-size: 1.5em;
     color: #363A3F;
 }
 
 .participant-slots-container{
     display:flex;
-    margin-top: 10px;
     justify-content: space-between;
 }
 
@@ -94,10 +89,11 @@
     align-self: end;
     align-items: center;
     justify-content: center;
-    width: 200px;
-    height: 40px;
+    width: 20vw;
+    height: 10vh;
     background: #B0D7AF;
     border-radius: 5px;
+    border-style: none;
     padding: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -105,11 +101,15 @@
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 300;
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 2em;
     color: #363A3F;
     margin-left:10px;
 }
+
+.button-container-green:hover{
+    background-color: #D1E8D0
+}
+
 
 
 
