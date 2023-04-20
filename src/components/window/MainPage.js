@@ -3,6 +3,9 @@ import './MainPage.css';
 import './participants_window.css';
 import './setup_window.css';
 import './slotsWindow.css';
+import './participants_window.css';
+import './setup_window.css';
+import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
@@ -10,6 +13,10 @@ import file from '../../assets/media/file-earmark.svg';
 import add from '../../assets/media/plus-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import start from '../../assets/media/play-circle.svg';
+// import Algorithm from '../../algorithm/logic/Algorithm';
+// import OldTestData from '../../algorithm/test/OldTestData';
+// import SmallTestData from '../../algorithm/test/SmallTestData';
+import Test from '../../algorithm/test/Test';
 
 function MainPage () {
   const [modalShow, setModalShow] = React.useState(false);
@@ -84,7 +91,7 @@ function MainPage () {
                     <SlotModal
                         show={modalShow}
                         onHide={() => setModalShow(false)}/>
-                <button className={'button-start'}>
+                <button className={'button-start'} onClick={runAlgorithm}>
                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
                     <span className={'button-start-text'}>Start Calculations</span>
                 </button>
