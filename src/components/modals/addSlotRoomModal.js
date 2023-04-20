@@ -81,7 +81,7 @@ function SlotModal (props) {
             <Modal.Body>
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
-                        <span className={'modal-header'}>New Time Slot</span>
+                        <span className={'modal-header border-0'}>New Time Slot</span>
                         <img src={exit} alt={'exitSlotModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'date-container '}>
@@ -94,7 +94,7 @@ function SlotModal (props) {
                         <input className={'input-time-container'} type={'time'} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
                     </div>
                     <div className={'room-container'}>
-                        <span>Create Rooms for this Time Slot:</span>
+                        <span style={ { marginBottom: 2 } } >Create Rooms for this Time Slot:</span>
                         <div>
                             <div>
                                 <Accordion defaultActiveKey="0">
