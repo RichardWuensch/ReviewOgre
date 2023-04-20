@@ -3,9 +3,6 @@ import './MainPage.css';
 import './participants_window.css';
 import './setup_window.css';
 import './slotsWindow.css';
-import './participants_window.css';
-import './setup_window.css';
-import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
@@ -98,6 +95,9 @@ function MainPage () {
             </div>
         </div>
   );
+}
+function runAlgorithm () {
+  new Test().run();
 }
 
 export default MainPage;
