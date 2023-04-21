@@ -4,6 +4,7 @@ import './participants_window.css';
 import './setup_window.css';
 import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
+import ParticipantModal from '../modals/addParticipantModal';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';
@@ -16,7 +17,8 @@ import start from '../../assets/media/play-circle.svg';
 import Test from '../../algorithm/test/Test';
 
 function MainPage () {
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShowSlot, setModalShowSlot] = React.useState(false);
+  const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
   return (
         <div className={'main-page'}>
             <div className={'title-box'}>
@@ -44,7 +46,7 @@ function MainPage () {
                 <div className={'participantWindow'}>
                     <span className={'title-subheadline'} style={{ fontSize: 10 }}>Participants</span>
                     <div className={'participant-button-container'}>
-                        <button className={'button-container-green-participants'}>
+                        <button className={'button-container-green-participants'} onClick={() => setModalShowParticipant(true)}>
                             <img src={add} alt={'addParticipantIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Participant</span>
                         </button>
@@ -68,7 +70,7 @@ function MainPage () {
                 <div className={'slotsWindow'}>
                     <span className={'title-subheadline'} style={{ fontSize: 10 }}>Slots</span>
                     <div className={'slots-button-container'}>
-                        <button className={'button-container-green-slots'} onClick={() => setModalShow(true)}>
+                        <button className={'button-container-green-slots'} onClick={() => setModalShowSlot(true)}>
                             <img src={add} alt={'addSlotIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Slot</span>
                         </button>
@@ -86,8 +88,11 @@ function MainPage () {
                 </div>
                 {/* end */}
                     <SlotModal
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}/>
+                        show={modalShowSlot}
+                        onHide={() => setModalShowSlot(false)}/>
+                    <ParticipantModal
+                        show={modalShowParticipant}
+                        onHide={() => setModalShowParticipant(false)}/>
                 <button className={'button-start'} onClick={runAlgorithm}>
                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
                     <span className={'button-start-text'}>Start Calculations</span>
