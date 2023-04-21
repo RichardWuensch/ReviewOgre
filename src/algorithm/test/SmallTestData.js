@@ -4,6 +4,7 @@ import RoomSlot from '../model/RoomSlot';
 
 export default class SmallTestData {
   constructor () {
+    this.authorIsNotary = true;
     this.participants = [
       new Participant('Richard', '', '', 1),
       new Participant('Basti', '', '', 1),

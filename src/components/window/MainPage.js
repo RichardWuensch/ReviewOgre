@@ -10,10 +10,8 @@ import file from '../../assets/media/file-earmark.svg';
 import add from '../../assets/media/plus-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import start from '../../assets/media/play-circle.svg';
-// import Algorithm from '../../algorithm/logic/Algorithm';
-// import OldTestData from '../../algorithm/test/OldTestData';
-// import SmallTestData from '../../algorithm/test/SmallTestData';
 import Test from '../../algorithm/test/Test';
+import StoreConfiguration from '../../api/StoreConfiguration';
 
 function MainPage () {
   const [modalShow, setModalShow] = React.useState(false);
@@ -34,7 +32,7 @@ function MainPage () {
                     <img src={download} alt={'icon2'} height={12} width={12}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
-                <button className={'button-container-white'}>
+                <button className={'button-container-white'} onClick={saveConfiguration}>
                     <img src={file} alt={'icon3'} height={12} width={12}/>
                     <span className={'button-text'}>Save Configuration</span>
                 </button>
@@ -96,6 +94,12 @@ function MainPage () {
         </div>
   );
 }
+
+function saveConfiguration () {
+  const testConfiguration = new Test().getTestConfiguration();
+  new StoreConfiguration(testConfiguration).runFileSave();
+}
+
 function runAlgorithm () {
   new Test().run();
 }
