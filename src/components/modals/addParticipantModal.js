@@ -8,17 +8,19 @@ function ParticipantModal (props) {
   const [showModal, setShowModal] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
+  const [email, setEmail] = useState('');
   const [group, setGroup] = useState('');
-  const [englishSkillLevel, setEnglishSkillLevel] = useState('Native Speaker');
+  const [topic, setTopic] = useState('');
+  const [languageLevel, setLanguageLevel] = useState('Native Speaker');
 
   const handleClose = () => {
     setShowModal(false);
     setFirstName('');
     setLastName('');
-    setEmailAddress('');
+    setEmail('');
     setGroup('');
-    setEnglishSkillLevel('Native Speaker');
+    setTopic('');
+    setLanguageLevel('Native Speaker');
   };
 
   return (
@@ -41,13 +43,15 @@ function ParticipantModal (props) {
                         <input className={'input-attributes-container'} type={'text'} value={firstName} placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
                         <span>Last Name:</span>
                         <input className={'input-attributes-container'} type={'text'} value={lastName} placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
-                        <span>Email Address:</span>
-                        <input className={'input-attributes-container'} type={'text'} value={emailAddress} placeholder="Email Address" onChange={(e) => setEmailAddress(e.target.value)} />
+                        <span>Email:</span>
+                        <input className={'input-attributes-container'} type={'text'} value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                         <span>Group:</span>
                         <input className={'input-attributes-container'} type={'text'} value={group} placeholder="Group" onChange={(e) => setGroup(e.target.value)} />
-                        <span>English Skill Level:</span>
+                        <span>Topic:</span>
+                        <input className={'input-attributes-container'} type={'text'} value={topic} placeholder="Topic" onChange={(e) => setTopic(e.target.value)} />
+                        <span>German Skill Level:</span>
                         <form action="#">
-                            <select className={'dropdown-attributes-container'} value={englishSkillLevel} onChange={(e) => setEnglishSkillLevel(e.target.value)}>
+                            <select className={'dropdown-attributes-container'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
                                 <option className={'dropdown-attributes-container-text'} value="A1">A1</option>
                                 <option className={'dropdown-attributes-container-text'} value="A2">A2</option>
                                 <option className={'dropdown-attributes-container-text'} value="B1">B1</option>

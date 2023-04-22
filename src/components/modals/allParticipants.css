@@ -1,0 +1,21 @@
+.list-element{
+    display:block;
+}
+.column-firstName{
+    width: 20%;
+}
+.column-lastName{
+    width: 20%;
+}
+.column-email{
+    width: 30%;
+}
+.column-group{
+    width: 5%;
+}
+.column-topic{
+    width: 20%;
+}
+.column-languageLevel{
+    width: 2,5%;
+}

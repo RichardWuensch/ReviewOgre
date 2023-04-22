@@ -5,6 +5,7 @@ import './setup_window.css';
 import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
 import ParticipantModal from '../modals/addParticipantModal';
+import AllParticipants from '../modals/allParticipants';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';
@@ -15,10 +16,12 @@ import start from '../../assets/media/play-circle.svg';
 // import OldTestData from '../../algorithm/test/OldTestData';
 // import SmallTestData from '../../algorithm/test/SmallTestData';
 import Test from '../../algorithm/test/Test';
+import PropTypes from 'prop-types';
 
-function MainPage () {
+function MainPage (props) {
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
+
   return (
         <div className={'main-page'}>
             <div className={'title-box'}>
@@ -56,13 +59,15 @@ function MainPage () {
                         </button>
                     </div>
                     <div className={'list-description'}>
-                        <span>First Name</span>
-                        <span>Last Name</span>
-                        <span>Email Address</span>
-                        <span>Group</span>
-                        <span>Options</span>
+                        <span className={'title-firstName'}>First Name</span>
+                        <span className={'title-lastName'}>Last Name</span>
+                        <span className={'title-email'}>Email Address</span>
+                        <span className={'title-group'}>Group</span>
+                        <span className={'title-topic'}>Topic</span>
+                        <span className={'title-languageLevel'}>Options</span>
                     </div>
                     <div className={'participant-list-container'}>
+                        <AllParticipants listAllParticipants={props.listAllParticipants}/>
                     </div>
                 </div>
                 {/* end */}
@@ -101,8 +106,19 @@ function MainPage () {
         </div>
   );
 }
+
 function runAlgorithm () {
   new Test().run();
 }
+
+MainPage.propTypes = {
+  listAllParticipants: PropTypes.arrayOf(
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.number
+  )
+};
 
 export default MainPage;
