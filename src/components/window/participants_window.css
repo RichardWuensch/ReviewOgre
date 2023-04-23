@@ -24,8 +24,6 @@
 }
 
 .list-description{
-    display: flex;
-    justify-content: space-between;
     font-style: normal;
     font-weight: 300;
     font-size: 1em;
@@ -40,30 +38,29 @@
     color: #82868B;
     height: 20vh;
     border-radius: 5px;
+    padding: 1% 0 1% 0;
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
-.title-firstName{
-    width: 20%;
-    padding: 0 10px 0 10px;
-}
-.title-lastName{
-    width: 20%;
-    padding: 0 10px 0 10px;
-}
-.title-email{
-    width: 30%;
-    padding: 0 10px 0 10px;
-}
-.title-group{
-    width: 5%;
-    padding: 0 10px 0 10px;
-}
-.title-topic{
-    width: 20%;
-    padding: 0 10px 0 10px;
-}
-.title-languageLevel{
-    width: 2,5%;
-    padding: 0 10px 0 10px;
-}
+.participant-table{
+     width: 100%;
+     border: none;
+ }
+ .column-firstName{
+     width: 15%;
+ }
+ .column-lastName{
+     width: 15%;
+ }
+ .column-email{
+     width: 30%;
+ }
+ .column-group{
+     width: 10%;
+ }
+ .column-topic{
+     width: 20%;
+ }
+ .column-languageLevel{
+     width: 10%;
+ }

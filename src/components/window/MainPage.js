@@ -5,7 +5,6 @@ import './setup_window.css';
 import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
 import ParticipantModal from '../modals/addParticipantModal';
-import AllParticipants from '../modals/allParticipants';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';
@@ -21,6 +20,16 @@ import PropTypes from 'prop-types';
 function MainPage (props) {
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
+  const listParticipants = props.listAllParticipants.map(entry =>
+    <tr key={entry.id}>
+      <td className={'column-firstName'}>{entry.firstName}</td>
+      <td className={'column-lastName'}>{entry.lastName}</td>
+      <td className={'column-email'}>{entry.email}</td>
+      <td className={'column-group'}>{entry.group}</td>
+      <td className={'column-topic'}>{entry.topic}</td>
+      <td className={'column-languageLevel'}>{entry.languageLevel}</td>
+    </tr>
+  );
 
   return (
         <div className={'main-page'}>
@@ -59,15 +68,21 @@ function MainPage (props) {
                         </button>
                     </div>
                     <div className={'list-description'}>
-                        <span className={'title-firstName'}>First Name</span>
-                        <span className={'title-lastName'}>Last Name</span>
-                        <span className={'title-email'}>Email Address</span>
-                        <span className={'title-group'}>Group</span>
-                        <span className={'title-topic'}>Topic</span>
-                        <span className={'title-languageLevel'}>Options</span>
+                        <table className={'participant-table'}>
+                            <tr>
+                              <td className={'column-firstName'}>First Name</td>
+                              <td className={'column-lastName'}>Last Name</td>
+                              <td className={'column-email'}>Email Address</td>
+                              <td className={'column-group'}>Group</td>
+                              <td className={'column-topic'}>Topic</td>
+                              <td className={'column-languageLevel'}>Options</td>
+                            </tr>
+                        </table>
                     </div>
                     <div className={'participant-list-container'}>
-                        <AllParticipants listAllParticipants={props.listAllParticipants}/>
+                        <table className={'participant-table'}>
+                            {listParticipants}
+                        </table>
                     </div>
                 </div>
                 {/* end */}
