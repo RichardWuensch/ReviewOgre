@@ -14,6 +14,8 @@ import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
 import SmallTestData from '../../algorithm/test/SmallTestData';
+import ImportParticipants from '../../api/ImportParticipants';
+import Configuration from '../../api/model/Configuration';
 
 function MainPage () {
   const [modalShow, setModalShow] = React.useState(false);
@@ -26,15 +28,16 @@ function MainPage () {
             <h2 className={'title-subheadline'}>Sort your review peers in groups for better Technical Reviews!</h2>
             <span className={'title-subheadline'} style={{ fontSize: 10 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
             <div className={'button-group'}>
-                <button className={'button-container-green'}>
+                <button className={'button-container-green'} onClick={() => document.getElementById('student-input').click()}>
                     <img src={download} alt={'icon1'} height={12} width={12}/>
                     <span className={'button-text'}>Import Configuration</span>
                 </button>
+                <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}/>
                 <button className={'button-container-green'} onClick={() => document.getElementById('file-input').click()}>
                     <img src={download} alt={'icon2'} height={12} width={12}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
-                <input type="file" id="file-input" style={{ display: 'none' }} onChange={handleFileSelect}/>
+                <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}/>
                 <button className={'button-container-white'} onClick={saveConfiguration}>
                     <img src={file} alt={'icon3'} height={12} width={12}/>
                     <span className={'button-text'}>Save Configuration</span>
@@ -98,19 +101,25 @@ function MainPage () {
   );
 }
 
-let configuration;
+let configuration = new Configuration();
 
 function saveConfiguration () {
-  const testConfiguration = new Test().getTestConfiguration();
-  new StoreConfiguration(testConfiguration).runFileSave();
+  new StoreConfiguration(configuration).runFileSave();
 }
 
-async function handleFileSelect (event) {
-  configuration = await new LoadConfiguration().runFileLoad(event);
+async function importConfiguration (event) {
+  configuration = await new LoadConfiguration().runConfigurationImport(event);
+}
+
+async function importStudentList (event) {
+  const participants = await new ImportParticipants().runStudentImport(event);
+  configuration.setParticipants(participants);
 }
 
 function runAlgorithm () {
-  if (typeof configuration === 'undefined' || Object.keys(configuration).length === 0) {
+  if (configuration.getParticipants().length === 0 ||
+    configuration.getRoomSlots().length === 0) {
+    console.log('Running algorithm with test configuration');
     new Test().run(new SmallTestData());
   } else {
     new Test().run(configuration);
