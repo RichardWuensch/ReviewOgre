@@ -6,6 +6,7 @@ import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
 import ParticipantModal from '../modals/addParticipantModal';
 import logo from '../../assets/media/favicon_ogre.png';
+import deleteButton from '../../assets/media/trash.svg';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';
 import add from '../../assets/media/plus-circle.svg';
@@ -22,12 +23,24 @@ function MainPage (props) {
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
   const listParticipants = props.listAllParticipants.map(entry =>
     <tr key={entry.id}>
-      <td className={'column-firstName'}>{entry.firstName}</td>
-      <td className={'column-lastName'}>{entry.lastName}</td>
-      <td className={'column-email'}>{entry.email}</td>
-      <td className={'column-group'}>{entry.group}</td>
-      <td className={'column-topic'}>{entry.topic}</td>
-      <td className={'column-languageLevel'}>{entry.languageLevel}</td>
+        <td className={'column-firstName'}>{entry.firstName}</td>
+        <td className={'column-lastName'}>{entry.lastName}</td>
+        <td className={'column-email'}>
+            <button className={'button-email'}>{entry.email}</button>
+        </td>
+        <td className={'column-group'}>{entry.group}</td>
+        <td className={'column-topic'}>{entry.topic}</td>
+        <td className={'column-languageLevel'}>{entry.languageLevel}</td>
+        <td className={'column-options'}>
+            <div className={'column-options-buttons'}>
+                <button className={'button-options-edit'}>
+                    <img src={edit} alt={'icon'}/>
+                </button>
+                <button className={'button-options-delete'}>
+                    <img src={deleteButton} alt={'icon'}/>
+                </button>
+            </div>
+        </td>
     </tr>
   );
 
@@ -72,10 +85,11 @@ function MainPage (props) {
                             <tr>
                               <td className={'column-firstName'}>First Name</td>
                               <td className={'column-lastName'}>Last Name</td>
-                              <td className={'column-email'}>Email Address</td>
+                              <td className={'column-email-header'}>Email Address</td>
                               <td className={'column-group'}>Group</td>
                               <td className={'column-topic'}>Topic</td>
-                              <td className={'column-languageLevel'}>Options</td>
+                              <td className={'column-languageLevel'}>German Skill Level</td>
+                              <td className={'column-options'}>Options</td>
                             </tr>
                         </table>
                     </div>
