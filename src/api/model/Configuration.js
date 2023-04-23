@@ -3,10 +3,28 @@ export default class Configuration {
   participants = [];
   roomSlots = [];
 
-  constructor (authorIsNotary, participants, roomSlots) {
+  getAuthorIsNotary () {
+    return this.authorIsNotary;
+  }
+
+  setAuthorIsNotary (authorIsNotary) {
     this.authorIsNotary = authorIsNotary;
-    this.parseParticipants(participants);
-    this.parseRoomSlots(roomSlots);
+  }
+
+  getParticipants () {
+    return this.participants;
+  }
+
+  setParticipants (participants) {
+    this.participants = participants;
+  }
+
+  getRoomSlots () {
+    return this.roomSlots;
+  }
+
+  setRoomSlots (roomSlots) {
+    this.roomSlots = roomSlots;
   }
 
   parseParticipants (participants) {
