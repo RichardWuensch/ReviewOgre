@@ -12,6 +12,8 @@ import edit from '../../assets/media/pencil-square.svg';
 import start from '../../assets/media/play-circle.svg';
 import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
+import LoadConfiguration from '../../api/LoadConfiguration';
+import SmallTestData from '../../algorithm/test/SmallTestData';
 
 function MainPage () {
   const [modalShow, setModalShow] = React.useState(false);
@@ -28,10 +30,11 @@ function MainPage () {
                     <img src={download} alt={'icon1'} height={12} width={12}/>
                     <span className={'button-text'}>Import Configuration</span>
                 </button>
-                <button className={'button-container-green'}>
+                <button className={'button-container-green'} onClick={() => document.getElementById('file-input').click()}>
                     <img src={download} alt={'icon2'} height={12} width={12}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
+                <input type="file" id="file-input" style={{ display: 'none' }} onChange={handleFileSelect}/>
                 <button className={'button-container-white'} onClick={saveConfiguration}>
                     <img src={file} alt={'icon3'} height={12} width={12}/>
                     <span className={'button-text'}>Save Configuration</span>
@@ -95,13 +98,23 @@ function MainPage () {
   );
 }
 
+let configuration;
+
 function saveConfiguration () {
   const testConfiguration = new Test().getTestConfiguration();
   new StoreConfiguration(testConfiguration).runFileSave();
 }
 
+async function handleFileSelect (event) {
+  configuration = await new LoadConfiguration().runFileLoad(event);
+}
+
 function runAlgorithm () {
-  new Test().run();
+  if (typeof configuration === 'undefined' || Object.keys(configuration).length === 0) {
+    new Test().run(new SmallTestData());
+  } else {
+    new Test().run(configuration);
+  }
 }
 
 export default MainPage;
