@@ -15,10 +15,9 @@ export default class StoreConfiguration {
   }
 
   parseConfiguration (configuration) {
-    this.#configuration = new Configuration(
-      configuration.authorIsNotary,
-      configuration.participants,
-      configuration.roomSlots
-    );
+    this.#configuration = new Configuration();
+    this.#configuration.setAuthorIsNotary(configuration.authorIsNotary);
+    this.#configuration.parseParticipants(configuration.participants);
+    this.#configuration.parseRoomSlots(configuration.roomSlots);
   }
 }
