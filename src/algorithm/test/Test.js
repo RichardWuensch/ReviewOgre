@@ -13,6 +13,7 @@ export default class Test {
     algo.printResult();
     algo.printLikeOldRevOger();
     configuration.roomSlots.forEach(rs => rs.getRooms().forEach(r => r.setReview(null)));
+    configuration.participants.forEach(p => p.resetStatistics());
   }
 
   getTestConfiguration () {
