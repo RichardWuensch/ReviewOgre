@@ -16,7 +16,7 @@ import start from '../../assets/media/play-circle.svg';
 import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
-import SmallTestData from '../../algorithm/test/SmallTestData';
+import SmallTestDataUpdated from '../../algorithm/test/SmallTestDataUpdated';
 import ImportParticipants from '../../api/ImportParticipants';
 import Configuration from '../../api/model/Configuration';
 import PropTypes from 'prop-types';
@@ -179,7 +179,7 @@ function runAlgorithm () {
   if (configuration.getParticipants().length === 0 ||
     configuration.getRoomSlots().length === 0) {
     console.log('Running algorithm with test configuration');
-    new Test().run(new SmallTestData());
+    new Test().run(new SmallTestDataUpdated());
   } else {
     new Test().run(configuration);
   }
