@@ -1,6 +1,8 @@
 .participantWindow{
     margin: 0 0 0;
     width: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .participant-button-container{
     display:flex;
@@ -22,19 +24,86 @@
 }
 
 .list-description{
-    display: flex;
-    justify-content: space-between;
     font-style: normal;
     font-weight: 300;
     font-size: 1em;
     color: #82868B;
-    padding: 0 2% 1% 2%;
+    padding: 0 0 1% 0;
 }
 
 .participant-list-container{
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1em;
+    color: #82868B;
     height: 20vh;
     border-radius: 5px;
+    padding: 1% 0 1% 0;
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
-
+.participant-table{
+     width: 100%;
+     border: none;
+ }
+ .column-firstName{
+     width: 12%;
+ }
+ .column-lastName{
+     width: 13%;
+ }
+ .column-email{
+     width: 27%;
+ }
+ .column-email-header{
+     width: 27%;
+ }
+ .column-group{
+     width: 8%;
+ }
+ .column-topic{
+     width: 15%;
+ }
+ .column-languageLevel{
+     width: 15%;
+ }
+ .column-options{
+    width: 10%;
+ }
+ .column-options-buttons{
+    padding-right: 30%;
+ }
+ .button-options-edit{
+    width: 20%;
+    justify-content: center;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+ }
+ .button-options-delete{
+    width: 20%;
+    float: right;
+    justify-content: center;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+ }
+ .button-email{
+    justify-content: center;
+    background: none;
+    color: inherit;
+    text-decoration: underline;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+ }

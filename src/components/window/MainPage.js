@@ -4,7 +4,9 @@ import './participants_window.css';
 import './setup_window.css';
 import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
+import ParticipantModal from '../modals/addParticipantModal';
 import logo from '../../assets/media/favicon_ogre.png';
+import deleteButton from '../../assets/media/trash.svg';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';
 import add from '../../assets/media/plus-circle.svg';
@@ -16,9 +18,34 @@ import LoadConfiguration from '../../api/LoadConfiguration';
 import SmallTestData from '../../algorithm/test/SmallTestData';
 import ImportParticipants from '../../api/ImportParticipants';
 import Configuration from '../../api/model/Configuration';
+import PropTypes from 'prop-types';
 
-function MainPage () {
-  const [modalShow, setModalShow] = React.useState(false);
+function MainPage (props) {
+  const [modalShowSlot, setModalShowSlot] = React.useState(false);
+  const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
+  const listParticipants = props.listAllParticipants.map(entry =>
+    <tr key={entry.id}>
+        <td className={'column-firstName'}>{entry.firstName}</td>
+        <td className={'column-lastName'}>{entry.lastName}</td>
+        <td className={'column-email'}>
+            <button className={'button-email'}>{entry.email}</button>
+        </td>
+        <td className={'column-group'}>{entry.group}</td>
+        <td className={'column-topic'}>{entry.topic}</td>
+        <td className={'column-languageLevel'}>{entry.languageLevel}</td>
+        <td className={'column-options'}>
+            <div className={'column-options-buttons'}>
+                <button className={'button-options-edit'}>
+                    <img src={edit} alt={'icon'}/>
+                </button>
+                <button className={'button-options-delete'}>
+                    <img src={deleteButton} alt={'icon'}/>
+                </button>
+            </div>
+        </td>
+    </tr>
+  );
+
   return (
         <div className={'main-page'}>
             <div className={'title-box'}>
@@ -48,7 +75,7 @@ function MainPage () {
                 <div className={'participantWindow'}>
                     <span className={'title-subheadline'} style={{ fontSize: 10 }}>Participants</span>
                     <div className={'participant-button-container'}>
-                        <button className={'button-container-green-participants'}>
+                        <button className={'button-container-green-participants'} onClick={() => setModalShowParticipant(true)}>
                             <img src={add} alt={'addParticipantIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Participant</span>
                         </button>
@@ -58,13 +85,22 @@ function MainPage () {
                         </button>
                     </div>
                     <div className={'list-description'}>
-                        <span>First Name</span>
-                        <span>Last Name</span>
-                        <span>Email Address</span>
-                        <span>Group</span>
-                        <span>Options</span>
+                        <table className={'participant-table'}>
+                            <tr>
+                              <td className={'column-firstName'}>First Name</td>
+                              <td className={'column-lastName'}>Last Name</td>
+                              <td className={'column-email-header'}>Email Address</td>
+                              <td className={'column-group'}>Group</td>
+                              <td className={'column-topic'}>Topic</td>
+                              <td className={'column-languageLevel'}>German Skill Level</td>
+                              <td className={'column-options'}>Options</td>
+                            </tr>
+                        </table>
                     </div>
                     <div className={'participant-list-container'}>
+                        <table className={'participant-table'}>
+                            {listParticipants}
+                        </table>
                     </div>
                 </div>
                 {/* end */}
@@ -72,7 +108,7 @@ function MainPage () {
                 <div className={'slotsWindow'}>
                     <span className={'title-subheadline'} style={{ fontSize: 10 }}>Slots</span>
                     <div className={'slots-button-container'}>
-                        <button className={'button-container-green-slots'} onClick={() => setModalShow(true)}>
+                        <button className={'button-container-green-slots'} onClick={() => setModalShowSlot(true)}>
                             <img src={add} alt={'addSlotIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Slot</span>
                         </button>
@@ -90,8 +126,11 @@ function MainPage () {
                 </div>
                 {/* end */}
                     <SlotModal
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}/>
+                        show={modalShowSlot}
+                        onHide={() => setModalShowSlot(false)}/>
+                    <ParticipantModal
+                        show={modalShowParticipant}
+                        onHide={() => setModalShowParticipant(false)}/>
                 <button className={'button-start'} onClick={runAlgorithm}>
                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
                     <span className={'button-start-text'}>Start Calculations</span>
@@ -125,5 +164,15 @@ function runAlgorithm () {
     new Test().run(configuration);
   }
 }
+
+MainPage.propTypes = {
+  listAllParticipants: PropTypes.arrayOf(
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.string,
+    PropTypes.number
+  )
+};
 
 export default MainPage;
