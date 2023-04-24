@@ -4,16 +4,16 @@ import Algorithm from '../logic/Algorithm';
 
 export default class Test {
   run (configuration) {
-    const participants = configuration.participants;
-    const roomSlots = configuration.roomSlots;
+    const participants = configuration.participantStore.getAll();
+    const roomSlots = configuration.slotRoomStore.getAll();
     const authorIsNotary = configuration.authorIsNotary;
 
     const algo = new Algorithm(participants, roomSlots, authorIsNotary);
     algo.run();
     algo.printResult();
     algo.printLikeOldRevOger();
-    configuration.roomSlots.forEach(rs => rs.getRooms().forEach(r => r.setReview(null)));
-    configuration.participants.forEach(p => p.resetStatistics());
+    configuration.slotRoomStore.getAll().forEach(rs => rs.getRooms().forEach(r => r.setReview(null)));
+    configuration.participantStore.getAll().forEach(p => p.resetStatistics());
   }
 
   getTestConfiguration () {

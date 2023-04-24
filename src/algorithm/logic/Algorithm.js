@@ -1,5 +1,5 @@
-import Review from '../model/Review';
-import Slot from '../model/Slot';
+import Review from '../../data/model/Review';
+import Slot from '../../data/model/Slot';
 
 export default class Algorithm {
   #numberOfReviewers = 0;

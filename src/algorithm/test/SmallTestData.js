@@ -1,11 +1,16 @@
-import Participant from '../model/Participant';
-import Room from '../model/Room';
-import RoomSlot from '../model/RoomSlot';
+import Participant from '../../data/model/Participant';
+import Room from '../../data/model/Room';
+import RoomSlot from '../../data/model/RoomSlot';
+import { ParticipantStore } from '../../data/store/ParticipantStore';
+import { SlotRoomStore } from '../../data/store/SlotRoomStore';
 
 export default class SmallTestData {
   constructor () {
+    this.participantStore = ParticipantStore.getSingleton();
+    this.slotRoomStore = SlotRoomStore.getSingleton();
+
     this.authorIsNotary = true;
-    this.participants = [
+    [
       new Participant('Richard', '', '', 1),
       new Participant('Basti', '', '', 1),
       new Participant('Daniel', '', '', 1),
@@ -18,7 +23,7 @@ export default class SmallTestData {
       new Participant('X', '', '', 4),
       new Participant('Y', '', '', 4),
       new Participant('Z', '', '', 4)
-    ];
+    ].forEach(participant => this.participantStore.put(participant));
 
     const startDate1 = new Date();
     startDate1.setHours(14);
@@ -30,7 +35,7 @@ export default class SmallTestData {
     const endDate2 = new Date();
     endDate2.setHours(19);
 
-    this.roomSlots = [
+    [
       new RoomSlot(new Date(), startDate1, endDate1, [
         new Room('I.1.2', true),
         new Room('I.1.3', true)
@@ -39,6 +44,6 @@ export default class SmallTestData {
         new Room('I.2.2', true),
         new Room('I.2.3', true)
       ])
-    ];
+    ].forEach(slot => this.slotRoomStore.put(slot));
   }
 }
