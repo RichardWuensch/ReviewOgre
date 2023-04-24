@@ -1,10 +1,15 @@
-
 export class Store {
   #store = new Map();
+  #type;
   #id = 0;
 
-  #getAndIncrementId () {
-    return this.#id++;
+  constructor (type) {
+    this.#type = type;
+  }
+
+  #incrementAndGetId () {
+    this.#id++;
+    return this.#id;
   }
 
   getById (key) {
@@ -16,9 +21,17 @@ export class Store {
   }
 
   put (value) {
-    value.id = this.#getAndIncrementId();
-    this.#store.set(value.id, value);
-    return true;
+    if (value instanceof this.#type) {
+      value.setId(this.#incrementAndGetId());
+      this.#store.set(value.getId(), value);
+      return true;
+    }
+    console.error('Unable to store value: ' + value);
+    return false;
+  }
+
+  putMultiple (values) {
+    values.forEach(value => this.put(value));
   }
 
   delete (id) {
@@ -28,6 +41,10 @@ export class Store {
 
   update (id, value) {
     if (this.#store.has(id) === false) {
+      return false;
+    }
+
+    if (!(value instanceof this.#type)) {
       return false;
     }
 

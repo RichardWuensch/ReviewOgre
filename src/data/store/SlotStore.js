@@ -1,7 +1,8 @@
 import { Store } from './AbstractStore';
+import Slot from '../model/Slot';
 
-export const SlotRoomStore = (function () {
-  let instance = new Store();
+export const SlotStore = (function () {
+  let instance = new Store(Slot);
 
   function getInstance () {
     return instance;

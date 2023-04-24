@@ -1,16 +1,16 @@
 import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
-import {ParticipantStore} from "../../data/store/ParticipantStore";
-import {SlotRoomStore} from "../../data/store/SlotRoomStore";
+import { ParticipantStore } from '../../data/store/ParticipantStore';
+import { SlotStore } from '../../data/store/SlotStore';
 
 export default class OldTestData {
   constructor () {
     this.participantStore = ParticipantStore.getSingleton();
-    this.slotRoomStore = SlotRoomStore.getSingleton();
+    this.slotRoomStore = SlotStore.getSingleton();
 
     this.authorIsNotary = true;
-    [
+    this.participants = [
       new Participant('Claudia', 'Delacruz', 'nulla.magna.malesuada@turpis.ca', 1),
       new Participant('Abel', 'Waters', 'leo.Vivamus@sapien.com', 1),
       new Participant('Dominic', 'Lawson', 'velit.eu@Fuscemi.edu', 1),
@@ -119,22 +119,22 @@ export default class OldTestData {
       new Participant('Risa', 'Davis', 'non.sollicitudin.a@dapibusgravida.com', 36),
       new Participant('Fay', 'Russell', 'iaculis@atlacusQuisque.org', 36),
       new Participant('Jaden', 'Kemp', 'ante.blandit@urnaUttincidunt.ca', 36)
-    ].forEach(participant => {this.participantStore.put(participant)});
+    ];
 
-    [
+    this.slots = [
       new RoomSlot(
         new Date(2014, 10, 19),
         new Date(2014, 10, 19, 19, 0, 0),
         new Date(2014, 10, 19, 20, 40, 0),
         [
           // Date, startTime, EndTime
-          new Room('1.212', false),
-          new Room('1.014', false),
-          new Room('1.020', false),
-          new Room('1.168', false),
-          new Room('0.463', false),
-          new Room('0.457', false),
-          new Room('0.447', false)
+          new Room(0, '1.212', false),
+          new Room(0, '1.014', false),
+          new Room(0, '1.020', false),
+          new Room(0, '1.168', false),
+          new Room(0, '0.463', false),
+          new Room(0, '0.457', false),
+          new Room(0, '0.447', false)
         ]
       ),
       new RoomSlot(
@@ -142,10 +142,10 @@ export default class OldTestData {
         new Date(2014, 10, 20, 17, 20, 0),
         new Date(2014, 10, 20, 19, 0, 0),
         [
-          new Room('1.212', false),
-          new Room('1.014', false),
-          new Room('1.020', false),
-          new Room('1.168', false)
+          new Room(1, '1.212', false),
+          new Room(1, '1.014', false),
+          new Room(1, '1.020', false),
+          new Room(1, '1.168', false)
         ]
       ),
       new RoomSlot(
@@ -153,12 +153,12 @@ export default class OldTestData {
         new Date(2014, 10, 20, 19, 0, 0),
         new Date(2014, 10, 20, 20, 40, 0),
         [
-          new Room('1.212', false),
-          new Room('1.014', false),
-          new Room('1.020', false),
-          new Room('1.168', false),
-          new Room('0.463', false),
-          new Room('0.457', false)
+          new Room(2, '1.212', false),
+          new Room(2, '1.014', false),
+          new Room(2, '1.020', false),
+          new Room(2, '1.168', false),
+          new Room(2, '0.463', false),
+          new Room(2, '0.457', false)
         ]
       ),
       new RoomSlot(
@@ -166,9 +166,9 @@ export default class OldTestData {
         new Date(2014, 10, 21, 11, 20, 0),
         new Date(2014, 10, 21, 13, 0, 0),
         [
-          new Room('1.014', false),
-          new Room('1.020', false),
-          new Room('1.168', false)
+          new Room(3, '1.014', false),
+          new Room(3, '1.020', false),
+          new Room(3, '1.168', false)
         ]
       ),
       new RoomSlot(
@@ -176,11 +176,11 @@ export default class OldTestData {
         new Date(2014, 10, 21, 15, 30, 0),
         new Date(2014, 10, 21, 17, 15, 0),
         [
-          new Room('1.212', false),
-          new Room('1.014', false),
-          new Room('1.020', false),
-          new Room('1.168', false),
-          new Room('0.463', false)
+          new Room(4, '1.212', false),
+          new Room(4, '1.014', false),
+          new Room(4, '1.020', false),
+          new Room(4, '1.168', false),
+          new Room(4, '0.463', false)
         ]
       ),
       new RoomSlot(
@@ -188,13 +188,13 @@ export default class OldTestData {
         new Date(2014, 10, 21, 19, 0, 0),
         new Date(2014, 10, 21, 20, 40, 0),
         [
-          new Room('1.212', false),
-          new Room('1.014', false),
-          new Room('1.020', false),
-          new Room('1.168', false),
-          new Room('0.463', false),
-          new Room('0.457', false),
-          new Room('0.447', false)
+          new Room(5, '1.212', false),
+          new Room(5, '1.014', false),
+          new Room(5, '1.020', false),
+          new Room(5, '1.168', false),
+          new Room(5, '0.463', false),
+          new Room(5, '0.457', false),
+          new Room(5, '0.447', false)
         ]
       ),
       new RoomSlot(
@@ -202,12 +202,12 @@ export default class OldTestData {
         new Date(2014, 10, 22, 11, 20, 0),
         new Date(2014, 10, 22, 13, 0, 0),
         [
-          new Room('1.212', false),
-          new Room('1.014', false),
-          new Room('1.020', false),
-          new Room('1.168', false)
+          new Room(6, '1.212', false),
+          new Room(6, '1.014', false),
+          new Room(6, '1.020', false),
+          new Room(6, '1.168', false)
         ]
       )
-    ].forEach(slot => {this.slotRoomStore.put(slot)});
+    ];
   }
 }
