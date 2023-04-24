@@ -5,6 +5,7 @@ import './setup_window.css';
 import './slotsWindow.css';
 import SlotModal from '../modals/addSlotRoomModal';
 import ParticipantModal from '../modals/addParticipantModal';
+import ParticipantDeleteModal from '../modals/deleteParticipantModal';
 import logo from '../../assets/media/favicon_ogre.png';
 import deleteButton from '../../assets/media/trash.svg';
 import download from '../../assets/media/download.svg';
@@ -21,6 +22,14 @@ import PropTypes from 'prop-types';
 function MainPage (props) {
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
+  const [propsShowParticipant, setPropsShowParticipant] = React.useState([]);
+  const [modalDeleteParticipant, setModalDeleteParticipant] = React.useState(false);
+
+  function handleShowParticipant (modalSet, propsSet) {
+    setModalShowParticipant(modalSet);
+    setPropsShowParticipant(propsSet);
+  }
+
   const listParticipants = props.listAllParticipants.map(entry =>
     <tr key={entry.id}>
         <td className={'column-firstName'}>{entry.firstName}</td>
@@ -33,10 +42,17 @@ function MainPage (props) {
         <td className={'column-languageLevel'}>{entry.languageLevel}</td>
         <td className={'column-options'}>
             <div className={'column-options-buttons'}>
-                <button className={'button-options-edit'}>
+                <button className={'button-options-edit'} onClick={() =>
+                  handleShowParticipant(true, [entry.firstName,
+                    entry.lastName,
+                    entry.email,
+                    entry.group,
+                    entry.topic,
+                    entry.languageLevel])
+                }>
                     <img src={edit} alt={'icon'}/>
                 </button>
-                <button className={'button-options-delete'}>
+                <button className={'button-options-delete'} onClick={() => setModalDeleteParticipant(true)}>
                     <img src={deleteButton} alt={'icon'}/>
                 </button>
             </div>
@@ -104,7 +120,7 @@ function MainPage (props) {
                 <div className={'slotsWindow'}>
                     <span className={'title-subheadline'} style={{ fontSize: 10 }}>Slots</span>
                     <div className={'slots-button-container'}>
-                        <button className={'button-container-green-slots'} onClick={() => setModalShowSlot(true)}>
+                        <button className={'button-container-green-slots'} onClick={() => handleShowParticipant(true, [])}>
                             <img src={add} alt={'addSlotIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Slot</span>
                         </button>
@@ -126,7 +142,11 @@ function MainPage (props) {
                         onHide={() => setModalShowSlot(false)}/>
                     <ParticipantModal
                         show={modalShowParticipant}
-                        onHide={() => setModalShowParticipant(false)}/>
+                        onHide={() => setModalShowParticipant(false)}
+                        props={propsShowParticipant}/>
+                    <ParticipantDeleteModal
+                        show={modalDeleteParticipant}
+                        onHide={() => setModalDeleteParticipant(false)}/>
                 <button className={'button-start'} onClick={runAlgorithm}>
                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
                     <span className={'button-start-text'}>Start Calculations</span>
