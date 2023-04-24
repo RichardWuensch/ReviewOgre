@@ -6,12 +6,12 @@ import React, { useState } from 'react';
 
 function ParticipantModal (props) {
   const [showModal, setShowModal] = useState(true);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [group, setGroup] = useState('');
-  const [topic, setTopic] = useState('');
-  const [languageLevel, setLanguageLevel] = useState('Native Speaker');
+  const [firstName, setFirstName] = useState(props.firstName);
+  const [lastName, setLastName] = useState(props.lastName);
+  const [email, setEmail] = useState(props.email);
+  const [group, setGroup] = useState(props.group);
+  const [topic, setTopic] = useState(props.topic);
+  const [languageLevel, setLanguageLevel] = useState(props.languageLevel);
 
   const handleClose = () => {
     setShowModal(false);
@@ -52,13 +52,13 @@ function ParticipantModal (props) {
                         <span>German Skill Level:</span>
                         <form action="#">
                             <select className={'dropdown-attributes-container'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
+                                <option className={'dropdown-attributes-container-text'} value="Native Speaker">Native Speaker</option>
                                 <option className={'dropdown-attributes-container-text'} value="A1">A1</option>
                                 <option className={'dropdown-attributes-container-text'} value="A2">A2</option>
                                 <option className={'dropdown-attributes-container-text'} value="B1">B1</option>
                                 <option className={'dropdown-attributes-container-text'} value="B2">B2</option>
                                 <option className={'dropdown-attributes-container-text'} value="C1">C1</option>
                                 <option className={'dropdown-attributes-container-text'} value="C2">C2</option>
-                                <option className={'dropdown-attributes-container-text'} value="Native Speaker">Native Speaker</option>
                             </select>
                         </form>
                     </div>
@@ -74,6 +74,12 @@ function ParticipantModal (props) {
 }
 ParticipantModal.propTypes = {
   eventKey: PropTypes.string.isRequired,
-  onHide: PropTypes.string
+  onHide: PropTypes.string,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  email: PropTypes.string,
+  group: PropTypes.string,
+  topic: PropTypes.string,
+  languageLevel: PropTypes.string
 };
 export default ParticipantModal;

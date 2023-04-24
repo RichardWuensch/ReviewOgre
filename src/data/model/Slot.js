@@ -1,4 +1,5 @@
 export default class Slot {
+  #id;
   #date;
   #startTime;
   #endTime;
@@ -7,6 +8,14 @@ export default class Slot {
     this.#date = date;
     this.#startTime = startTime;
     this.#endTime = endTime;
+  }
+
+  setId (id) {
+    this.#id = id;
+  }
+
+  getId () {
+    return this.#id;
   }
 
   getDate () {

@@ -1,6 +1,6 @@
 import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
-import RoomSlot from '../../data/model/RoomSlot';
+import Slot from '../../data/model/Slot';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import { SlotStore } from '../../data/store/SlotStore';
 import { RoomStore } from '../../data/store/RoomStore';
@@ -8,11 +8,11 @@ import { RoomStore } from '../../data/store/RoomStore';
 export default class SmallTestData {
   constructor () {
     this.participantStore = ParticipantStore.getSingleton();
-    this.slotRoomStore = SlotStore.getSingleton();
+    this.slotStore = SlotStore.getSingleton();
     this.roomStore = RoomStore.getSingleton();
 
     this.authorIsNotary = true;
-    this.participants = [
+    [
       new Participant('Richard', '', '', 1),
       new Participant('Basti', '', '', 1),
       new Participant('Daniel', '', '', 1),
@@ -25,27 +25,36 @@ export default class SmallTestData {
       new Participant('X', '', '', 4),
       new Participant('Y', '', '', 4),
       new Participant('Z', '', '', 4)
-    ];
+    ].forEach(p => { this.participantStore.put(p); });
 
     const startDate1 = new Date();
     startDate1.setHours(14);
     const endDate1 = new Date();
     endDate1.setHours(16);
+    const slot1 = new Slot(new Date(), startDate1, endDate1);
+    this.slotStore.put(slot1);
 
     const startDate2 = new Date();
     startDate2.setHours(17);
     const endDate2 = new Date();
     endDate2.setHours(19);
+    const slot2 = new Slot(new Date(), startDate2, endDate2);
+    this.slotStore.put(slot2);
 
-    this.slots = [
-      new RoomSlot(new Date(), startDate1, endDate1, [
-        new Room(0, 'I.1.2', true),
-        new Room(0, 'I.1.3', true)
-      ]),
-      new RoomSlot(new Date(), startDate2, endDate2, [
-        new Room(1, 'I.2.2', true),
-        new Room(1, 'I.2.3', true)
-      ])
-    ];
+    [
+      new Room('I.1.2', true),
+      new Room('I.1.3', true)
+    ].forEach(room => {
+      room.setSlotId(slot1.getId());
+      this.roomStore.put(room);
+    });
+
+    [
+      new Room(1, 'I.2.2', true),
+      new Room(1, 'I.2.3', true)
+    ].forEach(room => {
+      room.setSlotId(slot2.getId());
+      this.roomStore.put(room);
+    });
   }
 }
