@@ -32,12 +32,12 @@ function MainPage () {
                     <img src={download} alt={'icon1'} height={12} width={12}/>
                     <span className={'button-text'}>Import Configuration</span>
                 </button>
-                <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}/>
+                <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList} accept='text/csv'/>
                 <button className={'button-container-green'} onClick={() => document.getElementById('file-input').click()}>
                     <img src={download} alt={'icon2'} height={12} width={12}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
-                <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}/>
+                <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration} accept='application/json'/>
                 <button className={'button-container-white'} onClick={saveConfiguration}>
                     <img src={file} alt={'icon3'} height={12} width={12}/>
                     <span className={'button-text'}>Save Configuration</span>

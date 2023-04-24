@@ -4,7 +4,7 @@ import Papa from 'papaparse';
 
 export default class ImportParticipants {
   async runStudentImport (event) {
-    const fileContent = await new ImportFile('application/vnd.ms-excel').runFileLoad(event);
+    const fileContent = await new ImportFile('application/vnd.ms-excel').runFileLoad(event); // internal filetype is not text/csv
     return new Promise((resolve) => {
       let groups = Papa.parse(fileContent).data.slice(2); // get all groups starting from index 2 (bc of separator and header)
       groups = groups.filter(row => row[0] !== ''); // delete empty lines
