@@ -6,6 +6,7 @@ import './slotsWindow.css';
 import './checkboxstyling.css';
 import SlotModal from '../modals/addSlotRoomModal';
 import ParticipantModal from '../modals/addParticipantModal';
+import EditMultipleParticipantsModal from '../modals/editMultipleParticipantsModal';
 import logo from '../../assets/media/favicon_ogre.png';
 import deleteButton from '../../assets/media/trash.svg';
 import download from '../../assets/media/download.svg';
@@ -23,9 +24,30 @@ import PropTypes from 'prop-types';
 function MainPage (props) {
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
+  const [modalShowEditMultipleParticipants, setModalShowEditMultipleParticipants] = React.useState(false);
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(false);
+
+  function leaveEditMode () {
+    setIsEditModeActive(false);
+    setSelectedParticipants([]);
+    setAllParticipantsSelected(false);
+  }
+  function handleSaveEditMultipleParticipants (group, languageLevel, topic) {
+    /* update Participants(uncomment when Store is finished)
+    const updatedParticipants = [...items];
+    selectedParticipants.forEach((selectedParticipant) => {
+        const editIndex = updatedParticipants.findIndex((item) => item === selectedParticipant);
+        updatedParticipants[editIndex] = { ...updatedParticipants[editIndex], group, languageLevel, topic };
+    });
+    '''update STore here with updatedParticipants
+    setSelectedParticipants([]);
+    setModalShowEditMultipleParticipants(false);
+
+       */
+    console.log('Edit to' + group + languageLevel, topic);
+  }
   const listParticipants = props.listAllParticipants.map(entry =>
     <tr key={entry.id}>
         {isEditModeActive && (
@@ -105,7 +127,7 @@ function MainPage (props) {
                                 </button>
                             )
                           : (
-                                <button className={'button-container-green-participants'}>
+                                <button className={'button-container-green-participants'} onClick={() => setModalShowEditMultipleParticipants(true)}>
                                     <img src={edit} alt={'editListIcon'} height={16} width={16}/>
                                     <span className={'button-text'}>Edit Selected</span>
                                 </button>
@@ -126,7 +148,7 @@ function MainPage (props) {
                             </button>
                             )
                           : (
-                            <button className={'button-container-green-participants'} onClick={() => setIsEditModeActive(false)}>
+                            <button className={'button-container-green-participants'} onClick={() => leaveEditMode()}>
                                 <img src={exit} alt={'icon'} height={16} width={16}/>
                                 <span className={'button-text'}>Cancel</span>
                             </button>
@@ -187,6 +209,11 @@ function MainPage (props) {
                     <ParticipantModal
                         show={modalShowParticipant}
                         onHide={() => setModalShowParticipant(false)}/>
+                    <EditMultipleParticipantsModal
+                        show={modalShowEditMultipleParticipants}
+                        onHide={() => setModalShowEditMultipleParticipants(false)}
+                        onSave={handleSaveEditMultipleParticipants}
+                        list={selectedParticipants}/>
                 <button className={'button-start'} onClick={runAlgorithm}>
                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
                     <span className={'button-start-text'}>Start Calculations</span>
