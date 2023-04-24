@@ -13,10 +13,8 @@ import file from '../../assets/media/file-earmark.svg';
 import add from '../../assets/media/plus-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import start from '../../assets/media/play-circle.svg';
-// import Algorithm from '../../algorithm/logic/Algorithm';
-// import OldTestData from '../../algorithm/test/OldTestData';
-// import SmallTestData from '../../algorithm/test/SmallTestData';
 import Test from '../../algorithm/test/Test';
+import StoreConfiguration from '../../api/StoreConfiguration';
 import PropTypes from 'prop-types';
 
 function MainPage (props) {
@@ -77,7 +75,7 @@ function MainPage (props) {
                     <img src={download} alt={'icon2'} height={12} width={12}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
-                <button className={'button-container-white'}>
+                <button className={'button-container-white'} onClick={saveConfiguration}>
                     <img src={file} alt={'icon3'} height={12} width={12}/>
                     <span className={'button-text'}>Save Configuration</span>
                 </button>
@@ -120,7 +118,7 @@ function MainPage (props) {
                 <div className={'slotsWindow'}>
                     <span className={'title-subheadline'} style={{ fontSize: 10 }}>Slots</span>
                     <div className={'slots-button-container'}>
-                        <button className={'button-container-green-slots'} onClick={() => handleShowParticipant(true, [])}>
+                        <button className={'button-container-green-slots'} onClick={() => setModalShowSlot(true)}>
                             <img src={add} alt={'addSlotIcon'} height={12} width={12}/>
                             <span className={'button-text'}>Add Slot</span>
                         </button>
@@ -154,6 +152,11 @@ function MainPage (props) {
             </div>
         </div>
   );
+}
+
+function saveConfiguration () {
+  const testConfiguration = new Test().getTestConfiguration();
+  new StoreConfiguration(testConfiguration).runFileSave();
 }
 
 function runAlgorithm () {
