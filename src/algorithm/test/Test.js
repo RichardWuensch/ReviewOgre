@@ -3,16 +3,20 @@ import SmallTestData from './SmallTestData';
 import Algorithm from '../logic/Algorithm';
 
 export default class Test {
-  run () {
-    const testData = /* new OldTestData(); */ new SmallTestData();
-    const participants = testData.participants;
-    const roomSlots = testData.roomSlots;
-
-    const authorIsNotary = true;
+  run (configuration) {
+    const participants = configuration.participants;
+    const roomSlots = configuration.roomSlots;
+    const authorIsNotary = configuration.authorIsNotary;
 
     const algo = new Algorithm(participants, roomSlots, authorIsNotary);
     algo.run();
     algo.printResult();
     algo.printLikeOldRevOger();
+    configuration.roomSlots.forEach(rs => rs.getRooms().forEach(r => r.setReview(null)));
+  }
+
+  getTestConfiguration () {
+    const testConfiguration = new SmallTestData();
+    return testConfiguration;
   }
 }
