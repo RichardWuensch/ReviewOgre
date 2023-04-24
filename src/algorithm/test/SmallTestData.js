@@ -1,9 +1,16 @@
-import Participant from '../model/Participant';
-import Room from '../model/Room';
-import RoomSlot from '../model/RoomSlot';
+import Participant from '../../data/model/Participant';
+import Room from '../../data/model/Room';
+import RoomSlot from '../../data/model/RoomSlot';
+import { ParticipantStore } from '../../data/store/ParticipantStore';
+import { SlotStore } from '../../data/store/SlotStore';
+import { RoomStore } from '../../data/store/RoomStore';
 
 export default class SmallTestData {
   constructor () {
+    this.participantStore = ParticipantStore.getSingleton();
+    this.slotRoomStore = SlotStore.getSingleton();
+    this.roomStore = RoomStore.getSingleton();
+
     this.authorIsNotary = true;
     this.participants = [
       new Participant('Richard', '', '', 1),
@@ -30,14 +37,14 @@ export default class SmallTestData {
     const endDate2 = new Date();
     endDate2.setHours(19);
 
-    this.roomSlots = [
+    this.slots = [
       new RoomSlot(new Date(), startDate1, endDate1, [
-        new Room('I.1.2', true),
-        new Room('I.1.3', true)
+        new Room(0, 'I.1.2', true),
+        new Room(0, 'I.1.3', true)
       ]),
       new RoomSlot(new Date(), startDate2, endDate2, [
-        new Room('I.2.2', true),
-        new Room('I.2.3', true)
+        new Room(1, 'I.2.2', true),
+        new Room(1, 'I.2.3', true)
       ])
     ];
   }

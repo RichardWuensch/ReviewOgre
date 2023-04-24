@@ -1,6 +1,6 @@
-import Participant from '../algorithm/model/Participant';
-import Room from '../algorithm/model/Room';
-import RoomSlot from '../algorithm/model/RoomSlot';
+import Participant from '../data/model/Participant';
+import Room from '../data/model/Room';
+import RoomSlot from '../data/model/RoomSlot';
 import Configuration from './model/Configuration';
 import ImportFile from './ImportFile';
 

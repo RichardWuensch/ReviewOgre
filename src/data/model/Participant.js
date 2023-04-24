@@ -1,4 +1,5 @@
 export default class Participant {
+  #id;
   #firstName;
   #lastName;
   #email;
@@ -25,6 +26,14 @@ export default class Participant {
     this.#notaryCount = 0;
     this.#moderatorCount = 0;
     this.#activeInSlots = [];
+  }
+
+  setId (id) {
+    this.#id = id;
+  }
+
+  getId () {
+    return this.#id;
   }
 
   getFirstName () {
