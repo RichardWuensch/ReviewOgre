@@ -5,29 +5,21 @@ import Configuration from './model/Configuration';
 import ImportFile from './ImportFile';
 
 export default class LoadConfiguration {
-  authorIsNotary;
-  participants = [];
-  roomSlots = [];
-  configuration = {};
-
   async runConfigurationImport (event) {
     const fileContent = await new ImportFile('application/json').runFileLoad(event);
     const parseData = JSON.parse(fileContent);
+    const config = new Configuration();
+    const participants = [];
+    const roomSlots = [];
     return new Promise((resolve) => {
-      this.authorIsNotary = parseData.authorIsNotary;
-      parseData.participants.forEach(p => this.participants.push(new Participant(p.firstName, p.lastName, p.email, p.group, p.topic, p.languageLevel)));
-      parseData.roomSlots.forEach(rs => this.roomSlots.push(new RoomSlot(new Date(rs.date), new Date(rs.startTime), new Date(rs.endTime),
+      parseData.participants.forEach(p => participants.push(new Participant(p.firstName, p.lastName, p.email, p.group, p.topic, p.languageLevel)));
+      parseData.roomSlots.forEach(rs => roomSlots.push(new RoomSlot(new Date(rs.date), new Date(rs.startTime), new Date(rs.endTime),
         rs.rooms.map(r => new Room(r.name, r.beamer))
       )));
-      this.setConfiguration();
-      resolve(this.configuration);
+      config.setAuthorIsNotary(parseData.authorIsNotary);
+      config.setParticipants(participants);
+      config.setRoomSlots(roomSlots);
+      resolve(config);
     });
-  }
-
-  setConfiguration () {
-    this.configuration = new Configuration();
-    this.configuration.setAuthorIsNotary(this.authorIsNotary);
-    this.configuration.setParticipants(this.participants);
-    this.configuration.setRoomSlots(this.roomSlots);
   }
 }
