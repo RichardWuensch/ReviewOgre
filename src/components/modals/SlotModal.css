@@ -54,6 +54,7 @@
     padding: 4%;
     justify-content: space-between;
     align-items: center;
+    font-size: 1.5em;
 }
 .input-time-container{
     width: 80px;
@@ -95,6 +96,7 @@
     display:flex;
     padding:10px;
     flex-direction: column;
+    font-size: 1.5em;
 }
 .add-room-button{
     display: flex;

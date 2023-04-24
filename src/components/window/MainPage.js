@@ -16,9 +16,6 @@ import add from '../../assets/media/plus-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import start from '../../assets/media/play-circle.svg';
 import exit from '../../assets/media/x-circle.svg';
-// import Algorithm from '../../algorithm/logic/Algorithm';
-// import OldTestData from '../../algorithm/test/OldTestData';
-// import SmallTestData from '../../algorithm/test/SmallTestData';
 import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
@@ -123,19 +120,17 @@ function MainPage (props) {
             <span className={'title-subheadline'} style={{ fontSize: 12 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
             <div className={'button-group'}>
                 <button className={'button-container-green'} onClick={() => document.getElementById('student-input').click()}>
-                    <img src={download} alt={'icon1'} height={12} width={12}/>
-                <button className={'button-container-green'}>
                     <img src={download} alt={'icon1'} height={16} width={16}/>
                     <span className={'button-text'}>Import Configuration</span>
                 </button>
                 <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList} accept='text/csv'/>
                 <button className={'button-container-green'} onClick={() => document.getElementById('file-input').click()}>
-                    <img src={download} alt={'icon2'} height={12} width={12}/>
+                    <img src={download} alt={'icon2'} height={16} width={16}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
                 <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration} accept='application/json'/>
                 <button className={'button-container-white'} onClick={saveConfiguration}>
-                    <img src={file} alt={'icon3'} height={12} width={12}/>
+                    <img src={file} alt={'icon3'} height={16} width={16}/>
                     <span className={'button-text'}>Save Configuration</span>
                 </button>
             </div>
@@ -233,14 +228,13 @@ function MainPage (props) {
                         onHide={() => setModalShowSlot(false)}/>
                     <ParticipantModal
                         show={modalShowParticipant}
-                        onHide={() => setModalShowParticipant(false)}/>
+                        onHide={() => setModalShowParticipant(false)}
+                        props={propsShowParticipant} />
                     <EditMultipleParticipantsModal
                         show={modalShowEditMultipleParticipants}
                         onHide={() => setModalShowEditMultipleParticipants(false)}
                         onSave={handleSaveEditMultipleParticipants}
                         list={selectedParticipants}/>
-                        onHide={() => setModalShowParticipant(false)}
-                        props={propsShowParticipant}/>
                     <ParticipantDeleteModal
                         show={modalDeleteParticipant}
                         onHide={() => setModalDeleteParticipant(false)}/>
