@@ -102,7 +102,7 @@ function SlotModal (props) {
                                     {items.map((item, index) => (
                                             <li key={index}>
                                                 <Card>
-                                                    <Card.Header className={'list-item'}>
+                                                    <Card.Header className={'list-item border-0'}>
                                                             <input className={'item-text'} type="text" value={item.text} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
                                                             <ToggleRoom eventKey={index} ></ToggleRoom>
                                                     </Card.Header>
