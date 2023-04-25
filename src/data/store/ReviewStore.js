@@ -1,4 +1,4 @@
-import { Store } from './AbstractStore';
+import Store from './AbstractStore';
 
 export const SlotStore = (function () {
   let instance = new Store();

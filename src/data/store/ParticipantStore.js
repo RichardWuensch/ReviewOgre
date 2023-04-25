@@ -1,4 +1,4 @@
-import { Store } from './AbstractStore';
+import Store from './AbstractStore';
 import Participant from '../model/Participant';
 
 export const ParticipantStore = (function () {
