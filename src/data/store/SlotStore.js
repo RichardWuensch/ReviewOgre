@@ -1,4 +1,4 @@
-import { Store } from './AbstractStore';
+import Store from './AbstractStore';
 import Slot from '../model/Slot';
 
 export const SlotStore = (function () {
