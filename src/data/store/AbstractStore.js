@@ -1,4 +1,4 @@
-export class Store {
+export default class Store {
   #store = new Map();
   #type;
   #id = 0;
@@ -16,10 +16,19 @@ export class Store {
     return this.#store.get(key);
   }
 
+  /**
+   * getAll values from the store
+   * @returns {any[]} returns an array of values
+   */
   getAll () {
     return Array.from(this.#store.values());
   }
 
+  /**
+   * Add a new item to the store
+   * @param value
+   * @returns {boolean} true if successful, false otherwise
+   */
   put (value) {
     if (value instanceof this.#type) {
       value.setId(this.#incrementAndGetId());
@@ -30,15 +39,34 @@ export class Store {
     return false;
   }
 
+  /**
+   * Helper to store multiple values at once
+   * @param values [] array of values to store
+   */
   putMultiple (values) {
     values.forEach(value => this.put(value));
   }
 
+  /**
+   * Delete a value form the store
+   * @param id
+   * @returns {boolean} true if deleted successfully, false if value was not found
+   */
   delete (id) {
+    if (this.#store.has(id) === false) {
+      return false;
+    }
+
     this.#store.delete(id);
     return true;
   }
 
+  /**
+   * Update a value in the store
+   * @param id
+   * @param value must have the same id as {id}
+   * @returns {boolean} returns true if the value was updated otherwise false
+   */
   update (id, value) {
     if (this.#store.has(id) === false) {
       return false;

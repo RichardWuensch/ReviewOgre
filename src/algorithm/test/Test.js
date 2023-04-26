@@ -2,20 +2,21 @@
 import SmallTestData from './SmallTestData';
 import Algorithm from '../logic/Algorithm';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import { ParticipantStore } from '../../data/store/ParticipantStore';
 
 export default class Test {
-  run (configuration) {
+  run (authorIsNotary) {
     const helper = new RoomSlotHelper();
+    const participantStore = ParticipantStore.getSingleton();
 
-    const participants = configuration.participantStore.getAll();
+    const participants = participantStore.getAll();
     const roomSlots = helper.getAllRoomSlots();
-    const authorIsNotary = configuration.authorIsNotary;
 
     const algo = new Algorithm(participants, roomSlots, authorIsNotary);
     algo.run();
     algo.printResult();
     algo.printLikeOldRevOger();
-    configuration.participantStore.getAll().forEach(p => p.resetStatistics());
+    participantStore.getAll().forEach(p => p.resetStatistics());
   }
 
   getTestConfiguration () {

@@ -17,6 +17,8 @@ import SmallTestDataUpdated from '../../algorithm/test/SmallTestDataUpdated';
 import ImportParticipants from '../../api/ImportParticipants';
 import Configuration from '../../api/model/Configuration';
 import PropTypes from 'prop-types';
+import { ParticipantStore } from '../../data/store/ParticipantStore';
+import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 
 function MainPage (props) {
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
@@ -80,28 +82,27 @@ function MainPage (props) {
   );
 }
 
-let configuration = new Configuration();
+const configuration = new Configuration();
+let authorIsNotary;
 
 function saveConfiguration () {
   new StoreConfiguration(configuration).runFileSave();
 }
 
 async function importConfiguration (event) {
-  configuration = await new LoadConfiguration().runConfigurationImport(event);
+  authorIsNotary = await new LoadConfiguration().runConfigurationImport(event);
 }
 
 async function importStudentList (event) {
-  const participants = await new ImportParticipants().runStudentImport(event);
-  configuration.setParticipants(participants);
+  await new ImportParticipants().runStudentImport(event);
 }
 
 function runAlgorithm () {
-  if (configuration.getParticipants().length === 0 ||
-    configuration.getRoomSlots().length === 0) {
+  if (ParticipantStore.getSingleton().getAll().length === 0 || new RoomSlotHelper().getAllRoomSlots().length === 0) {
     console.log('Running algorithm with test configuration');
     new Test().run(new SmallTestDataUpdated());
   } else {
-    new Test().run(configuration);
+    new Test().run(authorIsNotary);
   }
 }
 
