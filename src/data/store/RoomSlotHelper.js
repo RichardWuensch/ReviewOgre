@@ -65,6 +65,14 @@ export default class RoomSlotHelper {
     });
   }
 
+  /**
+   * Delete every slot and every room
+   */
+  deleteAllSlotsAndRooms () {
+    slotStore.deleteAll();
+    roomStore.deleteAll();
+  }
+
   getAllRoomsOfSlot (slotId) {
     return roomStore.getAll().filter(room => room.getSlotId() === slotId);
   }

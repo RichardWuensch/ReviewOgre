@@ -8,19 +8,29 @@ export default class Algorithm {
   #roomSlots;
   #authorIsNotary;
 
-  constructor (participants, roomSlots, authorIsNotary) {
+  #maximumTries;
+
+  constructor (participants, roomSlots, authorIsNotary, maximumTries) {
     this.#participants = participants;
     this.#roomSlots = roomSlots;
     this.#authorIsNotary = authorIsNotary;
+    this.#maximumTries = (maximumTries === undefined) ? 300 : maximumTries;
   }
 
   run () {
-    this.#prechecks();
+    if (this.#prechecks() === false) {
+      return false;
+    };
 
     const groups = this.#getAllGroups();
     let errorFound = true;
+    let errorCounter = 0;
     while (errorFound) {
       // run as long as no solution is found
+      if (errorCounter > this.#maximumTries) {
+        throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.');
+      }
+
       this.#setAuthorOfRandomGroupMember(groups);
       this.#calculateNumberOfReviewer(groups);
       for (const roomSlot of this.#roomSlots) {
@@ -39,18 +49,20 @@ export default class Algorithm {
             errorFound = false;
           } catch (error) {
             console.log(error.message);
-            errorFound = true;
+            errorCounter++;
             this.#clearReviews();
           }
         }
       }
     }
+    return true;
   }
 
   #prechecks () {
     // if count of rooms >= count of groups
     // are there enough groups for the calculation?
     // do slot times overlap?
+    return true;
   }
 
   #getAllGroups () {

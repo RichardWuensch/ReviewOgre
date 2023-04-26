@@ -48,7 +48,7 @@ export default class Store {
   }
 
   /**
-   * Delete a value form the store
+   * Delete a value from the store
    * @param id
    * @returns {boolean} true if deleted successfully, false if value was not found
    */
@@ -59,6 +59,14 @@ export default class Store {
 
     this.#store.delete(id);
     return true;
+  }
+
+  /**
+   * Delete all values from the store
+   * @returns {boolean} true if deleted successfully, false if value was not found
+   */
+  deleteAll () {
+    this.#store.clear();
   }
 
   /**
