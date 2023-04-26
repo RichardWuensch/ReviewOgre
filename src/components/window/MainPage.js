@@ -1,14 +1,12 @@
 import React from 'react';
 import './MainPage.css';
 import './setup_window.css';
-import './slotsWindow.css';
 import './checkboxstyling.css';
 import ParticipantsWindow from './participants_window';
-import SlotModal from '../modals/addSlotRoomModal';
+import SlotsWindow from './slots_window';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';
-import add from '../../assets/media/plus-circle.svg';
 import start from '../../assets/media/play-circle.svg';
 import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
@@ -21,8 +19,6 @@ import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 
 function MainPage (props) {
-  const [modalShowSlot, setModalShowSlot] = React.useState(false);
-
   return (
         <div className={'main-page'}>
             <div className={'title-box'}>
@@ -50,17 +46,7 @@ function MainPage (props) {
             <div className={'participant-slots-container'}>
                 <ParticipantsWindow listAllParticipants={props.listAllParticipants}/>
                 {/* replace with component */}
-                <div className={'slotsWindow'}>
-                    <h2 className={'title-subheadline'}>Slots</h2>
-                    <div className={'slots-button-container'}>
-                        <button className={'button-container-green-slots'} onClick={() => setModalShowSlot(true)}>
-                            <img src={add} alt={'addSlotIcon'} height={16} width={16}/>
-                            <span className={'button-text'}>Add Slot</span>
-                        </button>
-                    </div>
-                    <div className={'slots-list-container'}>
-                    </div>
-                </div>
+                <SlotsWindow />
                 {/* end */}
             </div>
             <div className={'setup-start-container'}>
@@ -70,9 +56,6 @@ function MainPage (props) {
                     <div className={'setupContainer'}></div>
                 </div>
                 {/* end */}
-                    <SlotModal
-                        show={modalShowSlot}
-                        onHide={() => setModalShowSlot(false)}/>
                 <button className={'button-start'} onClick={runAlgorithm}>
                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
                     <span className={'button-start-text'}>Start Calculations</span>
