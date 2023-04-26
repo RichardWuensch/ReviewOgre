@@ -8,6 +8,7 @@ import SlotModal from '../modals/addSlotRoomModal';
 import ParticipantModal from '../modals/addParticipantModal';
 import ParticipantDeleteModal from '../modals/deleteParticipantModal';
 import EditMultipleParticipantsModal from '../modals/editMultipleParticipantsModal';
+import FailedCalculationModal from '../modals/failedCalculationModal';
 import logo from '../../assets/media/favicon_ogre.png';
 import deleteButton from '../../assets/media/trash.svg';
 import download from '../../assets/media/download.svg';
@@ -42,11 +43,19 @@ function MainPage (props) {
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(false);
 
+  const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
+
   function leaveEditMode () {
     setIsEditModeActive(false);
     setSelectedParticipants([]);
     setAllParticipantsSelected(false);
   }
+
+  function startAlgorithm () {
+    runAlgorithm();
+    setModalFailedCalculations(true);
+  }
+
   function handleSaveEditMultipleParticipants (group, languageLevel, topic) {
     /* update Participants(uncomment when Store is finished)
     const updatedParticipants = [...items];
@@ -240,7 +249,10 @@ function MainPage (props) {
                     <ParticipantDeleteModal
                         show={modalDeleteParticipant}
                         onHide={() => setModalDeleteParticipant(false)}/>
-                <button className={'button-start'} onClick={runAlgorithm}>
+                    <FailedCalculationModal
+                        show={modalFailedCalculations}
+                        onHide={() => setModalFailedCalculations(false)}/>
+                <button className={'button-start'} onClick={startAlgorithm}>
                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
                     <span className={'button-start-text'}>Start Calculations</span>
                 </button>
