@@ -56,8 +56,12 @@
 .input-attributes-container::placeholder{
     font-family: 'Roboto', sans-serif;
     font-style: normal;
-    font-size: 60%;
-    max-height: 90vh;
+    overflow-y: auto;
+ }
+.input-attributes-container{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-size: 100%;
     overflow-y: auto;
  }
 .dropdown-attributes-container{
