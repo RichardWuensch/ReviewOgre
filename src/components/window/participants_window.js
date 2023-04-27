@@ -94,7 +94,7 @@ function ParticipantsWindow (props) {
     console.log('Delete successful');
   }
   function handleSaveEditAddParticipant () {
-    console.log('Add/Edit Participant successful')
+    console.log('Add/Edit Participant successful');
   }
 
   return (

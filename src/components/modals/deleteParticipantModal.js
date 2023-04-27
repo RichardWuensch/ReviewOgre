@@ -34,12 +34,12 @@ function deleteParticipantModal (props, onClose, onSave, onHide, multiple) {
                     <div className={'text-container'}>
                         {props.multiple
                           ? (
-                                <h2 className={'title-subheadline'}>Are you sure you want to delete the selected Participants?</h2>
+                                <h2 className={'delete-title-subheadline'}>Are you sure you want to delete the selected Participants?</h2>
                             )
                           : (
-                                <h2 className={'title-subheadline'}>Are you sure you want to delete this Participant?</h2>
+                                <h2 className={'delete-title-subheadline'}>Are you sure you want to delete this Participant?</h2>
                             )}
-                        <span className={'title-subheadline'} style={{ fontSize: 12 }}>This Action can&lsquo;t be undone.</span>
+                        <span className={'delete-title-subheadline'} style={{ fontSize: 12 }}>This Action can&lsquo;t be undone.</span>
                     </div>
                     <div className={'footer'}>
                         <button className={'confirm-button'}>
