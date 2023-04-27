@@ -4,7 +4,6 @@ import './setup_window.css';
 import './checkboxstyling.css';
 import ParticipantsWindow from './participants_window';
 import SlotsWindow from './slots_window';
-import '../modals/SlotModal.css';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';

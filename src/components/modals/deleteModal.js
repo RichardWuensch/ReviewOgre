@@ -1,9 +1,9 @@
-import './deleteParticipantModal.css';
+import './deleteModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../assets/media/x-circle.svg';
 import { useState } from 'react';
 
-function deleteParticipantModal (props, onClose, onSave, onHide, multiple) {
+function deleteModal (props, onClose, onSave, onHide, titleObject, textObject) {
   const [showModal, setShowModal] = useState(true);
 
   const handleClose = () => {
@@ -22,23 +22,11 @@ function deleteParticipantModal (props, onClose, onSave, onHide, multiple) {
             <Modal.Body>
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
-                        {props.multiple
-                          ? (
-                                <span className={'modal-header border-0'}>Delete selected<br />Participants</span>
-                            )
-                          : (
-                                <span className={'modal-header border-0'}>Delete Participant</span>
-                            )}
-                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
+                        <span className={'modal-header border-0'}>Delete {props.titleObject}</span>
+                        <img src={exit} alt={'exitModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'text-container'}>
-                        {props.multiple
-                          ? (
-                                <h2 className={'delete-title-subheadline'}>Are you sure you want to delete the selected Participants?</h2>
-                            )
-                          : (
-                                <h2 className={'delete-title-subheadline'}>Are you sure you want to delete this Participant?</h2>
-                            )}
+                        <h2 className={'delete-title-subheadline'}>Are you sure you want to delete {props.textObject}?</h2>
                         <span className={'delete-title-subheadline'} style={{ fontSize: 12 }}>This Action can&lsquo;t be undone.</span>
                     </div>
                     <div className={'footer'}>
@@ -51,4 +39,4 @@ function deleteParticipantModal (props, onClose, onSave, onHide, multiple) {
         </Modal>
   );
 }
-export default deleteParticipantModal;
+export default deleteModal;

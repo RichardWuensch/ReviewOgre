@@ -2,7 +2,7 @@ import React from 'react';
 import './participants_window.css';
 import AddParticipantModal from '../modals/addParticipantModal';
 import EditMultipleParticipantsModal from '../modals/editMultipleParticipantsModal';
-import DeleteParticipantModal from '../modals/deleteParticipantModal';
+import DeleteModal from '../modals/deleteModal';
 import exit from '../../assets/media/x-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
@@ -12,12 +12,13 @@ import PropTypes from 'prop-types';
 function ParticipantsWindow (props) {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
-  const [modalDeleteParticipant, setModalDeleteParticipant] = React.useState(false);
   const [modalShowEditMultipleParticipants, setModalShowEditMultipleParticipants] = React.useState(false);
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [selectedParticipant, setSelectedParticipant] = React.useState([]);
   const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(false);
-  const [deleteMultipleParticipants, setDeleteMultipleParticipants] = React.useState(false);
+  const [modalDelete, setModalDelete] = React.useState(false);
+  const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
+  const [deleteTextObject, setDeleteTextObject] = React.useState('');
 
   const listParticipants = props.listAllParticipants.map(entry =>
     <tr key={entry.id}>
@@ -59,8 +60,9 @@ function ParticipantsWindow (props) {
                     <img src={edit} alt={'icon'}/>
                 </button>
                 <button className={'button-options-delete'} onClick={() => {
-                  setDeleteMultipleParticipants(false);
-                  setModalDeleteParticipant(true);
+                  setDeleteTitleObject('Participant');
+                  setDeleteTextObject('this Participant');
+                  setModalDelete(true);
                 }}>
                     <img src={deleteButton} alt={'icon'}/>
                 </button>
@@ -73,7 +75,8 @@ function ParticipantsWindow (props) {
     setIsEditModeActive(false);
     setSelectedParticipants([]);
     setAllParticipantsSelected(false);
-    setDeleteMultipleParticipants();
+    setDeleteTitleObject('');
+    setDeleteTextObject('');
     setSelectedParticipant('');
   }
   function handleSaveEditMultipleParticipants (group, languageLevel, topic) {
@@ -90,7 +93,7 @@ function ParticipantsWindow (props) {
        */
     console.log('Edit to' + group + languageLevel, topic);
   }
-  function handleDeleteParticipant () {
+  function handleDelete () {
     console.log('Delete successful');
   }
   function handleSaveEditAddParticipant () {
@@ -99,7 +102,7 @@ function ParticipantsWindow (props) {
 
   return (
       <div className={'participantsWindow'}>
-          <h2 className={'title-subheadline'} >Participants</h2>
+          <h2 className={'title-subheadline'}>Participants</h2>
           <div className={'participant-button-container'}>
               {!isEditModeActive
                 ? (
@@ -116,8 +119,9 @@ function ParticipantsWindow (props) {
                   )}
               {isEditModeActive && (
                   <button className={'button-container-green-participants'} onClick={() => {
-                    setDeleteMultipleParticipants(true);
-                    setModalDeleteParticipant(true);
+                    setDeleteTitleObject('Participants');
+                    setDeleteTextObject('the selected Participants');
+                    setModalDelete(true);
                   }} style={ { background: '#C40233' } }>
                       <img src={deleteButton} alt={'icon'} height={16} width={16}/>
                       <span className={'button-text'} style={{ color: '#F5F5F5' }}>Delete Selected</span>
@@ -176,11 +180,12 @@ function ParticipantsWindow (props) {
                     onHide={() => setModalShowEditMultipleParticipants(false)}
                     onSave={handleSaveEditMultipleParticipants}
                     list={selectedParticipants}/>
-                <DeleteParticipantModal
-                    show={modalDeleteParticipant}
-                    onHide={() => setModalDeleteParticipant(false)}
-                    onSave={handleDeleteParticipant}
-                    multiple={deleteMultipleParticipants}/>
+                <DeleteModal
+                    show={modalDelete}
+                    onHide={() => setModalDelete(false)}
+                    onSave={handleDelete}
+                    titleObject={deleteTitleObject}
+                    textObject={deleteTextObject}/>
             </div>
       </div>
   );
