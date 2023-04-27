@@ -1,15 +1,17 @@
 import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
+import { ConfigurationStore } from '../../data/store/ConfigurationStore';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import Test from './Test';
 
 export default class SmallTestDataUpdated {
   constructor () {
     const participantStore = ParticipantStore.getSingleton();
     const helper = new RoomSlotHelper();
 
-    this.authorIsNotary = true;
+    ConfigurationStore.getSingleton().setAuthorIsNotary(true);
     participantStore.putMultiple([
       new Participant('Richard', '', '', 1),
       new Participant('Basti', '', '', 1),
@@ -46,5 +48,9 @@ export default class SmallTestDataUpdated {
         new Room(1, 'I.2.2', true),
         new Room(1, 'I.2.3', true)
       ]));
+  }
+
+  runTest () {
+    new Test().run();
   }
 }

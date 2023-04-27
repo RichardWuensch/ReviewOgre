@@ -14,7 +14,6 @@ import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
 import SmallTestDataUpdated from '../../algorithm/test/SmallTestDataUpdated';
 import ImportParticipants from '../../api/ImportParticipants';
-import Configuration from '../../api/model/Configuration';
 import PropTypes from 'prop-types';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
@@ -101,15 +100,12 @@ function handleABReviewChange () {
   console.log('A/B Review');
 }
 
-const configuration = new Configuration();
-let authorIsNotary;
-
 function saveConfiguration () {
-  new StoreConfiguration(configuration).runFileSave();
+  new StoreConfiguration().runFileSave();
 }
 
 async function importConfiguration (event) {
-  authorIsNotary = await new LoadConfiguration().runConfigurationImport(event);
+  await new LoadConfiguration().runConfigurationImport(event);
 }
 
 async function importStudentList (event) {
@@ -119,9 +115,9 @@ async function importStudentList (event) {
 function runAlgorithm () {
   if (ParticipantStore.getSingleton().getAll().length === 0 || new RoomSlotHelper().getAllRoomSlots().length === 0) {
     console.log('Running algorithm with test configuration');
-    new Test().run(new SmallTestDataUpdated());
+    new SmallTestDataUpdated().runTest();
   } else {
-    new Test().run(authorIsNotary);
+    new Test().run();
   }
 }
 
