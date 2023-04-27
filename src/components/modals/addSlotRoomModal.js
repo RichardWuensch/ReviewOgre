@@ -5,19 +5,19 @@ import exit from '../../assets/media/x-circle.svg';
 import add from '../../assets/media/plus-circle.svg';
 import chevronDown from '../../assets/media/chevron-down.svg';
 import chevronUp from '../../assets/media/chevron-up.svg';
-import React, { useState } from 'react';
-import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import { Accordion, AccordionContext, Card, useAccordionButton } from 'react-bootstrap';
 
-function ToggleRoom ({ eventKey }) {
-  const [open, setOpen] = useState(false);
+function ToggleRoom ({ children, eventKey, callback }) {
+  const { activeEventKey } = useContext(AccordionContext);
   const openAccordion = useAccordionButton(eventKey, () =>
-    console.log('totally custom!')
+    callback && callback(eventKey)
   );
 
   const expandAndToggle = () => {
     openAccordion(undefined);
-    setOpen(prevOpen => prevOpen !== true);
   };
+  const isCurrentEventKey = activeEventKey === eventKey;
 
   return (
         <button
@@ -25,18 +25,21 @@ function ToggleRoom ({ eventKey }) {
             onClick={expandAndToggle}
             className={'expand-chevron-button'}
         >
-            {open
+            {isCurrentEventKey
               ? (
                 <img src={chevronUp} alt={'chevron up'} />
                 )
               : (
                 <img src={chevronDown} alt={'chevron down'} />
                 )}
+            {children}
         </button>
   );
 }
 ToggleRoom.propTypes = {
-  eventKey: PropTypes.string.isRequired
+  eventKey: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  callback: PropTypes.func.isRequired
 };
 
 function SlotModal (props) {
@@ -104,7 +107,7 @@ function SlotModal (props) {
                                                 <Card>
                                                     <Card.Header className={'list-item border-0'}>
                                                             <input className={'item-text'} type="text" value={item.text} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
-                                                            <ToggleRoom eventKey={index} ></ToggleRoom>
+                                                            <ToggleRoom eventKey={index}></ToggleRoom>
                                                     </Card.Header>
                                                     <Accordion.Collapse eventKey={index}>
                                                         <Card.Body>
