@@ -4,6 +4,7 @@ import './setup_window.css';
 import './checkboxstyling.css';
 import ParticipantsWindow from './participants_window';
 import SlotsWindow from './slots_window';
+import '../modals/SlotModal.css';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
 import file from '../../assets/media/file-earmark.svg';
@@ -46,23 +47,58 @@ function MainPage (props) {
             <div className={'participant-slots-container'}>
                 <ParticipantsWindow listAllParticipants={props.listAllParticipants}/>
                 {/* replace with component */}
-                <SlotsWindow />
-                {/* end */}
-            </div>
-            <div className={'setup-start-container'}>
-                {/* replace with component */}
-                <div className={'setupWindow'}>
-                    <h2 className={'title-subheadline'}>Setup</h2>
-                    <div className={'setupContainer'}></div>
+                <div className={'slots-setup-container'}>
+                    <SlotsWindow />
+                    <div className={'setupWindow'}>
+                        <h2 className={'title-subheadline'}>Run Configuration</h2>
+                        <div className={'setupContainer'}>
+                            <div className={'radio-container'}>
+                                <div className={'setupItems'}>
+                                    <label className={'switch'}>
+                                        <input type="checkbox" onClick={handleNotaryIsAuthorChange}/>
+                                        <span className={'slider round'}></span>
+                                    </label>
+                                    <span style={{ paddingLeft: 10 }}>Notary is Author</span>
+                                </div>
+                                <div className={'setupItems'}>
+                                    <label className={'switch'}>
+                                        <input type="checkbox" onClick={handleModeratorNotReviewerChange}/>
+                                        <span className={'slider round'}></span>
+                                    </label>
+                                    <span style={{ paddingLeft: 10 }}>International Groups</span>
+                                </div>
+                                <div className={'setupItems'} style={{ paddingBottom: '0' }}>
+                                    <label className={'switch'}>
+                                        <input type="checkbox" onClick={handleABReviewChange}/>
+                                        <span className={'slider round'}></span>
+                                    </label>
+                                    <span style={{ paddingLeft: 10 }}>A/B Review</span>
+                                </div>
+                            </div>
+                            <div className={'start-button-container'}>
+                                <button className={'button-start'} onClick={runAlgorithm}>
+                                    <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
+                                    <span className={'button-start-text'}>Start Calculations</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {/* end */}
-                <button className={'button-start'} onClick={runAlgorithm}>
-                    <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
-                    <span className={'button-start-text'}>Start Calculations</span>
-                </button>
             </div>
         </div>
   );
+}
+function handleNotaryIsAuthorChange () {
+  console.log('Notary is Author');
+}
+
+function handleModeratorNotReviewerChange () {
+  console.log('Moderator not Reviewer');
+}
+
+function handleABReviewChange () {
+  console.log('A/B Review');
 }
 
 const configuration = new Configuration();
