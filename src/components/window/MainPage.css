@@ -21,7 +21,7 @@
     display: flex;
     margin-top: 1%;
     margin-bottom: 1%;
-    width: 45vw;
+    width: 50vw;
     justify-content: space-between;
 }
 
@@ -75,22 +75,22 @@
 
 .participant-slots-container{
     display:flex;
-    justify-content: space-between;
+    height: 60vh;
 }
-
-.setup-start-container{
-    display:flex;
-    margin-top: 10px;
-    justify-content: space-between;
+.slots-setup-container{
+    flex-direction: column;
+    width: 40vw;
 }
-
+.start-button-container{
+    margin: 0 5% 0 5%;
+}
 .button-start{
     display: flex;
     align-self: end;
     align-items: center;
     justify-content: center;
-    width: 20vw;
-    height: 10vh;
+    width: 15vw;
+    height: 8vh;
     background: #B0D7AF;
     border-radius: 5px;
     border-style: none;

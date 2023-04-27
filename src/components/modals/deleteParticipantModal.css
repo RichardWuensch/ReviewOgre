@@ -40,7 +40,7 @@
     align-items: center;
     text-align: center;
 }
-.title-subheadline{
+.delete-title-subheadline{
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 100;
@@ -56,7 +56,7 @@
 .confirm-button{
     display: flex;
     align-items: center;
-    justify-content: center-end;
+    justify-content: flex-end;
     margin-top: 20px;
     padding-left: 10%;
     padding-right: 10%;

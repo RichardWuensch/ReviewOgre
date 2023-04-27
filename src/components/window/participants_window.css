@@ -1,6 +1,6 @@
 .participantsWindow{
-    margin: 0 0 0;
-    width: 50%;
+    margin: 0 2% 0 0;
+    width: 50vw;
 }
 .participant-button-container{
     display:flex;
@@ -34,7 +34,7 @@
     font-weight: 300;
     font-size: 1.2em;
     color: #82868B;
-    height: 20vh;
+    height:75%;
     border-radius: 5px;
     padding: 1% 0 1% 0;
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
@@ -43,6 +43,7 @@
 .participant-table{
     width: 100%;
     border-style: none;
+    font-size: 1em;
  }
  .column-firstName{
      width: 12%;
