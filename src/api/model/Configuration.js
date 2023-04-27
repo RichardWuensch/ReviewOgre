@@ -1,3 +1,7 @@
+import { ParticipantStore } from '../../data/store/ParticipantStore';
+import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import { ConfigurationStore } from '../../data/store/ConfigurationStore';
+
 export default class Configuration {
   authorIsNotary;
   participants = [];
@@ -27,7 +31,9 @@ export default class Configuration {
     this.roomSlots = roomSlots;
   }
 
-  parseParticipants (participants) {
+  parseParticipantsFromStore () {
+    const participants = ParticipantStore.getSingleton().getAll();
+
     for (const p of participants) {
       const newParticipant = {
         firstName: p.getFirstName(),
@@ -41,7 +47,10 @@ export default class Configuration {
     }
   }
 
-  parseRoomSlots (roomSlots) {
+  parseRoomSlotsFromStore () {
+    const roomSlotHelper = new RoomSlotHelper();
+    const roomSlots = roomSlotHelper.getAllRoomSlots();
+
     for (const roomSlot of roomSlots) {
       const newRoomSlot = {
         date: roomSlot.getDate(),
@@ -58,5 +67,9 @@ export default class Configuration {
       }
       this.roomSlots.push(newRoomSlot);
     }
+  }
+
+  parseConfigurationFromStore () {
+    this.authorIsNotary = ConfigurationStore.getSingleton().getAuthorIsNotary();
   }
 }
