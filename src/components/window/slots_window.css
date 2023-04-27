@@ -26,3 +26,24 @@
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
+
+.hierarchy
+{
+    display: block;
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
+}
+.foldercontainer, .file
+{
+    display: block;
+    padding: 5px 5px 5px 50px;
+}
+.folder
+{
+    cursor: pointer;
+}
+.folder:before, .file:before
+{
+    padding-right: 10px;
+}

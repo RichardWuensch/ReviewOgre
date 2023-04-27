@@ -30,6 +30,8 @@
 }
 
 .participant-list-container{
+    display: block;
+    overflow: scroll;
     font-style: normal;
     font-weight: 300;
     font-size: 1.2em;

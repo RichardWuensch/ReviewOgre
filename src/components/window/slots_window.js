@@ -17,6 +17,28 @@ function SlotsWindow (props) {
               </button>
           </div>
           <div className={'slots-list-container'}>
+              <div className={'hierarchy'}>
+                  <div className='foldercontainer'>
+                      <span className='folder' data-isexpanded='true'>Folder 1</span>
+                      <span className='file'>File 11</span>
+                      <span className='file'>File 12</span>
+                      <span className='file'>File 13</span>
+                  </div>
+
+                  <div className='foldercontainer'>
+                      <span className='folder' data-isexpanded='true'>Folder 2</span>
+                      <span className='file'>File 21</span>
+                      <span className='file'>File 22</span>
+                      <span className='file'>File 23</span>
+                  </div>
+
+                  <div className='foldercontainer'>
+                      <span className='folder' data-isexpanded='true'>Folder 3</span>
+                      <span className='file'>File 31</span>
+                      <span className='file'>File 32</span>
+                      <span className='file'>File 33</span>
+                  </div>
+              </div>
           </div>
           <div className={'setup-start-container'}>
             <SlotModal

@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import './SlotModal.css';
+import './addSlotRoomModal.css';
 import exit from '../../assets/media/x-circle.svg';
 import add from '../../assets/media/plus-circle.svg';
 import chevronDown from '../../assets/media/chevron-down.svg';

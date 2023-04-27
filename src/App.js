@@ -7,6 +7,14 @@ function App () {
     { firstName: 'Max', lastName: 'Mustermann', email: 'max.mustermann@study.thws.de', group: '1', topic: 'Informatik', languageLevel: 'A1', id: 1 },
     { firstName: 'Martina', lastName: 'Musterfrau', email: 'martina.musterfrau@study.thws.de', group: '2', topic: 'Religion', languageLevel: 'B2', id: 2 }
   ];
+  /* const listAllSlots = [
+    { firstName: 'Max', lastName: 'Mustermann', email: 'max.mustermann@study.thws.de', group: '1', topic: 'Informatik', languageLevel: 'A1', id: 1 },
+    { firstName: 'Martina', lastName: 'Musterfrau', email: 'martina.musterfrau@study.thws.de', group: '2', topic: 'Religion', languageLevel: 'B2', id: 2 }
+  ];
+  const listAllRooms = [
+    { firstName: 'Max', lastName: 'Mustermann', email: 'max.mustermann@study.thws.de', group: '1', topic: 'Informatik', languageLevel: 'A1', id: 1 },
+    { firstName: 'Martina', lastName: 'Musterfrau', email: 'martina.musterfrau@study.thws.de', group: '2', topic: 'Religion', languageLevel: 'B2', id: 2 }
+  ]; */
 
   return (
     <div>
