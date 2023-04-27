@@ -14,14 +14,13 @@ export default class LoadConfiguration {
     const roomSlotHelper = new RoomSlotHelper();
     roomSlotHelper.deleteAllSlotsAndRooms();
     ParticipantStore.getSingleton().deleteAll();
-    return new Promise((resolve) => {
+    return new Promise(() => {
       parseData.participants.forEach(p => participants.push(new Participant(p.firstName, p.lastName, p.email, p.group, p.topic, p.languageLevel)));
       parseData.roomSlots.forEach(rs => roomSlotHelper.putRoomSlot(new RoomSlot(new Date(rs.date), new Date(rs.startTime), new Date(rs.endTime),
         rs.rooms.map(r => new Room(r.name, r.beamer))
       )));
       ParticipantStore.getSingleton().putMultiple(participants);
       ConfigurationStore.getSingleton().setAuthorIsNotary(parseData.authorIsNotary);
-      // resolve(parseData.authorIsNotary);
     });
   }
 }

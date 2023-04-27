@@ -49,6 +49,7 @@ export default class Algorithm {
             errorFound = false;
           } catch (error) {
             console.log(error.message);
+            errorFound = true; // must be reset bc we don't break out of 2 nested for loops
             errorCounter++;
             this.#clearReviews();
           }

@@ -263,7 +263,7 @@ async function importStudentList (event) {
 function runAlgorithm () {
   if (ParticipantStore.getSingleton().getAll().length === 0 || new RoomSlotHelper().getAllRoomSlots().length === 0) {
     console.log('Running algorithm with test configuration');
-    new Test().run(new SmallTestDataUpdated());
+    new SmallTestDataUpdated().runTest();
   } else {
     new Test().run();
   }
