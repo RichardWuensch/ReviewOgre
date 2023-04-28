@@ -16,8 +16,16 @@ import ImportParticipants from '../../api/ImportParticipants';
 import PropTypes from 'prop-types';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import FailedCalculationModal from '../modals/failedCalculationModal';
 
 function MainPage (props) {
+  const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
+
+  function startAlgorithm () {
+    runAlgorithm();
+    setModalFailedCalculations(true);
+  }
+
   return (
         <div className={'main-page'}>
             <div className={'title-box'}>
@@ -27,16 +35,20 @@ function MainPage (props) {
             <h2 className={'title-subheadline'}>Sort your review peers in groups for better Technical Reviews!</h2>
             <span className={'title-subheadline'} style={{ fontSize: 12 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
             <div className={'button-group'}>
-                <button className={'button-container-green'} onClick={() => document.getElementById('student-input').click()}>
+                <button className={'button-container-green'}
+                        onClick={() => document.getElementById('student-input').click()}>
                     <img src={download} alt={'icon1'} height={16} width={16}/>
                     <span className={'button-text'}>Import Configuration</span>
                 </button>
-                <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList} accept='text/csv'/>
-                <button className={'button-container-green'} onClick={() => document.getElementById('file-input').click()}>
+                <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
+                       accept='text/csv'/>
+                <button className={'button-container-green'}
+                        onClick={() => document.getElementById('file-input').click()}>
                     <img src={download} alt={'icon2'} height={16} width={16}/>
                     <span className={'button-text'}>Load Configuration</span>
                 </button>
-                <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration} accept='application/json'/>
+                <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}
+                       accept='application/json'/>
                 <button className={'button-container-white'} onClick={saveConfiguration}>
                     <img src={file} alt={'icon3'} height={16} width={16}/>
                     <span className={'button-text'}>Save Configuration</span>
@@ -46,7 +58,7 @@ function MainPage (props) {
                 <ParticipantsWindow listAllParticipants={props.listAllParticipants}/>
                 {/* replace with component */}
                 <div className={'slots-setup-container'}>
-                    <SlotsWindow />
+                    <SlotsWindow/>
                     <div className={'setupWindow'}>
                         <h2 className={'title-subheadline'}>Run Configuration</h2>
                         <div className={'setupContainer'}>
@@ -74,14 +86,18 @@ function MainPage (props) {
                                 </div>
                             </div>
                             <div className={'start-button-container'}>
-                                <button className={'button-start'} onClick={runAlgorithm}>
-                                    <img src={start} alt={'startCalculationsIcon'} height={20} width={20} />
+                                <button className={'button-start'} onClick={startAlgorithm}>
+                                    <img src={start} alt={'startCalculationsIcon'} height={20} width={20}/>
                                     <span className={'button-start-text'}>Start Calculations</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <FailedCalculationModal
+                    show={modalFailedCalculations}
+                    onHide={() => setModalFailedCalculations(false)}/>
+
                 {/* end */}
             </div>
         </div>

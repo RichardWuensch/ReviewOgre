@@ -26,7 +26,7 @@ function FailedCalculationsModal (props) {
                         <span className={'modal-header border-0'}>
                             Oops... something went wrong</span>
                     </div>
-                    <div className={'attributes-container'}>
+                    <div className={'response-container'}>
                         <div>Could not calculate a solution!</div>
                         <div>This is because of the following error:</div>
                     </div>
