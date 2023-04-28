@@ -10,6 +10,7 @@ export default class ImportParticipants {
       let groups = Papa.parse(fileContent).data.slice(2); // get all groups starting from index 2 (bc of separator and header)
       groups = groups.filter(row => row[0] !== ''); // delete empty lines
       const participants = this.parseParticipantsFromGroups(groups);
+      ParticipantStore.getSingleton().deleteAll();
       ParticipantStore.getSingleton().putMultiple(participants);
     });
   }

@@ -1,0 +1,75 @@
+.slots-button-container{
+    display:flex;
+    justify-content: space-between;
+    margin: 2.5% 0;
+    color: #363A3F;
+}
+.button-container-green-slots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    height: 5vh;
+    background: #B0D7AF;
+    border-radius: 5px;
+    border-style: none;
+    padding: 2%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.slots-list-container{
+    margin-top: 6%;
+    height: 25vh;
+    border-radius: 5px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.expand-structure-button{
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+.room-properties{
+    margin-left: 20px;
+}
+.slot-text{
+    color: black;
+}
+
+.slots-infos{
+    width: 100%;
+    display: flex;
+}
+.options{
+    display: inline-block;
+    position: absolute;
+    right: 5%;
+}
+.button-options-edit{
+    width: 20%;
+    justify-content: center;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+.button-options-delete{
+    width: 20%;
+    float: right;
+    justify-content: center;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}

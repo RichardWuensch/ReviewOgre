@@ -4,8 +4,8 @@ import Configuration from './model/Configuration';
 export default class StoreConfiguration {
   #configuration = {};
 
-  constructor (configuration) {
-    this.parseConfiguration(configuration);
+  constructor () {
+    this.parseConfigurationFromStore();
   }
 
   runFileSave () {
@@ -14,10 +14,10 @@ export default class StoreConfiguration {
     saveAs(blob, 'config.json');
   }
 
-  parseConfiguration (configuration) {
+  parseConfigurationFromStore () {
     this.#configuration = new Configuration();
-    this.#configuration.setAuthorIsNotary(configuration.authorIsNotary);
-    this.#configuration.parseParticipants(configuration.participants);
-    this.#configuration.parseRoomSlots(configuration.roomSlots);
+    this.#configuration.parseConfigurationFromStore();
+    this.#configuration.parseParticipantsFromStore();
+    this.#configuration.parseRoomSlotsFromStore();
   }
 }

@@ -1,26 +1,19 @@
-import Modal from 'react-bootstrap/Modal';
-import PropTypes from 'prop-types';
 import './addParticipantModal.css';
+import Modal from 'react-bootstrap/Modal';
 import exit from '../../assets/media/x-circle.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-function ParticipantModal (props) {
+function addParticipantModal (props, onClose, onSave, onHide, list) {
+  const [firstNameAttr, setFirstNameAttr] = useState(props.list[0]);
+  const [lastNameAttr, setLastNameAttr] = useState(props.list[1]);
+  const [emailAttr, setEmailAttr] = useState(props.list[2]);
+  const [groupAttr, setGroupAttr] = useState(props.list[3]);
+  const [topicAttr, setTopicAttr] = useState(props.list[4]);
+  const [languageLevelAttr, setLanguageLevelAttr] = useState(props.list[5]);
   const [showModal, setShowModal] = useState(true);
-  const [firstName, setFirstName] = useState(props.firstName);
-  const [lastName, setLastName] = useState(props.lastName);
-  const [email, setEmail] = useState(props.email);
-  const [group, setGroup] = useState(props.group);
-  const [topic, setTopic] = useState(props.topic);
-  const [languageLevel, setLanguageLevel] = useState(props.languageLevel);
 
   const handleClose = () => {
     setShowModal(false);
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setGroup('');
-    setTopic('');
-    setLanguageLevel('Native Speaker');
   };
 
   return (
@@ -39,19 +32,19 @@ function ParticipantModal (props) {
                         <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'attributes-container'}>
-                        <span>First Name:</span>
-                        <input className={'input-attributes-container'} type={'text'} value={firstName} placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
-                        <span>Last Name:</span>
-                        <input className={'input-attributes-container'} type={'text'} value={lastName} placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
+                        <span>First Name:{firstNameAttr}</span>
+                        <input className={'input-attributes-container'} type={'text'} value={firstNameAttr} placeholder="First Name" onChange={(e) => setFirstNameAttr(e.target.value)} />
+                        <span>Last Name:{lastNameAttr}</span>
+                        <input className={'input-attributes-container'} type={'text'} value={lastNameAttr} placeholder="Last Name" onChange={(e) => setLastNameAttr(e.target.value)} />
                         <span>Email:</span>
-                        <input className={'input-attributes-container'} type={'text'} value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                        <input className={'input-attributes-container'} type={'text'} value={emailAttr} placeholder="Email" onChange={(e) => setEmailAttr(e.target.value)} />
                         <span>Group:</span>
-                        <input className={'input-attributes-container'} type={'text'} value={group} placeholder="Group" onChange={(e) => setGroup(e.target.value)} />
+                        <input className={'input-attributes-container'} type={'text'} value={groupAttr} placeholder="Group" onChange={(e) => setGroupAttr(e.target.value)} />
                         <span>Topic:</span>
-                        <input className={'input-attributes-container'} type={'text'} value={topic} placeholder="Topic" onChange={(e) => setTopic(e.target.value)} />
+                        <input className={'input-attributes-container'} type={'text'} value={topicAttr} placeholder="Topic" onChange={(e) => setTopicAttr(e.target.value)} />
                         <span>German Skill Level:</span>
                         <form action="#">
-                            <select className={'dropdown-attributes-container'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
+                            <select className={'dropdown-attributes-container'} value={languageLevelAttr} onChange={(e) => setLanguageLevelAttr(e.target.value)}>
                                 <option className={'dropdown-attributes-container-text'} value="Native Speaker">Native Speaker</option>
                                 <option className={'dropdown-attributes-container-text'} value="A1">A1</option>
                                 <option className={'dropdown-attributes-container-text'} value="A2">A2</option>
@@ -72,14 +65,4 @@ function ParticipantModal (props) {
         </Modal>
   );
 }
-ParticipantModal.propTypes = {
-  eventKey: PropTypes.string.isRequired,
-  onHide: PropTypes.string,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  email: PropTypes.string,
-  group: PropTypes.string,
-  topic: PropTypes.string,
-  languageLevel: PropTypes.string
-};
-export default ParticipantModal;
+export default addParticipantModal;
