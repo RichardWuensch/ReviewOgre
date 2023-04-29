@@ -11,12 +11,13 @@ import start from '../../assets/media/play-circle.svg';
 import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
-import SmallTestDataUpdated from '../../algorithm/test/SmallTestDataUpdated';
+import OldTestDataUpdated from '../../algorithm/test/OldTestDataUpdated';
 import ImportParticipants from '../../api/ImportParticipants';
 import PropTypes from 'prop-types';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import FailedCalculationModal from '../modals/failedCalculationModal';
+import SaveRoomPlan from '../../api/SaveRoomPlan';
 
 function MainPage (props) {
   const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
@@ -130,10 +131,16 @@ async function importStudentList (event) {
 function runAlgorithm () {
   if (ParticipantStore.getSingleton().getAll().length === 0 || new RoomSlotHelper().getAllRoomSlots().length === 0) {
     console.log('Running algorithm with test configuration');
-    new SmallTestDataUpdated().runTest();
+    new OldTestDataUpdated().runTest();
+    saveRoomPlan(); // only for tests, store the assigned rooms
   } else {
     new Test().run();
+    saveRoomPlan(); // only for tests, store the assigned rooms
   }
+}
+
+function saveRoomPlan () {
+  new SaveRoomPlan().runSave();
 }
 
 MainPage.propTypes = {

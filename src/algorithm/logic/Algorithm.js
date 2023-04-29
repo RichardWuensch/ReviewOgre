@@ -1,5 +1,6 @@
 import Review from '../../data/model/Review';
 import Slot from '../../data/model/Slot';
+import { ResultStore } from '../../data/store/ResultStore';
 
 export default class Algorithm {
   #numberOfReviewers = 0;
@@ -291,5 +292,9 @@ export default class Algorithm {
     // load the result as JSON-String in the LocalStorage of the Browser
     // it is possible to have a nicer look of the result with a formatter
     localStorage.setItem('roomSlots', JSON.stringify(this.#roomSlots));
+  }
+
+  storeResult () {
+    ResultStore.getSingleton().setRoomSlots(this.#roomSlots);
   }
 }
