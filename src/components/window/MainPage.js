@@ -17,7 +17,6 @@ import PropTypes from 'prop-types';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import FailedCalculationModal from '../modals/failedCalculationModal';
-import SaveRoomPlan from '../../api/SaveRoomPlan';
 
 function MainPage (props) {
   const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
@@ -132,16 +131,16 @@ function runAlgorithm () {
   if (ParticipantStore.getSingleton().getAll().length === 0 || new RoomSlotHelper().getAllRoomSlots().length === 0) {
     console.log('Running algorithm with test configuration');
     new OldTestDataUpdated().runTest();
-    saveRoomPlan(); // only for tests, store the assigned rooms
   } else {
     new Test().run();
-    saveRoomPlan(); // only for tests, store the assigned rooms
   }
 }
 
-function saveRoomPlan () {
-  new SaveRoomPlan().runSave();
-}
+// there is no button on the main page for that functionality
+// this should happen on the 'success page' later
+// function saveRoomPlan () {
+//   new SaveRoomPlan().runSave();
+// }
 
 MainPage.propTypes = {
   listAllParticipants: PropTypes.arrayOf(
