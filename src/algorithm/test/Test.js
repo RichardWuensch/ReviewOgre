@@ -17,6 +17,7 @@ export default class Test {
 
     const algo = new Algorithm(participants, roomSlots, authorIsNotary);
     algo.run();
+
     algo.printResult();
     algo.printLikeOldRevOger();
     participantStore.getAll().forEach(p => p.resetStatistics());

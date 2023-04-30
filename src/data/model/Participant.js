@@ -52,6 +52,10 @@ export default class Participant {
     this.#lastName = lastName;
   }
 
+  getFullName () {
+    return this.#firstName + ' ' + this.#lastName;
+  }
+
   getEmail () {
     return this.#email;
   }

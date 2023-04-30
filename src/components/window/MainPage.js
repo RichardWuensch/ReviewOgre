@@ -11,7 +11,7 @@ import start from '../../assets/media/play-circle.svg';
 import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
-import SmallTestDataUpdated from '../../algorithm/test/SmallTestDataUpdated';
+import OldTestDataUpdated from '../../algorithm/test/OldTestDataUpdated';
 import ImportParticipants from '../../api/ImportParticipants';
 import PropTypes from 'prop-types';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
@@ -130,11 +130,17 @@ async function importStudentList (event) {
 function runAlgorithm () {
   if (ParticipantStore.getSingleton().getAll().length === 0 || new RoomSlotHelper().getAllRoomSlots().length === 0) {
     console.log('Running algorithm with test configuration');
-    new SmallTestDataUpdated().runTest();
+    new OldTestDataUpdated().runTest();
   } else {
     new Test().run();
   }
 }
+
+// there is no button on the main page for that functionality
+// this should happen on the 'success page' later
+// function saveRoomPlan () {
+//   new SaveRoomPlan().runSave();
+// }
 
 MainPage.propTypes = {
   listAllParticipants: PropTypes.arrayOf(
