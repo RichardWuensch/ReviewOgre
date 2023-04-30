@@ -1,6 +1,6 @@
 import { jsPDF as JSPDF } from 'jspdf';
 import 'jspdf-autotable';
-import { ResultStore } from '../data/store/ResultStore';
+import RoomSlotHelper from '../data/store/RoomSlotHelper';
 
 const minimumXIndentation = 15;
 const minimumYIndentation = 25;
@@ -9,7 +9,7 @@ export default class SaveRoomPlan {
   #roomSlots;
   #roomPlan;
   constructor () {
-    this.#roomSlots = ResultStore.getSingleton().getRoomSlots();
+    this.#roomSlots = new RoomSlotHelper().getAllRoomSlots(); // reviews are saved in roomSlots after algorithm ran successfully
     this.#roomPlan = new JSPDF();
   }
 
