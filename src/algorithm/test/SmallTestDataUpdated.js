@@ -13,18 +13,18 @@ export default class SmallTestDataUpdated {
 
     ConfigurationStore.getSingleton().setAuthorIsNotary(true);
     participantStore.putMultiple([
-      new Participant('Richard', '', '', 1),
-      new Participant('Basti', '', '', 1),
-      new Participant('Daniel', '', '', 1),
-      new Participant('Jakob', '', '', 2),
-      new Participant('Nico', '', '', 2),
-      new Participant('Hannah', '', '', 2),
-      new Participant('A', '', '', 3),
-      new Participant('B', '', '', 3),
-      new Participant('C', '', '', 3),
-      new Participant('X', '', '', 4),
-      new Participant('Y', '', '', 4),
-      new Participant('Z', '', '', 4)
+      new Participant('Richard', '', 'richard.wuensch@study.thws.de', 1),
+      new Participant('Basti', '', 'richard.wuensch@study.thws.de', 1),
+      new Participant('Daniel', '', 'richard.wuensch@study.thws.de', 1),
+      new Participant('Jakob', '', 'richard.wuensch@study.thws.de', 2),
+      new Participant('Nico', '', 'richard.wuensch@study.thws.de', 2),
+      new Participant('Hannah', '', 'richard.wuensch@study.thws.de', 2),
+      new Participant('A', '', 'richard.wuensch@study.thws.de', 3),
+      new Participant('B', '', 'richard.wuensch@study.thws.de', 3),
+      new Participant('C', '', 'richard.wuensch@study.thws.de', 3),
+      new Participant('X', '', 'richard.wuensch@study.thws.de', 4),
+      new Participant('Y', '', 'richard.wuensch@study.thws.de', 4),
+      new Participant('Z', '', 'richard.wuensch@study.thws.de', 4)
     ]);
 
     const startDate1 = new Date();
@@ -45,8 +45,8 @@ export default class SmallTestDataUpdated {
 
     helper.putRoomSlot(
       new RoomSlot(new Date(), startDate1, endDate2, [
-        new Room(1, 'I.2.2', true),
-        new Room(1, 'I.2.3', true)
+        new Room('I.2.2', true),
+        new Room('I.2.3', true)
       ]));
   }
 
