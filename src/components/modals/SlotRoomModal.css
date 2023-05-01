@@ -48,13 +48,18 @@
     font-size: 1.5em;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
-
+.time-text{
+    font-size: 1.5em;
+}
 .time-container{
     display: flex;
     padding: 4%;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.5em;
+    font-size: 1em;
+}
+.span{
+    font-size: 1em;
 }
 .input-time-container{
     width: 80px;

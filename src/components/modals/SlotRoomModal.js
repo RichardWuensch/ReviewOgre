@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import './addSlotRoomModal.css';
+import './SlotRoomModal.css';
 import exit from '../../assets/media/x-circle.svg';
 import add from '../../assets/media/plus-circle.svg';
 import chevronDown from '../../assets/media/chevron-down.svg';
@@ -44,10 +44,12 @@ ToggleRoom.propTypes = {
 
 function SlotModal (props) {
   const [showModal, setShowModal] = useState(true);
-  const [date, setDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [items, setItems] = useState([]);
+  const [date, setDate] = useState(props.date);
+  const [startTime, setStartTime] = useState(props.startTime);
+  const [endTime, setEndTime] = useState(props.endTime);
+  const [items, setItems] = useState(props.items);
+  const [header] = useState(props.header);
+  const [edit] = useState(props.edit);
 
   const addItem = () => {
     setItems([...items, { text: '', beamer: false }]);
@@ -65,11 +67,13 @@ function SlotModal (props) {
   };
 
   const handleClose = () => {
-    setShowModal(false);
-    setDate('');
-    setStartTime('');
-    setEndTime('');
-    setItems([]);
+    if (edit === false) {
+      setShowModal(false);
+      setDate('');
+      setStartTime('');
+      setEndTime('');
+      setItems([]);
+    }
   };
 
   return (
@@ -84,16 +88,16 @@ function SlotModal (props) {
             <Modal.Body>
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
-                        <span className={'modal-header border-0'}>New Time Slot</span>
+                        <span className={'modal-header border-0'}>{header}</span>
                         <img src={exit} alt={'exitSlotModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
-                    <div className={'date-container '}>
+                    <div className={'date-container'}>
                         <input type={'date'} className={'input-date-container'} value={date} onChange={(e) => setDate(e.target.value)} />
                     </div>
                     <div className={'time-container'}>
-                        <span>From:</span>
+                        <span className={'time-text'}>From:</span>
                         <input className={'input-time-container'} type={'time'} value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-                        <span>To:</span>
+                        <span className={'time-text'}>To:</span>
                         <input className={'input-time-container'} type={'time'} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
                     </div>
                     <div className={'room-container'}>
@@ -113,7 +117,7 @@ function SlotModal (props) {
                                                         <Card.Body>
                                                             <div className={'beamer-properties'}>
                                                                 <label className={'switch'}>
-                                                                    <input type="checkbox" value={item.beamer} onClick={(event) => handleBeamerChange(index, event)}/>
+                                                                    <input type="checkbox" value={item.beamer} checked={item.beamer} onClick={(event) => handleBeamerChange(index, event)}/>
                                                                     <span className={'slider round'}></span>
                                                                 </label>
                                                                 <span style={{ paddingLeft: 5 }}>Beamer</span>
@@ -125,7 +129,6 @@ function SlotModal (props) {
                                     ))}
                                 </ul>
                                 </Accordion>
-
                             </div>
                             <button className={'add-room-button'} onClick={addItem}>
                                 <img src={add} alt={'addRoomIcon'}/>
@@ -134,7 +137,7 @@ function SlotModal (props) {
                     </div>
                     <div className={'footer'}>
                         <button className={'add-slot-button'}>
-                            <span className={'add-slot-text'}>Add Slot</span>
+                            {edit ? (<span className={'add-slot-text'}>Save Changes</span>) : (<span className={'add-slot-text'}>Add Slot</span>)}
                         </button>
                     </div>
                 </div>
@@ -144,6 +147,12 @@ function SlotModal (props) {
 }
 SlotModal.propTypes = {
   eventKey: PropTypes.string.isRequired,
-  onHide: PropTypes.string
+  onHide: PropTypes.string,
+  header: PropTypes.string,
+  edit: PropTypes.bool,
+  date: PropTypes.string,
+  startTime: PropTypes.string,
+  endTime: PropTypes.string,
+  items: PropTypes.any
 };
 export default SlotModal;

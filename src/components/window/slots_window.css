@@ -35,7 +35,8 @@
     outline: inherit;
 }
 .room-properties{
-    margin-left: 20px;
+    margin: 1% 0 0 0;
+    list-style: none;
 }
 .slot-text{
     color: black;
