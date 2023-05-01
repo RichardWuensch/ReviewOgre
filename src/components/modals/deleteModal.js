@@ -27,7 +27,7 @@ function deleteModal (props, onClose, onSave, onHide, titleObject, textObject) {
                     </div>
                     <div className={'text-container'}>
                         <h2 className={'delete-title-subheadline'}>Are you sure you want to delete {props.textObject}?</h2>
-                        <span className={'delete-title-subheadline'} style={{ fontSize: 12 }}>This Action can&lsquo;t be undone.</span>
+                        <span className={'delete-title-subheadline'}>This Action can&lsquo;t be undone.</span>
                     </div>
                     <div className={'footer'}>
                         <button className={'confirm-button'}>

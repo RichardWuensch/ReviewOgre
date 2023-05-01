@@ -7,7 +7,7 @@ export default class Mail {
   }
 
   /**
-  * iterate through all reviews and call the mail gernation the the language regarding to the languagelevel of the moderator 
+  * iterate through all reviews and call the mail gernation the the language regarding to the languagelevel of the moderator
   */
   generateMailsForModerators () {
     for (const roomSlot of this.#roomSlots) {
@@ -27,11 +27,11 @@ export default class Mail {
   }
 
   /**
-  * Generate content of the Mail in german and call the openMailClient-function 
+  * Generate content of the Mail in german and call the openMailClient-function
   * @param {RoomSlot} roomSlot
   * @param {Room} room
-  * @param {Review} review 
-  * @param {Moderator} moderator 
+  * @param {Review} review
+  * @param {Moderator} moderator
   */
   germanVersion (roomSlot, room, review, moderator/*, attachment */) {
     const recipient = moderator.getEmail();
@@ -55,11 +55,11 @@ export default class Mail {
   }
 
   /**
-  * Generate content of the Mail in englisch and call the openMailClient-function 
+  * Generate content of the Mail in englisch and call the openMailClient-function
   * @param {RoomSlot} roomSlot
   * @param {Room} room
-  * @param {Review} review 
-  * @param {Moderator} moderator 
+  * @param {Review} review
+  * @param {Moderator} moderator
   */
   englischVersion (roomSlot, room, review, moderator/*, attachment */) {
     const recipient = moderator.getEmail();
@@ -84,7 +84,7 @@ export default class Mail {
 
   /**
   * Get the Date from the Date()
-  * @param {date} date 
+  * @param {date} date
   * @returns {string} - in format 'dd.mm.yyyy'
   */
   getDataDDmmYYYYforPrinting (date) {
@@ -95,7 +95,7 @@ export default class Mail {
 
   /**
   * Get the Time from the Date()
-  * @param {date} time 
+  * @param {date} time
   * @returns {string} - in format 'HH:MM'
   */
   getTimeHHmm (time) {
@@ -106,7 +106,7 @@ export default class Mail {
 
   /**
   * Makes the participant to a simple string with the nessecary attributes
-  * @param {participant} participant 
+  * @param {participant} participant
   * @returns {string} - in format 'FirstName LastName Email Group group'
   */
   getParticipantAttributesForPrinting (participant) {
