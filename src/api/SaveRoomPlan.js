@@ -1,6 +1,7 @@
 import { jsPDF as JSPDF } from 'jspdf';
 import 'jspdf-autotable';
 import RoomSlotHelper from '../data/store/RoomSlotHelper';
+import ConverterForPrinting from './ConverterForPrinting';
 
 const minimumXIndentation = 15;
 const minimumYIndentation = 25;
@@ -8,6 +9,7 @@ const minimumYIndentation = 25;
 export default class SaveRoomPlan {
   #roomSlots;
   #roomPlan;
+  #converter = new ConverterForPrinting();
   constructor () {
     this.#roomSlots = new RoomSlotHelper().getAllRoomSlots(); // reviews are saved in roomSlots after algorithm ran successfully
     this.#roomPlan = new JSPDF();
@@ -79,24 +81,12 @@ export default class SaveRoomPlan {
   }
 
   #getSlotTimes (roomSlot) {
-    const date = this.#getDataDDmmYYYYforPrinting(roomSlot.getDate());
+    const date = this.#converter.getDataDDmmYYYYforPrinting(roomSlot.getDate());
 
-    const startTime = this.#getTimeHHmm(roomSlot.getStartTime());
+    const startTime = this.#converter.getTimeHHmm(roomSlot.getStartTime());
 
-    const endTime = this.#getTimeHHmm(roomSlot.getEndTime());
+    const endTime = this.#converter.getTimeHHmm(roomSlot.getEndTime());
 
     return date + ' from ' + startTime + ' - ' + endTime;
-  }
-
-  #getDataDDmmYYYYforPrinting (date) {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    return ((day < 10) ? ('0' + day) : day) + '.' + ((month < 10) ? ('0' + month) : month) + '.' + date.getFullYear();
-  }
-
-  #getTimeHHmm (time) {
-    const hour = time.getHours();
-    const min = time.getMinutes();
-    return ((hour < 10) ? ('0' + hour) : hour) + ':' + ((min < 10) ? ('0' + min) : min);
   }
 }

@@ -32,8 +32,8 @@ function MainPage () {
                 <img src={logo} alt={'icon'} height={50} width={50}/>
                 <span className={'title-text'}>ReviewOgre Reloaded</span>
             </div>
-            <h2 className={'title-subheadline'}>Sort your review peers in groups for better Technical Reviews!</h2>
-            <span className={'title-subheadline'} style={{ fontSize: 12 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
+            <h2 className={'title-subheadline'} style={{ fontWeight: 100, fontSize: '2.5em' }}>Sort your review peers in groups for better Technical Reviews!</h2>
+            <span className={'title-subheadline'} style={{ fontWeight: 100 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
             <div className={'button-group'}>
                 <button className={'button-container-green'}
                         onClick={() => document.getElementById('student-input').click()}>

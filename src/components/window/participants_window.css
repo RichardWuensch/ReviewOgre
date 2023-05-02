@@ -23,8 +23,6 @@
 
 .list-description{
     font-style: normal;
-    font-weight: 300;
-    font-size: 1.5em;
     color: #82868B;
     padding: 0 0 1% 0;
 }
@@ -36,7 +34,7 @@
     font-weight: 300;
     font-size: 1.2em;
     color: #82868B;
-    height:75%;
+    height: 75%;
     border-radius: 5px;
     padding: 1% 0 1% 0;
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
@@ -47,6 +45,7 @@
     width: 100%;
     border-style: none;
     font-size: 1em;
+    font-weight: 100;
  }
  .column-firstName{
      width: 12%;

@@ -1,6 +1,8 @@
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import ConverterForPrinting from '../ConverterForPrinting';
 
 export default class Mail {
+  #converter = new ConverterForPrinting();
   #roomSlots;
   constructor () {
     this.#roomSlots = new RoomSlotHelper().getAllRoomSlots();
@@ -39,15 +41,15 @@ export default class Mail {
     let body = 'Hallo ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
           'Sie wurden als Moderator bestimmt. Hier die wichtigsten Informationen: \n';
     body += '\n' + 'Review: ' + review.getGroupName() +
-                     ' am ' + this.getDataDDmmYYYYforPrinting(roomSlot.getDate()) +
-                     ' von ' + this.getTimeHHmm(roomSlot.getStartTime()) +
-                     ' bis ' + this.getTimeHHmm(roomSlot.getEndTime()) +
+                     ' am ' + this.#converter.getDataDDmmYYYYforPrinting(roomSlot.getDate()) +
+                     ' von ' + this.#converter.getTimeHHmm(roomSlot.getStartTime()) +
+                     ' bis ' + this.#converter.getTimeHHmm(roomSlot.getEndTime()) +
                      ' in Raum ' + room.getName();
     body += room.hasBeamer() ? '\nBeamer verfügbar' : '\nKein Beamer verfügbar';
-    body += '\nAutor: ' + this.getParticipantAttriburesForPrinting(review.getAuthor());
-    body += '\nNotar: ' + this.getParticipantAttriburesForPrinting(review.getNotary());
+    body += '\nAutor: ' + this.#converter.getParticipantAttributsForPrinting(review.getAuthor());
+    body += '\nNotar: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
     for (const reviewer of review.getReviewer()) {
-      body += '\nReviewer: ' + this.getParticipantAttriburesForPrinting(reviewer);
+      body += '\nReviewer: ' + this.#converter.getParticipantAttributsForPrinting(reviewer);
     }
     body += '\n\n Bitte kontaktieren Sie Ihre Teilnehmer mit den entsprechenden Aufgaben.';
     body += '\n Die RevAger-Lite-Datei im Anhang hilft Ihnen bei der Vorbereitung des Reviews.';
@@ -67,50 +69,19 @@ export default class Mail {
     let body = 'Hello ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
           'You have been designated as the moderator. Here are the most important information: \n';
     body += '\n' + 'Review: ' + review.getGroupName() +
-                     ' on ' + this.getDataDDmmYYYYforPrinting(roomSlot.getDate()) +
-                     ' from ' + this.getTimeHHmm(roomSlot.getStartTime()) +
-                     ' to ' + this.getTimeHHmm(roomSlot.getEndTime()) +
+                     ' on ' + this.#converter.getDataDDmmYYYYforPrinting(roomSlot.getDate()) +
+                     ' from ' + this.#converter.getTimeHHmm(roomSlot.getStartTime()) +
+                     ' to ' + this.#converter.getTimeHHmm(roomSlot.getEndTime()) +
                      ' in room ' + room.getName();
     body += room.hasBeamer() ? '\nBeamer available' : '\nKein Beamer available';
-    body += '\nAuthor: ' + this.getParticipantAttriburesForPrinting(review.getAuthor());
-    body += '\nNoray: ' + this.getParticipantAttriburesForPrinting(review.getNotary());
+    body += '\nAuthor: ' + this.#converter.getParticipantAttributsForPrinting(review.getAuthor());
+    body += '\nNoray: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
     for (const reviewer of review.getReviewer()) {
-      body += '\nReviewer: ' + this.getParticipantAttriburesForPrinting(reviewer);
+      body += '\nReviewer: ' + this.#converter.getParticipantAttributsForPrinting(reviewer);
     }
     body += '\n\n Please contact your participants with the appropriate tasks.';
     body += '\n The RevAger Lite file in the appendix will help you prepaing the review.';
     this.openMailClient(recipient, subject, body /* ,attachment */);
-  }
-
-  /**
-  * Get the Date from the Date()
-  * @param {date} date
-  * @returns {string} - in format 'dd.mm.yyyy'
-  */
-  getDataDDmmYYYYforPrinting (date) {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    return ((day < 10) ? ('0' + day) : day) + '.' + ((month < 10) ? ('0' + month) : month) + '.' + date.getFullYear();
-  }
-
-  /**
-  * Get the Time from the Date()
-  * @param {date} time
-  * @returns {string} - in format 'HH:MM'
-  */
-  getTimeHHmm (time) {
-    const hour = time.getHours();
-    const min = time.getMinutes();
-    return ((hour < 10) ? ('0' + hour) : hour) + ':' + ((min < 10) ? ('0' + min) : min) + 'Uhr';
-  }
-
-  /**
-  * Makes the participant to a simple string with the nessecary attributes
-  * @param {participant} participant
-  * @returns {string} - in format 'FirstName LastName Email Group group'
-  */
-  getParticipantAttributesForPrinting (participant) {
-    return participant.getFirstName() + ' ' + participant.getLastName() + ' ' + participant.getEmail() + ' Gruppe ' + participant.getGroup();
   }
 
   /**

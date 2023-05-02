@@ -188,19 +188,19 @@ function ParticipantsWindow (props) {
                               </label>
                           </td>
                       )}
-                    <td className={'column-firstName'}>First Name</td>
-                    <td className={'column-lastName'}>Last Name</td>
-                    <td className={'column-email-header'}>Email Address</td>
-                    <td className={'column-group'}>Group</td>
-                    <td className={'column-topic'}>Topic</td>
-                    <td className={'column-languageLevel'}>German Skill Level</td>
-                    <td className={'column-options'}>Options</td>
+                    <td className={'column-firstName'} style={{ width: '12%', fontSize: '1.5em' }}>First Name</td>
+                    <td className={'column-lastName'} style={{ width: '12%', fontSize: '1.5em' }}>Last Name</td>
+                    <td className={'column-email-header'} style={{ width: '20%', fontSize: '1.5em' }}>Email Address</td>
+                    <td className={'column-group'} style={{ width: '10%', fontSize: '1.5em' }}>Group</td>
+                    <td className={'column-topic'} style={{ width: '10%', fontSize: '1.5em' }}>Topic</td>
+                    <td className={'column-languageLevel'} style={{ width: '18%', fontSize: '1.5em' }}>German Skill Level</td>
+                    <td className={'column-options'} style={{ width: '12%', fontSize: '1.5em' }}>Options</td>
                   </tr>
                 </tbody>
               </table>
           </div>
           <div className={'participant-list-container'}>
-              <table className={'participant-table'}>
+              <table className={'participant-table'} >
                 <tbody>
                   {listParticipants}
                   <ParticipantModal
