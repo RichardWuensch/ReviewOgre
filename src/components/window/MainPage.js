@@ -19,6 +19,7 @@ import FailedCalculationModal from '../modals/failedCalculationModal';
 
 function MainPage () {
   const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
+  const participantstore = ParticipantStore.getSingleton();
 
   function startAlgorithm () {
     runAlgorithm();
@@ -54,7 +55,7 @@ function MainPage () {
                 </button>
             </div>
             <div className={'participant-slots-container'}>
-                <ParticipantsWindow/>
+                <ParticipantsWindow participantstore={participantstore}/>
                 {/* replace with component */}
                 <div className={'slots-setup-container'}>
                     <SlotsWindow/>

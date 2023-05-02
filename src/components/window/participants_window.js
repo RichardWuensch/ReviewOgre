@@ -1,15 +1,15 @@
 import React from 'react';
 import './participants_window.css';
-import AddParticipantModal from '../modals/addParticipantModal';
+import ParticipantModal from '../modals/ParticipantModal';
 import EditMultipleParticipantsModal from '../modals/editMultipleParticipantsModal';
 import DeleteModal from '../modals/deleteModal';
 import exit from '../../assets/media/x-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
 import add from '../../assets/media/plus-circle.svg';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
+import PropTypes from 'prop-types';
 
-function ParticipantsWindow () {
+function ParticipantsWindow (props) {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
   const [modalEditParticipant, setModalEditParticipant] = React.useState(false);
@@ -20,9 +20,9 @@ function ParticipantsWindow () {
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
 
-  const store = ParticipantStore.getSingleton();
+  const participantstore = props.participantstore;
 
-  const listParticipants = store.getAll().map(entry =>
+  const listParticipants = participantstore.getAll().map(entry =>
     <tr key={entry.getId()}>
         {isEditModeActive && (
             <td>
@@ -57,6 +57,7 @@ function ParticipantsWindow () {
             <div className={'column-options-buttons'}>
                 <button className={'button-options-edit'} onClick={() => {
                   setModalEditParticipant(true);
+                  console.log(entry.getId() + ' - ' + entry.getFirstName());
                 }}><img src={edit} alt={'icon'}/>
                 </button>
                 <button className={'button-options-delete'} onClick={() => {
@@ -66,10 +67,8 @@ function ParticipantsWindow () {
                 }}><img src={deleteButton} alt={'icon'}/>
                 </button>
             </div>
-            <AddParticipantModal
-                show={modalEditParticipant}
-                onHide={() => setModalEditParticipant(false)}
-                onSave={handleSaveEditAddParticipant}
+            <ParticipantModal
+                // onSave={() => handleSaveEditParticipant()}
                 firstname={entry.getFirstName()}
                 lastname={entry.getLastName()}
                 email={entry.getEmail()}
@@ -78,6 +77,9 @@ function ParticipantsWindow () {
                 languagelevel={entry.getLanguageLevel()}
                 newparticipant={false}
                 id={entry.getId()}
+                participantstore={participantstore}
+                show={modalEditParticipant}
+                onClose={() => setModalEditParticipant(false)}
             />
         </td>
     </tr>
@@ -108,9 +110,12 @@ function ParticipantsWindow () {
   function handleDelete () {
     console.log('Delete successful');
   }
-  function handleSaveEditAddParticipant () {
+  /* function handleSaveAddParticipant () {
     console.log('Add/Edit Participant successful');
   }
+  function handleSaveEditParticipant () {
+    console.log('Add/Edit Participant successful');
+  } */
 
   return (
       <div className={'participantsWindow'}>
@@ -157,6 +162,7 @@ function ParticipantsWindow () {
           </div>
           <div className={'list-description'}>
               <table className={'participant-table'}>
+                <tbody>
                   <tr>
                       {isEditModeActive && (
                           <td>
@@ -174,25 +180,29 @@ function ParticipantsWindow () {
                     <td className={'column-languageLevel'}>German Skill Level</td>
                     <td className={'column-options'}>Options</td>
                   </tr>
+                </tbody>
               </table>
           </div>
           <div className={'participant-list-container'}>
               <table className={'participant-table'}>
+                <tbody>
                   {listParticipants}
+                </tbody>
               </table>
           </div>
             <div className={'setup-start-container'}>
-                <AddParticipantModal
+                <ParticipantModal
                     show={modalShowParticipant}
-                    onHide={() => setModalShowParticipant(false)}
-                    onSave={handleSaveEditAddParticipant}
+                    onClose={() => setModalShowParticipant(false)}
+                    // onSave={() => handleSaveAddParticipant()}
                     firstname={''}
                     lastname={''}
                     email={''}
-                    group={0}
+                    group={'0'}
                     topic={''}
-                    languagelevel={'C2'}
+                    languagelevel={'Native Speaker'}
                     newparticipant={true}
+                    participantstore={participantstore}
                 />
                 <EditMultipleParticipantsModal
                     show={modalShowEditMultipleParticipants}
@@ -209,5 +219,7 @@ function ParticipantsWindow () {
       </div>
   );
 }
-
+ParticipantsWindow.propTypes = {
+  participantstore: PropTypes.any
+};
 export default ParticipantsWindow;

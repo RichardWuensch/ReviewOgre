@@ -1,11 +1,11 @@
-import './addParticipantModal.css';
+import './ParticipantModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../assets/media/x-circle.svg';
 import { useState } from 'react';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
 import Participant from '../../data/model/Participant';
+import PropTypes from 'prop-types';
 
-function addParticipantModal (props, onClose, onSave, onHide) {
+function ParticipantModal (props, onClose) {
   const [firstName, setFirstName] = useState(props.firstname);
   const [lastName, setLastName] = useState(props.lastname);
   const [email, setEmail] = useState(props.email);
@@ -17,11 +17,9 @@ function addParticipantModal (props, onClose, onSave, onHide) {
   const [id] = useState(props.id);
   const [saveData, setSaveData] = useState(false);
 
-  const store = ParticipantStore.getSingleton();
+  const participantstore = props.participantstore;
 
   const handleClose = () => {
-    setShowModal(false);
-
     // TODO: must be set to true if the user clicks the save button else false
     setSaveData(true);
 
@@ -30,12 +28,17 @@ function addParticipantModal (props, onClose, onSave, onHide) {
 
       // check if participant needs to be added or updated
       if (newParticipant) {
-        store.put(participant);
+        participantstore.put(participant);
+        console.log(participant.getFirstName());
       } else {
+        console.log(participantstore.getById(id).getFirstName());
         participant.setId(id);
-        store.update(id, participant);
+        participantstore.update(id, participant);
+        console.log(participantstore.getById(id).getFirstName());
       }
     }
+    setShowModal(false);
+    setSaveData(true);
   };
 
   return (
@@ -51,7 +54,7 @@ function addParticipantModal (props, onClose, onSave, onHide) {
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
                         <span className={'modal-header border-0'}>{newParticipant ? 'Add New Participant' : 'Edit Participant'}</span>
-                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
+                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onClose}/>
                     </div>
                     <div className={'attributes-container'}>
                         <span>First Name:{firstName}</span>
@@ -78,7 +81,10 @@ function addParticipantModal (props, onClose, onSave, onHide) {
                         </form>
                     </div>
                     <div className={'footer'}>
-                        <button className={'add-participant-button'} onClick={props.onHide}>
+                        <button className={'add-participant-button'} onClick={() => {
+                          handleClose();
+                          props.onClose();
+                        }}>
                             <span className={'add-participant-text'}>{newParticipant ? 'Add Participant' : 'Save Changes'}</span>
                         </button>
                     </div>
@@ -87,4 +93,16 @@ function addParticipantModal (props, onClose, onSave, onHide) {
         </Modal>
   );
 }
-export default addParticipantModal;
+ParticipantModal.propTypes = {
+  onClose: PropTypes.func,
+  id: PropTypes.number,
+  firstname: PropTypes.string,
+  lastname: PropTypes.string,
+  email: PropTypes.string,
+  group: PropTypes.string,
+  topic: PropTypes.string,
+  languagelevel: PropTypes.string,
+  newparticipant: PropTypes.bool,
+  participantstore: PropTypes.any
+};
+export default ParticipantModal;
