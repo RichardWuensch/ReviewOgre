@@ -1,6 +1,5 @@
 import ConverterForPrinting from '../../api/ConverterForPrinting';
 import Review from '../../data/model/Review';
-// import Slot from '../../data/model/Slot';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 
 export default class Algorithm {
@@ -41,14 +40,15 @@ export default class Algorithm {
       this.#calculateNumberOfReviewer(groups.length);
       for (const roomSlot of this.#roomSlots) {
         for (const room of roomSlot.getRooms()) {
-          if (room.getReview() === null) {
+          const review = room.getReview();
+          if (review === null) {
             continue;
           }
           room.getReview().fillPossibleParticipantsOfReview(roomSlot, this.#participants);
-          this.#assignModeratorToReview(roomSlot, room.getReview());
-          this.#assignNotaryToReview(roomSlot, room.getReview());
+          this.#assignModeratorToReview(roomSlot, review);
+          this.#assignNotaryToReview(roomSlot, review);
           try {
-            this.#assignReviewersToReview(roomSlot, room.getReview());
+            this.#assignReviewersToReview(roomSlot, review);
             errorFound = false;
           } catch (error) {
             console.log(error.message);
@@ -104,7 +104,6 @@ export default class Algorithm {
         for (const room of roomSlot.getRooms()) {
           if (room.getReview() === null) {
             const rand = Math.floor(Math.random() * groupParticipants.length);
-
             room.setReview(new Review(roomSlot, groupParticipants[rand]));
             roomFound = true;
             break;
