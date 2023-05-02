@@ -13,12 +13,11 @@ import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
 import OldTestDataUpdated from '../../algorithm/test/OldTestDataUpdated';
 import ImportParticipants from '../../api/ImportParticipants';
-import PropTypes from 'prop-types';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import FailedCalculationModal from '../modals/failedCalculationModal';
 
-function MainPage (props) {
+function MainPage () {
   const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
 
   function startAlgorithm () {
@@ -55,7 +54,7 @@ function MainPage (props) {
                 </button>
             </div>
             <div className={'participant-slots-container'}>
-                <ParticipantsWindow listAllParticipants={props.listAllParticipants}/>
+                <ParticipantsWindow/>
                 {/* replace with component */}
                 <div className={'slots-setup-container'}>
                     <SlotsWindow/>
@@ -141,15 +140,5 @@ function runAlgorithm () {
 // function saveRoomPlan () {
 //   new SaveRoomPlan().runSave();
 // }
-
-MainPage.propTypes = {
-  listAllParticipants: PropTypes.arrayOf(
-    PropTypes.string,
-    PropTypes.string,
-    PropTypes.string,
-    PropTypes.string,
-    PropTypes.number
-  )
-};
 
 export default MainPage;
