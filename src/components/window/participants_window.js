@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './participants_window.css';
 import ParticipantModal from '../modals/ParticipantModal';
 import EditMultipleParticipantsModal from '../modals/editMultipleParticipantsModal';
@@ -19,8 +19,16 @@ function ParticipantsWindow (props) {
   const [modalDelete, setModalDelete] = React.useState(false);
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [group, setGroup] = React.useState('');
+  const [topic, setTopic] = React.useState('');
+  const [languageLevel, setLanguageLevel] = React.useState('');
+  const [id, setId] = React.useState('');
 
   const participantstore = props.participantstore;
+  const forceUpdate = useForceUpdate();
 
   const listParticipants = participantstore.getAll().map(entry =>
     <tr key={entry.getId()}>
@@ -56,8 +64,11 @@ function ParticipantsWindow (props) {
         <td className={'column-options'}>
             <div className={'column-options-buttons'}>
                 <button className={'button-options-edit'} onClick={() => {
+                  console.log('edit participant onClick - ' + firstName);
                   setModalEditParticipant(true);
-                  console.log(entry.getId() + ' - ' + entry.getFirstName());
+                  setSelectedParticipantParameters(entry.getFirstName(), entry.getLastName(), entry.getEmail(), entry.getGroup(), entry.getTopic(), entry.getLanguageLevel(), entry.getId());
+                  forceUpdate();
+                  console.log(entry.getId() + ' - ' + entry.getFirstName() + ' - ' + firstName);
                 }}><img src={edit} alt={'icon'}/>
                 </button>
                 <button className={'button-options-delete'} onClick={() => {
@@ -67,23 +78,26 @@ function ParticipantsWindow (props) {
                 }}><img src={deleteButton} alt={'icon'}/>
                 </button>
             </div>
-            <ParticipantModal
-                // onSave={() => handleSaveEditParticipant()}
-                firstname={entry.getFirstName()}
-                lastname={entry.getLastName()}
-                email={entry.getEmail()}
-                group={entry.getGroup()}
-                topic={entry.getTopic()}
-                languagelevel={entry.getLanguageLevel()}
-                newparticipant={false}
-                id={entry.getId()}
-                participantstore={participantstore}
-                show={modalEditParticipant}
-                onClose={() => setModalEditParticipant(false)}
-            />
         </td>
     </tr>
   );
+
+  function setSelectedParticipantParameters (firstNameTemp, lastNameTemp, emailTemp, groupTemp, topicTemp, languageLevelTemp, idTemp) {
+    setFirstName(firstNameTemp);
+    setLastName(lastNameTemp);
+    setEmail(emailTemp);
+    setGroup(groupTemp);
+    setTopic(topicTemp);
+    setLanguageLevel(languageLevelTemp);
+    setId(idTemp);
+    console.log('setSelectedParticipantParameters done' + ' - ' + firstName + ' - ' + firstNameTemp);
+  }
+
+  function useForceUpdate () {
+    const [value, setValue] = useState(0);
+    const newValue = value + 1;
+    return () => setValue(newValue);
+  }
 
   function leaveEditMode () {
     setIsEditModeActive(false);
@@ -123,7 +137,9 @@ function ParticipantsWindow (props) {
           <div className={'participant-button-container'}>
               {!isEditModeActive
                 ? (
-                      <button className={'button-container-green-participants'} onClick={() => setModalShowParticipant(true)}>
+                      <button className={'button-container-green-participants'} onClick={() => {
+                        setModalShowParticipant(true);
+                      }}>
                           <img src={add} alt={'addParticipantIcon'} height={16} width={16}/>
                           <span className={'button-text'}>Add Participant</span>
                       </button>
@@ -187,13 +203,34 @@ function ParticipantsWindow (props) {
               <table className={'participant-table'}>
                 <tbody>
                   {listParticipants}
+                  <ParticipantModal
+                      firstname={firstName}
+                      lastname={lastName}
+                      email={email}
+                      group={group}
+                      topic={topic}
+                      languagelevel={languageLevel}
+                      newparticipant={false}
+                      id={id}
+                      participantstore={participantstore}
+                      show={modalEditParticipant}
+                      onClose={() => {
+                        console.log('edit participant onClose start' + firstName);
+                        setModalEditParticipant(false);
+                        setSelectedParticipantParameters('', '', '', '', '', '', '');
+                        forceUpdate();
+                        console.log('edit participant onClose end' + firstName);
+                      }}/>
                 </tbody>
               </table>
           </div>
             <div className={'setup-start-container'}>
                 <ParticipantModal
                     show={modalShowParticipant}
-                    onClose={() => setModalShowParticipant(false)}
+                    onClose={() => {
+                      setModalShowParticipant(false);
+                      forceUpdate();
+                    }}
                     // onSave={() => handleSaveAddParticipant()}
                     firstname={''}
                     lastname={''}

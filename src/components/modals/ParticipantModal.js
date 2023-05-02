@@ -20,9 +20,6 @@ function ParticipantModal (props, onClose) {
   const participantstore = props.participantstore;
 
   const handleClose = () => {
-    // TODO: must be set to true if the user clicks the save button else false
-    setSaveData(true);
-
     if (saveData) {
       const participant = new Participant(firstName, lastName, email, group, topic, languageLevel);
 
@@ -38,7 +35,6 @@ function ParticipantModal (props, onClose) {
       }
     }
     setShowModal(false);
-    setSaveData(true);
   };
 
   return (
@@ -57,9 +53,9 @@ function ParticipantModal (props, onClose) {
                         <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onClose}/>
                     </div>
                     <div className={'attributes-container'}>
-                        <span>First Name:{firstName}</span>
+                        <span>First Name:</span>
                         <input className={'input-attributes-container'} type={'text'} value={firstName} placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
-                        <span>Last Name:{lastName}</span>
+                        <span>Last Name:</span>
                         <input className={'input-attributes-container'} type={'text'} value={lastName} placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
                         <span>Email:</span>
                         <input className={'input-attributes-container'} type={'text'} value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
@@ -82,6 +78,7 @@ function ParticipantModal (props, onClose) {
                     </div>
                     <div className={'footer'}>
                         <button className={'add-participant-button'} onClick={() => {
+                          setSaveData(true);
                           handleClose();
                           props.onClose();
                         }}>
