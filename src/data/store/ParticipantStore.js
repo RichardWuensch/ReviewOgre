@@ -2,16 +2,24 @@ import Store from './AbstractStore';
 import Participant from '../model/Participant';
 
 export const ParticipantStore = (function () {
-  let instance = new Store(Participant);
+  let instance = null;
+
+  function addSampleData () {
+    const sampleData = [new Participant('Max', 'Mustermann', 'max.mustermann@study.thws.de', '1', 'Informatik', 'A1'),
+      new Participant('Martina', 'Musterfrau', 'martina.musterfrau@study.thws.de', '2', 'Religion', 'B2')];
+
+    instance.putMultiple(sampleData);
+  }
 
   function getInstance () {
-    return instance;
+    instance = new Store(Participant);
+    addSampleData();
   }
 
   return {
     getSingleton: function () {
-      if (!instance) {
-        instance = getInstance();
+      if (instance === null) {
+        getInstance();
       }
       return instance;
     }
