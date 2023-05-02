@@ -7,21 +7,23 @@ import exit from '../../assets/media/x-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
 import add from '../../assets/media/plus-circle.svg';
-import PropTypes from 'prop-types';
+import { ParticipantStore } from '../../data/store/ParticipantStore';
 
-function ParticipantsWindow (props) {
+function ParticipantsWindow () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
   const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
+  const [modalEditParticipant, setModalEditParticipant] = React.useState(false);
   const [modalShowEditMultipleParticipants, setModalShowEditMultipleParticipants] = React.useState(false);
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
-  const [selectedParticipant, setSelectedParticipant] = React.useState([]);
   const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(false);
   const [modalDelete, setModalDelete] = React.useState(false);
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
 
-  const listParticipants = props.listAllParticipants.map(entry =>
-    <tr key={entry.id}>
+  const store = ParticipantStore.getSingleton();
+
+  const listParticipants = store.getAll().map(entry =>
+    <tr key={entry.getId()}>
         {isEditModeActive && (
             <td>
                 <label className={'checkboxContainer'}>
@@ -43,30 +45,40 @@ function ParticipantsWindow (props) {
                 </label>
             </td>
         )}
-        <td className={'column-firstName'}>{entry.firstName}</td>
-        <td className={'column-lastName'}>{entry.lastName}</td>
+        <td className={'column-firstName'}>{entry.getFirstName()}</td>
+        <td className={'column-lastName'}>{entry.getLastName()}</td>
         <td className={'column-email'}>
-            <button className={'button-email'}>{entry.email}</button>
+            <button className={'button-email'}>{entry.getEmail()}</button>
         </td>
-        <td className={'column-group'}>{entry.group}</td>
-        <td className={'column-topic'}>{entry.topic}</td>
-        <td className={'column-languageLevel'}>{entry.languageLevel}</td>
+        <td className={'column-group'}>{entry.getGroup()}</td>
+        <td className={'column-topic'}>{entry.getTopic()}</td>
+        <td className={'column-languageLevel'}>{entry.getLanguageLevel()}</td>
         <td className={'column-options'}>
             <div className={'column-options-buttons'}>
                 <button className={'button-options-edit'} onClick={() => {
-                  setSelectedParticipant([entry.firstName, entry.lastName, entry.email, entry.group, entry.topic, entry.languageLevel]);
-                  setModalShowParticipant(true);
-                }}>
-                    <img src={edit} alt={'icon'}/>
+                  setModalEditParticipant(true);
+                }}><img src={edit} alt={'icon'}/>
                 </button>
                 <button className={'button-options-delete'} onClick={() => {
                   setDeleteTitleObject('Participant');
                   setDeleteTextObject('this Participant');
                   setModalDelete(true);
-                }}>
-                    <img src={deleteButton} alt={'icon'}/>
+                }}><img src={deleteButton} alt={'icon'}/>
                 </button>
             </div>
+            <AddParticipantModal
+                show={modalEditParticipant}
+                onHide={() => setModalEditParticipant(false)}
+                onSave={handleSaveEditAddParticipant}
+                firstname={entry.getFirstName()}
+                lastname={entry.getLastName()}
+                email={entry.getEmail()}
+                group={entry.getGroup()}
+                topic={entry.getTopic()}
+                languagelevel={entry.getLanguageLevel()}
+                newparticipant={false}
+                id={entry.getId()}
+            />
         </td>
     </tr>
   );
@@ -77,8 +89,8 @@ function ParticipantsWindow (props) {
     setAllParticipantsSelected(false);
     setDeleteTitleObject('');
     setDeleteTextObject('');
-    setSelectedParticipant('');
   }
+
   function handleSaveEditMultipleParticipants (group, languageLevel, topic) {
     /* update Participants(uncomment when Store is finished)
     const updatedParticipants = [...items];
@@ -174,7 +186,14 @@ function ParticipantsWindow (props) {
                     show={modalShowParticipant}
                     onHide={() => setModalShowParticipant(false)}
                     onSave={handleSaveEditAddParticipant}
-                    list={selectedParticipant}/>
+                    firstname={''}
+                    lastname={''}
+                    email={''}
+                    group={0}
+                    topic={''}
+                    languagelevel={'C2'}
+                    newparticipant={true}
+                />
                 <EditMultipleParticipantsModal
                     show={modalShowEditMultipleParticipants}
                     onHide={() => setModalShowEditMultipleParticipants(false)}
@@ -190,15 +209,5 @@ function ParticipantsWindow (props) {
       </div>
   );
 }
-
-ParticipantsWindow.propTypes = {
-  listAllParticipants: PropTypes.arrayOf(
-    PropTypes.string,
-    PropTypes.string,
-    PropTypes.string,
-    PropTypes.string,
-    PropTypes.number
-  )
-};
 
 export default ParticipantsWindow;
