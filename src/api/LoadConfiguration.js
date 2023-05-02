@@ -7,6 +7,11 @@ import RoomSlotHelper from '../data/store/RoomSlotHelper';
 import { ConfigurationStore } from '../data/store/ConfigurationStore';
 
 export default class LoadConfiguration {
+  /**
+  * Handles the file import and parse the configuration file
+  * containing participants, Slots, Rooms and some settings
+  * @param {event} event - file handle event
+  */
   async runConfigurationImport (event) {
     const fileContent = await new ImportFile('application/json').runFileLoad(event);
     const parseData = JSON.parse(fileContent);
