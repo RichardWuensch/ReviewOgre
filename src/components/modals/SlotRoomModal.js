@@ -52,7 +52,7 @@ function SlotModal (props) {
   const [edit] = useState(props.edit);
 
   const addItem = () => {
-    setItems([...items, { text: '', beamer: false }]);
+    setItems([...items, { text: '', beamerNeeded: false }]);
   };
 
   const handleInputChange = (index, event) => {
@@ -60,9 +60,12 @@ function SlotModal (props) {
     newItems[index].text = event.target.value;
     setItems(newItems);
   };
-  const handleBeamerChange = (index, event) => {
+  const handleBeamerChange = (index) => {
     const newItems = [...items];
-    newItems[index].beamer = event.target.value;
+    newItems[index] = {
+      ...newItems[index],
+      beamerNeeded: !newItems[index].beamerNeeded
+    };
     setItems(newItems);
   };
 
@@ -117,10 +120,10 @@ function SlotModal (props) {
                                                         <Card.Body>
                                                             <div className={'beamer-properties'}>
                                                                 <label className={'switch'}>
-                                                                    <input type="checkbox" value={item.beamer} checked={item.beamer} onClick={(event) => handleBeamerChange(index, event)}/>
+                                                                    <input type="checkbox" value={item.beamerNeeded} checked={item.beamerNeeded} onClick={(event) => handleBeamerChange(index)}/>
                                                                     <span className={'slider round'}></span>
                                                                 </label>
-                                                                <span style={{ paddingLeft: 5 }}>Beamer</span>
+                                                                <span style={{ paddingLeft: 5 }}>Beamer needed</span>
                                                             </div>
                                                         </Card.Body>
                                                     </Accordion.Collapse>
