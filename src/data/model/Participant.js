@@ -144,10 +144,18 @@ export default class Participant {
     return this.#activeInSlots;
   }
 
+  /**
+  * clears the activeInSlot list before the algorithm is restarted
+  */
   resetActiveInSlot () {
     this.#activeInSlots = [];
   }
 
+  /**
+  * check if this participant is currently bussy in a slot
+  * @param {Slot} slot - to check if the slot is in the activeInSlots list of the participant
+  * @returns {boolean} - true if bussy, false if not
+  */
   isActiveInSlot (slot) {
     for (const activeInSlot of this.#activeInSlots) {
       if (
@@ -159,6 +167,9 @@ export default class Participant {
     return false;
   }
 
+  /**
+  * set the counter of this participant to 0
+  */
   resetStatistics () {
     this.resetReviewerCount();
     this.resetAuthorCount();
