@@ -6,6 +6,7 @@
     border: 1px solid #ddd;
     font-family: 'Roboto', sans-serif;
     font-style: normal;
+    font-weight: 700;
     font-size: 50%;
 }
 .body{
@@ -36,6 +37,7 @@
     border-style: none;
     padding: 2%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-weight: 400;
 }
 .button-container-white {
     display: flex;
@@ -50,7 +52,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .button-text {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.5em;
     color: #363A3F;
     margin-left:10%;
@@ -68,7 +70,7 @@
 .title-subheadline{
     font-family: 'Roboto', sans-serif;
     font-style: normal;
-    font-weight: 100;
+    font-weight: 400;
     font-size: 2em;
     color: #363A3F;
 }
@@ -98,9 +100,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .button-start-text{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 2em;
     color: #363A3F;
     margin-left:10px;

@@ -10,7 +10,7 @@ import deleteButton from '../../assets/media/trash.svg';
 import PropTypes from 'prop-types';
 import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
 
-const items = [{ text: 'I.2.3.4', beamer: true }, { text: 'I.2.3.5', beamer: false }];
+const items = [{ text: 'I.2.3.4', beamerNeeded: true }, { text: 'I.2.3.5', beamerNeeded: false }];
 
 function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
   const [open, setOpen] = useState(false);
