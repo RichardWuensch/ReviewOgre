@@ -7,6 +7,9 @@ import chevronDown from '../../assets/media/chevron-down.svg';
 import chevronUp from '../../assets/media/chevron-up.svg';
 import React, { useContext, useState } from 'react';
 import { Accordion, AccordionContext, Card, useAccordionButton } from 'react-bootstrap';
+import RoomSlot from '../../data/model/RoomSlot';
+import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import Room from '../../data/model/Room';
 
 function ToggleRoom ({ children, eventKey, callback }) {
   const { activeEventKey } = useContext(AccordionContext);
@@ -50,7 +53,7 @@ function SlotModal (props) {
   const [items, setItems] = useState(props.items);
   const [header] = useState(props.header);
   const [edit] = useState(props.edit);
-
+  const helper = new RoomSlotHelper();
   const addItem = () => {
     setItems([...items, { text: '', beamerNeeded: false }]);
   };
@@ -77,6 +80,12 @@ function SlotModal (props) {
       setEndTime('');
       setItems([]);
     }
+  };
+  const addSlot = () => {
+    const rooms = [];
+    items.forEach(room => { rooms.push(new Room(room.text, room.beamerNeeded)); });
+    helper.putRoomSlot(new RoomSlot(date, startTime, endTime, rooms));
+    setShowModal(false);
   };
 
   return (
@@ -109,7 +118,7 @@ function SlotModal (props) {
                             <div>
                                 <Accordion defaultActiveKey="0">
                                 <ul className={'list-style'}>
-                                    {items.map((item, index) => (
+                                    {items?.map((item, index) => (
                                             <li key={index}>
                                                 <Card>
                                                     <Card.Header className={'list-item border-0'}>
@@ -139,9 +148,15 @@ function SlotModal (props) {
                         </div>
                     </div>
                     <div className={'footer'}>
+                        {edit
+                          ? (
                         <button className={'add-slot-button'}>
-                            {edit ? (<span className={'add-slot-text'}>Save Changes</span>) : (<span className={'add-slot-text'}>Add Slot</span>)}
-                        </button>
+                            <span className={'add-slot-text'}>Save Changes</span>
+                        </button>)
+                          : (
+                        <button className={'add-slot-button'} onClick={addSlot}>
+                            <span className={'add-slot-text'}>Add Slot</span>
+                        </button>)}
                     </div>
                 </div>
             </Modal.Body>

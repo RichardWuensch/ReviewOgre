@@ -38,7 +38,7 @@ function MainPage () {
                 <button className={'button-container-green'}
                         onClick={() => document.getElementById('student-input').click()}>
                     <img src={download} alt={'icon1'} height={16} width={16}/>
-                    <span className={'button-text'}>Import Configuration</span>
+                    <span className={'button-text'}>Import Participants</span>
                 </button>
                 <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
                        accept='text/csv'/>
