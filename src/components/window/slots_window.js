@@ -26,7 +26,6 @@ function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
-
   function handleDelete () {
     console.log('Delete successful');
   }
@@ -160,7 +159,7 @@ function SlotsWindow (props) {
                 onHide={() => setModalShowSlot(false)}
                 header={'New Time Slot'}
                 edit={false}
-                date={''}
+                date={null}
                 startTime={''}
                 endTime={''}
                 items={[]}/>
