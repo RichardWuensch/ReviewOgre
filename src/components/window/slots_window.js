@@ -98,6 +98,12 @@ function SlotsWindow (props) {
   function handleDelete () {
     console.log('Delete successful');
   }
+  function DateFormatter (date) {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+    return `${day}.${month}.${year}`;
+  }
 
   return (
       <div className={'slotsWindow'}>
@@ -115,7 +121,7 @@ function SlotsWindow (props) {
                           <li key={index}>
                               <Card>
                                   <Card.Header className={'list-item'}>
-                                          <ToggleSlot eventKey={index} slotText={slot.getDate() + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()} rooms={slot.getRooms()}></ToggleSlot>
+                                          <ToggleSlot eventKey={index} slotText={DateFormatter(slot.getDate()) + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()} date={slot.getDate()} startTime={slot.getStartTime()} endTime={slot.getEndTime()} rooms={slot.getRooms()}></ToggleSlot>
                                   </Card.Header>
                                   <Accordion.Collapse eventKey={index}>
                                       <Card.Body>

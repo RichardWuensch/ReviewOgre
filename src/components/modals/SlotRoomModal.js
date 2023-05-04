@@ -55,19 +55,19 @@ function SlotModal (props) {
   const [edit] = useState(props.edit);
   const helper = new RoomSlotHelper();
   const addItem = () => {
-    setItems([...items, { text: '', beamerNeeded: false }]);
+    setItems([...items, { name: '', hasBeamer: false }]);
   };
 
   const handleInputChange = (index, event) => {
     const newItems = [...items];
-    newItems[index].text = event.target.value;
+    newItems[index].name = event.target.value;
     setItems(newItems);
   };
   const handleBeamerChange = (index) => {
     const newItems = [...items];
     newItems[index] = {
       ...newItems[index],
-      beamerNeeded: !newItems[index].beamerNeeded
+      hasBeamer: !newItems[index].hasBeamer
     };
     setItems(newItems);
   };
@@ -75,7 +75,7 @@ function SlotModal (props) {
   const handleClose = () => {
     if (edit === false) {
       setShowModal(false);
-      setDate('');
+      setDate(null);
       setStartTime('');
       setEndTime('');
       setItems([]);
@@ -83,9 +83,10 @@ function SlotModal (props) {
   };
   const addSlot = () => {
     const rooms = [];
-    items.forEach(room => { rooms.push(new Room(room.text, room.beamerNeeded)); });
+    items.forEach(room => { rooms.push(new Room(room.name, room.hasBeamer)); });
     helper.putRoomSlot(new RoomSlot(date, startTime, endTime, rooms));
     setShowModal(false);
+    console.log(date);
   };
 
   return (
@@ -122,14 +123,14 @@ function SlotModal (props) {
                                             <li key={index}>
                                                 <Card>
                                                     <Card.Header className={'list-item border-0'}>
-                                                            <input className={'item-text'} type="text" value={item.text} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
+                                                            <input className={'item-text'} type="text" value={item.name} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
                                                             <ToggleRoom eventKey={index}></ToggleRoom>
                                                     </Card.Header>
                                                     <Accordion.Collapse eventKey={index}>
                                                         <Card.Body>
                                                             <div className={'beamer-properties'}>
                                                                 <label className={'switch'}>
-                                                                    <input type="checkbox" value={item.beamerNeeded} checked={item.beamerNeeded} onClick={(event) => handleBeamerChange(index)}/>
+                                                                    <input type="checkbox" value={item.hasBeamer} checked={item.hasBeamer} onClick={(event) => handleBeamerChange(index)}/>
                                                                     <span className={'slider round'}></span>
                                                                 </label>
                                                                 <span style={{ paddingLeft: 5 }}>Beamer needed</span>
@@ -154,7 +155,10 @@ function SlotModal (props) {
                             <span className={'add-slot-text'}>Save Changes</span>
                         </button>)
                           : (
-                        <button className={'add-slot-button'} onClick={addSlot}>
+                        <button className={'add-slot-button'} onClick={() => {
+                          addSlot();
+                          props.onHide();
+                        }}>
                             <span className={'add-slot-text'}>Add Slot</span>
                         </button>)}
                     </div>
