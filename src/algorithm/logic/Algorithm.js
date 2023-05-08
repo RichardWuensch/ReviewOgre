@@ -13,9 +13,18 @@ export default class Algorithm {
 
   constructor (participants, roomSlots, authorIsNotary, maximumTries) {
     this.#participants = participants;
-    this.#roomSlots = roomSlots;
+    this.#roomSlots = this.#resetRoomSlots(roomSlots);
     this.#authorIsNotary = authorIsNotary;
     this.#maximumTries = (maximumTries === undefined) ? 300 : maximumTries;
+  }
+
+  #resetRoomSlots (roomSlots) {
+    for (const roomSlot of roomSlots) {
+      for (const room of roomSlot.getRooms()) {
+        room.setReview(null);
+      }
+    }
+    return roomSlots;
   }
 
   /**

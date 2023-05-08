@@ -11,19 +11,23 @@ import start from '../../assets/media/play-circle.svg';
 import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
-import OldTestDataUpdated from '../../algorithm/test/OldTestDataUpdated';
 import ImportParticipants from '../../api/ImportParticipants';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import FailedCalculationModal from '../modals/failedCalculationModal';
+// import Mail from '../../api/mail/Mail';
 
 function MainPage () {
   const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
   const participantstore = ParticipantStore.getSingleton();
 
-  function startAlgorithm () {
-    runAlgorithm();
-    setModalFailedCalculations(true);
+  function runAlgorithm () {
+    if (new Test().run()) {
+      // successful run
+    } else {
+      setModalFailedCalculations(true);
+    }
+
+    // new Mail().generateMailsForModerators();
   }
 
   return (
@@ -86,7 +90,7 @@ function MainPage () {
                                 </div>
                             </div>
                             <div className={'start-button-container'}>
-                                <button className={'button-start'} onClick={startAlgorithm}>
+                                <button className={'button-start'} onClick={runAlgorithm}>
                                     <img src={start} alt={'startCalculationsIcon'} height={20} width={20}/>
                                     <span className={'button-start-text'}>Start Calculations</span>
                                 </button>
@@ -125,15 +129,6 @@ async function importConfiguration (event) {
 
 async function importStudentList (event) {
   await new ImportParticipants().runStudentImport(event);
-}
-
-function runAlgorithm () {
-  if (ParticipantStore.getSingleton().getAll().length === 0 || new RoomSlotHelper().getAllRoomSlots().length === 0) {
-    console.log('Running algorithm with test configuration');
-    new OldTestDataUpdated().runTest();
-  } else {
-    new Test().run();
-  }
 }
 
 // there is no button on the main page for that functionality

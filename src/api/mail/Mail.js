@@ -1,5 +1,6 @@
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import ConverterForPrinting from '../ConverterForPrinting';
+import RevagerLiteExport from './RevagerLiteExport';
 
 export default class Mail {
   #converter = new ConverterForPrinting();
@@ -20,7 +21,9 @@ export default class Mail {
         }
         const moderator = review.getModerator();
         // if (moderator.getLanguagelevel()==='A'){
-        this.germanVersion(roomSlot, room, review, moderator);
+        const attachedRevagerLiteFile = new RevagerLiteExport().buildJSONSingleReview(roomSlot, room);
+        const attachmentName = 'revager-lite-review-' + review.getGroupName() + '.json';
+        this.germanVersion(roomSlot, room, review, moderator, attachedRevagerLiteFile, attachmentName);
         /* }else{
           this.englischVersion(roomSlot, room, review, moderator);
         } */
@@ -35,7 +38,7 @@ export default class Mail {
   * @param {Review} review
   * @param {Moderator} moderator
   */
-  germanVersion (roomSlot, room, review, moderator/*, attachment */) {
+  germanVersion (roomSlot, room, review, moderator, attachment, attachmentName) {
     const recipient = moderator.getEmail();
     const subject = 'Sie sind der Moderator von Review ' + review.getGroupName();
     let body = 'Hallo ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
@@ -53,7 +56,7 @@ export default class Mail {
     }
     body += '\n\n Bitte kontaktieren Sie Ihre Teilnehmer mit den entsprechenden Aufgaben.';
     body += '\n Die RevAger-Lite-Datei im Anhang hilft Ihnen bei der Vorbereitung des Reviews.';
-    this.openMailClient(recipient, subject, body /* ,attachment */);
+    this.openMailClient(recipient, subject, body, attachment, attachmentName);
   }
 
   /**
@@ -63,7 +66,7 @@ export default class Mail {
   * @param {Review} review
   * @param {Moderator} moderator
   */
-  englischVersion (roomSlot, room, review, moderator/*, attachment */) {
+  englischVersion (roomSlot, room, review, moderator, attachment, attachmentName) {
     const recipient = moderator.getEmail();
     const subject = 'Your are the moderator of ' + review.getGroupName();
     let body = 'Hello ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
@@ -81,7 +84,8 @@ export default class Mail {
     }
     body += '\n\n Please contact your participants with the appropriate tasks.';
     body += '\n The RevAger Lite file in the appendix will help you prepaing the review.';
-    this.openMailClient(recipient, subject, body /* ,attachment */);
+
+    this.openMailClient(recipient, subject, body, attachment, attachmentName);
   }
 
   /**
@@ -93,8 +97,8 @@ export default class Mail {
   * @param {string} body - The body content of the email.
   * @param {string} attachment - The attachment of the mail contains the RevAger-File             //check datatype
   */
-  openMailClient (recipient, subject, body /* , attachment */) {
-    const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; // &attachment=${encodeURIComponent(attachment)}`;
+  openMailClient (recipient, subject, body, attachment, attachmentName) {
+    const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&attachment=${encodeURIComponent(attachment)}&attachment-name=${encodeURIComponent(attachmentName)}`;
     window.location.href = mailtoUrl;
   }
 }

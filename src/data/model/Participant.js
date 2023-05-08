@@ -17,7 +17,7 @@ export default class Participant {
     this.#firstName = firstName;
     this.#lastName = lastName;
     this.#email = email;
-    this.#group = group;
+    this.setGroup(group); // to trigger string parser
     this.#topic = topic; // to know on which topic the Participant worked (A-/B-Review)
     this.#languageLevel = languageLevel; // should this part of the constructor or will the user always set this attribute later?
 
@@ -69,7 +69,7 @@ export default class Participant {
   }
 
   setGroup (group) {
-    this.#group = group;
+    this.#group = String(group); // always strings to be consistent
   }
 
   getTopic () {
