@@ -10,6 +10,11 @@ import { Accordion, AccordionContext, Card, useAccordionButton } from 'react-boo
 import RoomSlot from '../../data/model/RoomSlot';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import Room from '../../data/model/Room';
+import { SlotStore } from '../../data/store/SlotStore';
+import { RoomStore } from '../../data/store/RoomStore';
+const helper = new RoomSlotHelper();
+const slotStore = SlotStore.getSingleton();
+const roomStore = RoomStore.getSingleton();
 
 function ToggleRoom ({ children, eventKey, callback }) {
   const { activeEventKey } = useContext(AccordionContext);
@@ -47,15 +52,16 @@ ToggleRoom.propTypes = {
 
 function SlotModal (props) {
   const [showModal, setShowModal] = useState(true);
+  const slotId = useState(props.id)[0];
   const [date, setDate] = useState(props.date);
   const [startTime, setStartTime] = useState(props.startTime);
   const [endTime, setEndTime] = useState(props.endTime);
   const [items, setItems] = useState(props.items);
   const [header] = useState(props.header);
   const [edit] = useState(props.edit);
-  const helper = new RoomSlotHelper();
-    const addItem = () => {
-    setItems([...items, { __private_23_name: '', __private_24_beamer: false }]);
+  console.log(items);
+  const addItem = () => {
+    setItems([...items, new Room('', false)]);
   };
 
   const handleInputChange = (index, event) => {
@@ -65,15 +71,13 @@ function SlotModal (props) {
   };
   const handleBeamerChange = (index) => {
     const newItems = [...items];
-    newItems[index] = {
-      ...newItems[index],
-      __private_24_beamer: !newItems[index].__private_24_beamer
-    };
+    newItems[index].__private_24_beamer = !newItems[index].__private_24_beamer;
     setItems(newItems);
+    console.log(newItems);
   };
 
   const handleClose = () => {
-    if (edit === false) {
+    if (!edit) {
       setShowModal(false);
       setDate(null);
       setStartTime('');
@@ -88,7 +92,24 @@ function SlotModal (props) {
     setShowModal(false);
   };
   const saveEdit = () => {
-    console.log('save Changes');
+    const slot = slotStore.getById(slotId);
+    slot.setDate(date);
+    slot.setStartTime(startTime);
+    slot.setEndTime(endTime);
+    slotStore.update(slotId, slot);
+    items.forEach((room, index) => {
+      if (room.getId() === undefined) {
+        const newRoom = new Room(room.getName(), room.hasBeamer());
+        newRoom.setSlotId(slotId);
+        roomStore.put(newRoom);
+        items.splice(index, 1);
+        setItems([...items, newRoom]);
+      } else {
+        const updatedRoom = new Room(room.getName(), room.hasBeamer());
+        roomStore.update(room.getSlotId(), updatedRoom);
+      }
+    });
+    setShowModal(false);
   };
 
   return (
@@ -107,7 +128,7 @@ function SlotModal (props) {
                         <img src={exit} alt={'exitSlotModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'date-container'}>
-                        <input type={'date'} className={'input-date-container'} value={date ? new Date(date).toISOString().slice(0, 10) : ""} onChange={(e) => setDate(e.target.value)} />
+                        <input type={'date'} className={'input-date-container'} value={date ? new Date(date).toISOString().slice(0, 10) : ''} onChange={(e) => setDate(e.target.value)} />
                     </div>
                     <div className={'time-container'}>
                         <span className={'time-text'}>From:</span>
@@ -132,7 +153,7 @@ function SlotModal (props) {
                                                         <Card.Body>
                                                             <div className={'beamer-properties'}>
                                                                 <label className={'switch'}>
-                                                                    <input type="checkbox" checked={item.__private_24_beamer} onClick={(event) => handleBeamerChange(index)}/>
+                                                                    <input type="checkbox" checked={item.__private_24_beamer} onChange={(event) => handleBeamerChange(index)}/>
                                                                     <span className={'slider round'}></span>
                                                                 </label>
                                                                 <span style={{ paddingLeft: 5 }}>Beamer needed</span>
@@ -175,6 +196,7 @@ function SlotModal (props) {
 SlotModal.propTypes = {
   eventKey: PropTypes.string.isRequired,
   onHide: PropTypes.any,
+  id: PropTypes.number,
   header: PropTypes.string,
   edit: PropTypes.bool,
   date: PropTypes.instanceOf(Date).isRequired,

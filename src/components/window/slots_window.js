@@ -11,9 +11,7 @@ import PropTypes from 'prop-types';
 import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 
-// const items = [{ text: 'I.2.3.4', beamerNeeded: true }, { text: 'I.2.3.5', beamerNeeded: false }];
-
-function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
+function ToggleSlot ({ eventKey, slotId, slotText, date, endTime, rooms, startTime }) {
   const [open, setOpen] = useState(false);
   const openAccordion = useAccordionButton(eventKey, () =>
     console.log('totally custom!')
@@ -63,6 +61,7 @@ function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
                     show={modalShowSlot}
                     onHide={() => setModalShowSlot(false)}
                     header={'Edit Slot'}
+                    id={slotId}
                     edit={true}
                     date={date}
                     startTime={startTime}
@@ -80,6 +79,7 @@ function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
 }
 ToggleSlot.propTypes = {
   eventKey: PropTypes.string.isRequired,
+  slotId: PropTypes.number,
   slotText: PropTypes.string,
   date: PropTypes.any,
   startTime: PropTypes.any,
@@ -87,7 +87,7 @@ ToggleSlot.propTypes = {
   rooms: PropTypes.array
 };
 
-function SlotsWindow (props) {
+function SlotsWindow () {
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [modalDelete, setModalDelete] = React.useState(false);
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
@@ -97,13 +97,13 @@ function SlotsWindow (props) {
   function handleDelete () {
     console.log('Delete successful');
   }
-  function DateFormatter (date) {
+  /* function DateFormatter (date) {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString();
     return `${day}.${month}.${year}`;
   }
-
+*/
   return (
       <div className={'slotsWindow'}>
           <h2 className={'title-subheadline'}>Slots</h2>
@@ -120,7 +120,7 @@ function SlotsWindow (props) {
                           <li key={index}>
                               <Card>
                                   <Card.Header className={'list-item'}>
-                                          <ToggleSlot eventKey={index} slotText={DateFormatter(slot.getDate()) + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()} date={slot.getDate()} startTime={slot.getStartTime()} endTime={slot.getEndTime()} rooms={slot.getRooms()}></ToggleSlot>
+                                          <ToggleSlot eventKey={index} slotId={slot.getId()} slotText={slot.getDate() + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()} date={slot.getDate()} startTime={slot.getStartTime()} endTime={slot.getEndTime()} rooms={slot.getRooms()}></ToggleSlot>
                                   </Card.Header>
                                   <Accordion.Collapse eventKey={index}>
                                       <Card.Body>
@@ -158,6 +158,7 @@ function SlotsWindow (props) {
                 show={modalShowSlot}
                 onHide={() => setModalShowSlot(false)}
                 header={'New Time Slot'}
+                id={undefined}
                 edit={false}
                 date={null}
                 startTime={''}
