@@ -9,10 +9,9 @@ import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
 import PropTypes from 'prop-types';
 import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
+import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 
-const items = [{ text: 'I.2.3.4', beamerNeeded: true }, { text: 'I.2.3.5', beamerNeeded: false }];
-
-function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
+function ToggleSlot ({ eventKey, slotId, slotText, date, endTime, rooms, startTime }) {
   const [open, setOpen] = useState(false);
   const openAccordion = useAccordionButton(eventKey, () =>
     console.log('totally custom!')
@@ -25,7 +24,6 @@ function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
-
   function handleDelete () {
     console.log('Delete successful');
   }
@@ -63,6 +61,7 @@ function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
                     show={modalShowSlot}
                     onHide={() => setModalShowSlot(false)}
                     header={'Edit Slot'}
+                    id={slotId}
                     edit={true}
                     date={date}
                     startTime={startTime}
@@ -80,6 +79,7 @@ function ToggleSlot ({ eventKey, slotText, date, endTime, rooms, startTime }) {
 }
 ToggleSlot.propTypes = {
   eventKey: PropTypes.string.isRequired,
+  slotId: PropTypes.number,
   slotText: PropTypes.string,
   date: PropTypes.any,
   startTime: PropTypes.any,
@@ -87,20 +87,23 @@ ToggleSlot.propTypes = {
   rooms: PropTypes.array
 };
 
-function SlotsWindow (props) {
+function SlotsWindow () {
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [modalDelete, setModalDelete] = React.useState(false);
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
-  const slots = [{ date: DateFormatter('02/05/2023'), startTime: '09:00', endTime: '12:00', items }, { date: DateFormatter('03/05/2023'), startTime: '12:30', endTime: '18:30', items }];
-  function DateFormatter (date) {
-    const [day, month, year] = date.split('/');
-    return `${year}-${month}-${day}`;
-  }
+  const helper = new RoomSlotHelper();
+  const slots = helper.getAllRoomSlots();
   function handleDelete () {
     console.log('Delete successful');
   }
-
+  /* function DateFormatter (date) {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+    return `${day}.${month}.${year}`;
+  }
+*/
   return (
       <div className={'slotsWindow'}>
           <h2 className={'title-subheadline'}>Slots</h2>
@@ -117,20 +120,20 @@ function SlotsWindow (props) {
                           <li key={index}>
                               <Card>
                                   <Card.Header className={'list-item'}>
-                                          <ToggleSlot eventKey={index} slotText={slot.date + ' From: ' + slot.startTime + ' to ' + slot.endTime} date={slot.date} startTime={slot.startTime} endTime={slot.endTime} rooms={slot.items}></ToggleSlot>
+                                          <ToggleSlot eventKey={index} slotId={slot.getId()} slotText={slot.getDate() + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()} date={slot.getDate()} startTime={slot.getStartTime()} endTime={slot.getEndTime()} rooms={slot.getRooms()}></ToggleSlot>
                                   </Card.Header>
                                   <Accordion.Collapse eventKey={index}>
                                       <Card.Body>
                                           <ul style={{ listStyle: 'none', overflowY: 'auto' }}>
-                                              {slot.items.map((room, roomIndex) =>
+                                              {slot.getRooms()?.map((room, roomIndex) =>
                                               <li key={roomIndex}>
                                                   <div className={'room-properties'}>
                                                       <img src={fileImage} alt={'fileImage'} />
-                                                      <span style={{ paddingLeft: 5 }}>{room.text}</span>
+                                                      <span style={{ paddingLeft: 5 }}>{room.getName()}</span>
                                                       <div className={'options'}>
                                                           <button className={'button-options-delete'} onClick={() => {
                                                             setDeleteTitleObject('Room');
-                                                            setDeleteTextObject(room.text);
+                                                            setDeleteTextObject(room.getName());
                                                             setModalDelete(true);
                                                           }}>
                                                               <img src={deleteButton} alt={'icon'}/>
@@ -155,8 +158,9 @@ function SlotsWindow (props) {
                 show={modalShowSlot}
                 onHide={() => setModalShowSlot(false)}
                 header={'New Time Slot'}
+                id={undefined}
                 edit={false}
-                date={''}
+                date={null}
                 startTime={''}
                 endTime={''}
                 items={[]}/>

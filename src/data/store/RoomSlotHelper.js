@@ -15,8 +15,9 @@ export default class RoomSlotHelper {
   getRoomSlot (slotId) {
     const slot = slotStore.getById(slotId);
     const rooms = this.getAllRoomsOfSlot(slotId);
-
-    return new RoomSlot(new Date(), slot.getStartTime(), slot.getEndTime(), rooms);
+    const roomSlot = new RoomSlot(slot.getDate(), slot.getStartTime(), slot.getEndTime(), rooms);
+    roomSlot.setId(slotId);
+    return roomSlot;
   }
 
   /**
