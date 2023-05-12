@@ -14,6 +14,7 @@ import LoadConfiguration from '../../api/LoadConfiguration';
 import ImportParticipants from '../../api/ImportParticipants';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import FailedCalculationModal from '../modals/failedCalculationModal';
+// import RevagerLiteExport from '../../api/mail/RevagerLiteExport';
 // import Mail from '../../api/mail/Mail';
 
 function MainPage () {
@@ -23,11 +24,15 @@ function MainPage () {
   function runAlgorithm () {
     if (new Test().run()) {
       // successful run
+
+      // all on successful calculation window:
+
+      // new Mail().generateMailsForModerators();
+      // new RevagerLiteExport().buildJSONAllReviews();
+      // new SaveRoomPlan().runSave();
     } else {
       setModalFailedCalculations(true);
     }
-
-    // new Mail().generateMailsForModerators();
   }
 
   return (
@@ -130,11 +135,5 @@ async function importConfiguration (event) {
 async function importStudentList (event) {
   await new ImportParticipants().runStudentImport(event);
 }
-
-// there is no button on the main page for that functionality
-// this should happen on the 'success page' later
-// function saveRoomPlan () {
-//   new SaveRoomPlan().runSave();
-// }
 
 export default MainPage;

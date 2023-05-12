@@ -1,7 +1,20 @@
+import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import { saveAs } from 'file-saver';
 import ConverterForPrinting from '../ConverterForPrinting';
 
 export default class RevagerLiteExport {
+  buildJSONAllReviews () {
+    const roomSlotHelper = new RoomSlotHelper();
+    const roomSlots = roomSlotHelper.getAllRoomSlots();
+    for (const roomSlot of roomSlots) {
+      for (const room of roomSlot.getRooms()) {
+        this.buildJSONSingleReview(roomSlot, room);
+      }
+    }
+  }
+
   buildJSONSingleReview (roomSlot, room) {
+    // TODO: check for room.getReview() === null necessary?
     const dateTimeConverter = new ConverterForPrinting();
     const outputSlot = {
       reviewType: 1,
@@ -19,10 +32,9 @@ export default class RevagerLiteExport {
     };
 
     const revagerLiteString = JSON.stringify(outputSlot, null, 1);
-    return revagerLiteString;
-    // const blob = new Blob([revagerLiteString], { type: 'application/json' });
-    // const fileName = 'revager-lite-review-' + room.getId() + '.json';
-    // saveAs(blob, fileName);
+    const blob = new Blob([revagerLiteString], { type: 'application/json' });
+    const fileName = 'revager-lite-review-' + room.getReview().getGroupName() + '.json';
+    saveAs(blob, fileName);
   }
 
   #getParticipants (review) {
