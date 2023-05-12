@@ -1,18 +1,15 @@
 import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
-import { ConfigurationStore } from '../../data/store/ConfigurationStore';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
-import Test from './Test';
+import AbstractTestData from './AbstractTestData';
 
-export default class SmallTestDataUpdated {
+export default class SmallTestDataUpdated extends AbstractTestData {
   constructor () {
-    const participantStore = ParticipantStore.getSingleton();
-    const helper = new RoomSlotHelper();
+    super();
 
-    ConfigurationStore.getSingleton().setAuthorIsNotary(true);
-    participantStore.putMultiple([
+    this.authorIsNotary = true;
+
+    this.participants = [
       new Participant('Richard', '', 'richard.wuensch@study.thws.de', 1),
       new Participant('Basti', '', 'richard.wuensch@study.thws.de', 1),
       new Participant('Daniel', '', 'richard.wuensch@study.thws.de', 1),
@@ -25,7 +22,7 @@ export default class SmallTestDataUpdated {
       new Participant('X', '', 'richard.wuensch@study.thws.de', 4),
       new Participant('Y', '', 'richard.wuensch@study.thws.de', 4),
       new Participant('Z', '', 'richard.wuensch@study.thws.de', 4)
-    ]);
+    ];
 
     const startDate1 = new Date();
     startDate1.setHours(14);
@@ -37,20 +34,14 @@ export default class SmallTestDataUpdated {
     const endDate2 = new Date();
     endDate2.setHours(19);
 
-    helper.putRoomSlot(
+    this.roomSlots = [
       new RoomSlot(new Date(), startDate1, endDate2, [
         new Room('I.1.2', true),
         new Room('I.1.3', true)
-      ]));
-
-    helper.putRoomSlot(
+      ]),
       new RoomSlot(new Date(), startDate1, endDate2, [
         new Room('I.2.2', true),
         new Room('I.2.3', true)
-      ]));
-  }
-
-  runTest () {
-    new Test().run();
+      ])];
   }
 }

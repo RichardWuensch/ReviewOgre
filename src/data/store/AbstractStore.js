@@ -33,7 +33,7 @@ export default class Store {
     if (value instanceof this.#type) {
       value.setId(this.#incrementAndGetId());
       this.#store.set(value.getId(), value);
-      return true;
+      return value;
     }
     console.error('Unable to store value: ' + value);
     return false;

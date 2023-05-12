@@ -1,18 +1,15 @@
 import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
-import { ConfigurationStore } from '../../data/store/ConfigurationStore';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
-import Test from './Test';
+import AbstractTestData from './AbstractTestData';
 
-export default class OldTestDataUpdated {
+export default class OldTestDataUpdated extends AbstractTestData {
   constructor () {
-    const participantStore = ParticipantStore.getSingleton();
-    const helper = new RoomSlotHelper();
+    super();
 
-    ConfigurationStore.getSingleton().setAuthorIsNotary(true);
-    participantStore.putMultiple([
+    this.authorIsNotary = true;
+
+    this.participants = [
       new Participant('Claudia', 'Delacruz', 'nulla.magna.malesuada@turpis.ca', 1),
       new Participant('Abel', 'Waters', 'leo.Vivamus@sapien.com', 1),
       new Participant('Dominic', 'Lawson', 'velit.eu@Fuscemi.edu', 1),
@@ -121,9 +118,9 @@ export default class OldTestDataUpdated {
       new Participant('Risa', 'Davis', 'non.sollicitudin.a@dapibusgravida.com', 36),
       new Participant('Fay', 'Russell', 'iaculis@atlacusQuisque.org', 36),
       new Participant('Jaden', 'Kemp', 'ante.blandit@urnaUttincidunt.ca', 36)
-    ]);
+    ];
 
-    const slots = [
+    this.roomSlots = [
       new RoomSlot(
         new Date(2014, 10, 19),
         new Date(2014, 10, 19, 19, 0, 0),
@@ -211,13 +208,5 @@ export default class OldTestDataUpdated {
         ]
       )
     ];
-
-    for (const roomSlot of slots) {
-      helper.putRoomSlot(roomSlot);
-    }
-  }
-
-  runTest () {
-    new Test().run();
   }
 }

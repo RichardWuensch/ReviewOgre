@@ -35,7 +35,7 @@ export default class Mail {
   * @param {Review} review
   * @param {Moderator} moderator
   */
-  germanVersion (roomSlot, room, review, moderator/*, attachment */) {
+  germanVersion (roomSlot, room, review, moderator) {
     const recipient = moderator.getEmail();
     const subject = 'Sie sind der Moderator von Review ' + review.getGroupName();
     let body = 'Hallo ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
@@ -53,7 +53,7 @@ export default class Mail {
     }
     body += '\n\n Bitte kontaktieren Sie Ihre Teilnehmer mit den entsprechenden Aufgaben.';
     body += '\n Die RevAger-Lite-Datei im Anhang hilft Ihnen bei der Vorbereitung des Reviews.';
-    this.openMailClient(recipient, subject, body /* ,attachment */);
+    this.openMailClient(recipient, subject, body);
   }
 
   /**
@@ -63,7 +63,7 @@ export default class Mail {
   * @param {Review} review
   * @param {Moderator} moderator
   */
-  englischVersion (roomSlot, room, review, moderator/*, attachment */) {
+  englischVersion (roomSlot, room, review, moderator) {
     const recipient = moderator.getEmail();
     const subject = 'Your are the moderator of ' + review.getGroupName();
     let body = 'Hello ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
@@ -81,20 +81,22 @@ export default class Mail {
     }
     body += '\n\n Please contact your participants with the appropriate tasks.';
     body += '\n The RevAger Lite file in the appendix will help you prepaing the review.';
-    this.openMailClient(recipient, subject, body /* ,attachment */);
+
+    this.openMailClient(recipient, subject, body);
   }
 
   /**
   * Opens the default mail client on the user's computer and composes a new email with the specified recipient,
   * subject, and body. The recipient, subject, and body parameters are URL-encoded and appended to a 'mailto'
   * URL scheme, which is used to trigger the user's mail client to open and pre-fill the email fields.
+  * The attachment with the corresponding RevAger (lite) file has to be added manually because mailto
+  * does not allow attachments
   * @param {string} recipient - The email address of the recipient.
   * @param {string} subject - The subject line of the email.
   * @param {string} body - The body content of the email.
-  * @param {string} attachment - The attachment of the mail contains the RevAger-File             //check datatype
   */
-  openMailClient (recipient, subject, body /* , attachment */) {
-    const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; // &attachment=${encodeURIComponent(attachment)}`;
+  openMailClient (recipient, subject, body) {
+    const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
   }
 }

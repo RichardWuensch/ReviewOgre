@@ -62,6 +62,7 @@ export default class SaveRoomPlan {
         const row = [];
         const room = roomSlot.getRooms()[i];
         row.push(room.getName());
+        // TODO: check for room.getReview() === null necessary?
         row.push(room.getReview().getGroupName());
         row.push(room.getReview().getModerator().getFullName());
 
