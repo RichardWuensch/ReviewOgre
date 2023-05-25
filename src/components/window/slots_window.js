@@ -7,25 +7,29 @@ import folderImage from '../../assets/media/folder.svg';
 import fileImage from '../../assets/media/file-earmark.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
-import PropTypes from 'prop-types';
 import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import PropTypes from 'prop-types';
 
-function ToggleSlot ({ eventKey, slotId, slotText, date, endTime, rooms, startTime }) {
+function ToggleSlot (props) {
   const [open, setOpen] = useState(false);
-  const openAccordion = useAccordionButton(eventKey, () =>
+  // const helper = props.slothelper;
+  const [modalDelete, setModalDelete] = React.useState(false);
+  const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
+  const [deleteTextObject, setDeleteTextObject] = React.useState('');
+  const [modalShowSlot, setModalShowSlot] = React.useState(false);
+  const openAccordion = useAccordionButton(props.eventKey, () =>
     console.log('totally custom!')
   );
   const expandAndToggle = () => {
     openAccordion(undefined);
     setOpen(prevOpen => prevOpen !== true);
   };
-  const [modalDelete, setModalDelete] = React.useState(false);
-  const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
-  const [deleteTextObject, setDeleteTextObject] = React.useState('');
-  const [modalShowSlot, setModalShowSlot] = React.useState(false);
   function handleDelete () {
     console.log('Delete successful');
+  }
+  function handleUpdate () {
+    props.onUpdate();
   }
   return (
         <div className={'slots-infos'}>
@@ -41,10 +45,12 @@ function ToggleSlot ({ eventKey, slotId, slotText, date, endTime, rooms, startTi
                   : (
                     <img src={folderImage} alt={'folderImage'} />
                     )}
-                <span className={'slot-text'} style={{ paddingLeft: 5 }}>{slotText}</span>
+                <span className={'slot-text'} style={{ paddingLeft: 5 }}>{props.slotText}</span>
             </button>
             <div className={'options'}>
-                <button className={'button-options-edit'} onClick={() => setModalShowSlot(true)}>
+                <button className={'button-options-edit'} onClick={() => {
+                  setModalShowSlot(true);
+                }}>
                     <img src={edit} alt={'icon'}/>
                 </button>
                 <button className={'button-options-delete'} onClick={() => {
@@ -57,22 +63,23 @@ function ToggleSlot ({ eventKey, slotId, slotText, date, endTime, rooms, startTi
             </div>
             <div className={'setup-start-container'}>
                 <SlotModal
-                    /* replace each attribute with value from store */
                     show={modalShowSlot}
-                    onHide={() => setModalShowSlot(false)}
+                    onHide={() => { setModalShowSlot(false); handleUpdate(); }}
                     header={'Edit Slot'}
-                    id={slotId}
+                    id={props.slotId}
                     edit={true}
-                    date={date}
-                    startTime={startTime}
-                    endTime={endTime}
-                    items={rooms}/>
+                    date={props.date}
+                    starttime={props.starttime}
+                    endtime={props.endtime}
+                    items={props.rooms}/>
                 <DeleteModal
                     show={modalDelete}
                     onHide={() => setModalDelete(false)}
                     onSave={handleDelete}
-                    titleObject={deleteTitleObject}
-                    textObject={deleteTextObject}/>
+                    titleobject={deleteTitleObject}
+                    textobject={deleteTextObject}
+                deleteobject={undefined}/>
+                {/* replace with helper.getRoomSlot(slotId) not stable atm */}
             </div>
         </div>
   );
@@ -82,28 +89,41 @@ ToggleSlot.propTypes = {
   slotId: PropTypes.number,
   slotText: PropTypes.string,
   date: PropTypes.any,
-  startTime: PropTypes.any,
-  endTime: PropTypes.any,
-  rooms: PropTypes.array
+  starttime: PropTypes.any,
+  endtime: PropTypes.any,
+  rooms: PropTypes.array,
+  slothelper: PropTypes.any,
+  onUpdate: PropTypes.any
 };
 
 function SlotsWindow () {
+  const [childUpdated, setChildUpdated] = React.useState(false);
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [modalDelete, setModalDelete] = React.useState(false);
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
+  const [deleteObject, setDeleteObject] = React.useState(null);
   const helper = new RoomSlotHelper();
   const slots = helper.getAllRoomSlots();
+  console.log(deleteTitleObject);
+  function handleChildUpdate () {
+    setChildUpdated(!childUpdated);
+  }
   function handleDelete () {
     console.log('Delete successful');
   }
-  /* function DateFormatter (date) {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
-    return `${day}.${month}.${year}`;
+  function DateFormatter (date) {
+    if (date != null) {
+      const parts = date.split('-');
+      const year = parts[0];
+      const month = parts[1];
+      const day = parts[2];
+      return `${day}/${month}/${year}`;
+    } else {
+      return 'No Date entered';
+    }
   }
-*/
+
   return (
       <div className={'slotsWindow'}>
           <h2 className={'title-subheadline'}>Slots</h2>
@@ -120,7 +140,15 @@ function SlotsWindow () {
                           <li key={index}>
                               <Card>
                                   <Card.Header className={'list-item'}>
-                                          <ToggleSlot eventKey={index} slotId={slot.getId()} slotText={slot.getDate() + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()} date={slot.getDate()} startTime={slot.getStartTime()} endTime={slot.getEndTime()} rooms={slot.getRooms()}></ToggleSlot>
+                                          <ToggleSlot eventKey={index}
+                                                      slotId={slot.getId()}
+                                                      slotText={DateFormatter(slot.getDate()) + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()}
+                                                      date={slot.getDate()}
+                                                      starttime={slot.getStartTime()}
+                                                      endtime={slot.getEndTime()}
+                                                      rooms={slot.getRooms()}
+                                                      slothelper={helper}
+                                                      onUpdate={handleChildUpdate}></ToggleSlot>
                                   </Card.Header>
                                   <Accordion.Collapse eventKey={index}>
                                       <Card.Body>
@@ -134,6 +162,7 @@ function SlotsWindow () {
                                                           <button className={'button-options-delete'} onClick={() => {
                                                             setDeleteTitleObject('Room');
                                                             setDeleteTextObject(room.getName());
+                                                            setDeleteObject(room);
                                                             setModalDelete(true);
                                                           }}>
                                                               <img src={deleteButton} alt={'icon'}/>
@@ -160,16 +189,17 @@ function SlotsWindow () {
                 header={'New Time Slot'}
                 id={undefined}
                 edit={false}
-                date={null}
-                startTime={''}
-                endTime={''}
+                date={undefined}
+                starttime={''}
+                endtime={''}
                 items={[]}/>
             <DeleteModal
                 show={modalDelete}
                 onHide={() => setModalDelete(false)}
                 onSave={handleDelete}
-                titleObject={deleteTitleObject}
-                textObject={deleteTextObject}/>
+                titleobject={deleteTitleObject}
+                textobject={deleteTextObject}
+                deleteobject={deleteObject}/>
         </div>
       </div>
   );

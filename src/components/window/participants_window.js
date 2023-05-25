@@ -251,7 +251,8 @@ function ParticipantsWindow (props) {
                     onHide={() => setModalDelete(false)}
                     onSave={handleDelete}
                     titleObject={deleteTitleObject}
-                    textObject={deleteTextObject}/>
+                    textObject={deleteTextObject}
+                deleteobject={undefined}/>
             </div>
       </div>
   );
