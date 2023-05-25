@@ -54,26 +54,24 @@ function SlotModal (props) {
   const [showModal, setShowModal] = useState(true);
   const slotId = useState(props.id)[0];
   const [date, setDate] = useState(props.date);
-  const [startTime, setStartTime] = useState(props.startTime);
-  const [endTime, setEndTime] = useState(props.endTime);
+  const [startTime, setStartTime] = useState(props.starttime);
+  const [endTime, setEndTime] = useState(props.endtime);
   const [items, setItems] = useState(props.items);
   const [header] = useState(props.header);
   const [edit] = useState(props.edit);
-  console.log(items);
   const addItem = () => {
     setItems([...items, new Room('', false)]);
   };
 
   const handleInputChange = (index, event) => {
     const newItems = [...items];
-    newItems[index].__private_23_name = event.target.value;
+    newItems[index].setName(event.target.value);
     setItems(newItems);
   };
   const handleBeamerChange = (index) => {
     const newItems = [...items];
-    newItems[index].__private_24_beamer = !newItems[index].__private_24_beamer;
+    newItems[index].setHasBeamer(!newItems[index].hasBeamer());
     setItems(newItems);
-    console.log(newItems);
   };
 
   const handleClose = () => {
@@ -87,7 +85,7 @@ function SlotModal (props) {
   };
   const addSlot = () => {
     const rooms = [];
-    items.forEach(room => { rooms.push(new Room(room.__private_23_name, room.__private_24_beamer)); });
+    items.forEach(room => { rooms.push(new Room(room.getName(), room.hasBeamer())); });
     helper.putRoomSlot(new RoomSlot(date, startTime, endTime, rooms));
     setShowModal(false);
   };
@@ -98,6 +96,7 @@ function SlotModal (props) {
     slot.setEndTime(endTime);
     slotStore.update(slotId, slot);
     items.forEach((room, index) => {
+    /* check items in list if id already assigned => if not add Room and remove from list else: update item */
       if (room.getId() === undefined) {
         const newRoom = new Room(room.getName(), room.hasBeamer());
         newRoom.setSlotId(slotId);
@@ -146,14 +145,14 @@ function SlotModal (props) {
                                             <li key={index}>
                                                 <Card>
                                                     <Card.Header className={'list-item border-0'}>
-                                                            <input className={'item-text'} type="text" value={item.__private_23_name} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
+                                                            <input className={'item-text'} type="text" value={item.getName()} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
                                                             <ToggleRoom eventKey={index}></ToggleRoom>
                                                     </Card.Header>
                                                     <Accordion.Collapse eventKey={index}>
                                                         <Card.Body>
                                                             <div className={'beamer-properties'}>
                                                                 <label className={'switch'}>
-                                                                    <input type="checkbox" checked={item.__private_24_beamer} onChange={(event) => handleBeamerChange(index)}/>
+                                                                    <input type="checkbox" checked={item.hasBeamer()} onChange={(event) => handleBeamerChange(index)}/>
                                                                     <span className={'slider round'}></span>
                                                                 </label>
                                                                 <span style={{ paddingLeft: 5 }}>Beamer needed</span>
@@ -194,14 +193,14 @@ function SlotModal (props) {
   );
 }
 SlotModal.propTypes = {
-  eventKey: PropTypes.string.isRequired,
+  eventKey: PropTypes.string,
   onHide: PropTypes.any,
   id: PropTypes.number,
   header: PropTypes.string,
   edit: PropTypes.bool,
-  date: PropTypes.instanceOf(Date).isRequired,
-  startTime: PropTypes.string,
-  endTime: PropTypes.string,
+  date: PropTypes.number,
+  starttime: PropTypes.string,
+  endtime: PropTypes.string,
   items: PropTypes.any
 };
 export default SlotModal;

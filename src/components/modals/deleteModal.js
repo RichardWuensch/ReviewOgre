@@ -2,11 +2,34 @@ import './deleteModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../assets/media/x-circle.svg';
 import { useState } from 'react';
+import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import { RoomStore } from '../../data/store/RoomStore';
+import { ParticipantStore } from '../../data/store/ParticipantStore';
+import RoomSlot from '../../data/model/RoomSlot';
+import Room from '../../data/model/Room';
+import Participant from '../../data/model/Participant';
+const helper = new RoomSlotHelper();
+const roomStore = RoomStore.getSingleton();
+const participantStore = ParticipantStore.getSingleton();
 
-function deleteModal (props, onClose, onSave, onHide, titleObject, textObject) {
+function deleteModal (props, onClose, onSave, onHide) {
   const [showModal, setShowModal] = useState(true);
-
+  const [item] = useState(props.deleteobject);
+  // console.log(item);
   const handleClose = () => {
+    setShowModal(false);
+  };
+  const deleteItem = () => {
+    console.log('delete');
+    if (item instanceof RoomSlot) {
+      helper.deleteSlotAndCorrespondingRooms(item.getId());
+    } else if (item instanceof Room) {
+      roomStore.delete(item.getId());
+    } else if (item instanceof Participant) {
+      participantStore.delete(item.getId());
+    } else {
+      console.log('No matching item found to delete!');
+    }
     setShowModal(false);
   };
 
@@ -30,7 +53,7 @@ function deleteModal (props, onClose, onSave, onHide, titleObject, textObject) {
                         <span className={'delete-title-subheadline'}>This Action can&lsquo;t be undone.</span>
                     </div>
                     <div className={'footer'}>
-                        <button className={'confirm-button'}>
+                        <button className={'confirm-button'} onClick={deleteItem}>
                             <span className={'confirm-text'}>Confirm</span>
                         </button>
                     </div>
