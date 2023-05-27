@@ -39,7 +39,7 @@ function Participant ({ participant }) {
   );
 
   return (
-        <label>
+      <>
             {participantContent}
             <DeleteModal
                 show={modalDelete}
@@ -60,7 +60,7 @@ function Participant ({ participant }) {
                 participantstore={null}
                 show={modalEditParticipant}
                 onClose={() => { console.log(''); }}/>
-        </label>
+        </>
 
   );
 }
