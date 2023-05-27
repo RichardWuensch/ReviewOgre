@@ -14,8 +14,7 @@ const participantStore = ParticipantStore.getSingleton();
 
 function deleteModal (props, onClose, onSave, onHide) {
   const [showModal, setShowModal] = useState(true);
-  const [item] = useState(props.deleteobject);
-  // console.log(item);
+  const [item, setItem] = useState(props.deleteobject);
   const handleClose = () => {
     setShowModal(false);
   };
@@ -31,6 +30,7 @@ function deleteModal (props, onClose, onSave, onHide) {
       console.log('No matching item found to delete!');
     }
     setShowModal(false);
+    setItem(undefined);
   };
 
   return (
@@ -45,15 +45,19 @@ function deleteModal (props, onClose, onSave, onHide) {
             <Modal.Body>
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
-                        <span className={'modal-header border-0'}>Delete {props.titleObject}</span>
+                        <span className={'modal-header border-0'}>Delete {props.titleobject}</span>
                         <img src={exit} alt={'exitModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'text-container'}>
-                        <h2 className={'delete-title-subheadline'}>Are you sure you want to delete {props.textObject}?</h2>
+                        <h2 className={'delete-title-subheadline'}>Are you sure you want to delete {props.textobject}?</h2>
                         <span className={'delete-title-subheadline'}>This Action can&lsquo;t be undone.</span>
                     </div>
                     <div className={'footer'}>
-                        <button className={'confirm-button'} onClick={deleteItem}>
+                        <button className={'confirm-button'} onClick={() => {
+                          deleteItem();
+                          props.onHide();
+                        }
+                        }>
                             <span className={'confirm-text'}>Confirm</span>
                         </button>
                     </div>

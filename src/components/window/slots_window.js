@@ -13,11 +13,12 @@ import PropTypes from 'prop-types';
 
 function ToggleSlot (props) {
   const [open, setOpen] = useState(false);
-  // const helper = props.slothelper;
+  const helper = props.slothelper;
   const [modalDelete, setModalDelete] = React.useState(false);
   const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
+  const [deleteObject, setDeleteObject] = React.useState(null);
   const openAccordion = useAccordionButton(props.eventKey, () =>
     console.log('totally custom!')
   );
@@ -56,6 +57,7 @@ function ToggleSlot (props) {
                 <button className={'button-options-delete'} onClick={() => {
                   setDeleteTitleObject('Slot');
                   setDeleteTextObject('this Slot');
+                  setDeleteObject(helper.getRoomSlot(props.slotId));
                   setModalDelete(true);
                 }}>
                     <img src={deleteButton} alt={'icon'}/>
@@ -72,13 +74,17 @@ function ToggleSlot (props) {
                     starttime={props.starttime}
                     endtime={props.endtime}
                     items={props.rooms}/>
-                <DeleteModal
-                    show={modalDelete}
-                    onHide={() => setModalDelete(false)}
-                    onSave={handleDelete}
-                    titleobject={deleteTitleObject}
-                    textobject={deleteTextObject}
-                deleteobject={undefined}/>
+                {deleteObject !== null && (
+                    <DeleteModal
+                        show={modalDelete}
+                        onHide={() => { setModalDelete(false);
+                        handleUpdate()}}
+                        onSave={handleDelete}
+                        titleobject={deleteTitleObject}
+                        textobject={deleteTextObject}
+                        deleteobject={deleteObject}
+                    />
+                )}
                 {/* replace with helper.getRoomSlot(slotId) not stable atm */}
             </div>
         </div>
@@ -105,7 +111,6 @@ function SlotsWindow () {
   const [deleteObject, setDeleteObject] = React.useState(null);
   const helper = new RoomSlotHelper();
   const slots = helper.getAllRoomSlots();
-  console.log(deleteTitleObject);
   function handleChildUpdate () {
     setChildUpdated(!childUpdated);
   }
@@ -193,13 +198,16 @@ function SlotsWindow () {
                 starttime={''}
                 endtime={''}
                 items={[]}/>
-            <DeleteModal
-                show={modalDelete}
-                onHide={() => setModalDelete(false)}
-                onSave={handleDelete}
-                titleobject={deleteTitleObject}
-                textobject={deleteTextObject}
-                deleteobject={deleteObject}/>
+              {deleteObject !== null && (
+                  <DeleteModal
+                      show={modalDelete}
+                      onHide={() => setModalDelete(false)}
+                      onSave={handleDelete}
+                      titleobject={deleteTitleObject}
+                      textobject={deleteTextObject}
+                      deleteobject={deleteObject}
+                  />
+              )}
         </div>
       </div>
   );
