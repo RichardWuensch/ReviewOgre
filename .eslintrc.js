@@ -21,6 +21,8 @@ module.exports = {
         semi: ['warn', 'always'],
         "react/react-in-jsx-scope": "off",
         "prefer-regex-literals": "off",
+        "react/prop-types": "off"
+
     },
     settings: {
         react: {

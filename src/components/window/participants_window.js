@@ -8,6 +8,7 @@ import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
 import add from '../../assets/media/plus-circle.svg';
 import PropTypes from 'prop-types';
+import { useParticipants } from './participantsContext';
 
 function ParticipantsWindow (props) {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -27,10 +28,11 @@ function ParticipantsWindow (props) {
   const [languageLevel, setLanguageLevel] = React.useState('');
   const [id, setId] = React.useState('');
 
-  const participantstore = props.participantstore;
   const forceUpdate = useForceUpdate();
 
-  const listParticipants = participantstore.getAll().map(entry =>
+  const participants = useParticipants();
+
+  participants.map(entry =>
     <tr key={entry.getId()}>
         {isEditModeActive && (
             <td>
@@ -202,7 +204,7 @@ function ParticipantsWindow (props) {
           <div className={'participant-list-container'}>
               <table className={'participant-table'} >
                 <tbody>
-                  {listParticipants}
+                  {participants}
                   <ParticipantModal
                       firstname={firstName}
                       lastname={lastName}
@@ -212,7 +214,7 @@ function ParticipantsWindow (props) {
                       languagelevel={languageLevel}
                       newparticipant={false}
                       id={id}
-                      participantstore={participantstore}
+                      participantstore={null}
                       show={modalEditParticipant}
                       onClose={() => {
                         console.log('edit participant onClose start' + firstName);
@@ -239,7 +241,7 @@ function ParticipantsWindow (props) {
                     topic={''}
                     languagelevel={'Native Speaker'}
                     newparticipant={true}
-                    participantstore={participantstore}
+                    participantstore={null}
                 />
                 <EditMultipleParticipantsModal
                     show={modalShowEditMultipleParticipants}
