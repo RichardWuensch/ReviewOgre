@@ -2,39 +2,36 @@ import './ParticipantModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../assets/media/x-circle.svg';
 import { useState } from 'react';
-import Participant from '../../data/model/Participant';
 import PropTypes from 'prop-types';
+import { useParticipantsDispatch } from '../window/participantsContext';
 
-function ParticipantModal (props, onClose) {
-  const [firstName, setFirstName] = useState(props.firstname);
-  const [lastName, setLastName] = useState(props.lastname);
-  const [email, setEmail] = useState(props.email);
-  const [group, setGroup] = useState(props.group);
-  const [topic, setTopic] = useState(props.topic);
-  const [languageLevel, setLanguageLevel] = useState(props.languagelevel);
+let nextId = 1;
+
+function ParticipantModal (props) {
+  const [firstName, setFirstName] = useState(props.firstname || '');
+  const [lastName, setLastName] = useState(props.lastname || '');
+  const [email, setEmail] = useState(props.email || '');
+  const [group, setGroup] = useState(props.group || '');
+  const [topic, setTopic] = useState(props.topic || '');
+  const [languageLevel, setLanguageLevel] = useState(props.languagelevel || 'Native Speaker');
   const [showModal, setShowModal] = useState(true);
-  const [newParticipant] = useState(props.newparticipant);
-  const [id] = useState(props.id);
-  const [saveData, setSaveData] = useState(false);
-
-  const participantstore = props.participantstore;
+  const [newParticipant] = useState(props.newparticipant || false);
+  const [id, setId] = useState(props.id || nextId);
+  const dispatch = useParticipantsDispatch();
 
   const handleClose = () => {
-    if (saveData) {
-      const participant = new Participant(firstName, lastName, email, group, topic, languageLevel);
-
-      // check if participant needs to be added or updated
-      if (newParticipant) {
-        participantstore.put(participant);
-        console.log(participant.getFirstName());
-      } else {
-        console.log(participantstore.getById(id).getFirstName());
-        participant.setId(id);
-        participantstore.update(id, participant);
-        console.log(participantstore.getById(id).getFirstName());
-      }
-    }
     setShowModal(false);
+    clearData();
+    props.onClose();
+  };
+
+  const clearData = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setEmail('');
+    setTopic('');
+    setGroup('0');
   };
 
   return (
@@ -78,9 +75,36 @@ function ParticipantModal (props, onClose) {
                     </div>
                     <div className={'footer'}>
                         <button className={'add-participant-button'} onClick={() => {
-                          setSaveData(true);
+                          /* eslint-disable object-shorthand */
+                          if (newParticipant) {
+                            // create a new participant
+                            setId(++nextId);
+                            dispatch({
+                              type: 'added',
+                              id: id,
+                              firstName: firstName,
+                              lastName: lastName,
+                              email: email,
+                              group: group,
+                              topic: topic,
+                              languageLevel: languageLevel
+                            });
+                          } else {
+                            // update an existing participant
+                            console.log('Update Participant with id :' + id);
+                            dispatch({
+                              type: 'changed',
+                              id: id,
+                              firstName: firstName,
+                              lastName: lastName,
+                              email: email,
+                              group: group,
+                              topic: topic,
+                              languageLevel: languageLevel
+                            });
+                          }
+                          /* eslint-enable object-shorthand */
                           handleClose();
-                          props.onClose();
                         }}>
                             <span className={'add-participant-text'}>{newParticipant ? 'Add Participant' : 'Save Changes'}</span>
                         </button>
@@ -98,8 +122,7 @@ ParticipantModal.propTypes = {
   email: PropTypes.string,
   group: PropTypes.string,
   topic: PropTypes.string,
-  languagelevel: PropTypes.string,
-  newparticipant: PropTypes.bool,
-  participantstore: PropTypes.any
+  languageLevel: PropTypes.string,
+  newParticipant: PropTypes.bool
 };
 export default ParticipantModal;

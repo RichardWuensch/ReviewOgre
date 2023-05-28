@@ -122,15 +122,7 @@ function ParticipantList () {
               onClose={() => {
                 setModalShowParticipant(false);
               }}
-              // onSave={() => handleSaveAddParticipant()}
-              firstname={''}
-              lastname={''}
-              email={''}
-              group={'0'}
-              topic={''}
-              languagelevel={'Native Speaker'}
               newparticipant={true}
-              participantstore={null}
           />
           <EditMultipleParticipantsModal
               show={modalShowEditMultipleParticipants}

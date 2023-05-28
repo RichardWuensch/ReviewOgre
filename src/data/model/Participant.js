@@ -13,7 +13,8 @@ export default class Participant {
   #moderatorCount;
   #activeInSlots;
 
-  constructor (firstName, lastName, email, group, topic, languageLevel) {
+  constructor (id, firstName, lastName, email, group, topic, languageLevel) {
+    this.#id = id;
     this.#firstName = firstName;
     this.#lastName = lastName;
     this.#email = email;

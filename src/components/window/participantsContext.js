@@ -30,27 +30,38 @@ export function useParticipantsDispatch () {
 function participantsReducer (participants, action) {
   switch (action.type) {
     case 'added': {
-      return [...participants, {
-        id: action.id,
-        firstName: action.firstName,
-        lastName: action.lastName,
-        email: action.email,
-        group: action.group,
-        topic: action.topic,
-        languageLevel: action.languageLevel
-      }];
+      const newParticipant = new Participant(
+        action.id,
+        action.firstName,
+        action.lastName,
+        action.email,
+        action.group,
+        action.topic,
+        action.languageLevel
+      );
+      return [...participants, newParticipant];
     }
     case 'changed': {
       return participants.map(t => {
-        if (t.id === action.participants.id) {
-          return action.participant;
+        const newParticipant = new Participant(
+          action.id,
+          action.firstName,
+          action.lastName,
+          action.email,
+          action.group,
+          action.topic,
+          action.languageLevel
+        );
+
+        if (t.getId() === newParticipant.getId()) {
+          return newParticipant;
         } else {
           return t;
         }
       });
     }
     case 'deleted': {
-      return participants.filter(t => t.id !== action.id);
+      return participants.filter(t => t.getId() !== action.id);
     }
     default: {
       throw Error('Unknown action: ' + action.type);
@@ -59,6 +70,6 @@ function participantsReducer (participants, action) {
 }
 
 const initialParticipants = [
-  new Participant('Max', 'Mustermann', 'max.mustermann@study.thws.de', '1', 'Informatik', 'A1'),
-  new Participant('Martina', 'Musterfrau', 'martina.musterfrau@study.thws.de', '2', 'Religion', 'B2')
+  new Participant('-1', 'Max', 'Mustermann', 'max.mustermann@study.thws.de', '1', 'Informatik', 'A1'),
+  new Participant('0', 'Martina', 'Musterfrau', 'martina.musterfrau@study.thws.de', '2', 'Religion', 'B2')
 ];

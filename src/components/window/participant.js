@@ -8,8 +8,6 @@ import './participants_window.css';
 function Participant ({ participant }) {
   const [modalEditParticipant, setModalEditParticipant] = React.useState(false);
   const [modalDelete, setModalDelete] = React.useState(false);
-  const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
-  const [deleteTextObject, setDeleteTextObject] = React.useState('');
 
   const participantContent = (
             <>
@@ -28,8 +26,6 @@ function Participant ({ participant }) {
                         }}><img src={edit} alt={'icon'}/>
                         </button>
                         <button className={'button-options-delete'} onClick={() => {
-                          setDeleteTitleObject('Participant');
-                          setDeleteTextObject('this Participant');
                           setModalDelete(true);
                         }}><img src={deleteButton} alt={'icon'}/>
                         </button>
@@ -44,9 +40,9 @@ function Participant ({ participant }) {
             <DeleteModal
                 show={modalDelete}
                 onHide={() => setModalDelete(false)}
-                onSave={() => { console.log(''); }}
-                titleObject={deleteTitleObject}
-                textObject={deleteTextObject}
+                onSave={() => { console.log('Deleted'); }}
+                titleObject={'Participant'}
+                textObject={'this participant'}
                 deleteobject={undefined}/>
             <ParticipantModal
                 firstname={participant.getFirstName()}
@@ -55,11 +51,9 @@ function Participant ({ participant }) {
                 group={participant.getGroup()}
                 topic={participant.getTopic()}
                 languagelevel={participant.getLanguageLevel()}
-                newparticipant={false}
-                id={-1}
-                participantstore={null}
+                id={participant.getId()}
                 show={modalEditParticipant}
-                onClose={() => { console.log(''); }}/>
+                onClose={() => { setModalEditParticipant(false); }}/>
         </>
 
   );
