@@ -21,7 +21,6 @@ function deleteModal (props) {
 
   const handleClose = () => {
     setShowModal(false);
-    props.onClose();
   };
 
   const deleteItem = () => {
@@ -64,7 +63,10 @@ function deleteModal (props) {
                         <span className={'delete-title-subheadline'}>This Action can&lsquo;t be undone.</span>
                     </div>
                     <div className={'footer'}>
-                        <button className={'confirm-button'} onClick={deleteItem}>
+                        <button className={'confirm-button'} onClick= {() => {
+                          deleteItem();
+                          props.onHide();
+                        }}>
                             <span className={'confirm-text'}>Confirm</span>
                         </button>
                     </div>

@@ -77,8 +77,10 @@ function ToggleSlot (props) {
                 {deleteObject !== null && (
                     <DeleteModal
                         show={modalDelete}
-                        onHide={() => { setModalDelete(false);
-                        handleUpdate()}}
+                        onHide={() => {
+                          setModalDelete(false);
+                          handleUpdate();
+                        }}
                         onSave={handleDelete}
                         titleobject={deleteTitleObject}
                         textobject={deleteTextObject}
