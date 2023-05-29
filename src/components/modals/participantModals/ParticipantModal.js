@@ -1,40 +1,37 @@
 import './ParticipantModal.css';
 import Modal from 'react-bootstrap/Modal';
-import exit from '../../assets/media/x-circle.svg';
+import exit from '../../../assets/media/x-circle.svg';
 import { useState } from 'react';
-import Participant from '../../data/model/Participant';
 import PropTypes from 'prop-types';
+import { useParticipantsDispatch } from '../../window/ParticipantsContext';
+import Participant from '../../../data/model/Participant';
 
-function ParticipantModal (props, onClose) {
-  const [firstName, setFirstName] = useState(props.firstname);
-  const [lastName, setLastName] = useState(props.lastname);
-  const [email, setEmail] = useState(props.email);
-  const [group, setGroup] = useState(props.group);
-  const [topic, setTopic] = useState(props.topic);
-  const [languageLevel, setLanguageLevel] = useState(props.languagelevel);
+let nextId = 1;
+
+function ParticipantModal (props) {
+  const [firstName, setFirstName] = useState(props.firstname || '');
+  const [lastName, setLastName] = useState(props.lastname || '');
+  const [email, setEmail] = useState(props.email || '');
+  const [group, setGroup] = useState(props.group || '0');
+  const [topic, setTopic] = useState(props.topic || '');
+  const [languageLevel, setLanguageLevel] = useState(props.languagelevel || 'Native Speaker');
   const [showModal, setShowModal] = useState(true);
-  const [newParticipant] = useState(props.newparticipant);
-  const [id] = useState(props.id);
-  const [saveData, setSaveData] = useState(false);
-
-  const participantstore = props.participantstore;
+  const [newParticipant] = useState(props.newparticipant || false);
+  const [id, setId] = useState(props.id || nextId);
+  const dispatch = useParticipantsDispatch();
 
   const handleClose = () => {
-    if (saveData) {
-      const participant = new Participant(firstName, lastName, email, group, topic, languageLevel);
-
-      // check if participant needs to be added or updated
-      if (newParticipant) {
-        participantstore.put(participant);
-        console.log(participant.getFirstName());
-      } else {
-        console.log(participantstore.getById(id).getFirstName());
-        participant.setId(id);
-        participantstore.update(id, participant);
-        console.log(participantstore.getById(id).getFirstName());
-      }
-    }
     setShowModal(false);
+    props.onClose();
+  };
+
+  const clearData = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setEmail('');
+    setTopic('');
+    setGroup('0');
   };
 
   return (
@@ -50,7 +47,7 @@ function ParticipantModal (props, onClose) {
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
                         <span className={'modal-header border-0'}>{newParticipant ? 'Add New Participant' : 'Edit Participant'}</span>
-                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onClose}/>
+                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={handleClose}/>
                     </div>
                     <div className={'attributes-container'}>
                         <span>First Name:</span>
@@ -64,7 +61,7 @@ function ParticipantModal (props, onClose) {
                         <span>Topic:</span>
                         <input className={'input-attributes-container'} type={'text'} value={topic} placeholder="Topic" onChange={(e) => setTopic(e.target.value)} />
                         <span>German Skill Level:</span>
-                        <form action="#">
+                        <form action="src/components/modals/participantModals/ParticipantModal#">
                             <select className={'dropdown-attributes-container'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
                                 <option className={'dropdown-attributes-container-text'} value="Native Speaker">Native Speaker</option>
                                 <option className={'dropdown-attributes-container-text'} value="A1">A1</option>
@@ -78,9 +75,27 @@ function ParticipantModal (props, onClose) {
                     </div>
                     <div className={'footer'}>
                         <button className={'add-participant-button'} onClick={() => {
-                          setSaveData(true);
+                          /* eslint-disable object-shorthand */
+                          if (newParticipant) {
+                            // create a new participant
+                            setId(++nextId);
+                            const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
+                            dispatch({
+                              type: 'added',
+                              newParticipant: participantTemp
+                            });
+                            clearData();
+                          } else {
+                            // update an existing participant
+                            console.log('Update Participant with id :' + id);
+                            const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
+                            dispatch({
+                              type: 'changed',
+                              updatedParticipant: participantTemp
+                            });
+                          }
+                          /* eslint-enable object-shorthand */
                           handleClose();
-                          props.onClose();
                         }}>
                             <span className={'add-participant-text'}>{newParticipant ? 'Add Participant' : 'Save Changes'}</span>
                         </button>
@@ -98,8 +113,7 @@ ParticipantModal.propTypes = {
   email: PropTypes.string,
   group: PropTypes.string,
   topic: PropTypes.string,
-  languagelevel: PropTypes.string,
-  newparticipant: PropTypes.bool,
-  participantstore: PropTypes.any
+  languageLevel: PropTypes.string,
+  newParticipant: PropTypes.bool
 };
 export default ParticipantModal;
