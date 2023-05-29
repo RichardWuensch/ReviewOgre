@@ -1,13 +1,14 @@
-import { useParticipants } from './participantsContext';
-import Participant from './participant';
+import { useParticipants } from './ParticipantsContext';
+import Participant from './Participant';
 import './participants_window.css';
 import add from '../../assets/media/plus-circle.svg';
 import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
 import exit from '../../assets/media/x-circle.svg';
 import React from 'react';
-import ParticipantModal from '../modals/ParticipantModal';
-import EditMultipleParticipantsModal from '../modals/editMultipleParticipantsModal';
+import ParticipantModal from '../modals/participantModals/ParticipantModal';
+import EditMultipleParticipantsModal from '../modals/participantModals/EditMultipleParticipantsModal';
+import DeleteModal from '../modals/deleteModal';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -15,9 +16,7 @@ function ParticipantList () {
   const [modalShowEditMultipleParticipants, setModalShowEditMultipleParticipants] = React.useState(false);
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(false);
-  const [setModalDelete] = React.useState(false);
-  const [setDeleteTitleObject] = React.useState('');
-  const [setDeleteTextObject] = React.useState('');
+  const [modalDelete, setModalDelete] = React.useState(false);
 
   const participants = useParticipants();
   return (
@@ -41,8 +40,7 @@ function ParticipantList () {
                   )}
               {isEditModeActive && (
                   <button className={'button-container-green-participants'} onClick={() => {
-                    setDeleteTitleObject('Participants');
-                    setDeleteTextObject('the selected Participants');
+                    console.log('Selected participants' + selectedParticipants);
                     setModalDelete(true);
                   }} style={ { background: '#C40233' } }>
                       <img src={deleteButton} alt={'icon'} height={16} width={16}/>
@@ -66,6 +64,7 @@ function ParticipantList () {
                   )}
           </div>
           <div className={'list-description'}>
+              <div className={'participant-list-container'}>
               <table className={'participant-table'}>
                   <thead>
                   <tr>
@@ -116,18 +115,29 @@ function ParticipantList () {
                 ))}
                 </tbody>
             </table>
+                  </div>
           </div>
           <ParticipantModal
               show={modalShowParticipant}
               onClose={() => {
                 setModalShowParticipant(false);
               }}
+              onHide={() => setModalShowParticipant(false)}
               newparticipant={true}
           />
           <EditMultipleParticipantsModal
               show={modalShowEditMultipleParticipants}
               onHide={() => setModalShowEditMultipleParticipants(false)}
-              onSave={() => { console.log(''); }}/>
+              onSave={() => { console.log(''); }}
+              onClose={() => { setModalShowEditMultipleParticipants(false); }}
+              participants = { selectedParticipants }/>
+          <DeleteModal
+              show={modalDelete}
+              onHide={() => setModalDelete(false)}
+              titleObject={'Participants'}
+              textObject={'the selected participants'}
+              deleteobject={ selectedParticipants }
+              onClose={() => { setModalDelete(false); }}/>
       </div>
   );
 
@@ -135,8 +145,6 @@ function ParticipantList () {
     setIsEditModeActive(false);
     setSelectedParticipants([]);
     setAllParticipantsSelected(false);
-    setDeleteTitleObject('');
-    setDeleteTextObject('');
   }
 }
 

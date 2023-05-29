@@ -30,38 +30,19 @@ export function useParticipantsDispatch () {
 function participantsReducer (participants, action) {
   switch (action.type) {
     case 'added': {
-      const newParticipant = new Participant(
-        action.id,
-        action.firstName,
-        action.lastName,
-        action.email,
-        action.group,
-        action.topic,
-        action.languageLevel
-      );
-      return [...participants, newParticipant];
+      return [...participants, action.newParticipant];
     }
     case 'changed': {
       return participants.map(t => {
-        const newParticipant = new Participant(
-          action.id,
-          action.firstName,
-          action.lastName,
-          action.email,
-          action.group,
-          action.topic,
-          action.languageLevel
-        );
-
-        if (t.getId() === newParticipant.getId()) {
-          return newParticipant;
+        if (t.getId() === action.updatedParticipant.getId()) {
+          return action.updatedParticipant;
         } else {
           return t;
         }
       });
     }
     case 'deleted': {
-      return participants.filter(t => t.getId() !== action.id);
+      return participants.filter(t => t.getId() !== action.itemToDelete.getId());
     }
     default: {
       throw Error('Unknown action: ' + action.type);

@@ -4,33 +4,44 @@ import exit from '../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import { RoomStore } from '../../data/store/RoomStore';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
 import RoomSlot from '../../data/model/RoomSlot';
 import Room from '../../data/model/Room';
 import Participant from '../../data/model/Participant';
+import { useParticipantsDispatch } from '../window/ParticipantsContext';
+import PropTypes from 'prop-types';
+import ParticipantModal from './participantModals/ParticipantModal';
 const helper = new RoomSlotHelper();
 const roomStore = RoomStore.getSingleton();
-const participantStore = ParticipantStore.getSingleton();
 
-function deleteModal (props, onClose, onSave, onHide) {
+function deleteModal (props) {
   const [showModal, setShowModal] = useState(true);
-  const [item] = useState(props.deleteobject);
-  // console.log(item);
+  const toDelete = props.deleteobject;
+
+  const participantDispatch = useParticipantsDispatch();
+
   const handleClose = () => {
     setShowModal(false);
+    props.onClose();
   };
+
   const deleteItem = () => {
-    console.log('delete');
-    if (item instanceof RoomSlot) {
-      helper.deleteSlotAndCorrespondingRooms(item.getId());
-    } else if (item instanceof Room) {
-      roomStore.delete(item.getId());
-    } else if (item instanceof Participant) {
-      participantStore.delete(item.getId());
+    if (toDelete instanceof RoomSlot) {
+      helper.deleteSlotAndCorrespondingRooms(toDelete.getId());
+    } else if (toDelete instanceof Room) {
+      roomStore.delete(toDelete.getId());
+    } else if (Array.isArray(toDelete) && toDelete.every(i => i instanceof Participant)) {
+      // delete participants
+      toDelete.forEach(participant => {
+        participantDispatch({
+          type: 'deleted',
+          itemToDelete: participant
+        });
+      });
     } else {
       console.log('No matching item found to delete!');
     }
-    setShowModal(false);
+
+    handleClose();
   };
 
   return (
@@ -45,7 +56,7 @@ function deleteModal (props, onClose, onSave, onHide) {
             <Modal.Body>
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
-                        <span className={'modal-header border-0'}>Delete {props.titleObject}</span>
+                        <span className={'modal-header border-0'}> {'Delete' + props.titleObject}</span>
                         <img src={exit} alt={'exitModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'text-container'}>
@@ -62,4 +73,10 @@ function deleteModal (props, onClose, onSave, onHide) {
         </Modal>
   );
 }
+ParticipantModal.propTypes = {
+  textObject: PropTypes.string,
+  titleObject: PropTypes.string,
+  toDelete: PropTypes.array,
+  onClose: PropTypes.func
+};
 export default deleteModal;

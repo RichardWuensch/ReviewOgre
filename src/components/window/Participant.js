@@ -2,7 +2,7 @@ import edit from '../../assets/media/pencil-square.svg';
 import deleteButton from '../../assets/media/trash.svg';
 import React from 'react';
 import DeleteModal from '../modals/deleteModal';
-import ParticipantModal from '../modals/ParticipantModal';
+import ParticipantModal from '../modals/participantModals/ParticipantModal';
 import './participants_window.css';
 
 function Participant ({ participant }) {
@@ -40,10 +40,10 @@ function Participant ({ participant }) {
             <DeleteModal
                 show={modalDelete}
                 onHide={() => setModalDelete(false)}
-                onSave={() => { console.log('Deleted'); }}
                 titleObject={'Participant'}
                 textObject={'this participant'}
-                deleteobject={undefined}/>
+                deleteobject={[participant]}
+                onClose={() => { setModalDelete(false); }}/>
             <ParticipantModal
                 firstname={participant.getFirstName()}
                 lastname={participant.getLastName()}
