@@ -1,25 +1,37 @@
 import Modal from 'react-bootstrap/Modal';
-import exit from '../../assets/media/x-circle.svg';
+import exit from '../../../assets/media/x-circle.svg';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useParticipantsDispatch } from '../../window/ParticipantsContext';
 
-function editMultipleParticipantsModal (props, onClose, onSave, onHide, list) {
+function EditMultipleParticipantsModal (props) {
   const [showModal, setShowModal] = useState(true);
   const [group, setGroup] = useState('');
   const [languageLevel, setLanguageLevel] = useState('');
   const [topic, setTopic] = useState('');
+  const participants = props.participants;
+  const participantDispatch = useParticipantsDispatch();
+
   const handleClose = () => {
     setShowModal(false);
+    props.onClose();
   };
 
-  /* useEffect(() => {
-    setGroup(list.group);
-    setLanguageLevel(list.languageLevel);
-    setTopic(list.topic);
-  }, [list]); */
+  const onSaveUpdates = () => {
+    participants.forEach(participant => {
+      if (group !== '') participant.setGroup(group);
+      if (topic !== '') participant.setTopic(topic);
+      if (languageLevel !== '') participant.setLanguageLevel(languageLevel);
 
-  /* function handleSave () {
-    onSave(group, languageLevel, topic);
-  } */
+      participantDispatch({
+        type: 'changed',
+        updatedParticipant: participant
+      });
+    });
+
+    handleClose();
+  };
+
   return (
         <Modal
             onExit={handleClose}
@@ -33,7 +45,7 @@ function editMultipleParticipantsModal (props, onClose, onSave, onHide, list) {
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
                         <span className={'modal-header border-0'}>Edit Participants</span>
-                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
+                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={handleClose}/>
                     </div>
                     <div className={'attributes-container'}>
                         <h6>Group:</h6>
@@ -41,7 +53,7 @@ function editMultipleParticipantsModal (props, onClose, onSave, onHide, list) {
                         <h6>Topic:</h6>
                         <input className={'input-attributes-container'} type={'text'} value={topic} placeholder="Topic" onChange={(e) => setTopic(e.target.value)} />
                         <h6>German Skill Level:</h6>
-                        <form action="#">
+                        <form action="src/components/modals/participantModals/editMultipleParticipantsModal#EditMultipleParticipantsModal.js">
                             <select className={'dropdown-attributes-container'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
                                 <option className={'dropdown-attributes-container-text'} value="A1">A1</option>
                                 <option className={'dropdown-attributes-container-text'} value="A2">A2</option>
@@ -54,7 +66,7 @@ function editMultipleParticipantsModal (props, onClose, onSave, onHide, list) {
                         </form>
                     </div>
                     <div className={'footer'}>
-                        <button className={'add-participant-button'}>
+                        <button className={'add-participant-button'} onClick={onSaveUpdates}>
                             <span className={'add-participant-text'}>Save Changes</span>
                         </button>
                     </div>
@@ -63,4 +75,10 @@ function editMultipleParticipantsModal (props, onClose, onSave, onHide, list) {
         </Modal>
   );
 }
-export default editMultipleParticipantsModal;
+EditMultipleParticipantsModal.propTypes = {
+  onClose: PropTypes.func,
+  group: PropTypes.string,
+  topic: PropTypes.string,
+  languageLevel: PropTypes.string
+};
+export default EditMultipleParticipantsModal;

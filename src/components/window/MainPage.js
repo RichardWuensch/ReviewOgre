@@ -2,7 +2,6 @@ import React from 'react';
 import './MainPage.css';
 import './setup_window.css';
 import './checkboxstyling.css';
-import ParticipantsWindow from './participants_window';
 import SlotsWindow from './slots_window';
 import logo from '../../assets/media/favicon_ogre.png';
 import download from '../../assets/media/download.svg';
@@ -12,14 +11,13 @@ import Test from '../../algorithm/test/Test';
 import StoreConfiguration from '../../api/StoreConfiguration';
 import LoadConfiguration from '../../api/LoadConfiguration';
 import ImportParticipants from '../../api/ImportParticipants';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
 import FailedCalculationModal from '../modals/failedCalculationModal';
+import ParticipantList from './ParticipantWindow';
 // import RevagerLiteExport from '../../api/mail/RevagerLiteExport';
 // import Mail from '../../api/mail/Mail';
 
 function MainPage () {
   const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
-  const participantstore = ParticipantStore.getSingleton();
 
   function runAlgorithm () {
     if (new Test().run()) {
@@ -64,7 +62,9 @@ function MainPage () {
                 </button>
             </div>
             <div className={'participant-slots-container'}>
-                <ParticipantsWindow participantstore={participantstore}/>
+
+                {/* added context to participant store */}
+                <ParticipantList/>
                 {/* replace with component */}
                 <div className={'slots-setup-container'}>
                     <SlotsWindow/>
