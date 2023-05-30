@@ -10,18 +10,18 @@ export default class SmallTestDataUpdated extends AbstractTestData {
     this.authorIsNotary = true;
 
     this.participants = [
-      new Participant('Richard', '', 'richard.wuensch@study.thws.de', 1),
-      new Participant('Basti', '', 'richard.wuensch@study.thws.de', 1),
-      new Participant('Daniel', '', 'richard.wuensch@study.thws.de', 1),
-      new Participant('Jakob', '', 'richard.wuensch@study.thws.de', 2),
-      new Participant('Nico', '', 'richard.wuensch@study.thws.de', 2),
-      new Participant('Hannah', '', 'richard.wuensch@study.thws.de', 2),
-      new Participant('A', '', 'richard.wuensch@study.thws.de', 3),
-      new Participant('B', '', 'richard.wuensch@study.thws.de', 3),
-      new Participant('C', '', 'richard.wuensch@study.thws.de', 3),
-      new Participant('X', '', 'richard.wuensch@study.thws.de', 4),
-      new Participant('Y', '', 'richard.wuensch@study.thws.de', 4),
-      new Participant('Z', '', 'richard.wuensch@study.thws.de', 4)
+      new Participant(-1, 'Richard', '', 'richard.wuensch@study.thws.de', 1),
+      new Participant(-1, 'Basti', '', 'richard.wuensch@study.thws.de', 1),
+      new Participant(-1, 'Daniel', '', 'richard.wuensch@study.thws.de', 1),
+      new Participant(-1, 'Jakob', '', 'richard.wuensch@study.thws.de', 2),
+      new Participant(-1, 'Nico', '', 'richard.wuensch@study.thws.de', 2),
+      new Participant(-1, 'Hannah', '', 'richard.wuensch@study.thws.de', 2),
+      new Participant(-1, 'A', '', 'richard.wuensch@study.thws.de', 3),
+      new Participant(-1, 'B', '', 'richard.wuensch@study.thws.de', 3),
+      new Participant(-1, 'C', '', 'richard.wuensch@study.thws.de', 3),
+      new Participant(-1, 'X', '', 'richard.wuensch@study.thws.de', 4),
+      new Participant(-1, 'Y', '', 'richard.wuensch@study.thws.de', 4),
+      new Participant(-1, 'Z', '', 'richard.wuensch@study.thws.de', 4)
     ];
 
     const startDate1 = new Date();
