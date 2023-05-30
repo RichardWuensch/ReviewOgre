@@ -4,7 +4,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../window/ParticipantsContext';
 import { Button, Form, Image } from 'react-bootstrap';
-import './EditMultipleParticipants.css'
+import './EditMultipleParticipants.css';
 
 function EditMultipleParticipantsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -45,7 +45,7 @@ function EditMultipleParticipantsModal (props) {
         >
             <Modal.Header>
                 <Modal.Title>Edit Participants</Modal.Title>
-                <Image src={exit} alt={'exit'} style={{ color: '#82868B', height: 20, width: 20 }} className={'modal-header-icon'} onClick={ handleClose }></Image>
+                <Image src={exit} alt={'exit'} className={'modal-header-icon'} onClick={ handleClose }></Image>
             </Modal.Header>
             <Modal.Body>
                 <Form>
