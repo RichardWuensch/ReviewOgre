@@ -1,4 +1,3 @@
-import './ParticipantModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../../assets/media/x-circle.svg';
 import { useState } from 'react';
@@ -106,11 +105,11 @@ function ParticipantModal (props) {
                             <option value={'Native Speaker'}>Native Speaker</option>
                         </Form.Select>
                     </Form.Group>
+                    <div className={'text-center'}>
+                        <Button className={'save-button'} onClick={onSaveClick}> {newParticipant ? 'Add Participant' : 'Save Changes'}</Button>
+                    </div>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button className={'save-button'} onClick={onSaveClick}> {newParticipant ? 'Add Participant' : 'Save Changes'}</Button>
-            </Modal.Footer>
         </Modal>
   );
 }

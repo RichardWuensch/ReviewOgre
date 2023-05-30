@@ -4,7 +4,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../window/ParticipantsContext';
 import { Button, Form, Image } from 'react-bootstrap';
-import './EditMultipleParticipants.css';
+import './EditMultipleParticipantsModal.css';
 
 function EditMultipleParticipantsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -69,11 +69,11 @@ function EditMultipleParticipantsModal (props) {
                             <option value={'Native Speaker'}>Native Speaker</option>
                         </Form.Select>
                     </Form.Group>
+                    <div className={'text-center'}>
+                        <Button onClick={ onSaveUpdates } className={'save-button'}>Save Changes</Button>
+                    </div>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={ onSaveUpdates } className={'save-button'}>Save Changes</Button>
-            </Modal.Footer>
         </Modal>
   );
 }

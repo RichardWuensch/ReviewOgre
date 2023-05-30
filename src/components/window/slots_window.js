@@ -10,6 +10,7 @@ import deleteButton from '../../assets/media/trash.svg';
 import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
 import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import PropTypes from 'prop-types';
+import { useRoomSlots } from './RoomSlotContext';
 
 function ToggleSlot (props) {
   const [open, setOpen] = useState(false);
@@ -112,23 +113,14 @@ function SlotsWindow () {
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
   const [deleteObject, setDeleteObject] = React.useState(null);
   const helper = new RoomSlotHelper();
-  const slots = helper.getAllRoomSlots();
+
+  const roomSlots = useRoomSlots();
+
   function handleChildUpdate () {
     setChildUpdated(!childUpdated);
   }
   function handleDelete () {
     console.log('Delete successful');
-  }
-  function DateFormatter (date) {
-    if (date != null) {
-      const parts = date.split('-');
-      const year = parts[0];
-      const month = parts[1];
-      const day = parts[2];
-      return `${day}/${month}/${year}`;
-    } else {
-      return 'No Date entered';
-    }
   }
 
   return (
@@ -143,13 +135,13 @@ function SlotsWindow () {
           <div className={'slots-list-container'}>
               <Accordion defaultActiveKey="0">
               <ul className={'list-style'}>
-                  {slots.map((slot, index) => (
+                  {roomSlots.map((slot, index) => (
                           <li key={index}>
                               <Card>
                                   <Card.Header className={'list-item'}>
                                           <ToggleSlot eventKey={index}
                                                       slotId={slot.getId()}
-                                                      slotText={DateFormatter(slot.getDate()) + ' From: ' + slot.getStartTime() + ' to ' + slot.getEndTime()}
+                                                      slotText={slot.getFormattedDate() + ' From: ' + slot.getFormattedStartTime() + ' to ' + slot.getFormattedEndTime()}
                                                       date={slot.getDate()}
                                                       starttime={slot.getStartTime()}
                                                       endtime={slot.getEndTime()}
