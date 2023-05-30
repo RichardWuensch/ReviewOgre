@@ -3,6 +3,8 @@ import exit from '../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../window/ParticipantsContext';
+import { Button, Form, Image } from 'react-bootstrap';
+import './EditMultipleParticipants.css'
 
 function EditMultipleParticipantsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -41,37 +43,37 @@ function EditMultipleParticipantsModal (props) {
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
+            <Modal.Header>
+                <Modal.Title>Edit Participants</Modal.Title>
+                <Image src={exit} alt={'exit'} style={{ color: '#82868B', height: 20, width: 20 }} className={'modal-header-icon'} onClick={ handleClose }></Image>
+            </Modal.Header>
             <Modal.Body>
-                <div className={'modal-container'}>
-                    <div className={'modal-header-container'}>
-                        <span className={'modal-header border-0'}>Edit Participants</span>
-                        <img src={exit} alt={'exitParticipantModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={handleClose}/>
-                    </div>
-                    <div className={'attributes-container'}>
-                        <h6>Group:</h6>
-                        <input className={'input-attributes-container'} type={'text'} value={group} placeholder="Group" onChange={(e) => setGroup(e.target.value)} />
-                        <h6>Topic:</h6>
-                        <input className={'input-attributes-container'} type={'text'} value={topic} placeholder="Topic" onChange={(e) => setTopic(e.target.value)} />
-                        <h6>German Skill Level:</h6>
-                        <form action="src/components/modals/participantModals/editMultipleParticipantsModal#EditMultipleParticipantsModal.js">
-                            <select className={'dropdown-attributes-container'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
-                                <option className={'dropdown-attributes-container-text'} value="A1">A1</option>
-                                <option className={'dropdown-attributes-container-text'} value="A2">A2</option>
-                                <option className={'dropdown-attributes-container-text'} value="B1">B1</option>
-                                <option className={'dropdown-attributes-container-text'} value="B2">B2</option>
-                                <option className={'dropdown-attributes-container-text'} value="C1">C1</option>
-                                <option className={'dropdown-attributes-container-text'} value="C2">C2</option>
-                                <option className={'dropdown-attributes-container-text'} value="Native Speaker">Native Speaker</option>
-                            </select>
-                        </form>
-                    </div>
-                    <div className={'footer'}>
-                        <button className={'add-participant-button'} onClick={onSaveUpdates}>
-                            <span className={'add-participant-text'}>Save Changes</span>
-                        </button>
-                    </div>
-                </div>
+                <Form>
+                    <Form.Group>
+                        <Form.Label>Group:</Form.Label>
+                        <Form.Control placeholder='Group' type={'text'} value={group} onChange={(e) => setGroup(e.target.value)} autoFocus></Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Topic:</Form.Label>
+                        <Form.Control placeholder={'Topic'} type={'text'} value={topic} onChange={(e) => setTopic(e.target.value)}></Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>German Skill Level:</Form.Label>
+                        <Form.Select placeholder={'Native Speaker'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
+                            <option value={'A1'}>A1</option>
+                            <option value={'A2'}>A2</option>
+                            <option value={'B1'}>B1</option>
+                            <option value={'B2'}>B2</option>
+                            <option value={'C1'}>C1</option>
+                            <option value={'C2'}>C2</option>
+                            <option value={'Native Speaker'}>Native Speaker</option>
+                        </Form.Select>
+                    </Form.Group>
+                </Form>
             </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={ onSaveUpdates } className={'save-button'}>Save Changes</Button>
+            </Modal.Footer>
         </Modal>
   );
 }
