@@ -4,7 +4,8 @@ export default class Slot {
   #startTime;
   #endTime;
 
-  constructor (date, startTime, endTime) {
+  constructor (id, date, startTime, endTime) {
+    this.#id = id;
     this.#date = date;
     this.#startTime = startTime;
     this.#endTime = endTime;

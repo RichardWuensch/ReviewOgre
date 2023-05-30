@@ -6,15 +6,10 @@ import add from '../../../assets/media/plus-circle.svg';
 import chevronDown from '../../../assets/media/chevron-down.svg';
 import chevronUp from '../../../assets/media/chevron-up.svg';
 import React, { useContext, useState } from 'react';
-import { Accordion, AccordionContext, Card, useAccordionButton } from 'react-bootstrap';
+import { Accordion, AccordionContext, Card, Image, useAccordionButton } from 'react-bootstrap';
 import RoomSlot from '../../../data/model/RoomSlot';
-import RoomSlotHelper from '../../../data/store/RoomSlotHelper';
 import Room from '../../../data/model/Room';
-import { SlotStore } from '../../../data/store/SlotStore';
-import { RoomStore } from '../../../data/store/RoomStore';
-const helper = new RoomSlotHelper();
-const slotStore = SlotStore.getSingleton();
-const roomStore = RoomStore.getSingleton();
+import { useRoomSlotsDispatch } from '../../window/context/RoomSlotContext';
 
 function ToggleRoom ({ children, eventKey, callback }) {
   const { activeEventKey } = useContext(AccordionContext);
@@ -35,10 +30,10 @@ function ToggleRoom ({ children, eventKey, callback }) {
         >
             {isCurrentEventKey
               ? (
-                <img src={chevronUp} alt={'chevron up'} />
+                <Image src={chevronUp} alt={'chevron up'} />
                 )
               : (
-                <img src={chevronDown} alt={'chevron down'} />
+                <Image src={chevronDown} alt={'chevron down'} />
                 )}
             {children}
         </button>
@@ -54,11 +49,13 @@ function SlotModal (props) {
   const [showModal, setShowModal] = useState(true);
   const slotId = useState(props.id || 0);
   const [date, setDate] = useState(props.date || new Date());
-  const [startTime, setStartTime] = useState(props.starttime || '');
-  const [endTime, setEndTime] = useState(props.endtime || '');
+  const [startTime, setStartTime] = useState(props.starttime || new Date());
+  const [endTime, setEndTime] = useState(props.endtime || new Date());
   const [items, setItems] = useState(props.items || []);
   const [header] = useState(props.header);
-  const [edit] = useState(props.edit || false);
+  const [isEdit] = useState(props.edit || false);
+
+  const dispatch = useRoomSlotsDispatch();
 
   const addItem = () => {
     setItems([...items, new Room('', false)]);
@@ -76,39 +73,43 @@ function SlotModal (props) {
   };
 
   const handleClose = () => {
-    if (!edit) {
+    if (!isEdit) {
       setShowModal(false);
       setDate(null);
-      setStartTime('');
-      setEndTime('');
+      setStartTime(new Date());
+      setEndTime(new Date());
       setItems([]);
     }
   };
   const addSlot = () => {
+    // TODO: change timestring to datetime
+    // TODO: refactor creation into method
     const rooms = [];
     items.forEach(room => { rooms.push(new Room(room.getName(), room.hasBeamer())); });
-    helper.putRoomSlot(new RoomSlot(date, startTime, endTime, rooms));
+    const tempRoomSlot = new RoomSlot(slotId, date, startTime, endTime, rooms);
+
+    /* eslint-disable object-shorthand */
+    dispatch({
+      type: 'added',
+      newRoomSlot: tempRoomSlot
+    });
+
+    /* eslint-enable object-shorthand */
     setShowModal(false);
   };
+
   const saveEdit = () => {
-    const slot = slotStore.getById(slotId);
-    slot.setDate(date);
-    slot.setStartTime(startTime);
-    slot.setEndTime(endTime);
-    slotStore.update(slotId, slot);
-    items.forEach((room, index) => {
-    /* check items in list if id already assigned => if not add Room and remove from list else: update item */
-      if (room.getId() === undefined) {
-        const newRoom = new Room(room.getName(), room.hasBeamer());
-        newRoom.setSlotId(slotId);
-        roomStore.put(newRoom);
-        items.splice(index, 1);
-        setItems([...items, newRoom]);
-      } else {
-        const updatedRoom = new Room(room.getName(), room.hasBeamer());
-        roomStore.update(room.getSlotId(), updatedRoom);
-      }
+    const rooms = [];
+    items.forEach(room => { rooms.push(new Room(room.getName(), room.hasBeamer())); });
+    const tempRoomSlot = new RoomSlot(slotId, date, startTime, endTime, rooms);
+
+    /* eslint-disable object-shorthand */
+    dispatch({
+      type: 'changed',
+      updatedRoomSlot: tempRoomSlot
     });
+
+    /* eslint-enable object-shorthand */
     setShowModal(false);
   };
 
@@ -137,7 +138,7 @@ function SlotModal (props) {
                         <input className={'input-time-container'} type={'time'} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
                     </div>
                     <div className={'room-container'}>
-                        {edit ? (<span style={ { marginBottom: 2 } } >Edit or Add Rooms to this Slot:</span>) : (<span style={ { marginBottom: 2 } } >Create Rooms for this Time Slot:</span>)}
+                        {isEdit ? (<span style={ { marginBottom: 2 } } >Edit or Add Rooms to this Slot:</span>) : (<span style={ { marginBottom: 2 } } >Create Rooms for this Time Slot:</span>)}
                         <div>
                             <div>
                                 <Accordion defaultActiveKey="0">
@@ -167,12 +168,12 @@ function SlotModal (props) {
                                 </Accordion>
                             </div>
                             <button className={'add-room-button'} onClick={addItem}>
-                                <img src={add} alt={'addRoomIcon'}/>
+                                <Image src={add} alt={'addRoomIcon'}/>
                             </button>
                         </div>
                     </div>
                     <div className={'footer'}>
-                        {edit
+                        {isEdit
                           ? (
                         <button className={'add-slot-button'} onClick={() => {
                           saveEdit();
@@ -200,8 +201,8 @@ SlotModal.propTypes = {
   header: PropTypes.string,
   edit: PropTypes.bool,
   date: PropTypes.number,
-  starttime: PropTypes.string,
-  endtime: PropTypes.string,
+  startTime: PropTypes.string,
+  endTime: PropTypes.string,
   items: PropTypes.any
 };
 export default SlotModal;

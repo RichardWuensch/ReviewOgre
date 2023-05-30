@@ -42,7 +42,6 @@ function FailedCalculationsModal (props) {
   );
 }
 FailedCalculationsModal.propTypes = {
-  eventKey: PropTypes.string.isRequired,
-  onHide: PropTypes.string
+  onHide: PropTypes.func.isRequired
 };
 export default FailedCalculationsModal;

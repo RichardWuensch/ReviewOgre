@@ -33,10 +33,12 @@ function ParticipantModal (props) {
   };
 
   const onSaveClick = () => {
+    const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
+
     /* eslint-disable object-shorthand */
     if (newParticipant) {
       // create a new participant
-      const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
+
       dispatch({
         type: 'added',
         newParticipant: participantTemp
@@ -44,8 +46,6 @@ function ParticipantModal (props) {
       clearData();
     } else {
       // update an existing participant
-      console.log('Update Participant with id :' + id);
-      const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
       dispatch({
         type: 'changed',
         updatedParticipant: participantTemp

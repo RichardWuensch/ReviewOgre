@@ -3,8 +3,8 @@ import Slot from './Slot';
 export default class RoomSlot extends Slot {
   #rooms = [];
 
-  constructor (date, startTime, endTime, rooms) {
-    super(date, startTime, endTime);
+  constructor (id, date, startTime, endTime, rooms) {
+    super(id, date, startTime, endTime);
     this.#rooms = rooms;
   }
 

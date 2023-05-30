@@ -52,11 +52,11 @@ function roomSlotsReducer (roomSlots, action) {
 }
 
 const initialRoomSlots = [
-  new RoomSlot(new Date(), new Date(), new Date(), [
+  new RoomSlot(-1, new Date(), new Date(), new Date(), [
     new Room('I.1.2', true),
     new Room('I.1.3', true)
   ]),
-  new RoomSlot(new Date(), new Date(), new Date(), [
+  new RoomSlot(0, new Date(), new Date(), new Date(), [
     new Room('I.2.2', true),
     new Room('I.2.3', true)
   ])
