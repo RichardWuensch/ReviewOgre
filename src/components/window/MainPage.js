@@ -13,14 +13,17 @@ import LoadConfiguration from '../../api/LoadConfiguration';
 import ImportParticipants from '../../api/ImportParticipants';
 import FailedCalculationModal from '../modals/failedCalculationModal';
 import ParticipantList from './ParticipantWindow';
+import { useParticipants, useParticipantsDispatch } from './ParticipantsContext';
 // import RevagerLiteExport from '../../api/mail/RevagerLiteExport';
 // import Mail from '../../api/mail/Mail';
 
 function MainPage () {
   const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
+  const dispatch = useParticipantsDispatch();
+  const participant = useParticipants();
 
   function runAlgorithm () {
-    if (new Test().run()) {
+    if (new Test().run(participant)) {
       // successful run
 
       // all on successful calculation window:
@@ -31,6 +34,20 @@ function MainPage () {
     } else {
       setModalFailedCalculations(true);
     }
+  }
+
+  async function importStudentList (event) {
+    const importParticipants = new ImportParticipants();
+    const participants = await importParticipants.runStudentImport(event);
+
+    /* eslint-disable object-shorthand */
+    for (const p of participants) {
+      dispatch({
+        type: 'added',
+        newParticipant: p
+      });
+    }
+    /* eslint-enable object-shorthand */
   }
 
   return (
@@ -130,10 +147,6 @@ function saveConfiguration () {
 
 async function importConfiguration (event) {
   await new LoadConfiguration().runConfigurationImport(event);
-}
-
-async function importStudentList (event) {
-  await new ImportParticipants().runStudentImport(event);
 }
 
 export default MainPage;

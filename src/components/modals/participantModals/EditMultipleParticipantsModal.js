@@ -4,7 +4,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../window/ParticipantsContext';
 import { Button, Form, Image } from 'react-bootstrap';
-import './EditMultipleParticipants.css'
+import './EditMultipleParticipants.css';
 
 function EditMultipleParticipantsModal (props) {
   const [showModal, setShowModal] = useState(true);
