@@ -1,12 +1,10 @@
 import Modal from 'react-bootstrap/Modal';
-import exit from '../../../assets/media/x-circle.svg';
+import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParticipantsDispatch } from '../../window/ParticipantsContext';
-import Participant from '../../../data/model/Participant';
+import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
+import Participant from '../../../../data/model/Participant';
 import { Button, Form, Image } from 'react-bootstrap';
-
-let nextId = 1;
 
 function ParticipantModal (props) {
   const [firstName, setFirstName] = useState(props.firstname || '');
@@ -17,7 +15,7 @@ function ParticipantModal (props) {
   const [languageLevel, setLanguageLevel] = useState(props.languagelevel || 'Native Speaker');
   const [showModal, setShowModal] = useState(true);
   const [newParticipant] = useState(props.newparticipant || false);
-  const [id, setId] = useState(props.id || nextId);
+  const [id] = useState(props.id || -1);
   const dispatch = useParticipantsDispatch();
 
   const handleClose = () => {
@@ -38,7 +36,6 @@ function ParticipantModal (props) {
     /* eslint-disable object-shorthand */
     if (newParticipant) {
       // create a new participant
-      setId(++nextId);
       const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
       dispatch({
         type: 'added',

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import './slots_window.css';
-import SlotModal from '../modals/SlotRoomModal';
-import DeleteModal from '../modals/deleteModal';
-import add from '../../assets/media/plus-circle.svg';
-import folderImage from '../../assets/media/folder.svg';
-import fileImage from '../../assets/media/file-earmark.svg';
-import edit from '../../assets/media/pencil-square.svg';
-import deleteButton from '../../assets/media/trash.svg';
+import './SlotsWindow.css';
+import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
+import DeleteModal from '../../modals/deleteModal/deleteModal';
+import add from '../../../assets/media/plus-circle.svg';
+import folderImage from '../../../assets/media/folder.svg';
+import fileImage from '../../../assets/media/file-earmark.svg';
+import edit from '../../../assets/media/pencil-square.svg';
+import deleteButton from '../../../assets/media/trash.svg';
 import { Accordion, Card, useAccordionButton } from 'react-bootstrap';
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
+import RoomSlotHelper from '../../../data/store/RoomSlotHelper';
 import PropTypes from 'prop-types';
-import { useRoomSlots } from './RoomSlotContext';
+import { useRoomSlots } from '../context/RoomSlotContext';
 
 function ToggleSlot (props) {
   const [open, setOpen] = useState(false);
@@ -143,8 +143,8 @@ function SlotsWindow () {
                                                       slotId={slot.getId()}
                                                       slotText={slot.getFormattedDate() + ' From: ' + slot.getFormattedStartTime() + ' to ' + slot.getFormattedEndTime()}
                                                       date={slot.getDate()}
-                                                      starttime={slot.getStartTime()}
-                                                      endtime={slot.getEndTime()}
+                                                      starttime={slot.getFormattedStartTime()}
+                                                      endtime={slot.getFormattedEndTime()}
                                                       rooms={slot.getRooms()}
                                                       slothelper={helper}
                                                       onUpdate={handleChildUpdate}></ToggleSlot>
@@ -185,13 +185,8 @@ function SlotsWindow () {
                 /* open Slot Modal without data */
                 show={modalShowSlot}
                 onHide={() => setModalShowSlot(false)}
-                header={'New Time Slot'}
-                id={undefined}
-                edit={false}
-                date={undefined}
-                starttime={''}
-                endtime={''}
-                items={[]}/>
+                header={'New Time Slot'}/>
+
               {deleteObject !== null && (
                   <DeleteModal
                       show={modalDelete}

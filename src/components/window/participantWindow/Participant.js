@@ -1,9 +1,9 @@
-import edit from '../../assets/media/pencil-square.svg';
-import deleteButton from '../../assets/media/trash.svg';
+import edit from '../../../assets/media/pencil-square.svg';
+import deleteButton from '../../../assets/media/trash.svg';
 import React from 'react';
-import DeleteModal from '../modals/deleteModal';
-import ParticipantModal from '../modals/participantModals/ParticipantModal';
-import './participants_window.css';
+import DeleteModal from '../../modals/deleteModal/deleteModal';
+import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
+import './ParticipantWindow.css';
 
 function Participant ({ participant }) {
   const [modalEditParticipant, setModalEditParticipant] = React.useState(false);

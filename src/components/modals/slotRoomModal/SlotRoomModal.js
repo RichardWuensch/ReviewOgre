@@ -1,17 +1,17 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import './SlotRoomModal.css';
-import exit from '../../assets/media/x-circle.svg';
-import add from '../../assets/media/plus-circle.svg';
-import chevronDown from '../../assets/media/chevron-down.svg';
-import chevronUp from '../../assets/media/chevron-up.svg';
+import exit from '../../../assets/media/x-circle.svg';
+import add from '../../../assets/media/plus-circle.svg';
+import chevronDown from '../../../assets/media/chevron-down.svg';
+import chevronUp from '../../../assets/media/chevron-up.svg';
 import React, { useContext, useState } from 'react';
 import { Accordion, AccordionContext, Card, useAccordionButton } from 'react-bootstrap';
-import RoomSlot from '../../data/model/RoomSlot';
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
-import Room from '../../data/model/Room';
-import { SlotStore } from '../../data/store/SlotStore';
-import { RoomStore } from '../../data/store/RoomStore';
+import RoomSlot from '../../../data/model/RoomSlot';
+import RoomSlotHelper from '../../../data/store/RoomSlotHelper';
+import Room from '../../../data/model/Room';
+import { SlotStore } from '../../../data/store/SlotStore';
+import { RoomStore } from '../../../data/store/RoomStore';
 const helper = new RoomSlotHelper();
 const slotStore = SlotStore.getSingleton();
 const roomStore = RoomStore.getSingleton();
@@ -52,13 +52,14 @@ ToggleRoom.propTypes = {
 
 function SlotModal (props) {
   const [showModal, setShowModal] = useState(true);
-  const slotId = useState(props.id)[0];
-  const [date, setDate] = useState(props.date);
-  const [startTime, setStartTime] = useState(props.starttime);
-  const [endTime, setEndTime] = useState(props.endtime);
-  const [items, setItems] = useState(props.items);
+  const slotId = useState(props.id || 0);
+  const [date, setDate] = useState(props.date || new Date());
+  const [startTime, setStartTime] = useState(props.starttime || '');
+  const [endTime, setEndTime] = useState(props.endtime || '');
+  const [items, setItems] = useState(props.items || []);
   const [header] = useState(props.header);
-  const [edit] = useState(props.edit);
+  const [edit] = useState(props.edit || false);
+
   const addItem = () => {
     setItems([...items, new Room('', false)]);
   };

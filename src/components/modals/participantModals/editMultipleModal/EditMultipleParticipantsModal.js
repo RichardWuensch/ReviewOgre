@@ -1,8 +1,8 @@
 import Modal from 'react-bootstrap/Modal';
-import exit from '../../../assets/media/x-circle.svg';
+import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParticipantsDispatch } from '../../window/ParticipantsContext';
+import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
 import { Button, Form, Image } from 'react-bootstrap';
 import './EditMultipleParticipantsModal.css';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import MainPage from '../src/components/window/MainPage';
-import { ParticipantProvider } from './components/window/ParticipantsContext';
-import { RoomSlotProvider } from './components/window/RoomSlotContext';
+import MainPage from './components/window/mainPage/MainPage';
+import { ParticipantProvider } from './components/window/context/ParticipantsContext';
+import { RoomSlotProvider } from './components/window/context/RoomSlotContext';
 
 function App () {
   return (

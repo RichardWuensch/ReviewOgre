@@ -1,15 +1,15 @@
 import './deleteModal.css';
 import Modal from 'react-bootstrap/Modal';
-import exit from '../../assets/media/x-circle.svg';
+import exit from '../../../assets/media/x-circle.svg';
 import { useState } from 'react';
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
-import { RoomStore } from '../../data/store/RoomStore';
-import RoomSlot from '../../data/model/RoomSlot';
-import Room from '../../data/model/Room';
-import Participant from '../../data/model/Participant';
-import { useParticipantsDispatch } from '../window/ParticipantsContext';
+import RoomSlotHelper from '../../../data/store/RoomSlotHelper';
+import { RoomStore } from '../../../data/store/RoomStore';
+import RoomSlot from '../../../data/model/RoomSlot';
+import Room from '../../../data/model/Room';
+import Participant from '../../../data/model/Participant';
+import { useParticipantsDispatch } from '../../window/context/ParticipantsContext';
 import PropTypes from 'prop-types';
-import ParticipantModal from './participantModals/ParticipantModal';
+import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
 const helper = new RoomSlotHelper();
 const roomStore = RoomStore.getSingleton();
 

@@ -1,14 +1,14 @@
-import { useParticipants } from './ParticipantsContext';
+import { useParticipants } from '../context/ParticipantsContext';
 import Participant from './Participant';
-import './participants_window.css';
-import add from '../../assets/media/plus-circle.svg';
-import edit from '../../assets/media/pencil-square.svg';
-import deleteButton from '../../assets/media/trash.svg';
-import exit from '../../assets/media/x-circle.svg';
+import './ParticipantWindow.css';
+import add from '../../../assets/media/plus-circle.svg';
+import edit from '../../../assets/media/pencil-square.svg';
+import deleteButton from '../../../assets/media/trash.svg';
+import exit from '../../../assets/media/x-circle.svg';
 import React from 'react';
-import ParticipantModal from '../modals/participantModals/ParticipantModal';
-import EditMultipleParticipantsModal from '../modals/participantModals/EditMultipleParticipantsModal';
-import DeleteModal from '../modals/deleteModal';
+import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
+import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
+import DeleteModal from '../../modals/deleteModal/deleteModal';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
