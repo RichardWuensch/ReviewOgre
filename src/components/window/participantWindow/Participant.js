@@ -4,10 +4,22 @@ import React from 'react';
 import DeleteModal from '../../modals/deleteModal/deleteModal';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
 import './ParticipantWindow.css';
+import { useParticipantsDispatch } from '../context/ParticipantsContext';
 
 function Participant ({ participant }) {
-  const [modalEditParticipant, setModalEditParticipant] = React.useState(false);
-  const [modalDelete, setModalDelete] = React.useState(false);
+  const [showModalEditParticipant, setShowModalEditParticipant] = React.useState(false);
+  const [showModalDelete, setShowModalDelete] = React.useState(false);
+
+  const dispatch = useParticipantsDispatch();
+
+  const updateParticipant = (participant) => {
+    /* eslint-disable object-shorthand */
+    dispatch({
+      type: 'changed',
+      updatedParticipant: participant
+    });
+    /* eslint-enable object-shorthand */
+  };
 
   const participantContent = (
             <>
@@ -22,11 +34,11 @@ function Participant ({ participant }) {
                 <td className={'column-options'}>
                     <div className={'column-options-buttons'}>
                         <button className={'button-options-edit'} onClick={() => {
-                          setModalEditParticipant(true);
+                          setShowModalEditParticipant(true);
                         }}><img src={edit} alt={'icon'}/>
                         </button>
                         <button className={'button-options-delete'} onClick={() => {
-                          setModalDelete(true);
+                          setShowModalDelete(true);
                         }}><img src={deleteButton} alt={'icon'}/>
                         </button>
                     </div>
@@ -38,16 +50,18 @@ function Participant ({ participant }) {
       <>
             {participantContent}
             <DeleteModal
-                show={modalDelete}
-                onHide={() => setModalDelete(false)}
+                show={showModalDelete}
+                onHide={() => setShowModalDelete(false)}
                 titleObject={'Participant'}
                 textObject={'this participant'}
                 deleteobject={[participant]}
-                onClose={() => { setModalDelete(false); }}/>
+                onClose={() => setShowModalDelete(false)}/>
             <ParticipantModal
+                onSaveClick={(tempParticipant) => updateParticipant(tempParticipant)}
                 participant={participant}
-                show={modalEditParticipant}
-                onClose={() => { setModalEditParticipant(false); }}/>
+                show={showModalEditParticipant}
+                onHide={() => setShowModalEditParticipant(false)}
+                onClose={() => setShowModalEditParticipant(false)}/>
         </>
 
   );

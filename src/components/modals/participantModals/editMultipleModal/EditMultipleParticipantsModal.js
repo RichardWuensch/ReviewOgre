@@ -1,10 +1,10 @@
-import './EditMultipleParticipantsModal.css';
 import Modal from 'react-bootstrap/Modal';
+import { Button, Form, Image } from 'react-bootstrap';
+import './EditMultipleParticipantsModal.css';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
-import { Button, Form, Image } from 'react-bootstrap';
 
 function EditMultipleParticipantsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -88,9 +88,6 @@ function EditMultipleParticipantsModal (props) {
   );
 }
 EditMultipleParticipantsModal.propTypes = {
-  onClose: PropTypes.func,
-  group: PropTypes.string,
-  topic: PropTypes.string,
-  languageLevel: PropTypes.string
+  onClose: PropTypes.func.isRequired
 };
 export default EditMultipleParticipantsModal;

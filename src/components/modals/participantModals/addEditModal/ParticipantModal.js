@@ -1,11 +1,10 @@
-import './ParticipantModal.css';
 import Modal from 'react-bootstrap/Modal';
+import { Button, Form, Image } from 'react-bootstrap';
+import './ParticipantModal.css';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
 import Participant from '../../../../data/model/Participant';
-import { Button, Form, Image } from 'react-bootstrap';
 
 function ParticipantModal (props) {
   const [firstName, setFirstName] = useState(props.participant?.getFirstName() ?? '');
@@ -15,12 +14,12 @@ function ParticipantModal (props) {
   const [topic, setTopic] = useState(props.participant?.getTopic() ?? '');
   const [languageLevel, setLanguageLevel] = useState(props.participant?.getLanguageLevel() ?? 'Native Speaker');
   const [showModal, setShowModal] = useState(true);
-  const [newParticipant] = useState(props.newparticipant || false);
+  const [newParticipant] = useState(props.newParticipant || false);
   const [id] = useState(props.participant?.getId() ?? -1);
-  const dispatch = useParticipantsDispatch();
 
   const handleClose = () => {
     setShowModal(false);
+    if (newParticipant) clearData();
     props.onClose();
   };
 
@@ -35,24 +34,7 @@ function ParticipantModal (props) {
 
   const onSaveClick = () => {
     const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
-
-    /* eslint-disable object-shorthand */
-    if (newParticipant) {
-      // create a new participant
-
-      dispatch({
-        type: 'added',
-        newParticipant: participantTemp
-      });
-      clearData();
-    } else {
-      // update an existing participant
-      dispatch({
-        type: 'changed',
-        updatedParticipant: participantTemp
-      });
-    }
-    /* eslint-enable object-shorthand */
+    props.onSaveClick(participantTemp);
     handleClose();
   };
 
@@ -112,14 +94,10 @@ function ParticipantModal (props) {
   );
 }
 ParticipantModal.propTypes = {
-  onClose: PropTypes.func,
-  id: PropTypes.number,
-  firstname: PropTypes.string,
-  lastname: PropTypes.string,
-  email: PropTypes.string,
-  group: PropTypes.string,
-  topic: PropTypes.string,
-  languageLevel: PropTypes.string,
-  newParticipant: PropTypes.bool
+  onClose: PropTypes.func.isRequired,
+  participant: PropTypes.object,
+  newParticipant: PropTypes.bool.isRequired,
+  onSaveClick: PropTypes.func.isRequired
 };
+
 export default ParticipantModal;

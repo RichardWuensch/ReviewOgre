@@ -1,4 +1,4 @@
-import { useParticipants } from '../context/ParticipantsContext';
+import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import Participant from './Participant';
 import add from '../../../assets/media/plus-circle.svg';
 import edit from '../../../assets/media/pencil-square.svg';
@@ -12,13 +12,24 @@ import DeleteModal from '../../modals/deleteModal/deleteModal';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
-  const [modalShowParticipant, setModalShowParticipant] = React.useState(false);
-  const [modalShowEditMultipleParticipants, setModalShowEditMultipleParticipants] = React.useState(false);
+  const [showModalParticipant, setShowModalParticipant] = React.useState(false);
+  const [showModalEditMultipleParticipants, setShowModalEditMultipleParticipants] = React.useState(false);
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
-  const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(false);
+  const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(true);
   const [modalDelete, setModalDelete] = React.useState(false);
 
   const participants = useParticipants();
+  const dispatch = useParticipantsDispatch();
+
+  const addParticipant = (participant) => {
+    /* eslint-disable object-shorthand */
+    dispatch({
+      type: 'added',
+      newParticipant: participant
+    });
+    /* eslint-enable object-shorthand */
+  };
+
   return (
       <div className={'participantsWindow'}>
           <h2 className={'title-subheadline'}>Participants</h2>
@@ -26,14 +37,14 @@ function ParticipantList () {
               {!isEditModeActive
                 ? (
                       <button className={'button-container-green-participants'} onClick={() => {
-                        setModalShowParticipant(true);
+                        setShowModalParticipant(true);
                       }}>
                           <img src={add} alt={'addParticipantIcon'} height={16} width={16}/>
                           <span className={'button-text'}>Add Participant</span>
                       </button>
                   )
                 : (
-                      <button className={'button-container-green-participants'} onClick={() => setModalShowEditMultipleParticipants(true)}>
+                      <button className={'button-container-green-participants'} onClick={() => setShowModalEditMultipleParticipants(true)}>
                           <img src={edit} alt={'editListIcon'} height={16} width={16}/>
                           <span className={'button-text'}>Edit Selected</span>
                       </button>
@@ -71,7 +82,10 @@ function ParticipantList () {
                       {isEditModeActive && (
                           <th>
                               <label className={'checkboxContainer'}>
-                                  <input type="checkbox" onClick={() => setAllParticipantsSelected(prev => !prev)}/>
+                                  <input type="checkbox" onClick={() => {
+                                    setAllParticipantsSelected(prev => !prev);
+                                    setSelectedParticipants(allParticipantsSelected === true ? participants : []);
+                                  }}/>
                                   <span className={'checkmark'}></span>
                               </label>
                           </th>
@@ -94,7 +108,7 @@ function ParticipantList () {
                                 <label className={'checkboxContainer'}>
                                     <input
                                         type="checkbox"
-                                        checked={allParticipantsSelected || selectedParticipants.includes(participant)}
+                                        checked={selectedParticipants.includes(participant)}
                                         onChange={event => {
                                           const isChecked = event.target.checked;
                                           setSelectedParticipants(prevSelectedParticipants => {
@@ -118,16 +132,17 @@ function ParticipantList () {
                   </div>
           </div>
           <ParticipantModal
-              show={modalShowParticipant}
-              onClose={() => setModalShowParticipant(false)}
-              onHide={() => setModalShowParticipant(false)}
-              newparticipant={true}
+              onSaveClick={(tempParticipant) => { addParticipant(tempParticipant); }}
+              show={showModalParticipant}
+              onClose={() => setShowModalParticipant(false)}
+              onHide={() => setShowModalParticipant(false)}
+              newParticipant={true}
           />
           <EditMultipleParticipantsModal
-              show={modalShowEditMultipleParticipants}
-              onHide={() => setModalShowEditMultipleParticipants(false)}
+              show={showModalEditMultipleParticipants}
+              onHide={() => setShowModalEditMultipleParticipants(false)}
               onSave={() => { console.log(''); }}
-              onClose={() => setModalShowEditMultipleParticipants(false)}
+              onClose={() => setShowModalEditMultipleParticipants(false)}
               participants = { selectedParticipants }/>
           <DeleteModal
               show={modalDelete}
