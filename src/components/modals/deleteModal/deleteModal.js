@@ -12,7 +12,6 @@ import { useRoomSlotsDispatch } from '../../window/context/RoomSlotContext';
 function deleteModal (props) {
   const [showModal, setShowModal] = useState(true);
   const toDelete = props.deleteobject;
-  const update = useState(props.update || false);
   const roomToRemove = useState(props.roomid);
 
   const participantDispatch = useParticipantsDispatch();
@@ -23,7 +22,7 @@ function deleteModal (props) {
   };
 
   const deleteItem = () => {
-    if (toDelete instanceof RoomSlot && update) {
+    if (toDelete instanceof RoomSlot && props.titleObject === 'Room') {
       // only update the changed roomSlot Object
       toDelete.setRooms(
         toDelete.getRooms()

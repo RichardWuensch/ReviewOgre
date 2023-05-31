@@ -16,7 +16,6 @@ function SlotCard ({ eventKey, roomSlot }) {
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [deleteObject, setDeleteObject] = React.useState(null);
-  const [updateObject, setUpdateObject] = React.useState(false);
   const [roomToDelete, setRoomToDelete] = React.useState(-1);
 
   const openAccordion = useAccordionButton(eventKey, () =>
@@ -31,7 +30,6 @@ function SlotCard ({ eventKey, roomSlot }) {
   }
   function handleUpdate () {
     setChildUpdated(!childUpdated);
-    setUpdateObject(false);
   }
 
   const slotContent = (
@@ -123,10 +121,9 @@ function SlotCard ({ eventKey, roomSlot }) {
                   handleUpdate();
                 }}
                 onSave={handleDelete}
-                titleobject={deleteTitleObject}
+                titleObject={deleteTitleObject}
                 textobject={deleteTextObject}
                 deleteobject={deleteObject}
-                update={updateObject}
                 roomid={roomToDelete}/>
         </>
 
