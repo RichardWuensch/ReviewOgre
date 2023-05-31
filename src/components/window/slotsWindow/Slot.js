@@ -1,3 +1,4 @@
+import './Slot.css';
 import React, { useState } from 'react';
 import { Accordion, Card, Image, useAccordionButton } from 'react-bootstrap';
 import fileImage from '../../../assets/media/file-earmark.svg';
@@ -6,9 +7,8 @@ import folderImage from '../../../assets/media/folder.svg';
 import edit from '../../../assets/media/pencil-square.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/deleteModal';
-import './Slot.css';
 
-function SlotCard ({ eventKey, roomSlot }) {
+function SlotCard (props) {
   const [childUpdated, setChildUpdated] = React.useState(false);
   const [open, setOpen] = useState(false);
   const [modalDelete, setModalDelete] = React.useState(false);
@@ -18,9 +18,7 @@ function SlotCard ({ eventKey, roomSlot }) {
   const [deleteObject, setDeleteObject] = React.useState(null);
   const [roomToDelete, setRoomToDelete] = React.useState(-1);
 
-  const openAccordion = useAccordionButton(eventKey, () =>
-    console.log('totally custom!')
-  );
+  const openAccordion = useAccordionButton(props.eventKey, () => {});
   const expandAndToggle = () => {
     openAccordion(undefined);
     setOpen(prevOpen => prevOpen !== true);
@@ -50,7 +48,7 @@ function SlotCard ({ eventKey, roomSlot }) {
                                     <Image src={folderImage} alt={'folderImage'} />
                                 )}
                             <span className={'slot-text'} style={{ paddingLeft: 5 }}>
-                                {roomSlot.getFormattedDate() + ' From: ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime()}
+                                {props.roomSlot.getFormattedDate() + ' From: ' + props.roomSlot.getFormattedStartTime() + ' to ' + props.roomSlot.getFormattedEndTime()}
                             </span>
                         </button>
                         <div className={'options'}>
@@ -62,7 +60,7 @@ function SlotCard ({ eventKey, roomSlot }) {
                             <button className={'button-options-delete'} onClick={() => {
                               setDeleteTitleObject('Slot');
                               setDeleteTextObject('this Slot');
-                              setDeleteObject(roomSlot);
+                              setDeleteObject(props.roomSlot);
                               setModalDelete(true);
                             }}>
                                 <img src={deleteButton} alt={'icon'}/>
@@ -70,10 +68,10 @@ function SlotCard ({ eventKey, roomSlot }) {
                         </div>
                     </div>
                 </Card.Header>
-                <Accordion.Collapse eventKey={eventKey}>
+                <Accordion.Collapse eventKey={props.eventKey}>
                     <Card.Body>
                         <ul style={{ listStyle: 'none', overflowY: 'auto' }}>
-                            {roomSlot.getRooms()?.map((room, roomIndex) =>
+                            {props.roomSlot.getRooms()?.map((room, roomIndex) =>
                                 <li key={roomIndex}>
                                     <div className={'room-properties'}>
                                         <Image src={fileImage} alt={'fileImage'} />
@@ -83,7 +81,7 @@ function SlotCard ({ eventKey, roomSlot }) {
                                               // remove room from array
                                               setDeleteTitleObject('Room');
                                               setDeleteTextObject(room.getName());
-                                              setDeleteObject(roomSlot);
+                                              setDeleteObject(props.roomSlot);
                                               setRoomToDelete(roomIndex);
                                               console.log(roomIndex);
                                               setModalDelete(true);
@@ -108,12 +106,8 @@ function SlotCard ({ eventKey, roomSlot }) {
                 show={modalShowSlot}
                 onHide={() => { setModalShowSlot(false); handleUpdate(); }}
                 header={'Edit Slot'}
-                id={roomSlot.getId()}
-                edit={true}
-                date={roomSlot.getDate()}
-                starttime={roomSlot.getFormattedStartTime()}
-                endtime={roomSlot.getFormattedEndTime()}
-                items={roomSlot.getRooms()}/>
+                roomslot={props.roomSlot}
+                edit={true}/>
             <DeleteModal
                 show={modalDelete}
                 onHide={() => {

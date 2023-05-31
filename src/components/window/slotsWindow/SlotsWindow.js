@@ -44,6 +44,7 @@ function SlotsWindow () {
                   {roomSlots.map((slot, index) => (
                           <li key={index}>
                               <SlotCard
+                                  key={slot.getId()}
                                   eventKey={index}
                                   roomSlot={slot}/>
 

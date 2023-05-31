@@ -34,14 +34,16 @@ function roomSlotsReducer (roomSlots, action) {
   switch (action.type) {
     case 'added': {
       const temp = action.newRoomSlot;
-      temp.setId(nextId++);
+      temp.setId(++nextId);
 
       return [...roomSlots, temp];
     }
     case 'changed': {
+      const updatedRoomSlot = action.updatedRoomSlot;
       return roomSlots.map(t => {
-        if (t.getId() === action.updatedRoomSlot.getId()) {
-          return action.updatedRoomSlot;
+        console.log(updatedRoomSlot.getId());
+        if (t.getId() === updatedRoomSlot.getId()) {
+          return updatedRoomSlot;
         } else {
           return t;
         }

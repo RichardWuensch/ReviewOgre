@@ -119,9 +119,7 @@ function ParticipantList () {
           </div>
           <ParticipantModal
               show={modalShowParticipant}
-              onClose={() => {
-                setModalShowParticipant(false);
-              }}
+              onClose={() => setModalShowParticipant(false)}
               onHide={() => setModalShowParticipant(false)}
               newparticipant={true}
           />
@@ -129,7 +127,7 @@ function ParticipantList () {
               show={modalShowEditMultipleParticipants}
               onHide={() => setModalShowEditMultipleParticipants(false)}
               onSave={() => { console.log(''); }}
-              onClose={() => { setModalShowEditMultipleParticipants(false); }}
+              onClose={() => setModalShowEditMultipleParticipants(false)}
               participants = { selectedParticipants }/>
           <DeleteModal
               show={modalDelete}

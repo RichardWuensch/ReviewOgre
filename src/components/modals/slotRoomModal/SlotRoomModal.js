@@ -47,12 +47,11 @@ ToggleRoom.propTypes = {
 
 function SlotModal (props) {
   const [showModal, setShowModal] = useState(true);
-  const slotId = useState(props.id || 0);
-  const [date, setDate] = useState(props.date || new Date());
-  const [startTime, setStartTime] = useState(props.starttime || '00:00');
-  const [endTime, setEndTime] = useState(props.endtime || '00:00');
-  const [items, setItems] = useState(props.items || []);
-  const [header] = useState(props.header);
+  const slotId = props.roomslot?.getId() ?? -1;
+  const [date, setDate] = useState(props.roomslot?.getDate() ?? new Date());
+  const [startTime, setStartTime] = useState(props.roomslot?.getFormattedStartTime() ?? '00:00');
+  const [endTime, setEndTime] = useState(props.roomslot?.getFormattedEndTime() ?? '00:00');
+  const [items, setItems] = useState(props.roomslot?.getRooms() ?? []);
   const [isEdit] = useState(props.edit || false);
 
   const dispatch = useRoomSlotsDispatch();
@@ -84,13 +83,12 @@ function SlotModal (props) {
 
   function parseTime (time) {
     const [hours, minutes] = time.split(':');
-    const dateTime = new Date(
+    return new Date(
       date.getFullYear(),
       date.getMonth(),
       date.getDay(),
       parseInt(hours, 10),
       parseInt(minutes, 10));
-    return dateTime;
   }
 
   function createTempRoomSlot () {
@@ -115,6 +113,7 @@ function SlotModal (props) {
   const saveEdit = () => {
     const tempRoomSlot = createTempRoomSlot();
 
+    console.log(tempRoomSlot.getId());
     /* eslint-disable object-shorthand */
     dispatch({
       type: 'changed',
@@ -137,7 +136,7 @@ function SlotModal (props) {
             <Modal.Body>
                 <div className={'modal-container'}>
                     <div className={'modal-header-container'}>
-                        <span className={'modal-header border-0'}>{header}</span>
+                        <span className={'modal-header border-0'}>{props.header}</span>
                         <img src={exit} alt={'exitSlotModal'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }} onClick={props.onHide}/>
                     </div>
                     <div className={'date-container'}>

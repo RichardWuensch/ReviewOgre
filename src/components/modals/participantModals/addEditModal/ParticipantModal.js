@@ -8,15 +8,15 @@ import Participant from '../../../../data/model/Participant';
 import { Button, Form, Image } from 'react-bootstrap';
 
 function ParticipantModal (props) {
-  const [firstName, setFirstName] = useState(props.firstname || '');
-  const [lastName, setLastName] = useState(props.lastname || '');
-  const [email, setEmail] = useState(props.email || '');
-  const [group, setGroup] = useState(props.group || '0');
-  const [topic, setTopic] = useState(props.topic || '');
-  const [languageLevel, setLanguageLevel] = useState(props.languagelevel || 'Native Speaker');
+  const [firstName, setFirstName] = useState(props.participant?.getFirstName() ?? '');
+  const [lastName, setLastName] = useState(props.participant?.getLastName() ?? '');
+  const [email, setEmail] = useState(props.participant?.getEmail() ?? '');
+  const [group, setGroup] = useState(props.participant?.getGroup() ?? '0');
+  const [topic, setTopic] = useState(props.participant?.getTopic() ?? '');
+  const [languageLevel, setLanguageLevel] = useState(props.participant?.getLanguageLevel() ?? 'Native Speaker');
   const [showModal, setShowModal] = useState(true);
   const [newParticipant] = useState(props.newparticipant || false);
-  const [id] = useState(props.id || -1);
+  const [id] = useState(props.participant?.getId() ?? -1);
   const dispatch = useParticipantsDispatch();
 
   const handleClose = () => {

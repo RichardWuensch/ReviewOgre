@@ -45,13 +45,7 @@ function Participant ({ participant }) {
                 deleteobject={[participant]}
                 onClose={() => { setModalDelete(false); }}/>
             <ParticipantModal
-                firstname={participant.getFirstName()}
-                lastname={participant.getLastName()}
-                email={participant.getEmail()}
-                group={participant.getGroup()}
-                topic={participant.getTopic()}
-                languagelevel={participant.getLanguageLevel()}
-                id={participant.getId()}
+                participant={participant}
                 show={modalEditParticipant}
                 onClose={() => { setModalEditParticipant(false); }}/>
         </>
