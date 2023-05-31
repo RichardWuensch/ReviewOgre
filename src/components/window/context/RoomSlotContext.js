@@ -5,6 +5,8 @@ import Room from '../../../data/model/Room';
 const RoomSlotContext = createContext(null);
 const RoomSlotDispatchContext = createContext(null);
 
+let nextId = 1;
+
 export function RoomSlotProvider ({ children }) {
   const [tasks, dispatch] = useReducer(
     roomSlotsReducer,
@@ -31,7 +33,10 @@ export function useRoomSlotsDispatch () {
 function roomSlotsReducer (roomSlots, action) {
   switch (action.type) {
     case 'added': {
-      return [...roomSlots, action.newRoomSlot];
+      const temp = action.newRoomSlot;
+      temp.setId(nextId++);
+
+      return [...roomSlots, temp];
     }
     case 'changed': {
       return roomSlots.map(t => {

@@ -49,8 +49,8 @@ function SlotModal (props) {
   const [showModal, setShowModal] = useState(true);
   const slotId = useState(props.id || 0);
   const [date, setDate] = useState(props.date || new Date());
-  const [startTime, setStartTime] = useState(props.starttime || new Date());
-  const [endTime, setEndTime] = useState(props.endtime || new Date());
+  const [startTime, setStartTime] = useState(props.starttime || '00:00');
+  const [endTime, setEndTime] = useState(props.endtime || '00:00');
   const [items, setItems] = useState(props.items || []);
   const [header] = useState(props.header);
   const [isEdit] = useState(props.edit || false);
@@ -75,18 +75,32 @@ function SlotModal (props) {
   const handleClose = () => {
     if (!isEdit) {
       setShowModal(false);
-      setDate(null);
-      setStartTime(new Date());
-      setEndTime(new Date());
+      setDate(new Date());
+      setStartTime('00:00');
+      setEndTime('00:00');
       setItems([]);
     }
   };
-  const addSlot = () => {
-    // TODO: change timestring to datetime
-    // TODO: refactor creation into method
+
+  function parseTime (time) {
+    const [hours, minutes] = time.split(':');
+    const dateTime = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDay(),
+      parseInt(hours, 10),
+      parseInt(minutes, 10));
+    return dateTime;
+  }
+
+  function createTempRoomSlot () {
     const rooms = [];
     items.forEach(room => { rooms.push(new Room(room.getName(), room.hasBeamer())); });
-    const tempRoomSlot = new RoomSlot(slotId, date, startTime, endTime, rooms);
+    return new RoomSlot(slotId, date, parseTime(startTime), parseTime(endTime), rooms);
+  }
+
+  const addSlot = () => {
+    const tempRoomSlot = createTempRoomSlot();
 
     /* eslint-disable object-shorthand */
     dispatch({
@@ -99,9 +113,7 @@ function SlotModal (props) {
   };
 
   const saveEdit = () => {
-    const rooms = [];
-    items.forEach(room => { rooms.push(new Room(room.getName(), room.hasBeamer())); });
-    const tempRoomSlot = new RoomSlot(slotId, date, startTime, endTime, rooms);
+    const tempRoomSlot = createTempRoomSlot();
 
     /* eslint-disable object-shorthand */
     dispatch({

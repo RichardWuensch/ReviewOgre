@@ -1,10 +1,10 @@
+import './EditMultipleParticipantsModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
 import { Button, Form, Image } from 'react-bootstrap';
-import './EditMultipleParticipantsModal.css';
 
 function EditMultipleParticipantsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -51,15 +51,25 @@ function EditMultipleParticipantsModal (props) {
                 <Form>
                     <Form.Group>
                         <Form.Label>Group:</Form.Label>
-                        <Form.Control placeholder='Group' type={'text'} value={group} onChange={(e) => setGroup(e.target.value)} autoFocus></Form.Control>
+                        <Form.Control
+                            placeholder='Group'
+                            type={'text'}
+                            value={group}
+                            onChange={(e) => setGroup(e.target.value)} autoFocus/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Topic:</Form.Label>
-                        <Form.Control placeholder={'Topic'} type={'text'} value={topic} onChange={(e) => setTopic(e.target.value)}></Form.Control>
+                        <Form.Control
+                            placeholder={'Topic'}
+                            type={'text'}
+                            value={topic} onChange={(e) => setTopic(e.target.value)}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>German Skill Level:</Form.Label>
-                        <Form.Select placeholder={'Native Speaker'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
+                        <Form.Select
+                            placeholder={'Native Speaker'}
+                            value={languageLevel}
+                            onChange={(e) => setLanguageLevel(e.target.value)}>
                             <option value={'A1'}>A1</option>
                             <option value={'A2'}>A2</option>
                             <option value={'B1'}>B1</option>

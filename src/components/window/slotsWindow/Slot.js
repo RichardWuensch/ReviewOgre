@@ -16,6 +16,8 @@ function SlotCard ({ eventKey, roomSlot }) {
   const [deleteTextObject, setDeleteTextObject] = React.useState('');
   const [modalShowSlot, setModalShowSlot] = React.useState(false);
   const [deleteObject, setDeleteObject] = React.useState(null);
+  const [updateObject, setUpdateObject] = React.useState(false);
+  const [roomToDelete, setRoomToDelete] = React.useState(-1);
 
   const openAccordion = useAccordionButton(eventKey, () =>
     console.log('totally custom!')
@@ -29,6 +31,7 @@ function SlotCard ({ eventKey, roomSlot }) {
   }
   function handleUpdate () {
     setChildUpdated(!childUpdated);
+    setUpdateObject(false);
   }
 
   const slotContent = (
@@ -79,9 +82,12 @@ function SlotCard ({ eventKey, roomSlot }) {
                                         <span style={{ paddingLeft: 5 }}>{room.getName()}</span>
                                         <div className={'options'}>
                                             <button className={'button-options-delete'} onClick={() => {
+                                              // remove room from array
                                               setDeleteTitleObject('Room');
                                               setDeleteTextObject(room.getName());
-                                              setDeleteObject(room);
+                                              setDeleteObject(roomSlot);
+                                              setRoomToDelete(roomIndex);
+                                              console.log(roomIndex);
                                               setModalDelete(true);
                                             }}>
                                                 <img src={deleteButton} alt={'icon'}/>
@@ -119,7 +125,9 @@ function SlotCard ({ eventKey, roomSlot }) {
                 onSave={handleDelete}
                 titleobject={deleteTitleObject}
                 textobject={deleteTextObject}
-                deleteobject={deleteObject}/>
+                deleteobject={deleteObject}
+                update={updateObject}
+                roomid={roomToDelete}/>
         </>
 
   );

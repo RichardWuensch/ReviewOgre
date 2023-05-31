@@ -1,3 +1,4 @@
+import './ParticipantModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';

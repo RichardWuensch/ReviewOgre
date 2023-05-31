@@ -2,34 +2,47 @@ import './deleteModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../../assets/media/x-circle.svg';
 import { useState } from 'react';
-import RoomSlotHelper from '../../../data/store/RoomSlotHelper';
-import { RoomStore } from '../../../data/store/RoomStore';
 import RoomSlot from '../../../data/model/RoomSlot';
-import Room from '../../../data/model/Room';
 import Participant from '../../../data/model/Participant';
 import { useParticipantsDispatch } from '../../window/context/ParticipantsContext';
 import PropTypes from 'prop-types';
 import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
-const helper = new RoomSlotHelper();
-const roomStore = RoomStore.getSingleton();
+import { useRoomSlotsDispatch } from '../../window/context/RoomSlotContext';
 
 function deleteModal (props) {
   const [showModal, setShowModal] = useState(true);
   const toDelete = props.deleteobject;
+  const update = useState(props.update || false);
+  const roomToRemove = useState(props.roomid);
 
   const participantDispatch = useParticipantsDispatch();
+  const roomSlotDispatch = useRoomSlotsDispatch();
 
   const handleClose = () => {
     setShowModal(false);
   };
 
   const deleteItem = () => {
-    if (toDelete instanceof RoomSlot) {
-      helper.deleteSlotAndCorrespondingRooms(toDelete.getId());
-    } else if (toDelete instanceof Room) {
-      roomStore.delete(toDelete.getId());
+    if (toDelete instanceof RoomSlot && update) {
+      // only update the changed roomSlot Object
+      toDelete.setRooms(
+        toDelete.getRooms()
+          .splice(roomToRemove, 1)
+      );
+
+      console.log(toDelete.getRooms());
+
+      roomSlotDispatch({
+        type: 'changed',
+        updatedRoomSlot: toDelete
+      });
+    } else if (toDelete instanceof RoomSlot) {
+      roomSlotDispatch({
+        type: 'deleted',
+        itemToDelete: toDelete
+      });
     } else if (Array.isArray(toDelete) && toDelete.every(i => i instanceof Participant)) {
-      // delete participants
+      // delete participants always and array to allow delete multiple
       toDelete.forEach(participant => {
         participantDispatch({
           type: 'deleted',
@@ -79,6 +92,8 @@ ParticipantModal.propTypes = {
   textObject: PropTypes.string,
   titleObject: PropTypes.string,
   toDelete: PropTypes.array,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  update: PropTypes.bool,
+  roomToRemove: PropTypes.number
 };
 export default deleteModal;
