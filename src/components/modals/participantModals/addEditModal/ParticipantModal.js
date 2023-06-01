@@ -13,12 +13,10 @@ function ParticipantModal (props) {
   const [group, setGroup] = useState(props.participant?.getGroup() ?? '0');
   const [topic, setTopic] = useState(props.participant?.getTopic() ?? '');
   const [languageLevel, setLanguageLevel] = useState(props.participant?.getLanguageLevel() ?? 'Native Speaker');
-  const [showModal, setShowModal] = useState(true);
-  const [newParticipant] = useState(props.newParticipant || false);
+  const newParticipant = props.newParticipant || false;
   const [id] = useState(props.participant?.getId() ?? -1);
 
   const handleClose = () => {
-    setShowModal(false);
     if (newParticipant) clearData();
     props.onClose();
   };
@@ -41,11 +39,11 @@ function ParticipantModal (props) {
   return (
         <Modal
             onExit={handleClose}
-            show={showModal}
             {...props}
             size="sm"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className={'modal'}
         >
             <Modal.Header>
                 <Modal.Title>{newParticipant ? 'Add new Participant' : 'Edit Participant'}</Modal.Title>
@@ -96,7 +94,7 @@ function ParticipantModal (props) {
 ParticipantModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   participant: PropTypes.object,
-  newParticipant: PropTypes.bool.isRequired,
+  newParticipant: PropTypes.bool,
   onSaveClick: PropTypes.func.isRequired
 };
 

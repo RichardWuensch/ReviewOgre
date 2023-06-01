@@ -52,7 +52,7 @@ function SlotModal (props) {
   const [startTime, setStartTime] = useState(props.roomslot?.getFormattedStartTime() ?? '00:00');
   const [endTime, setEndTime] = useState(props.roomslot?.getFormattedEndTime() ?? '00:00');
   const [items, setItems] = useState(props.roomslot?.getRooms() ?? []);
-  const [isEdit] = useState(props.edit || false);
+  const [isEditMode] = useState(props.edit || false);
 
   const dispatch = useRoomSlotsDispatch();
 
@@ -72,7 +72,7 @@ function SlotModal (props) {
   };
 
   const handleClose = () => {
-    if (!isEdit) {
+    if (!isEditMode) {
       setShowModal(false);
       setDate(new Date());
       setStartTime('00:00');
@@ -149,7 +149,7 @@ function SlotModal (props) {
                         <input className={'input-time-container'} type={'time'} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
                     </div>
                     <div className={'room-container'}>
-                        {isEdit ? (<span style={ { marginBottom: 2 } } >Edit or Add Rooms to this Slot:</span>) : (<span style={ { marginBottom: 2 } } >Create Rooms for this Time Slot:</span>)}
+                        {isEditMode ? (<span style={ { marginBottom: 2 } } >Edit or Add Rooms to this Slot:</span>) : (<span style={ { marginBottom: 2 } } >Create Rooms for this Time Slot:</span>)}
                         <div>
                             <div>
                                 <Accordion defaultActiveKey="0">
@@ -184,7 +184,7 @@ function SlotModal (props) {
                         </div>
                     </div>
                     <div className={'footer'}>
-                        {isEdit
+                        {isEditMode
                           ? (
                         <button className={'add-slot-button'} onClick={() => {
                           saveEdit();

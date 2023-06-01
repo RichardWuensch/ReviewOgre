@@ -1,26 +1,26 @@
 /* Custom styl to remove border from modal */
-.modal-content {
+.modal .modal-content {
     border: none;
     background-color: #f5f5f5;
     font-family: 'Roboto', sans-serif;
 }
 
 /* Custom styles to remove horizontal lines in the Modal */
-.modal-header,
-.modal-body,
-.modal-footer {
+.modal .modal-header,
+.modal .modal-body,
+.modal .modal-footer {
     border: none;
     font-family: 'Roboto', sans-serif;
 }
 
-.modal-header {
+.modal .modal-header {
     padding-top: 20px;
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
     color: #82868B;
 }
 
-.modal-body {
+.modal .modal-body {
     padding: 4%;
     justify-content: space-between;
     align-items: center;
@@ -28,12 +28,12 @@
 }
 
 /* Custom styles to center button in the Modal footer */
-.modal-footer {
+.modal .modal-footer {
     display: flex;
     justify-content: center;
 }
 
-.save-button {
+.modal .save-button {
     margin-top: 50px;
     padding-left: 10%;
     padding-right: 10%;
@@ -46,18 +46,18 @@
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.save-button:hover {
+.modal .save-button:hover {
     background: #B0D7AF;
     color: black;
 }
 
-.form-label {
+.modal .form-label {
     margin-top: .5rem;
     margin-bottom: 0;
 }
 
-.form-control,
-.form-select {
+.modal .form-control,
+.modal .form-select {
     background: #FFFFFF;
     border: 1px solid #82868B;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -65,13 +65,13 @@
 }
 
 /* Custom styles for formControl and formSelect focus */
-.form-control:focus,
-.form-select:focus {
+.modal .form-control:focus,
+.modal .form-select:focus {
     box-shadow:none;
     border: 2px solid;
 }
 
-.modal-header-icon{
+.modal .modal-header-icon{
     color: #82868B;
     height: 20px;
     width: 20px;

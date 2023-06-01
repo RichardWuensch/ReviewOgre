@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import './failedCalculationModal.css';
+import './FailedCalculationModal.css';
 import exit from '../../../assets/media/return.svg';
 import React, { useState } from 'react';
 

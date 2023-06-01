@@ -41,7 +41,6 @@ function roomSlotsReducer (roomSlots, action) {
     case 'changed': {
       const updatedRoomSlot = action.updatedRoomSlot;
       return roomSlots.map(t => {
-        console.log(updatedRoomSlot.getId());
         if (t.getId() === updatedRoomSlot.getId()) {
           return updatedRoomSlot;
         } else {

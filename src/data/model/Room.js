@@ -1,3 +1,5 @@
+let nextId = 0;
+
 export default class Room {
   #id;
   #slotId;
@@ -5,7 +7,12 @@ export default class Room {
   #beamer;
   #review = null;
 
-  constructor (name, beamer) {
+  constructor (name, beamer, id = null) {
+    if (id !== null) {
+      this.#id = id;
+    } else {
+      this.#id = nextId++;
+    }
     this.#name = name;
     this.#beamer = beamer;
   }

@@ -6,29 +6,52 @@ import deleteButton from '../../../assets/media/trash.svg';
 import folderImage from '../../../assets/media/folder.svg';
 import edit from '../../../assets/media/pencil-square.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
-import DeleteModal from '../../modals/deleteModal/deleteModal';
+import DeleteModal from '../../modals/deleteModal/DeleteModal';
+import { useRoomSlotsDispatch } from '../context/RoomSlotContext';
 
 function SlotCard (props) {
-  const [childUpdated, setChildUpdated] = React.useState(false);
-  const [open, setOpen] = useState(false);
-  const [modalDelete, setModalDelete] = React.useState(false);
-  const [deleteTitleObject, setDeleteTitleObject] = React.useState('');
-  const [deleteTextObject, setDeleteTextObject] = React.useState('');
-  const [modalShowSlot, setModalShowSlot] = React.useState(false);
-  const [deleteObject, setDeleteObject] = React.useState(null);
-  const [roomToDelete, setRoomToDelete] = React.useState(-1);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [showModalDeleteRoom, setShowModalDeleteRoom] = React.useState(false);
+  const [showModalDeleteSlot, setShowModalDeleteSlot] = React.useState(false);
+  const [showModalEditSlot, setShowModalEditSlot] = React.useState(false);
+  const [deleteModalText, setDeleteModalText] = React.useState('');
+  const [objectToDelete, setObjectToDelete] = React.useState(null);
 
   const openAccordion = useAccordionButton(props.eventKey, () => {});
+  const roomSlotdispatch = useRoomSlotsDispatch();
+
   const expandAndToggle = () => {
     openAccordion(undefined);
-    setOpen(prevOpen => prevOpen !== true);
+    setIsAccordionOpen(prevOpen => prevOpen !== true);
   };
   function handleDelete () {
     console.log('Delete successful');
   }
-  function handleUpdate () {
-    setChildUpdated(!childUpdated);
+
+  function removeRoom (slot, roomToRemove) {
+    slot.setRooms(
+      slot.getRooms().filter(room => room.getId() !== roomToRemove.getId())
+    );
+
+    return slot;
   }
+  const removeSlot = (roomSlot) => {
+    /* eslint-disable object-shorthand */
+    roomSlotdispatch({
+      type: 'deleted',
+      itemToDelete: roomSlot
+    });
+    /* eslint-enable object-shorthand */
+  };
+
+  const removeRoomFromSlot = (roomSlot) => {
+    /* eslint-disable object-shorthand */
+    roomSlotdispatch({
+      type: 'changed',
+      updatedRoomSlot: roomSlot
+    });
+    /* eslint-enable object-shorthand */
+  };
 
   const slotContent = (
         <>
@@ -40,7 +63,7 @@ function SlotCard (props) {
                             onClick={expandAndToggle}
                             className={'expand-structure-button'}
                         >
-                            {open
+                            {isAccordionOpen
                               ? (
                                     <Image src={folderImage} alt={'folderImage'} />
                                 )
@@ -53,16 +76,11 @@ function SlotCard (props) {
                         </button>
                         <div className={'options'}>
                             <button className={'button-options-edit'} onClick={() => {
-                              setModalShowSlot(true);
+                              setShowModalEditSlot(true);
                             }}>
                                 <Image src={edit} alt={'icon'}/>
                             </button>
-                            <button className={'button-options-delete'} onClick={() => {
-                              setDeleteTitleObject('Slot');
-                              setDeleteTextObject('this Slot');
-                              setDeleteObject(props.roomSlot);
-                              setModalDelete(true);
-                            }}>
+                            <button className={'button-options-delete'} onClick={() => setShowModalDeleteSlot(true)}>
                                 <img src={deleteButton} alt={'icon'}/>
                             </button>
                         </div>
@@ -79,12 +97,9 @@ function SlotCard (props) {
                                         <div className={'options'}>
                                             <button className={'button-options-delete'} onClick={() => {
                                               // remove room from array
-                                              setDeleteTitleObject('Room');
-                                              setDeleteTextObject(room.getName());
-                                              setDeleteObject(props.roomSlot);
-                                              setRoomToDelete(roomIndex);
-                                              console.log(roomIndex);
-                                              setModalDelete(true);
+                                              setDeleteModalText(room.getName());
+                                              setObjectToDelete(removeRoom(props.roomSlot.getDeepCopy(), room));
+                                              setShowModalDeleteRoom(true);
                                             }}>
                                                 <img src={deleteButton} alt={'icon'}/>
                                             </button>
@@ -103,22 +118,29 @@ function SlotCard (props) {
         <>
             {slotContent}
             <SlotModal
-                show={modalShowSlot}
-                onHide={() => { setModalShowSlot(false); handleUpdate(); }}
+                show={showModalEditSlot}
+                onHide={() => setShowModalEditSlot(false)}
                 header={'Edit Slot'}
                 roomslot={props.roomSlot}
                 edit={true}/>
             <DeleteModal
-                show={modalDelete}
-                onHide={() => {
-                  setModalDelete(false);
-                  handleUpdate();
-                }}
+                // modal to delete the whole slot
+                show={showModalDeleteSlot}
+                onHide={() => setShowModalDeleteSlot(false)}
                 onSave={handleDelete}
-                titleObject={deleteTitleObject}
-                textobject={deleteTextObject}
-                deleteobject={deleteObject}
-                roomid={roomToDelete}/>
+                titleObject={'Slot'}
+                textobject={'this Slot'}
+                deleteobject={props.roomSlot}
+                onDeleteClick={(slot) => removeSlot(slot)}/>
+            <DeleteModal
+                // remove a room from the slot
+                show={showModalDeleteRoom}
+                onHide={() => setShowModalDeleteRoom(false)}
+                onSave={handleDelete}
+                titleObject={'Room'}
+                textobject={deleteModalText}
+                deleteobject={objectToDelete}
+                onDeleteClick={(slot) => removeRoomFromSlot(slot)}/>
         </>
 
   );

@@ -1,57 +1,19 @@
-import './deleteModal.css';
+import './DeleteModal.css';
 import Modal from 'react-bootstrap/Modal';
 import exit from '../../../assets/media/x-circle.svg';
 import { useState } from 'react';
-import RoomSlot from '../../../data/model/RoomSlot';
-import Participant from '../../../data/model/Participant';
-import { useParticipantsDispatch } from '../../window/context/ParticipantsContext';
 import PropTypes from 'prop-types';
 import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
-import { useRoomSlotsDispatch } from '../../window/context/RoomSlotContext';
 
 function deleteModal (props) {
   const [showModal, setShowModal] = useState(true);
-  const toDelete = props.deleteobject;
-  const roomToRemove = useState(props.roomid);
-
-  const participantDispatch = useParticipantsDispatch();
-  const roomSlotDispatch = useRoomSlotsDispatch();
 
   const handleClose = () => {
     setShowModal(false);
   };
 
   const deleteItem = () => {
-    if (toDelete instanceof RoomSlot && props.titleObject === 'Room') {
-      // only update the changed roomSlot Object
-      toDelete.setRooms(
-        toDelete.getRooms()
-          .splice(roomToRemove, 1)
-      );
-
-      console.log(toDelete.getRooms());
-
-      roomSlotDispatch({
-        type: 'changed',
-        updatedRoomSlot: toDelete
-      });
-    } else if (toDelete instanceof RoomSlot) {
-      roomSlotDispatch({
-        type: 'deleted',
-        itemToDelete: toDelete
-      });
-    } else if (Array.isArray(toDelete) && toDelete.every(i => i instanceof Participant)) {
-      // delete participants always and array to allow delete multiple
-      toDelete.forEach(participant => {
-        participantDispatch({
-          type: 'deleted',
-          itemToDelete: participant
-        });
-      });
-    } else {
-      console.log('No matching item found to delete!');
-    }
-
+    props.onDeleteClick(props.deleteobject);
     handleClose();
   };
 
@@ -88,11 +50,9 @@ function deleteModal (props) {
   );
 }
 ParticipantModal.propTypes = {
-  textObject: PropTypes.string,
-  titleObject: PropTypes.string,
-  toDelete: PropTypes.array,
-  onClose: PropTypes.func,
-  update: PropTypes.bool,
-  roomToRemove: PropTypes.number
+  textObject: PropTypes.string.isRequired,
+  titleObject: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired
 };
 export default deleteModal;

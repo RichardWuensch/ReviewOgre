@@ -1,5 +1,5 @@
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
-import Participant from './Participant';
+import Participant from './participant/Participant';
 import add from '../../../assets/media/plus-circle.svg';
 import edit from '../../../assets/media/pencil-square.svg';
 import deleteButton from '../../../assets/media/trash.svg';
@@ -8,7 +8,7 @@ import React from 'react';
 import './ParticipantWindow.css';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
 import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
-import DeleteModal from '../../modals/deleteModal/deleteModal';
+import DeleteModal from '../../modals/deleteModal/DeleteModal';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -16,16 +16,27 @@ function ParticipantList () {
   const [showModalEditMultipleParticipants, setShowModalEditMultipleParticipants] = React.useState(false);
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(true);
-  const [modalDelete, setModalDelete] = React.useState(false);
+  const [showModalDeleteParticipant, setShowModalDeleteParticipant] = React.useState(false);
 
   const participants = useParticipants();
-  const dispatch = useParticipantsDispatch();
+  const participantsDispatch = useParticipantsDispatch();
 
   const addParticipant = (participant) => {
     /* eslint-disable object-shorthand */
-    dispatch({
+    participantsDispatch({
       type: 'added',
       newParticipant: participant
+    });
+    /* eslint-enable object-shorthand */
+  };
+
+  const removeParticipants = (participants) => {
+    /* eslint-disable object-shorthand */
+    participants.forEach(p => {
+      participantsDispatch({
+        type: 'deleted',
+        itemToDelete: p
+      });
     });
     /* eslint-enable object-shorthand */
   };
@@ -52,7 +63,7 @@ function ParticipantList () {
               {isEditModeActive && (
                   <button className={'button-container-green-participants'} onClick={() => {
                     console.log('Selected participants' + selectedParticipants);
-                    setModalDelete(true);
+                    setShowModalDeleteParticipant(true);
                   }} style={ { background: '#C40233' } }>
                       <img src={deleteButton} alt={'icon'} height={16} width={16}/>
                       <span className={'button-text'} style={{ color: '#F5F5F5' }}>Delete Selected</span>
@@ -145,12 +156,13 @@ function ParticipantList () {
               onClose={() => setShowModalEditMultipleParticipants(false)}
               participants = { selectedParticipants }/>
           <DeleteModal
-              show={modalDelete}
-              onHide={() => setModalDelete(false)}
+              show={showModalDeleteParticipant}
+              onHide={() => setShowModalDeleteParticipant(false)}
               titleObject={'Participants'}
               textObject={'the selected participants'}
+              onDeleteClick={(participant) => removeParticipants(participant)}
               deleteobject={ selectedParticipants }
-              onClose={() => { setModalDelete(false); }}/>
+              onClose={() => { setShowModalDeleteParticipant(false); }}/>
       </div>
   );
 

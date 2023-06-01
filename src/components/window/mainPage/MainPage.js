@@ -11,14 +11,14 @@ import Test from '../../../algorithm/test/Test';
 import StoreConfiguration from '../../../api/StoreConfiguration';
 import LoadConfiguration from '../../../api/LoadConfiguration';
 import ImportParticipants from '../../../api/ImportParticipants';
-import FailedCalculationModal from '../../modals/failedCalculationModal/failedCalculationModal';
+import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 // import RevagerLiteExport from '../../api/mail/RevagerLiteExport';
 // import Mail from '../../api/mail/Mail';
 
 function MainPage () {
-  const [modalFailedCalculations, setModalFailedCalculations] = React.useState(false);
+  const [showModalFailedCalculations, setShowModalFailedCalculations] = React.useState(false);
   const dispatch = useParticipantsDispatch();
   const participant = useParticipants();
 
@@ -32,7 +32,7 @@ function MainPage () {
       // new RevagerLiteExport().buildJSONAllReviews();
       // new SaveRoomPlan().runSave();
     } else {
-      setModalFailedCalculations(true);
+      setShowModalFailedCalculations(true);
     }
   }
 
@@ -121,8 +121,8 @@ function MainPage () {
                     </div>
                 </div>
                 <FailedCalculationModal
-                    show={modalFailedCalculations}
-                    onHide={() => setModalFailedCalculations(false)}/>
+                    show={showModalFailedCalculations}
+                    onHide={() => setShowModalFailedCalculations(false)}/>
 
                 {/* end */}
             </div>

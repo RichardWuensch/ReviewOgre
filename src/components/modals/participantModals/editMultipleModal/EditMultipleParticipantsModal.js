@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
 
 function EditMultipleParticipantsModal (props) {
-  const [showModal, setShowModal] = useState(true);
   const [group, setGroup] = useState('');
   const [languageLevel, setLanguageLevel] = useState('');
   const [topic, setTopic] = useState('');
@@ -15,7 +14,6 @@ function EditMultipleParticipantsModal (props) {
   const participantDispatch = useParticipantsDispatch();
 
   const handleClose = () => {
-    setShowModal(false);
     props.onClose();
   };
 
@@ -37,11 +35,11 @@ function EditMultipleParticipantsModal (props) {
   return (
         <Modal
             onExit={handleClose}
-            show={showModal}
             {...props}
             size="sm"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className={'modal'}
         >
             <Modal.Header>
                 <Modal.Title>Edit Participants</Modal.Title>

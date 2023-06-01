@@ -1,10 +1,11 @@
-import edit from '../../../assets/media/pencil-square.svg';
-import deleteButton from '../../../assets/media/trash.svg';
+import edit from '../../../../assets/media/pencil-square.svg';
+import deleteButton from '../../../../assets/media/trash.svg';
 import React from 'react';
-import DeleteModal from '../../modals/deleteModal/deleteModal';
-import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
-import './ParticipantWindow.css';
-import { useParticipantsDispatch } from '../context/ParticipantsContext';
+import DeleteModal from '../../../modals/deleteModal/DeleteModal';
+import ParticipantModal from '../../../modals/participantModals/addEditModal/ParticipantModal';
+import '../ParticipantWindow.css';
+import { useParticipantsDispatch } from '../../context/ParticipantsContext';
+import './Participant.css';
 
 function Participant ({ participant }) {
   const [showModalEditParticipant, setShowModalEditParticipant] = React.useState(false);
@@ -17,6 +18,17 @@ function Participant ({ participant }) {
     dispatch({
       type: 'changed',
       updatedParticipant: participant
+    });
+    /* eslint-enable object-shorthand */
+  };
+
+  const removeParticipant = (participant) => {
+    /* eslint-disable object-shorthand */
+    participant.forEach(p => {
+      dispatch({
+        type: 'deleted',
+        itemToDelete: p
+      });
     });
     /* eslint-enable object-shorthand */
   };
@@ -54,6 +66,7 @@ function Participant ({ participant }) {
                 onHide={() => setShowModalDelete(false)}
                 titleObject={'Participant'}
                 textObject={'this participant'}
+                onDeleteClick={(participant) => removeParticipant(participant)}
                 deleteobject={[participant]}
                 onClose={() => setShowModalDelete(false)}/>
             <ParticipantModal
