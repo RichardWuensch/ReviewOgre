@@ -50,9 +50,9 @@ function deleteModal (props) {
   );
 }
 ParticipantModal.propTypes = {
-  textObject: PropTypes.string.isRequired,
-  titleObject: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onDeleteClick: PropTypes.func.isRequired
+  textObject: PropTypes.string,
+  titleObject: PropTypes.string,
+  onClose: PropTypes.func,
+  onDeleteClick: PropTypes.func
 };
 export default deleteModal;

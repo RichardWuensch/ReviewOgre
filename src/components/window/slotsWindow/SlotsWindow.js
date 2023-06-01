@@ -2,7 +2,7 @@ import React from 'react';
 import './SlotsWindow.css';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import add from '../../../assets/media/plus-circle.svg';
-import { Accordion, Image } from 'react-bootstrap';
+import { Accordion, Button, Image } from 'react-bootstrap';
 import SlotCard from './Slot';
 import { useRoomSlots } from '../context/RoomSlotContext';
 
@@ -15,10 +15,12 @@ function SlotsWindow () {
       <div className={'slotsWindow'}>
           <h2 className={'title-subheadline'}>Slots</h2>
           <div className={'slots-button-container'}>
-              <button className={'button-container-green-slots'} onClick={() => setShowModalAddSlot(true)}>
-                  <Image src={add} alt={'addSlotIcon'} height={16} width={16}/>
-                  <span className={'button-text'}>Add Slot</span>
-              </button>
+              <div className={'button-container-participants'}>
+                  <Button className="button-container-green" onClick={() => setShowModalAddSlot(true)} >
+                      <Image src={add} alt="addSlot" height={16} width={16} />
+                      <span className="button-text">Add slot</span>
+                  </Button>
+              </div>
           </div>
           <div className={'slots-list-container'}>
               <Accordion defaultActiveKey="0">

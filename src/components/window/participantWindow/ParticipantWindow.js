@@ -9,6 +9,7 @@ import './ParticipantWindow.css';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
 import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
+import { Button, Image } from 'react-bootstrap';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -41,48 +42,59 @@ function ParticipantList () {
     /* eslint-enable object-shorthand */
   };
 
+  function leaveEditMode () {
+    setIsEditModeActive(false);
+    setSelectedParticipants([]);
+    setAllParticipantsSelected(false);
+  }
+
   return (
       <div className={'participantsWindow'}>
           <h2 className={'title-subheadline'}>Participants</h2>
           <div className={'participant-button-container'}>
               {!isEditModeActive
                 ? (
-                      <button className={'button-container-green-participants'} onClick={() => {
-                        setShowModalParticipant(true);
-                      }}>
-                          <img src={add} alt={'addParticipantIcon'} height={16} width={16}/>
-                          <span className={'button-text'}>Add Participant</span>
-                      </button>
+                    <div className={'button-container-participants'}>
+                      <Button className="button-container-green" onClick={() => setShowModalParticipant(true)}>
+                          <Image src={add} alt="addParticipant" height={16} width={16} />
+                          <span className="button-text">Add Participant</span>
+                      </Button>
+                    </div>
                   )
                 : (
-                      <button className={'button-container-green-participants'} onClick={() => setShowModalEditMultipleParticipants(true)}>
-                          <img src={edit} alt={'editListIcon'} height={16} width={16}/>
-                          <span className={'button-text'}>Edit Selected</span>
-                      </button>
+                      <div className={'button-container-participants'}>
+                          <Button className="button-container-green" onClick={() => setShowModalEditMultipleParticipants(true)}>
+                              <Image src={edit} alt="editList" height={16} width={16} />
+                              <span className="button-text">Edit Selected</span>
+                          </Button>
+                      </div>
                   )}
               {isEditModeActive && (
-                  <button className={'button-container-green-participants'} onClick={() => {
-                    console.log('Selected participants' + selectedParticipants);
-                    setShowModalDeleteParticipant(true);
-                  }} style={ { background: '#C40233' } }>
-                      <img src={deleteButton} alt={'icon'} height={16} width={16}/>
-                      <span className={'button-text'} style={{ color: '#F5F5F5' }}>Delete Selected</span>
-                  </button>
+                  <div className={'button-container-participants'}>
+                      <Button className="button-container-green" onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }>
+                          <Image src={deleteButton} alt="delete" height={16} width={16} />
+                          <span className="button-text" style={{ color: '#F5F5F5' }}>Delete Selected</span>
+                      </Button>
+                  </div>
               )
 
               }
               {!isEditModeActive
                 ? (
-                      <button className={'button-container-green-participants'} onClick={() => setIsEditModeActive(true)}>
-                          <img src={edit} alt={'editListIcon'} height={16} width={16}/>
-                          <span className={'button-text'}>Edit List</span>
-                      </button>
+                      <div className={'button-container-participants'}>
+                          <Button className="button-container-green" onClick={() => setIsEditModeActive(true)}>
+                              <Image src={edit} alt="editParticipants" height={16} width={16} />
+                              <span className="button-text" >Edit List</span>
+                          </Button>
+                      </div>
                   )
                 : (
-                      <button className={'button-container-green-participants'} onClick={() => leaveEditMode()}>
-                          <img src={exit} alt={'icon'} height={16} width={16}/>
-                          <span className={'button-text'}>Cancel</span>
-                      </button>
+                      <div className={'button-container-participants'}>
+                          <Button className="button-container-green" onClick={() => leaveEditMode()}>
+                              <Image src={exit} alt="exitEdit" height={16} width={16} />
+                              <span className="button-text" >Cancel</span>
+                          </Button>
+                      </div>
                   )}
           </div>
           <div className={'list-description'}>
@@ -164,12 +176,6 @@ function ParticipantList () {
               onClose={() => { setShowModalDeleteParticipant(false); }}/>
       </div>
   );
-
-  function leaveEditMode () {
-    setIsEditModeActive(false);
-    setSelectedParticipants([]);
-    setAllParticipantsSelected(false);
-  }
 }
 
 export default ParticipantList;

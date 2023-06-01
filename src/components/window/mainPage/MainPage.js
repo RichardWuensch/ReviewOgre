@@ -14,6 +14,7 @@ import ImportParticipants from '../../../api/ImportParticipants';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
+import { Button, Col, Image, Row } from 'react-bootstrap';
 // import RevagerLiteExport from '../../api/mail/RevagerLiteExport';
 // import Mail from '../../api/mail/Mail';
 
@@ -53,37 +54,42 @@ function MainPage () {
   return (
         <div className={'main-page'}>
             <div className={'title-box'}>
-                <img src={logo} alt={'icon'} height={50} width={50}/>
+                <Image src={logo} alt={'icon'} height={50} width={50}/>
                 <span className={'title-text'}>ReviewOgre Reloaded</span>
             </div>
             <h2 className={'title-subheadline'} style={{ fontWeight: 100, fontSize: '2.5em' }}>Sort your review peers in groups for better Technical Reviews!</h2>
             <span className={'title-subheadline'} style={{ fontWeight: 100 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
-            <div className={'button-group'}>
-                <button className={'button-container-green'}
-                        onClick={() => document.getElementById('student-input').click()}>
-                    <img src={download} alt={'icon1'} height={16} width={16}/>
-                    <span className={'button-text'}>Import Participants</span>
-                </button>
-                <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
-                       accept='text/csv'/>
-                <button className={'button-container-green'}
-                        onClick={() => document.getElementById('file-input').click()}>
-                    <img src={download} alt={'icon2'} height={16} width={16}/>
-                    <span className={'button-text'}>Load Configuration</span>
-                </button>
-                <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}
-                       accept='application/json'/>
-                <button className={'button-container-white'} onClick={saveConfiguration}>
-                    <img src={file} alt={'icon3'} height={16} width={16}/>
-                    <span className={'button-text'}>Save Configuration</span>
-                </button>
-            </div>
-            <div className={'participant-slots-container'}>
-
-                {/* added context to participant store */}
-                <ParticipantList/>
+            <Row className={'button-group'}>
+                <Col xs={8} md={4} className="mb-3 mb-md-0">
+                    <Button className="button-container-green" onClick={() => document.getElementById('student-input').click()}>
+                        <Image src={download} alt="icon1" height={16} width={16} />
+                        <span className="button-text">Import Participants</span>
+                    </Button>
+                    <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
+                           accept='text/csv'/>
+                </Col>
+                <Col xs={8} md={4} className="mb-3 mb-md-0">
+                    <Button className="button-container-green" onClick={() => document.getElementById('file-input').click()}>
+                        <Image src={download} alt="icon2" height={16} width={16} />
+                        <span className="button-text">Load Configuration</span>
+                    </Button>
+                    <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}
+                           accept='application/json'/>
+                </Col>
+                <Col xs={8} md={4} className="mb-3 mb-md-0">
+                    <Button className="button-container-white" onClick={saveConfiguration}>
+                        <Image src={file} alt="icon3" height={16} width={16} />
+                        <span className="button-text">Save Configuration</span>
+                    </Button>
+                </Col>
+            </Row>
+            <Row className={'participant-slots-container'}>
+                <Col xs={12} md={8} className="mb-3 mb-md-0">
+                    {/* added context to participant store */}
+                    <ParticipantList/>
+                </Col>
                 {/* replace with component */}
-                <div className={'slots-setup-container'}>
+                <Col xs={12} md={4} className={'mb-3 mb-md-0 slots-setup-container'}>
                     <SlotsWindow/>
                     <div className={'setupWindow'}>
                         <h2 className={'title-subheadline'}>Run Configuration</h2>
@@ -112,20 +118,20 @@ function MainPage () {
                                 </div>
                             </div>
                             <div className={'start-button-container'}>
-                                <button className={'button-start'} onClick={runAlgorithm}>
-                                    <img src={start} alt={'startCalculationsIcon'} height={20} width={20}/>
-                                    <span className={'button-start-text'}>Start Calculations</span>
-                                </button>
+                                <Button className="button-start" onClick={runAlgorithm}>
+                                    <Image src={start} alt="startCalculation" height={20} width={20} />
+                                    <span className="button-start-text">Start Calculations</span>
+                                </Button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </Col>
                 <FailedCalculationModal
                     show={showModalFailedCalculations}
                     onHide={() => setShowModalFailedCalculations(false)}/>
 
                 {/* end */}
-            </div>
+            </Row>
         </div>
   );
 }

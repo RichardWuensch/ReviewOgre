@@ -40,9 +40,9 @@ function ToggleRoom ({ children, eventKey, callback }) {
   );
 }
 ToggleRoom.propTypes = {
-  eventKey: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  callback: PropTypes.func.isRequired
+  eventKey: PropTypes.string,
+  children: PropTypes.node,
+  callback: PropTypes.func
 };
 
 function SlotModal (props) {
@@ -159,7 +159,7 @@ function SlotModal (props) {
                                                 <Card>
                                                     <Card.Header className={'list-item border-0'}>
                                                             <input className={'item-text'} type="text" value={item.getName()} placeholder={'Room'} onChange={(event) => handleInputChange(index, event)} style={{ backgroundColor: '#F5F5F5' }} />
-                                                            <ToggleRoom eventKey={index}></ToggleRoom>
+                                                            <ToggleRoom eventKey={String(index)}></ToggleRoom>
                                                     </Card.Header>
                                                     <Accordion.Collapse eventKey={index}>
                                                         <Card.Body>
