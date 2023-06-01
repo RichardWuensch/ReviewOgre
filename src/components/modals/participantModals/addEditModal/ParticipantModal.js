@@ -95,7 +95,9 @@ ParticipantModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   participant: PropTypes.object,
   newParticipant: PropTypes.bool,
-  onSaveClick: PropTypes.func.isRequired
+  onSaveClick: PropTypes.func.isRequired,
+  show: PropTypes.bool,
+  onHide: PropTypes.func
 };
 
 export default ParticipantModal;

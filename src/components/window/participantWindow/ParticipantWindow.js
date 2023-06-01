@@ -147,8 +147,7 @@ function ParticipantList () {
               show={showModalParticipant}
               onClose={() => setShowModalParticipant(false)}
               onHide={() => setShowModalParticipant(false)}
-              newParticipant={true}
-          />
+              newParticipant={true}/>
           <EditMultipleParticipantsModal
               show={showModalEditMultipleParticipants}
               onHide={() => setShowModalEditMultipleParticipants(false)}
