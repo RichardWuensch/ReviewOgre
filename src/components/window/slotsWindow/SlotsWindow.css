@@ -67,3 +67,13 @@
     cursor: pointer;
     outline: inherit;
 }
+
+.overflow-container {
+    overflow: auto;
+    max-height: 25vh;
+}
+
+.overflow-container .list-group {
+    --bs-list-group-item-padding-x: 0rem;
+    --bs-list-group-item-padding-y: 0rem;
+}

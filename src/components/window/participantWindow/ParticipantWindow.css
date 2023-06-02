@@ -22,6 +22,7 @@
     display: block;
     overflow: scroll;
     font-style: normal;
+    max-height: 50vh;
     font-weight: 300;
     font-size: 1.2em;
     color: #82868B;
@@ -38,30 +39,14 @@
     font-size: 1em;
     font-weight: 100;
  }
- .column-firstName{
-     width: 12%;
- }
- .column-lastName{
-     width: 13%;
- }
- .column-email{
-     width: 27%;
- }
- .column-email-header{
-     width: 27%;
- }
- .column-group{
-     width: 8%;
- }
- .column-topic{
-     width: 15%;
- }
- .column-languageLevel{
-     width: 15%;
- }
- .column-options{
-    width: 10%;
- }
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+}
+
  .column-options-buttons{
     padding-right: 30%;
  }

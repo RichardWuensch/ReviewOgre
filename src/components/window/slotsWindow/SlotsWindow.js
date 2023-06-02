@@ -2,7 +2,7 @@ import React from 'react';
 import './SlotsWindow.css';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import add from '../../../assets/media/plus-circle.svg';
-import { Accordion, Button, Image } from 'react-bootstrap';
+import { Accordion, Button, Image, ListGroup } from 'react-bootstrap';
 import SlotCard from './Slot';
 import { useRoomSlots } from '../context/RoomSlotContext';
 
@@ -16,7 +16,7 @@ function SlotsWindow () {
           <h2 className={'title-subheadline'}>Slots</h2>
           <div className={'slots-button-container'}>
               <div className={'button-container-participants'}>
-                  <Button className="button-container-green" onClick={() => setShowModalAddSlot(true)} >
+                  <Button variant={'light'} className="button-container-green" onClick={() => setShowModalAddSlot(true)} >
                       <Image src={add} alt="addSlot" height={16} width={16} />
                       <span className="button-text">Add slot</span>
                   </Button>
@@ -24,17 +24,18 @@ function SlotsWindow () {
           </div>
           <div className={'slots-list-container'}>
               <Accordion defaultActiveKey="0">
-              <ul className={'list-style'}>
-                  {roomSlots.map((slot, index) => (
-                          <li key={index}>
-                              <SlotCard
-                                  key={slot.getId()}
-                                  eventKey={index}
-                                  roomSlot={slot}/>
-
-                          </li>
-                  ))}
-              </ul>
+                  <div className={'overflow-container'}>
+                      <ListGroup className={'list-group'}>
+                          {roomSlots.map((slot, index) => (
+                              <ListGroup.Item key={index}>
+                                  <SlotCard
+                                      key={slot.getId()}
+                                      eventKey={index}
+                                      roomSlot={slot}/>
+                              </ListGroup.Item>
+                          ))}
+                      </ListGroup>
+                  </div>
               </Accordion>
           </div>
             <SlotModal

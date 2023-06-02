@@ -84,7 +84,7 @@ function ParticipantModal (props) {
                         </Form.Select>
                     </Form.Group>
                     <div className={'text-center'}>
-                        <Button className={'save-button'} onClick={onSaveClick}> {newParticipant ? 'Add Participant' : 'Save Changes'}</Button>
+                        <Button variant={'light'} className={'save-button'} onClick={onSaveClick}> {newParticipant ? 'Add Participant' : 'Save Changes'}</Button>
                     </div>
                 </Form>
             </Modal.Body>

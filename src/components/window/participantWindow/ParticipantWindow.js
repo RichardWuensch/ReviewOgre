@@ -9,7 +9,7 @@ import './ParticipantWindow.css';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
 import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
-import { Button, Image } from 'react-bootstrap';
+import { Button, Container, Image, Table } from 'react-bootstrap';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -49,13 +49,13 @@ function ParticipantList () {
   }
 
   return (
-      <div className={'participantsWindow'}>
+      <Container fluid className={'participantsWindow'}>
           <h2 className={'title-subheadline'}>Participants</h2>
           <div className={'participant-button-container'}>
               {!isEditModeActive
                 ? (
                     <div className={'button-container-participants'}>
-                      <Button className="button-container-green" onClick={() => setShowModalParticipant(true)}>
+                      <Button variant={'light'} className="button-container-green" onClick={() => setShowModalParticipant(true)}>
                           <Image src={add} alt="addParticipant" height={16} width={16} />
                           <span className="button-text">Add Participant</span>
                       </Button>
@@ -63,7 +63,7 @@ function ParticipantList () {
                   )
                 : (
                       <div className={'button-container-participants'}>
-                          <Button className="button-container-green" onClick={() => setShowModalEditMultipleParticipants(true)}>
+                          <Button variant={'light'} className="button-container-green" onClick={() => setShowModalEditMultipleParticipants(true)}>
                               <Image src={edit} alt="editList" height={16} width={16} />
                               <span className="button-text">Edit Selected</span>
                           </Button>
@@ -71,7 +71,7 @@ function ParticipantList () {
                   )}
               {isEditModeActive && (
                   <div className={'button-container-participants'}>
-                      <Button className="button-container-green" onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }>
+                      <Button variant={'light'} className="button-container-green" onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }>
                           <Image src={deleteButton} alt="delete" height={16} width={16} />
                           <span className="button-text" style={{ color: '#F5F5F5' }}>Delete Selected</span>
                       </Button>
@@ -82,7 +82,7 @@ function ParticipantList () {
               {!isEditModeActive
                 ? (
                       <div className={'button-container-participants'}>
-                          <Button className="button-container-green" onClick={() => setIsEditModeActive(true)}>
+                          <Button variant={'light'} className="button-container-green" onClick={() => setIsEditModeActive(true)}>
                               <Image src={edit} alt="editParticipants" height={16} width={16} />
                               <span className="button-text" >Edit List</span>
                           </Button>
@@ -90,7 +90,7 @@ function ParticipantList () {
                   )
                 : (
                       <div className={'button-container-participants'}>
-                          <Button className="button-container-green" onClick={() => leaveEditMode()}>
+                          <Button variant={'light'} className="button-container-green" onClick={() => leaveEditMode()}>
                               <Image src={exit} alt="exitEdit" height={16} width={16} />
                               <span className="button-text" >Cancel</span>
                           </Button>
@@ -98,8 +98,8 @@ function ParticipantList () {
                   )}
           </div>
           <div className={'list-description'}>
-              <div className={'participant-list-container'}>
-              <table className={'participant-table'}>
+              <div className={'participant-list-container overflow-auto'}>
+              <Table responsive borderless className={'overflow-auto participant-table'}>
                   <thead>
                   <tr>
                       {isEditModeActive && (
@@ -113,13 +113,13 @@ function ParticipantList () {
                               </label>
                           </th>
                       )}
-                      <th className={'column-firstName'} style={{ width: '12%', fontSize: '1.5em' }}>First Name</th>
-                      <th className={'column-lastName'} style={{ width: '12%', fontSize: '1.5em' }}>Last Name</th>
-                      <th className={'column-email-header'} style={{ width: '20%', fontSize: '1.5em' }}>Email Address</th>
-                      <th className={'column-group'} style={{ width: '10%', fontSize: '1.5em' }}>Group</th>
-                      <th className={'column-topic'} style={{ width: '10%', fontSize: '1.5em' }}>Topic</th>
-                      <th className={'column-languageLevel'} style={{ width: '18%', fontSize: '1.5em' }}>German Skill Level</th>
-                      <th className={'column-options'} style={{ width: '12%', fontSize: '1.5em' }}>Options</th>
+                      <th className={'column-firstName'} style={{ fontSize: '1.5em' }}>First Name</th>
+                      <th className={'column-lastName'} style={{ fontSize: '1.5em' }}>Last Name</th>
+                      <th className={'column-email-header'} style={{ fontSize: '1.5em' }}>Email Address</th>
+                      <th className={'column-group'} style={{ fontSize: '1.5em' }}>Group</th>
+                      <th className={'column-topic'} style={{ fontSize: '1.5em' }}>Topic</th>
+                      <th className={'column-languageLevel'} style={{ fontSize: '1.5em' }}>German Skill Level</th>
+                      <th className={'column-options'} style={{ fontSize: '1.5em' }}>Options</th>
                   </tr>
                   </thead>
                 <tbody>
@@ -151,11 +151,11 @@ function ParticipantList () {
                     </tr>
                 ))}
                 </tbody>
-            </table>
+            </Table>
                   </div>
           </div>
           <ParticipantModal
-              onSaveClick={(tempParticipant) => { addParticipant(tempParticipant); }}
+              onSaveClick={(tempParticipant) => addParticipant(tempParticipant)}
               show={showModalParticipant}
               onClose={() => setShowModalParticipant(false)}
               onHide={() => setShowModalParticipant(false)}
@@ -163,7 +163,6 @@ function ParticipantList () {
           <EditMultipleParticipantsModal
               show={showModalEditMultipleParticipants}
               onHide={() => setShowModalEditMultipleParticipants(false)}
-              onSave={() => { console.log(''); }}
               onClose={() => setShowModalEditMultipleParticipants(false)}
               participants = { selectedParticipants }/>
           <DeleteModal
@@ -174,7 +173,7 @@ function ParticipantList () {
               onDeleteClick={(participant) => removeParticipants(participant)}
               deleteobject={ selectedParticipants }
               onClose={() => { setShowModalDeleteParticipant(false); }}/>
-      </div>
+      </Container>
   );
 }
 

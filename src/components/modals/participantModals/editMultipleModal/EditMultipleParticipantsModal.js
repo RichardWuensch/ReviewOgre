@@ -78,7 +78,7 @@ function EditMultipleParticipantsModal (props) {
                         </Form.Select>
                     </Form.Group>
                     <div className={'text-center'}>
-                        <Button onClick={ onSaveUpdates } className={'save-button'}>Save Changes</Button>
+                        <Button variant={'light'} onClick={ onSaveUpdates } className={'save-button'}>Save Changes</Button>
                     </div>
                 </Form>
             </Modal.Body>

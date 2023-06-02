@@ -61,7 +61,7 @@ function MainPage () {
             <span className={'title-subheadline'} style={{ fontWeight: 100 }}>Visit the <a href="url">HowToGuide</a> to learn more about this platform</span>
             <Row className={'button-group'}>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
-                    <Button className="button-container-green" onClick={() => document.getElementById('student-input').click()}>
+                    <Button variant={'light'} className="button-container-green" onClick={() => document.getElementById('student-input').click()}>
                         <Image src={download} alt="icon1" height={16} width={16} />
                         <span className="button-text">Import Participants</span>
                     </Button>
@@ -69,7 +69,7 @@ function MainPage () {
                            accept='text/csv'/>
                 </Col>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
-                    <Button className="button-container-green" onClick={() => document.getElementById('file-input').click()}>
+                    <Button variant={'light'} className="button-container-green" onClick={() => document.getElementById('file-input').click()}>
                         <Image src={download} alt="icon2" height={16} width={16} />
                         <span className="button-text">Load Configuration</span>
                     </Button>
@@ -77,7 +77,7 @@ function MainPage () {
                            accept='application/json'/>
                 </Col>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
-                    <Button className="button-container-white" onClick={saveConfiguration}>
+                    <Button variant={'light'} className="button-container-white" onClick={saveConfiguration}>
                         <Image src={file} alt="icon3" height={16} width={16} />
                         <span className="button-text">Save Configuration</span>
                     </Button>
@@ -118,7 +118,7 @@ function MainPage () {
                                 </div>
                             </div>
                             <div className={'start-button-container'}>
-                                <Button className="button-start" onClick={runAlgorithm}>
+                                <Button variant={'light'} className="button-start" onClick={runAlgorithm}>
                                     <Image src={start} alt="startCalculation" height={20} width={20} />
                                     <span className="button-start-text">Start Calculations</span>
                                 </Button>
