@@ -1,17 +1,15 @@
 import Participant from '../data/model/Participant';
-import { ParticipantStore } from '../data/store/ParticipantStore';
 import ImportFile from './ImportFile';
 import Papa from 'papaparse';
 
 export default class ImportParticipants {
   async runStudentImport (event) {
     const fileContent = await new ImportFile('application/vnd.ms-excel').runFileLoad(event); // internal filetype is not text/csv
-    return new Promise(() => {
+    return new Promise((resolve) => {
       let groups = Papa.parse(fileContent).data.slice(2); // get all groups starting from index 2 (bc of separator and header)
       groups = groups.filter(row => row[0] !== ''); // delete empty lines
-      const participants = this.parseParticipantsFromGroups(groups);
-      ParticipantStore.getSingleton().deleteAll();
-      ParticipantStore.getSingleton().putMultiple(participants);
+      // ParticipantStore.getSingleton().deleteAll(); //TODO im Context
+      resolve(this.parseParticipantsFromGroups(groups));
     });
   }
 
@@ -21,7 +19,7 @@ export default class ImportParticipants {
       let groupIndex = 10; // firstname of first group member
       // for every member in a group: create a new Participant object
       for (let participantIndex = 0; participantIndex < group[2]; participantIndex++) {
-        participants.push(new Participant(
+        participants.push(new Participant(-1,
           group[groupIndex], // firstname
           group[groupIndex + 1], // lastname
           group[groupIndex + 2], // email

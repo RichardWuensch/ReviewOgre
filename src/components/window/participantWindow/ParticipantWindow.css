@@ -1,6 +1,6 @@
 .participantsWindow{
     margin: 0 2% 0 0;
-    width: 50vw;
+    width: 100%;
 }
 .participant-button-container{
     display:flex;
@@ -8,17 +8,8 @@
     margin: 2% 0;
 }
 
-.button-container-green-participants {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.button-container-participants {
     width: 25%;
-    height: 5vh;
-    background: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    padding: 2%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .list-description{
@@ -31,6 +22,7 @@
     display: block;
     overflow: scroll;
     font-style: normal;
+    max-height: 50vh;
     font-weight: 300;
     font-size: 1.2em;
     color: #82868B;
@@ -47,30 +39,14 @@
     font-size: 1em;
     font-weight: 100;
  }
- .column-firstName{
-     width: 12%;
- }
- .column-lastName{
-     width: 13%;
- }
- .column-email{
-     width: 27%;
- }
- .column-email-header{
-     width: 27%;
- }
- .column-group{
-     width: 8%;
- }
- .column-topic{
-     width: 15%;
- }
- .column-languageLevel{
-     width: 15%;
- }
- .column-options{
-    width: 10%;
- }
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+}
+
  .column-options-buttons{
     padding-right: 30%;
  }
@@ -108,3 +84,4 @@
     cursor: pointer;
     outline: inherit;
  }
+

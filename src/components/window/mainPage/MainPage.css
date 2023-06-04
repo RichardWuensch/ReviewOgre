@@ -9,6 +9,7 @@
     font-weight: 700;
     font-size: 50%;
 }
+
 .body{
     padding: 1%;
 }
@@ -26,38 +27,50 @@
     justify-content: space-between;
 }
 
-.button-container-green {
+.main-page .button-container-green {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30%;
-    height: 5vh;
-    background: #B0D7AF;
+    width: 100%;
+    height: 40px;
+    background-color: #B0D7AF;
     border-radius: 5px;
     border-style: none;
     padding: 2%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    font-weight: 400;
+    font-weight: 200;
 }
-.button-container-white {
+
+.main-page .button-container-white {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30%;
-    height: 5vh;
+    width: 100%;
+    height: 40px;
     background: #FFFFFF;
     border-radius: 5px;
     border-style: none;
     padding: 2%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.button-text {
+.main-page .button-text {
     font-weight: 300;
-    font-size: 1.5em;
+    font-size: 0.8em;
     color: #363A3F;
     margin-left:10%;
 }
 
+.main-page .button-container-green:focus,
+.main-page .button-container-green:hover {
+    background: #B0D7AF;
+    color: black;
+}
+
+.main-page .button-container-white:focus,
+.main-page .button-container-white:hover {
+    background: #FFFFFF;
+    color: black;
+}
 /* ReviewOger reloaded */
 .title-text{
     margin-left: 3vw;
@@ -83,25 +96,31 @@
     flex-direction: column;
     width: 40vw;
 }
-.start-button-container{
+.main-page .start-button-container{
     margin: 0 5% 0 5%;
 }
-.button-start{
+.main-page .button-start{
     display: flex;
     align-self: end;
     align-items: center;
     justify-content: center;
-    width: 15vw;
-    height: 8vh;
+    width: 100%;
+    height: 50px;
     background: #B0D7AF;
     border-radius: 5px;
     border-style: none;
     padding: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.button-start-text{
+
+.main-page .button-start:hover,
+.main-page .button-start:focus {
+    background: #B0D7AF;
+    color: black;
+}
+.main-page .button-start-text{
     font-weight: 400;
-    font-size: 2em;
+    font-size: 1em;
     color: #363A3F;
     margin-left:10px;
 }

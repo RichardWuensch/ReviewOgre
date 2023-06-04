@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import './failedCalculationModal.css';
-import exit from '../../assets/media/return.svg';
+import './FailedCalculationModal.css';
+import exit from '../../../assets/media/return.svg';
 import React, { useState } from 'react';
 
 function FailedCalculationsModal (props) {
@@ -42,7 +42,6 @@ function FailedCalculationsModal (props) {
   );
 }
 FailedCalculationsModal.propTypes = {
-  eventKey: PropTypes.string.isRequired,
-  onHide: PropTypes.string
+  onHide: PropTypes.func.isRequired
 };
 export default FailedCalculationsModal;

@@ -4,17 +4,8 @@
     margin: 2.5% 0;
     color: #363A3F;
 }
-.button-container-green-slots {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.button-container-green {
     width: 25%;
-    height: 5vh;
-    background: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    padding: 2%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .slots-list-container{
@@ -75,4 +66,14 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
+}
+
+.overflow-container {
+    overflow: auto;
+    max-height: 25vh;
+}
+
+.overflow-container .list-group {
+    --bs-list-group-item-padding-x: 0rem;
+    --bs-list-group-item-padding-y: 0rem;
 }

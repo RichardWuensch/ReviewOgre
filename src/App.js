@@ -1,14 +1,17 @@
 import React from 'react';
 import './App.css';
-import MainPage from '../src/components/window/MainPage';
-import { ParticipantProvider } from './components/window/ParticipantsContext';
+import MainPage from './components/window/mainPage/MainPage';
+import { ParticipantProvider } from './components/window/context/ParticipantsContext';
+import { RoomSlotProvider } from './components/window/context/RoomSlotContext';
 
 function App () {
   return (
     <div>
-        <ParticipantProvider>
-            <MainPage/>
-        </ParticipantProvider>
+        <RoomSlotProvider>
+            <ParticipantProvider>
+                <MainPage/>
+            </ParticipantProvider>
+        </RoomSlotProvider>
     </div>
   );
 }

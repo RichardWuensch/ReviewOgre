@@ -1,8 +1,10 @@
 import { createContext, useContext, useReducer } from 'react';
-import Participant from '../../data/model/Participant';
+import Participant from '../../../data/model/Participant';
 
 const ParticipantContext = createContext(null);
 const ParticipantDispatchContext = createContext(null);
+
+let nextId = 1;
 
 export function ParticipantProvider ({ children }) {
   const [tasks, dispatch] = useReducer(
@@ -30,7 +32,9 @@ export function useParticipantsDispatch () {
 function participantsReducer (participants, action) {
   switch (action.type) {
     case 'added': {
-      return [...participants, action.newParticipant];
+      const temp = action.newParticipant;
+      temp.setId(nextId++);
+      return [...participants, temp];
     }
     case 'changed': {
       return participants.map(t => {

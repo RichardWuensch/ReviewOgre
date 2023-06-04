@@ -1,10 +1,11 @@
 import Slot from './Slot';
+import Room from './Room';
 
 export default class RoomSlot extends Slot {
   #rooms = [];
 
-  constructor (date, startTime, endTime, rooms) {
-    super(date, startTime, endTime);
+  constructor (id, date, startTime, endTime, rooms) {
+    super(id, date, startTime, endTime);
     this.#rooms = rooms;
   }
 
@@ -19,5 +20,11 @@ export default class RoomSlot extends Slot {
 
   setRooms (rooms) {
     this.#rooms = rooms;
+  }
+
+  getDeepCopy () {
+    const roomsCopy = [];
+    this.#rooms.forEach(room => roomsCopy.push(new Room(room.getName(), room.hasBeamer(), room.getId())));
+    return new RoomSlot(super.getId(), super.getDate(), super.getStartTime(), super.getEndTime(), roomsCopy);
   }
 }
