@@ -1,6 +1,5 @@
 import { jsPDF as JSPDF } from 'jspdf';
 import 'jspdf-autotable';
-import RoomSlotHelper from '../data/store/RoomSlotHelper';
 import ConverterForPrinting from './ConverterForPrinting';
 
 const minimumXIndentation = 15;
@@ -10,8 +9,8 @@ export default class SaveRoomPlan {
   #roomSlots;
   #roomPlan;
   #converter = new ConverterForPrinting();
-  constructor () {
-    this.#roomSlots = new RoomSlotHelper().getAllRoomSlots(); // reviews are saved in roomSlots after algorithm ran successfully
+  constructor (roomSlots) {
+    this.#roomSlots = roomSlots; // reviews are saved in roomSlots after algorithm ran successfully
     this.#roomPlan = new JSPDF();
   }
 
@@ -61,8 +60,9 @@ export default class SaveRoomPlan {
       for (let i = 0; i < roomSlot.getRooms().length; i++) {
         const row = [];
         const room = roomSlot.getRooms()[i];
-        row.push(room.getName());
         // TODO: check for room.getReview() === null necessary?
+        if (room.getReview() === null) continue;
+        row.push(room.getName());
         row.push(room.getReview().getGroupName());
         row.push(room.getReview().getModerator().getFullName());
 

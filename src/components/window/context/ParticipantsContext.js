@@ -48,6 +48,9 @@ function participantsReducer (participants, action) {
     case 'deleted': {
       return participants.filter(t => t.getId() !== action.itemToDelete.getId());
     }
+    case 'getAll': {
+      return participants;
+    }
     default: {
       throw Error('Unknown action: ' + action.type);
     }

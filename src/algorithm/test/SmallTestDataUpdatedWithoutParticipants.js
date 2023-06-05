@@ -1,14 +1,13 @@
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
-import AbstractTestData from './AbstractTestData';
+// import AbstractTestData from './AbstractTestData';
 
-export default class SmallTestDataUpdatedWithoutParticipants extends AbstractTestData {
-  constructor (participants) {
-    super();
+export default class SmallTestDataUpdatedWithoutParticipants /* extends AbstractTestData */ {
+  constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch) {
+    // super()
+    // this.participants = participants;
 
-    this.participants = participants;
-
-    this.authorIsNotary = true;
+    // this.authorIsNotary = true;
 
     const startDate1 = new Date();
     startDate1.setHours(14);
@@ -28,6 +27,15 @@ export default class SmallTestDataUpdatedWithoutParticipants extends AbstractTes
       new RoomSlot(new Date(), startDate1, endDate2, [
         new Room('I.2.2', true),
         new Room('I.2.3', true)
-      ])];
+      ])
+    ];
+    /* eslint-enable object-shorthand */
+    this.roomSlots.forEach(r => {
+      roomSlotsDispatch({
+        type: 'added',
+        itemToAdd: r
+      });
+    });
+    /* eslint-enable object-shorthand */
   }
 }

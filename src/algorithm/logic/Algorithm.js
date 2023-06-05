@@ -1,6 +1,5 @@
 import ConverterForPrinting from '../../api/ConverterForPrinting';
 import Review from '../../data/model/Review';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
 
 export default class Algorithm {
   #numberOfReviewers = 0;
@@ -9,11 +8,17 @@ export default class Algorithm {
   #roomSlots;
   #authorIsNotary;
 
+  #participantsDispatch;
+  #roomSlotsDispatch;
+
   #maximumTries;
 
-  constructor (participants, roomSlots, authorIsNotary, maximumTries) {
+  constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary, maximumTries) {
     this.#participants = participants;
+    this.#participantsDispatch = participantsDispatch;
+    this.#roomSlotsDispatch = roomSlotsDispatch;
     this.#roomSlots = this.#resetRoomSlots(roomSlots);
+
     this.#authorIsNotary = authorIsNotary;
     this.#maximumTries = (maximumTries === undefined) ? 300 : maximumTries;
   }
@@ -33,11 +38,9 @@ export default class Algorithm {
   * @returns {boolean} - return true if very thing was fine
   */
   run () {
-    if (this.#prechecks() === false) {
-      return false;
-    };
-
     const groups = this.#getAllGroups();
+    this.#prechecks(groups.length);
+
     let errorFound = true;
     let errorCounter = 0;
     while (errorFound) {
@@ -72,14 +75,35 @@ export default class Algorithm {
   }
 
   /**
-  * Do some prechecks before the algorithm run to make sure that there is a possibility that a solution can be found
-  * @throws {Error} - to show what's the problem
-  */
-  #prechecks () {
-    // if count of rooms >= count of groups
-    // are there enough groups for the calculation?
-    // do slot times overlap?
-    return true;
+   * Do some prechecks before the algorithm run to make sure that there is a possibility that a solution can be found
+   * Criteria:
+   * there must be as much rooms as reviews
+   * per Slot are only as much rooms necessary as amout of Participants divided by amout of participants per review (the rest of the rooms can be returned to the roomplaner)
+   * there must be at least as much slots as the result from the amount of Groups divided by max number of rooms calculated in the step befor
+   * @param {int} numberOfGroups
+   * @throws {Error} - to show what's the problem
+   */
+  #prechecks (numberOfGroups) {
+    let roomCount = 0;
+    const maxNumberOfRoomsInSlots = this.#participants.length / ((2 * this.#participants.length) / numberOfGroups); // if there are more rooms they can be shown as unneccessary and the booking can canceled
+    const minAmountOfSlots = numberOfGroups / maxNumberOfRoomsInSlots;
+    const saveDeletedRoomsForRoomPlaner = [];
+    for (const s of this.#roomSlots) {
+      const rooms = s.getRooms();
+      if (rooms.length > maxNumberOfRoomsInSlots) {
+        roomCount += maxNumberOfRoomsInSlots;
+        saveDeletedRoomsForRoomPlaner.push(rooms.splice(maxNumberOfRoomsInSlots, rooms.length - maxNumberOfRoomsInSlots)); // can be shown as unnecessary rooms
+      } else {
+        roomCount += rooms.length;
+      }
+    }
+    // saveDeletedRoomsForRoomPlaner.forEach(room => console.log(room));
+    // this.#roomSlots.forEach(room => console.log(room));
+    let errorMessage = '';
+    if (numberOfGroups > roomCount) errorMessage += 'There are not enough rooms.\n';
+    if (minAmountOfSlots > this.#roomSlots.length) errorMessage += 'There are not enough Slots.\n';
+
+    if (errorMessage !== '') throw new Error(errorMessage);
   }
 
   /**
@@ -262,12 +286,13 @@ export default class Algorithm {
 
   printParticipantsSortByAmountOfActiveInSlots () {
     // print all participants sorted by the amount of activities
-    /* this.#participants
+    this.#participants
       .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
-      .forEach((p) => console.log(p)); */
-    const participantStore = ParticipantStore.getSingleton();
-    participantStore.getAll().sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
       .forEach((p) => console.log(p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
+
+    /* const participantStore = ParticipantStore.getSingleton();
+      participantStore.getAll().sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
+        .forEach((p) => console.log(p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount())); */
   }
 
   printJSONinLocalStorage () {

@@ -1,11 +1,11 @@
 import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
-import AbstractTestData from './AbstractTestData';
+// import AbstractTestData from './AbstractTestData';
 
-export default class SmallTestDataUpdated extends AbstractTestData {
-  constructor () {
-    super();
+export default class SmallTestDataUpdated /* extends AbstractTestData */ {
+  constructor (participants, participantsDispatch, roomSlotsDispatch) {
+    // super();
 
     this.authorIsNotary = true;
 
