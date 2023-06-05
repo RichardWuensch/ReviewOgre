@@ -14,6 +14,15 @@
     max-height: 90vh;
     overflow-y: auto;
 }
+
+.header-style {
+    --bs-accordion-transition: none; /* Disable the accordion transition */
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); /* Set the active icon */
+    --bs-accordion-btn-focus-box-shadow: none; /* Disable the focus box shadow */
+    --bs-accordion-active-color: none; /* Disable the active color */
+    --bs-accordion-active-bg: #ffffff;
+}
+
 .modal-header{
     font-family: 'Roboto', sans-serif;
     font-style: normal;
@@ -28,9 +37,9 @@
     padding-right: 4%;
 }
 .modal-header-icon{
-    width: 10%;
-    height: 10%;
     color: #82868B;
+    height: 20px;
+    width: 20px;
 }
 
 .date-container{
@@ -51,24 +60,22 @@
 .time-text{
     font-size: 1.5em;
 }
-.time-container{
+.modal .time-container{
     display: flex;
     padding: 4%;
     justify-content: space-between;
     align-items: center;
-    font-size: 1em;
 }
 .span{
     font-size: 1em;
 }
-.input-time-container{
-    width: 80px;
+.modal .input-time-container{
+    min-width: 80px;
     height: 30px;
-    padding-left: 3%;
+    padding-left: 15%;
     background: #FFFFFF;
     border: 1px solid #82868B;
     border-radius: 5px;
-    font-size: 1.5em;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 .footer{
@@ -77,16 +84,19 @@
     justify-content: flex-end;
     align-items: center;
 }
-.add-slot-button{
-    display: flex;
-    justify-self: flex-end;
-    align-items: center;
-    justify-content: center;
-    padding: 5%;
-    min-width: 40%;
+.modal .add-slot-button{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 100;
+    margin-top: 50px;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: auto;
+    height: 6vh;
     background: #B0D7AF;
     border-radius: 5px;
     border-style: none;
+    color: black;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 .add-slot-text{
@@ -127,7 +137,7 @@
 }
 .list-item{
     display: flex;
-    color: #FFFFFF;
+    color: #F5F5F5;
     justify-content: space-between;
 }
 .expand-chevron-button{

@@ -6,15 +6,14 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
 
-function EditMultipleParticipantsModal (props) {
+function EditMultipleParticipantsModal ({ participants, onClose, ...props }) {
   const [group, setGroup] = useState('');
   const [languageLevel, setLanguageLevel] = useState('');
   const [topic, setTopic] = useState('');
-  const participants = props.participants;
   const participantDispatch = useParticipantsDispatch();
 
   const handleClose = () => {
-    props.onClose();
+    onClose();
   };
 
   const onSaveUpdates = () => {
@@ -46,7 +45,7 @@ function EditMultipleParticipantsModal (props) {
                 <Image src={exit} alt={'exit'} className={'modal-header-icon'} onClick={ handleClose }></Image>
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form style={{ padding: 10 }}>
                     <Form.Group>
                         <Form.Label>Group:</Form.Label>
                         <Form.Control

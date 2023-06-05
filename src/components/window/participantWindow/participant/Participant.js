@@ -74,7 +74,8 @@ function Participant ({ participant }) {
                 participant={participant}
                 show={showModalEditParticipant}
                 onHide={() => setShowModalEditParticipant(false)}
-                onClose={() => setShowModalEditParticipant(false)}/>
+                onClose={() => setShowModalEditParticipant(false)}
+                newParticipant={false}/>
         </>
 
   );

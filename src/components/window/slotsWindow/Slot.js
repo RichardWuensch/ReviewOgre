@@ -35,6 +35,11 @@ function SlotCard (props) {
 
     return slot;
   }
+
+  function getSlotDescription () {
+    return props.roomSlot.getFormattedDate() + ' From: ' + props.roomSlot.getFormattedStartTime() + ' to ' + props.roomSlot.getFormattedEndTime();
+  }
+
   const removeSlot = (roomSlot) => {
     /* eslint-disable object-shorthand */
     roomSlotdispatch({
@@ -50,6 +55,16 @@ function SlotCard (props) {
       type: 'changed',
       updatedRoomSlot: roomSlot
     });
+    /* eslint-enable object-shorthand */
+  };
+
+  const updateSlot = (roomSlot) => {
+    /* eslint-disable object-shorthand */
+    roomSlotdispatch({
+      type: 'changed',
+      updatedRoomSlot: roomSlot
+    });
+
     /* eslint-enable object-shorthand */
   };
 
@@ -71,7 +86,7 @@ function SlotCard (props) {
                                     <Image src={folderImage} alt={'folderImage'} />
                                 )}
                             <span className={'slot-text'} style={{ paddingLeft: 5 }}>
-                                {props.roomSlot.getFormattedDate() + ' From: ' + props.roomSlot.getFormattedStartTime() + ' to ' + props.roomSlot.getFormattedEndTime()}
+                                {getSlotDescription()}
                             </span>
                         </button>
                         <div className={'options'}>
@@ -101,7 +116,7 @@ function SlotCard (props) {
                                               setObjectToDelete(removeRoom(props.roomSlot.getDeepCopy(), room));
                                               setShowModalDeleteRoom(true);
                                             }}>
-                                                <img src={deleteButton} alt={'icon'}/>
+                                                <Image src={deleteButton} alt={'icon'}/>
                                             </button>
                                         </div>
                                     </div>
@@ -122,7 +137,8 @@ function SlotCard (props) {
                 onHide={() => setShowModalEditSlot(false)}
                 header={'Edit Slot'}
                 roomslot={props.roomSlot}
-                edit={true}/>
+                edit={true}
+                onSaveClick={(slot) => updateSlot(slot)}/>
             <DeleteModal
                 // modal to delete the whole slot
                 show={showModalDeleteSlot}

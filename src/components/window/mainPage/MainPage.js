@@ -97,21 +97,21 @@ function MainPage () {
                             <div className={'radio-container'}>
                                 <div className={'setupItems'}>
                                     <label className={'switch'}>
-                                        <input type="checkbox" onClick={handleNotaryIsAuthorChange}/>
+                                        <input type="checkbox" aria-label={'Notary is author'} onClick={handleNotaryIsAuthorChange}/>
                                         <span className={'slider round'}></span>
                                     </label>
                                     <span style={{ paddingLeft: 10 }}>Notary is Author</span>
                                 </div>
                                 <div className={'setupItems'}>
                                     <label className={'switch'}>
-                                        <input type="checkbox" onClick={handleModeratorNotReviewerChange}/>
+                                        <input type="checkbox" aria-label={'International Groups needed'} onClick={handleModeratorNotReviewerChange}/>
                                         <span className={'slider round'}></span>
                                     </label>
                                     <span style={{ paddingLeft: 10 }}>International Groups</span>
                                 </div>
                                 <div className={'setupItems'} style={{ paddingBottom: '0' }}>
                                     <label className={'switch'}>
-                                        <input type="checkbox" onClick={handleABReviewChange}/>
+                                        <input type="checkbox" aria-label={'A/B-Reviews allowed'} onClick={handleABReviewChange}/>
                                         <span className={'slider round'}></span>
                                     </label>
                                     <span style={{ paddingLeft: 10 }}>A/B Review</span>
