@@ -15,25 +15,35 @@ import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCa
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { Button, Col, Image, Row } from 'react-bootstrap';
+import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
+// import SaveRoomPlan from '../../../api/SaveRoomPlan';
 // import RevagerLiteExport from '../../api/mail/RevagerLiteExport';
 // import Mail from '../../api/mail/Mail';
+let authorIsNotary = false;
 
 function MainPage () {
   const [showModalFailedCalculations, setShowModalFailedCalculations] = React.useState(false);
-  const dispatch = useParticipantsDispatch();
-  const participant = useParticipants();
+  const participantsDispatch = useParticipantsDispatch();
+  const participants = useParticipants();
+  const roomSlotsDispatch = useRoomSlotsDispatch();
+  const roomSlots = useRoomSlots();
 
   function runAlgorithm () {
-    if (new Test().run(participant)) {
+    try {
+      if (new Test().run(participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary)) {
       // successful run
 
-      // all on successful calculation window:
+        // all on successful calculation window:
 
-      // new Mail().generateMailsForModerators();
-      // new RevagerLiteExport().buildJSONAllReviews();
-      // new SaveRoomPlan().runSave();
-    } else {
-      setShowModalFailedCalculations(true);
+        // new Mail().generateMailsForModerators();
+        // new RevagerLiteExport().buildJSONAllReviews();
+        // new SaveRoomPlan(roomSlots).runSave();
+      } else {
+        setShowModalFailedCalculations(true);
+      }
+    } catch (error) {
+      console.log(error.message);
+      // call something like setModalFailedPrecheck with the corrosponding message
     }
   }
 
@@ -43,12 +53,45 @@ function MainPage () {
 
     /* eslint-disable object-shorthand */
     for (const p of participants) {
-      dispatch({
+      participantsDispatch({
         type: 'added',
         newParticipant: p
       });
     }
     /* eslint-enable object-shorthand */
+  }
+
+  function saveConfiguration () {
+    new StoreConfiguration(participants, roomSlots, authorIsNotary).runFileSave();
+  }
+
+  async function importConfiguration (event) {
+    const importConf = new LoadConfiguration();
+    const conf = await importConf.runConfigurationImport(event);
+    /* eslint-disable object-shorthand */
+    for (const p of conf[0]) {
+      participantsDispatch({
+        type: 'added',
+        newParticipant: p
+      });
+    }
+    for (const roomSlots of conf[1]) {
+      roomSlotsDispatch({
+        type: 'added',
+        newRoomSlot: roomSlots
+      });
+    }
+    /* eslint-enable object-shorthand */
+    authorIsNotary = conf[2];
+  }
+
+  function handleNotaryIsAuthorChange () {
+    console.log('Notary is Author');
+    // this logs can be used to check if the algo writes correct in context
+    // const roomSlots = useRoomSlots();
+    // console.log(roomSlots);
+    // const participants = useParticipants();
+    // console.log(participants);
   }
 
   return (
@@ -135,9 +178,6 @@ function MainPage () {
         </div>
   );
 }
-function handleNotaryIsAuthorChange () {
-  console.log('Notary is Author');
-}
 
 function handleModeratorNotReviewerChange () {
   console.log('Moderator not Reviewer');
@@ -145,14 +185,6 @@ function handleModeratorNotReviewerChange () {
 
 function handleABReviewChange () {
   console.log('A/B Review');
-}
-
-function saveConfiguration () {
-  new StoreConfiguration().runFileSave();
-}
-
-async function importConfiguration (event) {
-  await new LoadConfiguration().runConfigurationImport(event);
 }
 
 export default MainPage;

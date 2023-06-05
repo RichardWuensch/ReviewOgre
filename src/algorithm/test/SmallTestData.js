@@ -1,12 +1,12 @@
-import Participant from '../../data/model/Participant';
+/* import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
 import { ParticipantStore } from '../../data/store/ParticipantStore';
 import { SlotStore } from '../../data/store/SlotStore';
-import { RoomStore } from '../../data/store/RoomStore';
+import { RoomStore } from '../../data/store/RoomStore'; */
 
 export default class SmallTestData {
-  constructor () {
+  /* constructor () {
     this.participantStore = ParticipantStore.getSingleton();
     this.slotRoomStore = SlotStore.getSingleton();
     this.roomStore = RoomStore.getSingleton();
@@ -47,5 +47,5 @@ export default class SmallTestData {
         new Room(1, 'I.2.3', true)
       ])
     ];
-  }
+  } */
 }

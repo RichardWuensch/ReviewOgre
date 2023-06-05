@@ -1,37 +1,46 @@
 import Runner from '../logic/Runner';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 // import SmallTestDataUpdated from './SmallTestDataUpdated';
-import SmallTestDataUpdatedWithoutParticipants from './SmallTestDataUpdatedWithoutParticipants';
-import SmallTestDataUpdated from './SmallTestDataUpdated';
+/* import SmallTestDataUpdatedWithoutParticipants from './SmallTestDataUpdatedWithoutParticipants';
+import SmallTestDataUpdated from './SmallTestDataUpdated'; */
 
 export default class Test {
-  run (participants) {
+  run (participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary) {
     // check if stored data is empty
 
-    if (participants.length === 2 && new RoomSlotHelper().getAllRoomSlots().length === 0) { // 2 because of the 2 frontend testdata
+    /* if (participants.length === 2 && roomSlots.length === 2) { // 2 because of the 2 frontend testdata
       console.log('Running algorithm with test configuration');
-      this.#storeTestData();
+      this.#storeTestData(participants, participantsDispatch, roomSlots, roomSlotsDispatch);
     }
 
-    if (participants.length > 0 && new RoomSlotHelper().getAllRoomSlots().length === 0) {
+    if (participants.length > 2 && roomSlots.length === 2) {
       console.log('Running algorithm with test configuration but without test participants');
-      this.#storeTestDataWithoutParticipants(participants);
+      this.#storeTestDataWithoutParticipants(participants, participantsDispatch, roomSlots, roomSlotsDispatch);
+    } */
+
+    const result = new Runner().runAlgorithm(participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary);
+
+    // ParticipantStore.getSingleton().getAll().forEach(p => p.resetStatistics());
+    /* eslint-disable object-shorthand */
+    for (const p of participants) {
+      p.resetStatistics();
+      participantsDispatch({
+        type: 'changed',
+        updatedParticipant: p
+      });
     }
-
-    const result = new Runner().runAlgorithm();
-
-    ParticipantStore.getSingleton().getAll().forEach(p => p.resetStatistics());
+    /* eslint-enable object-shorthand */
     return result;
   }
 
-  #storeTestData () {
-    const testConfiguration = new SmallTestDataUpdated();
-    testConfiguration.setTestStores();
+  /* #storeTestData (participants, participantsDispatch, roomSlots, roomSlotsDispatch) {
+    const testConfiguration = new SmallTestDataUpdated(participants, participantsDispatch, roomSlotsDispatch);
+    console.log(testConfiguration);
+    // testConfiguration.setTestStores(participants, participantsDispatch, roomSlots, roomSlotsDispatch);
   }
 
-  #storeTestDataWithoutParticipants (participants) {
-    const testConfiguration = new SmallTestDataUpdatedWithoutParticipants(participants);
-    testConfiguration.setTestStores();
-  }
+  #storeTestDataWithoutParticipants (participants, participantsDispatch, roomSlots, roomSlotsDispatch) {
+    const testConfiguration = new SmallTestDataUpdatedWithoutParticipants(participants, roomSlots, roomSlotsDispatch);
+    console.log(testConfiguration);
+    // testConfiguration.setTestStores(participants, participantsDispatch, roomSlots, roomSlotsDispatch);
+  } */
 }

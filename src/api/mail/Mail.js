@@ -1,11 +1,10 @@
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import ConverterForPrinting from '../ConverterForPrinting';
 
 export default class Mail {
   #converter = new ConverterForPrinting();
   #roomSlots;
   constructor () {
-    this.#roomSlots = new RoomSlotHelper().getAllRoomSlots();
+    this.#roomSlots = null;// new RoomSlotHelper().getAllRoomSlots();
   }
 
   /**

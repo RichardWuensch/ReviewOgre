@@ -1,13 +1,11 @@
 import Participant from '../../data/model/Participant';
 import Room from '../../data/model/Room';
 import RoomSlot from '../../data/model/RoomSlot';
-import { ParticipantStore } from '../../data/store/ParticipantStore';
-import { SlotStore } from '../../data/store/SlotStore';
 
 export default class OldTestData {
   constructor () {
-    this.participantStore = ParticipantStore.getSingleton();
-    this.slotRoomStore = SlotStore.getSingleton();
+    this.participantStore = null;// ParticipantStore.getSingleton();
+    this.slotRoomStore = null;// SlotStore.getSingleton();
 
     this.authorIsNotary = true;
     this.participants = [
