@@ -6,19 +6,18 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Participant from '../../../../data/model/Participant';
 
-function ParticipantModal (props) {
-  const [firstName, setFirstName] = useState(props.participant?.getFirstName() ?? '');
-  const [lastName, setLastName] = useState(props.participant?.getLastName() ?? '');
-  const [email, setEmail] = useState(props.participant?.getEmail() ?? '');
-  const [group, setGroup] = useState(props.participant?.getGroup() ?? '0');
-  const [topic, setTopic] = useState(props.participant?.getTopic() ?? '');
-  const [languageLevel, setLanguageLevel] = useState(props.participant?.getLanguageLevel() ?? 'Native Speaker');
-  const newParticipant = props.newParticipant || false;
-  const [id] = useState(props.participant?.getId() ?? -1);
+function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, ...props }) {
+  const [firstName, setFirstName] = useState(participant?.getFirstName() ?? '');
+  const [lastName, setLastName] = useState(participant?.getLastName() ?? '');
+  const [email, setEmail] = useState(participant?.getEmail() ?? '');
+  const [group, setGroup] = useState(participant?.getGroup() ?? '0');
+  const [topic, setTopic] = useState(participant?.getTopic() ?? '');
+  const [languageLevel, setLanguageLevel] = useState(participant?.getLanguageLevel() ?? 'Native Speaker');
+  const [id] = useState(participant?.getId() ?? -1);
 
   const handleClose = () => {
     if (newParticipant) clearData();
-    props.onClose();
+    onClose();
   };
 
   const clearData = () => {
@@ -30,50 +29,73 @@ function ParticipantModal (props) {
     setGroup('0');
   };
 
-  const onSaveClick = () => {
+  const saveClick = () => {
     const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
-    props.onSaveClick(participantTemp);
+    onSaveClick(participantTemp);
     handleClose();
   };
 
   return (
         <Modal
             onExit={handleClose}
-            {...props}
             size="sm"
+            {...props}
             aria-labelledby="contained-modal-title-vcenter"
             centered
             className={'modal'}
         >
             <Modal.Header>
                 <Modal.Title>{newParticipant ? 'Add new Participant' : 'Edit Participant'}</Modal.Title>
-                <Image src={exit} onClick={handleClose} alt={'exit'} className={'modal-header-icon'} style={{ color: '#82868B', height: 20, width: 20 }}/>
+                <Image src={exit} onClick={handleClose} alt={'exit'} className={'modal-header-icon'} />
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form style={{ padding: 10 }}>
                     <Form.Group>
                         <Form.Label>First name:</Form.Label>
-                        <Form.Control type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} autoFocus/>
+                        <Form.Control
+                            type="text"
+                            placeholder="First Name"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)} autoFocus/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Last name:</Form.Label>
-                        <Form.Control type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+                        <Form.Control
+                            type="text"
+                            placeholder="Last Name"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Email:</Form.Label>
-                        <Form.Control type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <Form.Control
+                            type="text"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Group:</Form.Label>
-                        <Form.Control type={'text'} value={group} placeholder='Group' onChange={(e) => setGroup(e.target.value)}/>
+                        <Form.Control
+                            type={'text'}
+                            value={group}
+                            placeholder='Group'
+                            onChange={(e) => setGroup(e.target.value)}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Topic:</Form.Label>
-                        <Form.Control type={'text'} value={topic} placeholder='Topic' onChange={(e) => setTopic(e.target.value)}/>
+                        <Form.Control
+                            type={'text'}
+                            value={topic}
+                            placeholder='Topic'
+                            onChange={(e) => setTopic(e.target.value)}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>German Skill Level:</Form.Label>
-                        <Form.Select placeholder={'Native Speaker'} value={languageLevel} onChange={(e) => setLanguageLevel(e.target.value)}>
+                        <Form.Select
+                            placeholder={'Native Speaker'}
+                            value={languageLevel}
+                            onChange={(e) => setLanguageLevel(e.target.value)}>
                             <option value={'A1'}>A1</option>
                             <option value={'A2'}>A2</option>
                             <option value={'B1'}>B1</option>
@@ -84,7 +106,12 @@ function ParticipantModal (props) {
                         </Form.Select>
                     </Form.Group>
                     <div className={'text-center'}>
-                        <Button variant={'light'} className={'save-button'} onClick={onSaveClick}> {newParticipant ? 'Add Participant' : 'Save Changes'}</Button>
+                        <Button
+                            variant={'light'}
+                            className={'save-button'}
+                            onClick={saveClick}>
+                                {newParticipant ? 'Add Participant' : 'Save Changes'}
+                        </Button>
                     </div>
                 </Form>
             </Modal.Body>
@@ -94,7 +121,7 @@ function ParticipantModal (props) {
 ParticipantModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   participant: PropTypes.object,
-  newParticipant: PropTypes.bool,
+  newParticipant: PropTypes.bool.isRequired,
   onSaveClick: PropTypes.func.isRequired
 };
 

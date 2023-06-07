@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './FailedCalculationModal.css';
 import exit from '../../../assets/media/return.svg';
 import React, { useState } from 'react';
+import { Image } from 'react-bootstrap';
 
 function FailedCalculationsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -32,7 +33,7 @@ function FailedCalculationsModal (props) {
                     </div>
                     <div className={'footer'}>
                         <button className={'exit-failed-calculation-button' } onClick={props.onHide}>
-                            <img src={exit} alt={'exitParticipantModal'} className={'modal-exit-icon'} style={{ color: '#82868B', height: 20, width: 20, paddingRight: 2 }}/>
+                            <Image src={exit} alt={'exitParticipantModal'} className={'modal-exit-icon'}/>
                             <span className={'return-to-main-text'}>Return to Configuration</span>
                         </button>
                     </div>

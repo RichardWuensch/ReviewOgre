@@ -4,12 +4,23 @@ import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import add from '../../../assets/media/plus-circle.svg';
 import { Accordion, Button, Image, ListGroup } from 'react-bootstrap';
 import SlotCard from './Slot';
-import { useRoomSlots } from '../context/RoomSlotContext';
+import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 
 function SlotsWindow () {
   const [showModalAddSlot, setShowModalAddSlot] = React.useState(false);
 
   const roomSlots = useRoomSlots();
+  const dispatch = useRoomSlotsDispatch();
+
+  const saveNewSlot = (slot) => {
+    /* eslint-disable object-shorthand */
+    dispatch({
+      type: 'added',
+      newRoomSlot: slot
+    });
+
+    /* eslint-enable object-shorthand */
+  };
 
   return (
       <div className={'slotsWindow'}>
@@ -42,7 +53,8 @@ function SlotsWindow () {
                 /* open Slot Modal without data */
                 show={showModalAddSlot}
                 onHide={() => setShowModalAddSlot(false)}
-                header={'New Time Slot'}/>
+                header={'New Time Slot'}
+                onSaveClick={(slot) => saveNewSlot(slot)}/>
       </div>
   );
 }
