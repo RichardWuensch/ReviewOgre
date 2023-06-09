@@ -88,7 +88,7 @@ export default class Algorithm {
    */
   #prechecks (numberOfGroups) {
     let roomCount = 0;
-    const maxNumberOfRoomsInSlots = this.#participants.length / ((2 * this.#participants.length) / numberOfGroups); // if there are more rooms they can be shown as unneccessary and the booking can canceled
+    const maxNumberOfRoomsInSlots = Math.floor(this.#participants.length / ((2 * this.#participants.length) / numberOfGroups)); // if there are more rooms they can be shown as unneccessary and the booking can canceled
     const minAmountOfSlots = numberOfGroups / maxNumberOfRoomsInSlots;
     // const saveDeletedRoomsForRoomPlaner = [];
     for (const s of this.#roomSlots) {
@@ -106,6 +106,8 @@ export default class Algorithm {
     // saveDeletedRoomsForRoomPlaner.forEach(room => console.log(room));
     // this.#roomSlots.forEach(room => console.log(room));
     let errorMessage = '';
+    if (numberOfGroups < 4) errorMessage += 'At least 4 groups are needed.\n';
+    if (this.#participants.length < 12) errorMessage += 'At least 12 particpants are needed.\n';
     if (numberOfGroups > roomCount) errorMessage += 'There are not enough rooms.\n';
     if (minAmountOfSlots > this.#roomSlots.length) errorMessage += 'There are not enough Slots.\n';
 
