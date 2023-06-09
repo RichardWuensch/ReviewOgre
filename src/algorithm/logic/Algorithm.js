@@ -52,6 +52,9 @@ export default class Algorithm {
       this.#calculateNumberOfReviewer(groups.length);
       for (const roomSlot of this.#roomSlots) {
         for (const room of roomSlot.getRooms()) {
+          if (room.getIgnoreForAlgorithm() === true) {
+            continue;
+          }
           const review = room.getReview();
           if (review === null) {
             continue;
@@ -87,12 +90,15 @@ export default class Algorithm {
     let roomCount = 0;
     const maxNumberOfRoomsInSlots = this.#participants.length / ((2 * this.#participants.length) / numberOfGroups); // if there are more rooms they can be shown as unneccessary and the booking can canceled
     const minAmountOfSlots = numberOfGroups / maxNumberOfRoomsInSlots;
-    const saveDeletedRoomsForRoomPlaner = [];
+    // const saveDeletedRoomsForRoomPlaner = [];
     for (const s of this.#roomSlots) {
       const rooms = s.getRooms();
       if (rooms.length > maxNumberOfRoomsInSlots) {
         roomCount += maxNumberOfRoomsInSlots;
-        saveDeletedRoomsForRoomPlaner.push(rooms.splice(maxNumberOfRoomsInSlots, rooms.length - maxNumberOfRoomsInSlots)); // can be shown as unnecessary rooms
+        // saveDeletedRoomsForRoomPlaner.push(rooms.splice(maxNumberOfRoomsInSlots, rooms.length - maxNumberOfRoomsInSlots)); // can be shown as unnecessary rooms
+        for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
+          rooms[i].setIgnoreForAlgorithm(true);
+        }
       } else {
         roomCount += rooms.length;
       }
