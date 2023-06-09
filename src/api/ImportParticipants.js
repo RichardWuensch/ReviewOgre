@@ -4,11 +4,19 @@ import Papa from 'papaparse';
 
 export default class ImportParticipants {
   async runStudentImport (event) {
-    const fileContent = await new ImportFile('application/vnd.ms-excel').runFileLoad(event); // internal filetype is not text/csv
+    const fileType = event.target.files[0].type;
+    let fileContent = null;
+    let index = 0;
+    if (fileType === 'text/csv') {
+      fileContent = await new ImportFile('text/csv').runFileLoad(event);
+      index = 1;
+    } else if (fileType === 'application/vnd.ms-excel') { // bc Firefox on Windows use the content type defined by windows and need the excel format
+      fileContent = await new ImportFile('application/vnd.ms-excel').runFileLoad(event);
+      index = 2;
+    }
     return new Promise((resolve) => {
-      let groups = Papa.parse(fileContent).data.slice(2); // get all groups starting from index 2 (bc of separator and header)
+      let groups = Papa.parse(fileContent).data.slice(index); // get all groups starting from index that is defiend by the content type
       groups = groups.filter(row => row[0] !== ''); // delete empty lines
-      // ParticipantStore.getSingleton().deleteAll(); //TODO im Context
       resolve(this.parseParticipantsFromGroups(groups));
     });
   }

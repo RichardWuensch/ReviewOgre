@@ -48,17 +48,10 @@ function MainPage () {
   }
 
   async function importStudentList (event) {
+    // deleteParticipantListFromContext(participants);
     const importParticipants = new ImportParticipants();
-    const participants = await importParticipants.runStudentImport(event);
-
-    /* eslint-disable object-shorthand */
-    for (const p of participants) {
-      participantsDispatch({
-        type: 'added',
-        newParticipant: p
-      });
-    }
-    /* eslint-enable object-shorthand */
+    const participantList = await importParticipants.runStudentImport(event);
+    addParticipantListToContext(participantList);
   }
 
   function saveConfiguration () {
@@ -66,30 +59,69 @@ function MainPage () {
   }
 
   async function importConfiguration (event) {
+    console.log(participants);
+    deleteParticipantListFromContext(participants);
+    console.log(participants);
+    await deleteRoomSlotListFromContext(roomSlots);
     const importConf = new LoadConfiguration();
-    const conf = await importConf.runConfigurationImport(event);
+    await importConf.runConfigurationImport(event);
+    console.log(importConf.getRoomSlots());
+    console.log(importConf.getParticipants());
+    console.log(importConf.getAuthorIsNotary());
+    addParticipantListToContext(importConf.getParticipants());
+    addRoomSlotListToContext(importConf.getRoomSlots());
+    authorIsNotary = importConf.getAuthorIsNotary();
+  }
+
+  function addParticipantListToContext (list) {
     /* eslint-disable object-shorthand */
-    for (const p of conf[0]) {
+    for (const entry of list) {
       participantsDispatch({
         type: 'added',
-        newParticipant: p
-      });
-    }
-    for (const roomSlots of conf[1]) {
-      roomSlotsDispatch({
-        type: 'added',
-        newRoomSlot: roomSlots
+        newParticipant: entry
       });
     }
     /* eslint-enable object-shorthand */
-    authorIsNotary = conf[2];
+  }
+
+  function addRoomSlotListToContext (list) {
+    /* eslint-disable object-shorthand */
+    for (const entry of list) {
+      roomSlotsDispatch({
+        type: 'added',
+        newRoomSlot: entry
+      });
+    }
+    /* eslint-enable object-shorthand */
+  }
+
+  function deleteParticipantListFromContext (list) {
+    /* eslint-disable object-shorthand */
+    for (const entry of list) {
+      participantsDispatch({
+        type: 'deleted',
+        itemToDelete: entry
+      });
+    }
+    /* eslint-enable object-shorthand */
+  }
+
+  async function deleteRoomSlotListFromContext (list) {
+    /* eslint-disable object-shorthand */
+    for (const entry of list) {
+      roomSlotsDispatch({
+        type: 'deleted',
+        itemToDelete: entry
+      });
+    }
+    /* eslint-enable object-shorthand */
   }
 
   function handleNotaryIsAuthorChange () {
     console.log('Notary is Author');
     // this logs can be used to check if the algo writes correct in context
     console.log(roomSlots);
-    // console.log(participants);
+    console.log(participants);
   }
 
   return (
