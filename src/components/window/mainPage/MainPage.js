@@ -16,9 +16,9 @@ import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { Button, Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
+// import Mail from '../../../api/mail/Mail';
 // import SaveRoomPlan from '../../../api/SaveRoomPlan';
 // import RevagerLiteExport from '../../api/mail/RevagerLiteExport';
-// import Mail from '../../api/mail/Mail';
 let authorIsNotary = false;
 
 function MainPage () {
@@ -35,7 +35,7 @@ function MainPage () {
 
         // all on successful calculation window:
 
-        // new Mail().generateMailsForModerators();
+        // new Mail(roomSlots).generateMailsForModerators();
         // new RevagerLiteExport().buildJSONAllReviews();
         // new SaveRoomPlan(roomSlots).runSave();
       } else {
@@ -88,9 +88,7 @@ function MainPage () {
   function handleNotaryIsAuthorChange () {
     console.log('Notary is Author');
     // this logs can be used to check if the algo writes correct in context
-    // const roomSlots = useRoomSlots();
-    // console.log(roomSlots);
-    // const participants = useParticipants();
+    console.log(roomSlots);
     // console.log(participants);
   }
 

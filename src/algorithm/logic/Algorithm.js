@@ -275,7 +275,7 @@ export default class Algorithm {
         console.log(room.hasBeamer() ? 'Beamer verfügbar' : 'Kein Beamer verfügbar');
         console.log('Author: ', converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()));
         console.log('Moderator: ', converter.getParticipantAttributsForPrinting(room.getReview().getModerator()));
-        console.log('Noray: ', converter.getParticipantAttributsForPrinting(room.getReview().getNotary()));
+        console.log('Notary: ', converter.getParticipantAttributsForPrinting(room.getReview().getNotary()));
         for (const reviewer of room.getReview().getReviewer()) {
           console.log('Reviewer: ', converter.getParticipantAttributsForPrinting(reviewer));
         }
