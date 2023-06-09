@@ -1,11 +1,8 @@
-import RoomSlotHelper from '../../data/store/RoomSlotHelper';
 import { saveAs } from 'file-saver';
 import ConverterForPrinting from '../ConverterForPrinting';
 
 export default class RevagerLiteExport {
-  buildJSONAllReviews () {
-    const roomSlotHelper = new RoomSlotHelper();
-    const roomSlots = roomSlotHelper.getAllRoomSlots();
+  buildJSONAllReviews (roomSlots) {
     for (const roomSlot of roomSlots) {
       for (const room of roomSlot.getRooms()) {
         this.buildJSONSingleReview(roomSlot, room);
