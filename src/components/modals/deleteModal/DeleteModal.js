@@ -34,19 +34,19 @@ function deleteModal (props) {
                         <Col>
                             <Button
                                 variant={'light'}
-                                style={{ backgroundColor: '#C40233' }}
+                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
                                 className={'confirm-button'}
-                                onClick={() => { deleteItem(); props.onHide(); }}>
-                                Confirm
+                                onClick={props.onHide}>
+                                Abort
                             </Button>
                         </Col>
                         <Col>
                             <Button
                                 variant={'light'}
-                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
+                                style={{ backgroundColor: '#C40233' }}
                                 className={'confirm-button'}
-                                onClick={props.onHide}>
-                                Abort
+                                onClick={() => { deleteItem(); props.onHide(); }}>
+                                Confirm
                             </Button>
                         </Col>
                     </Row>
