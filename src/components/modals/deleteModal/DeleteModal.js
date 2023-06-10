@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import exit from '../../../assets/media/x-circle.svg';
 import PropTypes from 'prop-types';
 import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
-import { Button, Image } from 'react-bootstrap';
+import { Button, Col, Image, Row } from 'react-bootstrap';
 
 function deleteModal (props) {
   const deleteItem = () => {
@@ -30,12 +30,26 @@ function deleteModal (props) {
                     </div>
                 </div>
                 <div className={'footer'}>
-                    <Button
-                        variant={'light'}
-                        className={'confirm-button'}
-                        onClick={() => { deleteItem(); props.onHide(); }}>
-                        Confirm
-                    </Button>
+                    <Row>
+                        <Col>
+                            <Button
+                                variant={'light'}
+                                style={{ backgroundColor: '#C40233' }}
+                                className={'confirm-button'}
+                                onClick={() => { deleteItem(); props.onHide(); }}>
+                                Confirm
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant={'light'}
+                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
+                                className={'confirm-button'}
+                                onClick={props.onHide}>
+                                Abort
+                            </Button>
+                        </Col>
+                    </Row>
                 </div>
             </Modal.Body>
         </Modal>

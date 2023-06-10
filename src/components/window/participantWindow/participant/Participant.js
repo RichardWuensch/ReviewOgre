@@ -65,7 +65,7 @@ function Participant ({ participant }) {
                 show={showModalDelete}
                 onHide={() => setShowModalDelete(false)}
                 titleObject={'Participant'}
-                textObject={'this participant'}
+                textobject={ 'Participant \'' + participant.getFirstName() + ' ' + participant.getLastName() + '\' '}
                 onDeleteClick={(participant) => removeParticipant(participant)}
                 deleteobject={[participant]}
                 onClose={() => setShowModalDelete(false)}/>
