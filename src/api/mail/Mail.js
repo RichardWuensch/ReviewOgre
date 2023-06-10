@@ -3,8 +3,8 @@ import ConverterForPrinting from '../ConverterForPrinting';
 export default class Mail {
   #converter = new ConverterForPrinting();
   #roomSlots;
-  constructor () {
-    this.#roomSlots = null;// new RoomSlotHelper().getAllRoomSlots();
+  constructor (roomSlots) {
+    this.#roomSlots = roomSlots;// new RoomSlotHelper().getAllRoomSlots();
   }
 
   /**
@@ -36,6 +36,7 @@ export default class Mail {
   */
   germanVersion (roomSlot, room, review, moderator) {
     const recipient = moderator.getEmail();
+    const ccRecipients = [review.getAuthor().getEmail(), review.getNotary().getEmail(), ...review.getReviewer().map(r => r.getEmail())];
     const subject = 'Sie sind der Moderator von Review ' + review.getGroupName();
     let body = 'Hallo ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
           'Sie wurden als Moderator bestimmt. Hier die wichtigsten Informationen: \n';
@@ -52,7 +53,7 @@ export default class Mail {
     }
     body += '\n\n Bitte kontaktieren Sie Ihre Teilnehmer mit den entsprechenden Aufgaben.';
     body += '\n Die RevAger-Lite-Datei im Anhang hilft Ihnen bei der Vorbereitung des Reviews.';
-    this.openMailClient(recipient, subject, body);
+    this.openMailClient(recipient, ccRecipients, subject, body);
   }
 
   /**
@@ -64,6 +65,7 @@ export default class Mail {
   */
   englischVersion (roomSlot, room, review, moderator) {
     const recipient = moderator.getEmail();
+    const ccRecipients = [review.getAuthor().getEmail(), review.getNotary().getEmail(), ...review.getReviewer().map(r => r.getEmail())];
     const subject = 'Your are the moderator of ' + review.getGroupName();
     let body = 'Hello ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
           'You have been designated as the moderator. Here are the most important information: \n';
@@ -74,28 +76,30 @@ export default class Mail {
                      ' in room ' + room.getName();
     body += room.hasBeamer() ? '\nBeamer available' : '\nKein Beamer available';
     body += '\nAuthor: ' + this.#converter.getParticipantAttributsForPrinting(review.getAuthor());
-    body += '\nNoray: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
+    body += '\nNotary: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
     for (const reviewer of review.getReviewer()) {
       body += '\nReviewer: ' + this.#converter.getParticipantAttributsForPrinting(reviewer);
     }
     body += '\n\n Please contact your participants with the appropriate tasks.';
     body += '\n The RevAger Lite file in the appendix will help you prepaing the review.';
 
-    this.openMailClient(recipient, subject, body);
+    this.openMailClient(recipient, ccRecipients, subject, body);
   }
 
   /**
   * Opens the default mail client on the user's computer and composes a new email with the specified recipient,
-  * subject, and body. The recipient, subject, and body parameters are URL-encoded and appended to a 'mailto'
+  * allParticipants as CC, subject, and body. The recipient, subject, and body parameters are URL-encoded and appended to a 'mailto'
   * URL scheme, which is used to trigger the user's mail client to open and pre-fill the email fields.
   * The attachment with the corresponding RevAger (lite) file has to be added manually because mailto
   * does not allow attachments
   * @param {string} recipient - The email address of the recipient.
+  * @param {list} ccRecipients - Participants of the review be informed in CC
   * @param {string} subject - The subject line of the email.
   * @param {string} body - The body content of the email.
   */
-  openMailClient (recipient, subject, body) {
-    const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  openMailClient (recipient, ccRecipients, subject, body) {
+    const ccParams = ccRecipients.map(ccRecipient => `${encodeURIComponent(ccRecipient)}`).join(';');
+    const mailtoUrl = `mailto:${recipient}?cc=${ccParams}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
   }
 }

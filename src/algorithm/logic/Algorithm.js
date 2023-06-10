@@ -52,6 +52,9 @@ export default class Algorithm {
       this.#calculateNumberOfReviewer(groups.length);
       for (const roomSlot of this.#roomSlots) {
         for (const room of roomSlot.getRooms()) {
+          if (room.getIgnoreForAlgorithm() === true) {
+            continue;
+          }
           const review = room.getReview();
           if (review === null) {
             continue;
@@ -85,14 +88,17 @@ export default class Algorithm {
    */
   #prechecks (numberOfGroups) {
     let roomCount = 0;
-    const maxNumberOfRoomsInSlots = this.#participants.length / ((2 * this.#participants.length) / numberOfGroups); // if there are more rooms they can be shown as unneccessary and the booking can canceled
+    const maxNumberOfRoomsInSlots = Math.floor(this.#participants.length / ((2 * this.#participants.length) / numberOfGroups)); // if there are more rooms they can be shown as unneccessary and the booking can canceled
     const minAmountOfSlots = numberOfGroups / maxNumberOfRoomsInSlots;
-    const saveDeletedRoomsForRoomPlaner = [];
+    // const saveDeletedRoomsForRoomPlaner = [];
     for (const s of this.#roomSlots) {
       const rooms = s.getRooms();
       if (rooms.length > maxNumberOfRoomsInSlots) {
         roomCount += maxNumberOfRoomsInSlots;
-        saveDeletedRoomsForRoomPlaner.push(rooms.splice(maxNumberOfRoomsInSlots, rooms.length - maxNumberOfRoomsInSlots)); // can be shown as unnecessary rooms
+        // saveDeletedRoomsForRoomPlaner.push(rooms.splice(maxNumberOfRoomsInSlots, rooms.length - maxNumberOfRoomsInSlots)); // can be shown as unnecessary rooms
+        for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
+          rooms[i].setIgnoreForAlgorithm(true);
+        }
       } else {
         roomCount += rooms.length;
       }
@@ -100,6 +106,8 @@ export default class Algorithm {
     // saveDeletedRoomsForRoomPlaner.forEach(room => console.log(room));
     // this.#roomSlots.forEach(room => console.log(room));
     let errorMessage = '';
+    if (numberOfGroups < 4) errorMessage += 'At least 4 groups are needed.\n';
+    if (this.#participants.length < 12) errorMessage += 'At least 12 particpants are needed.\n';
     if (numberOfGroups > roomCount) errorMessage += 'There are not enough rooms.\n';
     if (minAmountOfSlots > this.#roomSlots.length) errorMessage += 'There are not enough Slots.\n';
 
@@ -275,7 +283,7 @@ export default class Algorithm {
         console.log(room.hasBeamer() ? 'Beamer verfügbar' : 'Kein Beamer verfügbar');
         console.log('Author: ', converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()));
         console.log('Moderator: ', converter.getParticipantAttributsForPrinting(room.getReview().getModerator()));
-        console.log('Noray: ', converter.getParticipantAttributsForPrinting(room.getReview().getNotary()));
+        console.log('Notary: ', converter.getParticipantAttributsForPrinting(room.getReview().getNotary()));
         for (const reviewer of room.getReview().getReviewer()) {
           console.log('Reviewer: ', converter.getParticipantAttributsForPrinting(reviewer));
         }

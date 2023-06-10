@@ -22,7 +22,7 @@ export default class LoadConfiguration {
         rs.rooms.map(r => new Room(r.name, r.beamer))
       )));
       this.authorIsNotary = parseData.authorIsNotary;
-      resolve([this.participants, this.roomSlots, this.authorIsNotary]);
+      resolve();
     });
   }
 
@@ -31,7 +31,6 @@ export default class LoadConfiguration {
   }
 
   getParticipants () {
-    this.participants.forEach(p => console.log(p));
     return this.participants;
   }
 
