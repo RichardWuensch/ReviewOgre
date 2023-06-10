@@ -36,10 +36,14 @@
     align-items: center;
     padding-right: 4%;
 }
-.modal-header-icon{
+.modal .modal-header-icon{
     color: #82868B;
     height: 20px;
     width: 20px;
+}
+
+.modal .modal-header-icon:hover {
+    cursor: default;
 }
 
 .date-container{

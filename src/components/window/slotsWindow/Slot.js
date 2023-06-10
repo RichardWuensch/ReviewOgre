@@ -112,7 +112,7 @@ function SlotCard (props) {
                                         <div className={'options'}>
                                             <button className={'button-options-delete'} onClick={() => {
                                               // remove room from array
-                                              setDeleteModalText(room.getName());
+                                              setDeleteModalText('Room \'' + room.getName() + '\' ');
                                               setObjectToDelete(removeRoom(props.roomSlot.getDeepCopy(), room));
                                               setShowModalDeleteRoom(true);
                                             }}>
@@ -145,7 +145,7 @@ function SlotCard (props) {
                 onHide={() => setShowModalDeleteSlot(false)}
                 onSave={handleDelete}
                 titleObject={'Slot'}
-                textobject={'this Slot'}
+                textobject={'the Slot with following Information: \'' + getSlotDescription() + '\' '}
                 deleteobject={props.roomSlot}
                 onDeleteClick={(slot) => removeSlot(slot)}/>
             <DeleteModal
