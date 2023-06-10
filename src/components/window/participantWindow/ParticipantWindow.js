@@ -63,17 +63,22 @@ function ParticipantList () {
                   )
                 : (
                       <div className={'button-container-participants'}>
-                          <Button variant={'light'} className="button-container-green" onClick={() => setShowModalEditMultipleParticipants(true)}>
-                              <Image src={edit} alt="editList" height={16} width={16} />
-                              <span className="button-text">Edit Selected</span>
+                          <Button
+                              variant={'light'}
+                              className="button-container-green"
+                              disabled={ selectedParticipants.length === 0 }
+                              style={{ background: '#B0D7AF' }}
+                              onClick={() => setShowModalEditMultipleParticipants(true)}>
+                                <Image src={edit} alt="editList" height={16} width={16} />
+                                <span className="button-text">Edit Selected</span>
                           </Button>
                       </div>
                   )}
               {isEditModeActive && (
                   <div className={'button-container-participants'}>
-                      <Button variant={'light'} className="button-container-green" onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }>
-                          <Image src={deleteButton} alt="delete" height={16} width={16} />
-                          <span className="button-text" style={{ color: '#F5F5F5' }}>Delete Selected</span>
+                      <Button variant={'light'} className="button-container-green" onClick={() => leaveEditMode()}>
+                          <Image src={exit} alt="exitEdit" height={16} width={16} />
+                          <span className="button-text" >Cancel</span>
                       </Button>
                   </div>
               )
@@ -89,12 +94,12 @@ function ParticipantList () {
                       </div>
                   )
                 : (
-                      <div className={'button-container-participants'}>
-                          <Button variant={'light'} className="button-container-green" onClick={() => leaveEditMode()}>
-                              <Image src={exit} alt="exitEdit" height={16} width={16} />
-                              <span className="button-text" >Cancel</span>
-                          </Button>
-                      </div>
+                  <div className={'button-container-participants'}>
+                    <Button variant={'light'} className="button-container-green" disabled={ selectedParticipants.length === 0 } onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }>
+                        <Image src={deleteButton} alt="delete" height={16} width={16} />
+                        <span className="button-text" style={{ color: '#F5F5F5' }}>Delete Selected</span>
+                    </Button>
+                  </div>
                   )}
           </div>
           <div className={'list-description'}>
