@@ -3,6 +3,11 @@ import ConverterForPrinting from './ConverterForPrinting';
 
 export default class StoreResult {
   #roomSlots = [];
+
+  /**
+  * Generate the file and start the download process
+  * @param {list} roomSlots - all neccessary informations from the result
+  */
   runFileSave (roomSlots) {
     this.parseRoomSlotsFromStore(roomSlots);
     const resultString = JSON.stringify(this.#roomSlots, null, 1);
@@ -11,6 +16,10 @@ export default class StoreResult {
     saveAs(blob, 'result.json');
   }
 
+  /**
+  * Parse the result in a roomSlots object bc getters are needed for access
+  * @param {list} roomSlots - all neccessary informations from the result
+  */
   parseRoomSlotsFromStore (roomSlots) {
     const converter = new ConverterForPrinting();
     for (const roomSlot of roomSlots) {
@@ -28,14 +37,15 @@ export default class StoreResult {
           beamer: room.hasBeamer(),
           review: {}
         };
+        const review = room.getReview();
         const newReview = {
-          groupName: room.getReview().getGroupName(),
-          author: converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()),
-          moderator: converter.getParticipantAttributsForPrinting(room.getReview().getModerator()),
-          notary: converter.getParticipantAttributsForPrinting(room.getReview().getNotary()),
+          groupName: review.getGroupName(),
+          author: converter.getParticipantAttributsForPrinting(review.getAuthor()),
+          moderator: converter.getParticipantAttributsForPrinting(review.getModerator()),
+          notary: converter.getParticipantAttributsForPrinting(review.getNotary()),
           reviewers: []
         };
-        for (const reviewer of room.getReview().getReviewer()) {
+        for (const reviewer of review.getReviewer()) {
           const newReviewer = {
             reviewer: converter.getParticipantAttributsForPrinting(reviewer)
           };
