@@ -11,7 +11,6 @@ export default class StoreResult {
   runFileSave (roomSlots) {
     this.parseRoomSlotsFromStore(roomSlots);
     const resultString = JSON.stringify(this.#roomSlots, null, 1);
-    console.log(resultString);
     const blob = new Blob([resultString], { type: 'application/json' });
     saveAs(blob, 'result.json');
   }
@@ -30,7 +29,6 @@ export default class StoreResult {
         rooms: []
       };
       for (const room of roomSlot.getRooms()) {
-        console.log(room.getReview());
         if (room.getReview() === null) continue;
         const newRoom = {
           name: room.getName(),
