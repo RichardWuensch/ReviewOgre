@@ -16,6 +16,7 @@ import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { Button, Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
+// import StoreResult from '../../../api/StoreResult';
 // import RevagerLiteExport from '../../../api/mail/RevagerLiteExport';
 // import Mail from '../../../api/mail/Mail';
 // import SaveRoomPlan from '../../../api/SaveRoomPlan';
@@ -38,6 +39,7 @@ function MainPage () {
         // new Mail(roomSlots).generateMailsForModerators();
         // new RevagerLiteExport().buildJSONAllReviews(roomSlots);
         // new SaveRoomPlan(roomSlots).runSave();
+        // new StoreResult().runFileSave(roomSlots);
       } else {
         setShowModalFailedCalculations(true);
       }
@@ -59,15 +61,10 @@ function MainPage () {
   }
 
   async function importConfiguration (event) {
-    console.log(participants);
     deleteParticipantListFromContext(participants);
-    console.log(participants);
-    await deleteRoomSlotListFromContext(roomSlots);
+    deleteRoomSlotListFromContext(roomSlots);
     const importConf = new LoadConfiguration();
     await importConf.runConfigurationImport(event);
-    console.log(importConf.getRoomSlots());
-    console.log(importConf.getParticipants());
-    console.log(importConf.getAuthorIsNotary());
     addParticipantListToContext(importConf.getParticipants());
     addRoomSlotListToContext(importConf.getRoomSlots());
     authorIsNotary = importConf.getAuthorIsNotary();
@@ -106,7 +103,7 @@ function MainPage () {
     /* eslint-enable object-shorthand */
   }
 
-  async function deleteRoomSlotListFromContext (list) {
+  function deleteRoomSlotListFromContext (list) {
     /* eslint-disable object-shorthand */
     for (const entry of list) {
       roomSlotsDispatch({

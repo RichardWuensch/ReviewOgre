@@ -80,6 +80,8 @@ export default class Algorithm {
   /**
    * Do some prechecks before the algorithm run to make sure that there is a possibility that a solution can be found
    * Criteria:
+   * there must be at least 4 groups
+   * there must be at least 12 particpants
    * there must be as much rooms as reviews
    * per Slot are only as much rooms necessary as amout of Participants divided by amout of participants per review (the rest of the rooms can be returned to the roomplaner)
    * there must be at least as much slots as the result from the amount of Groups divided by max number of rooms calculated in the step befor
