@@ -7,6 +7,7 @@ import { Button, Image } from 'react-bootstrap';
 import upload from '../../../assets/media/upload.svg';
 import ReviewWindow from './ReviewWindow';
 import Mail from '../../../api/mail/Mail';
+import { useRoomSlots } from '../../window/context/RoomSlotContext';
 
 function SuccessfulCalculationsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -15,9 +16,11 @@ function SuccessfulCalculationsModal (props) {
     setShowModal(false);
   };
 
+  const roomSlots = useRoomSlots();
+
   function runAlgorithm () {
     try {
-      if (new Mail().generateMailsForModerators()) {
+      if (new Mail(roomSlots).generateMailsForModerators()) {
       // successful Email Calculation
         console.log('Successful Email Calculation');
         props.onHide();
