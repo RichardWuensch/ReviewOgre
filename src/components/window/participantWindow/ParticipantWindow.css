@@ -1,11 +1,10 @@
 .participantsWindow{
-    margin: 0 2% 0 0;
     width: 100%;
 }
 .participant-button-container{
     display:flex;
     justify-content: space-between;
-    margin: 2% 0;
+    margin-bottom: 2%;
 }
 
 .button-container-participants {
@@ -20,7 +19,6 @@
 
 .participant-list-container{
     display: block;
-    overflow: scroll;
     font-style: normal;
     max-height: 50vh;
     font-weight: 300;

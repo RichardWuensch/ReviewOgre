@@ -40,7 +40,7 @@ function Participant ({ participant }) {
                 <td className={'column-email'}>
                     <button className={'button-email'}>{participant.getEmail()}</button>
                 </td>
-                <td className={'column-group'}>{participant.getGroup()}</td>
+                <td className={'column-group'} style={{ justifySelf: 'center' }} >{participant.getGroup()}</td>
                 <td className={'column-topic'}>{participant.getTopic()}</td>
                 <td className={'column-languageLevel'}>{participant.getLanguageLevel()}</td>
                 <td className={'column-options'}>

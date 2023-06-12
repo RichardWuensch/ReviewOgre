@@ -24,12 +24,12 @@ function SlotsWindow () {
 
   return (
       <div className={'slotsWindow'}>
-          <h2 className={'title-subheadline'}>Slots</h2>
-          <div className={'slots-button-container'}>
-              <div className={'button-container-participants'}>
+          <h2 className={'title-subheadline'} style={{ marginBottom: 0 }}>Slots</h2>
+          <div className={'slots-button-container'} >
+              <div className={'button-container-slots'}>
                   <Button variant={'light'} className="button-container-green" onClick={() => setShowModalAddSlot(true)} >
-                      <Image src={add} alt="addSlot" height={16} width={16} />
-                      <span className="button-text">Add slot</span>
+                      <Image src={add} className={'button-image'} alt="addSlot" height={16} width={16} />
+                      <span className="button-text">Add Slot</span>
                   </Button>
               </div>
           </div>

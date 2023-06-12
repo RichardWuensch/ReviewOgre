@@ -1,15 +1,14 @@
-.slots-button-container{
-    display:flex;
+.slots-button-container {
+    display: flex;
     justify-content: space-between;
-    margin: 2.5% 0;
+    margin-bottom: 5%;
     color: #363A3F;
 }
-.button-container-green {
-    width: 25%;
+.button-container-slots {
+    width: 35%;
 }
 
 .slots-list-container{
-    margin-top: 6%;
     height: 25vh;
     border-radius: 5px;
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
