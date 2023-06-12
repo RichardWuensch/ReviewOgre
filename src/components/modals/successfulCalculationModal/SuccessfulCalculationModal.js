@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { Button, Image } from 'react-bootstrap';
 import upload from '../../../assets/media/upload.svg';
 import ReviewWindow from './ReviewWindow';
+import Mail from '../../../api/mail/Mail';
 
 function SuccessfulCalculationsModal (props) {
   const [showModal, setShowModal] = useState(true);
@@ -16,8 +17,15 @@ function SuccessfulCalculationsModal (props) {
 
   function runAlgorithm () {
     try {
-      // Mail export
-      props.onHide();
+      if (new Mail().generateMailsForModerators()) {
+      // successful Email Calculation
+        console.log('Successful Email Calculation');
+        props.onHide();
+      } else {
+      // failed Email Calculation
+        console.log('Failed Email Calculation');
+        props.onHide();
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -33,7 +41,7 @@ function SuccessfulCalculationsModal (props) {
             centered
         >
             <Modal.Body>
-                <div className={'modal-container'}>
+                <div className={'modal-container-success'}>
                     <div className={'modal-header-container'}>
                         <span className={'modal-header border-0'}>
                             Success!</span>
