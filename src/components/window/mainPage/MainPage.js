@@ -135,7 +135,7 @@ function MainPage () {
             <Row className={'button-group'}>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
                     <Button variant={'light'} className="button-container-green" onClick={() => document.getElementById('student-input').click()}>
-                        <Image src={download} alt="icon1" height={16} width={16} />
+                        <Image src={download} className={'button-image'} alt="icon1" height={16} width={16} />
                         <span className="button-text">Import Participants</span>
                     </Button>
                     <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
@@ -143,7 +143,7 @@ function MainPage () {
                 </Col>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
                     <Button variant={'light'} className="button-container-green" onClick={() => document.getElementById('file-input').click()}>
-                        <Image src={download} alt="icon2" height={16} width={16} />
+                        <Image src={download} className={'button-image'} alt="icon2" height={16} width={16} />
                         <span className="button-text">Load Configuration</span>
                     </Button>
                     <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}
@@ -151,13 +151,13 @@ function MainPage () {
                 </Col>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
                     <Button variant={'light'} className="button-container-white" onClick={saveConfiguration}>
-                        <Image src={file} alt="icon3" height={16} width={16} />
+                        <Image src={file} className={'button-image'} alt="icon3" height={16} width={16} />
                         <span className="button-text">Save Configuration</span>
                     </Button>
                 </Col>
             </Row>
             <Row className={'participant-slots-container'}>
-                <Col xs={12} md={8} className="mb-3 mb-md-0">
+                <Col xs={12} md={8} className="mb-3 mb-md-0 pl-0" >
                     {/* added context to participant store */}
                     <ParticipantList/>
                 </Col>

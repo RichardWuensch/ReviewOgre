@@ -84,7 +84,7 @@ function SlotModal ({ roomslot, ...props }) {
                             value={date.toISOString().slice(0, 10)}
                             onChange={(e) => setDate(new Date(e.target.value))}/>
                     </Form.Group>
-                    <Row style={{ paddingBottom: 10, paddingTop: 10 }}>
+                    <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
                         <Form.Group as={Col}>
                             <Row>
                                 <Col sm={3}>
@@ -117,11 +117,11 @@ function SlotModal ({ roomslot, ...props }) {
                         </Form.Group>
                     </Row>
                     <span>{isEditMode ? 'Edit or Add Rooms to this Slot:' : 'Create Rooms for this Time Slot:'}</span>
-                    <div>
+                    <div style={{ marginTop: 10, maxHeight: '20vh', overflowY: 'auto' }}>
                         <Accordion defaultActiveKey="0" style={{ backgroundColor: '#F5F5F5' }}>
                             <ul className={'list-style'}>
                                 {items?.map((item, index) => (
-                                    <li key={index}>
+                                    <li key={index} style={{ marginBottom: '1%' }}>
                                         <Accordion.Item style={{ background: '#F5F5F5' }} eventKey={index}>
                                             <Accordion.Header className={'header-style list-item border-0'}>
                                                 <Form.Control

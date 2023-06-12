@@ -49,14 +49,14 @@ function ParticipantList () {
   }
 
   return (
-      <Container fluid className={'participantsWindow'}>
-          <h2 className={'title-subheadline'}>Participants</h2>
+      <Container fluid className={'participantsWindow p-0'}>
+          <h2 className={'title-subheadline'} style={{ marginBottom: 0 }}>Participants</h2>
           <div className={'participant-button-container'}>
               {!isEditModeActive
                 ? (
                     <div className={'button-container-participants'}>
                       <Button variant={'light'} className="button-container-green" onClick={() => setShowModalParticipant(true)}>
-                          <Image src={add} alt="addParticipant" height={16} width={16} />
+                          <Image src={add} className={'button-image'} alt="addParticipant" height={16} width={16} />
                           <span className="button-text">Add Participant</span>
                       </Button>
                     </div>
@@ -69,7 +69,7 @@ function ParticipantList () {
                               disabled={ selectedParticipants.length === 0 }
                               style={{ background: '#B0D7AF' }}
                               onClick={() => setShowModalEditMultipleParticipants(true)}>
-                                <Image src={edit} alt="editList" height={16} width={16} />
+                                <Image src={edit} className={'button-image'} alt="editList" height={16} width={16} />
                                 <span className="button-text">Edit Selected</span>
                           </Button>
                       </div>
@@ -77,7 +77,7 @@ function ParticipantList () {
               {isEditModeActive && (
                   <div className={'button-container-participants'}>
                       <Button variant={'light'} className="button-container-green" onClick={() => leaveEditMode()}>
-                          <Image src={exit} alt="exitEdit" height={16} width={16} />
+                          <Image src={exit} className={'button-image'} alt="exitEdit" height={16} width={16} />
                           <span className="button-text" >Cancel</span>
                       </Button>
                   </div>
@@ -88,7 +88,7 @@ function ParticipantList () {
                 ? (
                       <div className={'button-container-participants'}>
                           <Button variant={'light'} className="button-container-green" onClick={() => setIsEditModeActive(true)}>
-                              <Image src={edit} alt="editParticipants" height={16} width={16} />
+                              <Image src={edit} className={'button-image'} alt="editParticipants" height={16} width={16} />
                               <span className="button-text" >Edit List</span>
                           </Button>
                       </div>
@@ -96,16 +96,16 @@ function ParticipantList () {
                 : (
                   <div className={'button-container-participants'}>
                     <Button variant={'light'} className="button-container-green" disabled={ selectedParticipants.length === 0 } onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }>
-                        <Image src={deleteButton} alt="delete" height={16} width={16} />
+                        <Image src={deleteButton} className={'button-image'} alt="delete" height={16} width={16} />
                         <span className="button-text" style={{ color: '#F5F5F5' }}>Delete Selected</span>
                     </Button>
                   </div>
                   )}
           </div>
           <div className={'list-description'}>
-              <div className={'participant-list-container overflow-auto'}>
-              <Table responsive borderless className={'overflow-auto participant-table'}>
-                  <thead>
+              <div className={'participant-list-container'}>
+              <Table responsive borderless className={'participant-table'}>
+                  <thead style={{ position: 'sticky', top: '0', zIndex: '1', background: 'white' }}>
                   <tr>
                       {isEditModeActive && (
                           <th>
@@ -130,7 +130,7 @@ function ParticipantList () {
                 <tbody>
 
                 {participants.map((participant) => (
-                    <tr key={participant.getId()}>
+                    <tr key={participant.getId()} style={{ borderBottom: '1px solid black' }}>
                         {isEditModeActive && (
                             <td>
                                 <label className={'checkboxContainer'}>
