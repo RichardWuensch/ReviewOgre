@@ -12,6 +12,7 @@ import StoreConfiguration from '../../../api/StoreConfiguration';
 import LoadConfiguration from '../../../api/LoadConfiguration';
 import ImportParticipants from '../../../api/ImportParticipants';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
+import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/SuccessfulCalculationModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { Button, Col, Image, Row } from 'react-bootstrap';
@@ -24,6 +25,7 @@ let authorIsNotary = false;
 
 function MainPage () {
   const [showModalFailedCalculations, setShowModalFailedCalculations] = React.useState(false);
+  const [showModalSuccessfulCalculations, setShowModalSuccessfulCalculations] = React.useState(false);
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
@@ -31,6 +33,7 @@ function MainPage () {
 
   function runAlgorithm () {
     try {
+      setShowModalSuccessfulCalculations(true);
       if (new Test().run(participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary)) {
       // successful run
 
@@ -199,6 +202,9 @@ function MainPage () {
                 <FailedCalculationModal
                     show={showModalFailedCalculations}
                     onHide={() => setShowModalFailedCalculations(false)}/>
+                <SuccessfulCalculationModal
+                    show={showModalSuccessfulCalculations}
+                    onHide={() => setShowModalSuccessfulCalculations(false)}/>
 
                 {/* end */}
             </Row>

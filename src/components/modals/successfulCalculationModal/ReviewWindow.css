@@ -1,0 +1,55 @@
+.reviews-button-container{
+    display:flex;
+    justify-content: space-between;
+    margin: 2.5% 0;
+    color: #363A3F;
+}
+.button-container-green {
+    width: 25%;
+}
+
+.reviews-list-container{
+    height: 25vh;
+    border-radius: 5px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-weight: 100;
+    font-size: 1.5em;
+}
+
+.expand-structure-button{
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+.room-properties{
+    margin: 1% 0 0 0;
+    list-style: none;
+}
+.review-text{
+    color: black;
+}
+
+.reviews-infos{
+    width: 100%;
+    display: flex;
+}
+.chevron{
+    display: inline-block;
+    position: absolute;
+    right: 5%;
+}
+
+.overflow-container {
+    overflow: auto;
+    max-height: 25vh;
+}
+
+.overflow-container .list-group {
+    --bs-list-group-item-padding-x: 0rem;
+    --bs-list-group-item-padding-y: 0rem;
+}

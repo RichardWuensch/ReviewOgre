@@ -1,0 +1,117 @@
+
+.span-style{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    color: #82868B;
+}
+.modal-container{
+    margin: -20px;
+    border-radius: 5px;
+    padding:5%;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-size: 60%;
+    max-height: 90vh;
+    overflow-y: auto;
+    justify-content: center;
+}
+.modal-header{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3em;
+    border-color: #C1C1C1;
+}
+.modal-header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 4%;
+}
+
+.footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.button-text{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    color: #363A3F;
+
+    width: 219px;
+    height: 25px;
+
+}
+
+.modal-exit-icon {
+    left: 42.21%;
+    right: 55.55%;
+    top: 55.53%;
+    bottom: 41.98%;
+    padding-right: 7px;
+}
+.exit-button-container{
+    margin: 0 5% 0 5%;
+}
+.exit-successful-calculation-button{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: auto;
+    height: 6vh;
+    background-color: #B0D7AF;
+    border-radius: 5px;
+    border-style: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.exit-successful-calculation-button:focus,
+.exit-successful-calculation-button:hover {
+     background: #B0D7AF;
+     color: black;
+ }
+
+.mail-export-button-container{
+    margin: 0 5% 0 5%;
+}
+.button-mail-export{
+    background: #FFFFFF !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: auto;
+    height: 6vh;
+    background: #B0D7AF;
+    border-radius: 5px;
+    border-style: none !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.modal-mailExport-icon {
+    left: 42.21%;
+    right: 55.55%;
+    top: 55.53%;
+    bottom: 41.98%;
+    margin-right: 7px;
+}
+
+.reviews-table-container{
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-top: 4%;
+    width: 100%;
+    font-size: 1.5em;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: middle;
+}
