@@ -33,9 +33,9 @@ function MainPage () {
 
   function runAlgorithm () {
     try {
-      setShowModalSuccessfulCalculations(true);
       if (new Test().run(participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary)) {
       // successful run
+        setShowModalSuccessfulCalculations(true);
 
         // all on successful calculation window:
 
