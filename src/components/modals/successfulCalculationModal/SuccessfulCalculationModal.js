@@ -2,20 +2,14 @@ import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import './SuccessfulCalculationModal.css';
 import exit from '../../../assets/media/return.svg';
-import React, { useState } from 'react';
-import { Button, Image } from 'react-bootstrap';
+import React from 'react';
+import { Button, Col, Image, Row } from 'react-bootstrap';
 import upload from '../../../assets/media/upload.svg';
 import ReviewWindow from './ReviewWindow';
 import Mail from '../../../api/mail/Mail';
 import { useRoomSlots } from '../../window/context/RoomSlotContext';
 
 function SuccessfulCalculationsModal (props) {
-  const [showModal, setShowModal] = useState(true);
-
-  const handleClose = () => {
-    setShowModal(false);
-  };
-
   const roomSlots = useRoomSlots();
 
   function runAlgorithm () {
@@ -36,36 +30,33 @@ function SuccessfulCalculationsModal (props) {
 
   return (
         <Modal
-            onExit={handleClose}
-            show={showModal}
+            onExit={props.onHide}
             {...props}
             size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className={'modal'}
         >
+            <Modal.Header style={{ paddingLeft: '20px' }}>
+                <Modal.Title>Success!</Modal.Title>
+            </Modal.Header>
             <Modal.Body>
-                <div className={'modal-container-success'}>
-                    <div className={'modal-header-container'}>
-                        <span className={'modal-header border-0'}>
-                            Success!</span>
-                    </div>
-                    <div className={'reviews-table-container'}>
-                        <ReviewWindow/>
-                    </div>
-                    <div className={'footer'}>
-                        <div className={'mail-export-button-container'}>
+                <ReviewWindow/>
+                <div className={'d-flex justify-content-center'}>
+                    <Row>
+                        <Col>
                             <Button variant={'light'} className="button-mail-export" onClick={runAlgorithm}>
                                 <Image src={upload} alt="mailExport" className={'modal-mailExport-icon'}/>
-                                <span className="button-text">Export As Mailing List</span>
+                                Export for Mailing
                             </Button>
-                        </div>
-                        <div className={'exit-button-container'}>
+                        </Col>
+                        <Col>
                             <Button variant={'light'} className="exit-successful-calculation-button" onClick={props.onHide}>
                                 <Image src={exit} alt={'exitParticipantModal'} className={'modal-exit-icon'}/>
-                                <span className={'button-text'}>Return to Configuration</span>
+                                Return to Main
                             </Button>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 </div>
             </Modal.Body>
         </Modal>

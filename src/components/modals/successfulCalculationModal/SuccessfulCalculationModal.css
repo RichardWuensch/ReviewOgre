@@ -4,61 +4,14 @@
     font-weight: 100;
     color: #82868B;
 }
-.modal-container-success{
-    margin: -20px;
-    border-radius: 5px;
-    padding-bottom:4%;
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-size: 60%;
-    max-height: 90vh;
-    overflow-y: auto;
-    justify-content: center;
-}
-.modal-header{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 3em;
-    border-color: #C1C1C1;
-}
-.modal-header-container{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 4%;
-}
 
-.footer{
+.modal .footer{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.button-text{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 23px;
-    color: #363A3F;
-
-    width: 219px;
-    height: 25px;
-
-}
-
-.modal-exit-icon {
-    left: 42.21%;
-    right: 55.55%;
-    top: 55.53%;
-    bottom: 41.98%;
-    padding-right: 7px;
-}
-.exit-button-container{
-    margin: 0 5% 0 5%;
-}
-.exit-successful-calculation-button{
+.modal .exit-successful-calculation-button{
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -67,13 +20,13 @@
     padding-right: 10%;
     width: auto;
     height: 6vh;
-    background-color: #B0D7AF !important;
+    background-color: #B0D7AF;
     border-radius: 5px;
-    border-style: none !important;
+    border-style: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.exit-successful-calculation-button:focus,
-.exit-successful-calculation-button:hover {
+.modal .exit-successful-calculation-button:focus,
+.modal .exit-successful-calculation-button:hover {
      background: #B0D7AF;
      color: black;
  }
@@ -81,8 +34,7 @@
 .mail-export-button-container{
     margin: 0 5% 0 5%;
 }
-.button-mail-export{
-    background: #FFFFFF !important;
+.modal .button-mail-export{
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -91,9 +43,9 @@
     padding-right: 10%;
     width: auto;
     height: 6vh;
-    background-color: #B0D7AF !important;
+    background-color: #B0D7AF;
     border-radius: 5px;
-    border-style: none !important;
+    border-style: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .modal-mailExport-icon {
