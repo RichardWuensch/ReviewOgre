@@ -4,20 +4,44 @@ import './SlotRoomModal.css';
 import exit from '../../../assets/media/x-circle.svg';
 import add from '../../../assets/media/plus-circle.svg';
 import React, { useEffect, useState } from 'react';
-import { Accordion, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
+import {
+  Accordion,
+  Alert,
+  Button,
+  Card,
+  Col,
+  Form,
+  FormControl,
+  Image,
+  Row
+} from 'react-bootstrap';
 import RoomSlot from '../../../data/model/RoomSlot';
 import Room from '../../../data/model/Room';
+import { useRoomSlots } from '../../window/context/RoomSlotContext';
+import ConverterForPrinting from '../../../api/ConverterForPrinting';
 
 function SlotModal ({ roomslot, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
-  const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
-  const [endTime, setEndTime] = useState(roomslot?.getFormattedEndTime() ?? '00:00');
+  const [startTime, setStartTime] = useState(
+    roomslot?.getFormattedStartTime() ?? '00:00'
+  );
+  const [endTime, setEndTime] = useState(
+    roomslot?.getFormattedEndTime() ?? '00:00'
+  );
+  const [invalidSlotError, setInvalidSlotError] = useState(null);
+  const [errorTooltipText, setErrorTooltipText] = useState(null);
   const [items, setItems] = useState([]);
   const [isEditMode] = useState(props.edit || false);
 
-  useEffect(() => { // register deleted rooms
-    const initialItems = roomslot?.getRooms().map(room => new Room(room.getName(), room.hasBeamer())) ?? [];
+  const roomSlots = useRoomSlots();
+
+  useEffect(() => {
+    // register deleted rooms
+    const initialItems =
+      roomslot
+        ?.getRooms()
+        .map((room) => new Room(room.getName(), room.hasBeamer())) ?? [];
     setItems(initialItems);
   }, [roomslot]);
 
@@ -52,121 +76,218 @@ function SlotModal ({ roomslot, ...props }) {
       date.getMonth(),
       date.getDay(),
       parseInt(hours, 10),
-      parseInt(minutes, 10));
+      parseInt(minutes, 10)
+    );
   }
 
   function createTempRoomSlot () {
     const rooms = [];
-    items.forEach(room => { rooms.push(new Room(room.getName(), room.hasBeamer())); });
-    return new RoomSlot(slotId, date, parseTime(startTime), parseTime(endTime), rooms);
+    items.forEach((room) => {
+      rooms.push(new Room(room.getName(), room.hasBeamer()));
+    });
+    return new RoomSlot(
+      slotId,
+      date,
+      parseTime(startTime),
+      parseTime(endTime),
+      rooms
+    );
+  }
+
+  function handleSaveRoomSlot () {
+    const slot = createTempRoomSlot();
+    const overlappingSlots = slot.retrieveOverlappingSlots(roomSlots);
+    if (overlappingSlots.length === 0) {
+      props.onSaveClick(slot);
+      hideModal();
+      return;
+    }
+
+    setInvalidSlotError(
+      `Error: The slot is overlapping with ${overlappingSlots.length} slot${
+        overlappingSlots.length > 1 ? 's' : ''
+      }.`
+    );
+
+    const converter = new ConverterForPrinting();
+    let overlappingSlotsTooltipText = `Overlapping slots on ${converter.getDataDDmmYYYYforPrinting(
+      date
+    )}:`;
+    overlappingSlotsTooltipText += overlappingSlots.map((slot) => {
+      return `\n${slot.getFormattedStartTime()} to ${slot.getFormattedEndTime()}`;
+    });
+
+    setErrorTooltipText(overlappingSlotsTooltipText);
+  }
+
+  function hideModal () {
+    setInvalidSlotError(null);
+    setErrorTooltipText(null);
+    props.onHide();
+  }
+
+  function styleError () {
+    if (invalidSlotError) {
+      return {
+        borderColor: 'red',
+        borderWidth: 2
+      };
+    }
   }
 
   return (
-        <Modal
-            onExit={handleClose}
-            {...props}
-            size="sm"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-            className={'modal'}
-        >
-            <Modal.Header>
-                <Modal.Title>{props.header}</Modal.Title>
-                <Image src={exit} alt={'exitSlotModal'} className={'modal-header-icon'} onClick={props.onHide}/>
-            </Modal.Header>
-            <Modal.Body>
-                <Form style={{ padding: 10 }}>
-                    <Form.Group>
-                        <FormControl
-                            type={'date'}
-                            aria-label={'Enter Date'}
-                            className={'input-date-container'}
-                            value={date.toISOString().slice(0, 10)}
-                            onChange={(e) => setDate(new Date(e.target.value))}/>
-                    </Form.Group>
-                    <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
-                        <Form.Group as={Col}>
-                            <Row>
-                                <Col sm={3}>
-                                    <Form.Label>From:</Form.Label>
-                                </Col>
-                                <Col sm={5}>
-                                    <Form.Control
-                                        className={'input-time-container'}
-                                        aria-label={'Enter start time'}
-                                        type={'time'}
-                                        value={startTime}
-                                        onChange={(e) => setStartTime(e.target.value)}/>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                        <Form.Group as={Col}>
-                            <Row>
-                                <Col sm={3}>
-                                    <Form.Label>To:</Form.Label>
-                                </Col>
-                                <Col sm={5}>
-                                    <Form.Control
-                                        className={'input-time-container'}
-                                        aria-label={'enter end time'}
-                                        type={'time'}
-                                        value={endTime}
-                                        onChange={(e) => setEndTime(e.target.value)}/>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </Row>
-                    <span>{isEditMode ? 'Edit or Add Rooms to this Slot:' : 'Create Rooms for this Time Slot:'}</span>
-                    <div style={{ marginTop: 10, maxHeight: '20vh', overflowY: 'auto' }}>
-                        <Accordion defaultActiveKey="0" style={{ backgroundColor: '#F5F5F5' }}>
-                            <ul className={'list-style'}>
-                                {items?.map((item, index) => (
-                                    <li key={index} style={{ marginBottom: '1%' }}>
-                                        <Accordion.Item style={{ background: '#F5F5F5' }} eventKey={index}>
-                                            <Accordion.Header className={'header-style list-item border-0'}>
-                                                <Form.Control
-                                                    className={'item-text'}
-                                                    type="text"
-                                                    value={item.getName()}
-                                                    placeholder={'Room'}
-                                                    onChange={(event) => handleInputChange(index, event)}
-                                                    style={{ backgroundColor: '#FFFFFF', border: 'none', boxShadow: 'none' }} />
-                                            </Accordion.Header>
-                                            <Accordion.Body>
-                                                <Card.Body>
-                                                    <div className={'beamer-properties'}>
-                                                        <label className={'switch'}>
-                                                            <input type="checkbox" checked={item.hasBeamer()} onChange={(event) => handleBeamerChange(index)}/>
-                                                            <span className={'slider round'}></span>
-                                                        </label>
-                                                        <span style={{ paddingLeft: 5 }}>Beamer needed</span>
-                                                    </div>
-                                                </Card.Body>
-                                            </Accordion.Body>
-                                        </Accordion.Item>
-                                    </li>
-                                ))}
-                            </ul>
-                        </Accordion>
-                    </div>
-                    <Button
-                        variant={'light'}
-                        type={'button'}
-                        className={'add-room-button'}
-                        onClick={addItem}>
-                        <Image src={add} alt={'addRoomIcon'}/>
-                    </Button>
-                    <div className={'text-center'}>
-                        <Button
-                            variant={'light'}
-                            className={'add-slot-button'}
-                            onClick={() => { props.onSaveClick(createTempRoomSlot()); props.onHide(); }}>
-                            <span className={'add-slot-text'}>{isEditMode ? 'Save Changes' : 'Add Slot'}</span>
-                        </Button>
-                    </div>
-                </Form>
-            </Modal.Body>
-        </Modal>
+    <Modal
+      onExit={handleClose}
+      {...props}
+      size="sm"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      className={'modal'}
+    >
+      <Modal.Header>
+        <Modal.Title>{props.header}</Modal.Title>
+        <Image
+          src={exit}
+          alt={'exitSlotModal'}
+          className={'modal-header-icon'}
+          onClick={hideModal}
+        />
+      </Modal.Header>
+      <Modal.Body>
+        <Form style={{ padding: 5 }}>
+          {invalidSlotError && (
+            <Alert
+              variant="danger"
+              data-bs-toggle="tooltip"
+              title={errorTooltipText}
+            >
+              {invalidSlotError}
+            </Alert>
+          )}
+          <Form.Group>
+            <FormControl
+              type={'date'}
+              aria-label={'Enter Date'}
+              className={'input-date-container'}
+              value={date.toISOString().slice(0, 10)}
+              onChange={(e) => setDate(new Date(e.target.value))}
+              style={styleError()}
+            />
+          </Form.Group>
+          <Row style={{ paddingBottom: 20, paddingTop: 10 }}>
+            <Form.Group as={Col}>
+              <Row>
+                <Col sm={3}>
+                  <Form.Label>From:</Form.Label>
+                </Col>
+                <Col sm={5}>
+                  <Form.Control
+                    className={'input-time-container'}
+                    aria-label={'Enter start time'}
+                    type={'time'}
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    style={styleError()}
+                  />
+                </Col>
+              </Row>
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Row>
+                <Col sm={3}>
+                  <Form.Label>To:</Form.Label>
+                </Col>
+                <Col sm={5}>
+                  <Form.Control
+                    className={'input-time-container'}
+                    aria-label={'enter end time'}
+                    type={'time'}
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    style={styleError()}
+                  />
+                </Col>
+              </Row>
+            </Form.Group>
+          </Row>
+          <span>
+            {isEditMode
+              ? 'Edit or Add Rooms to this Slot:'
+              : 'Create Rooms for this Time Slot:'}
+          </span>
+          <div style={{ marginTop: 10, maxHeight: '20vh', overflowY: 'auto' }}>
+            <Accordion
+              defaultActiveKey="0"
+              style={{ backgroundColor: '#F5F5F5' }}
+            >
+              <ul className={'list-style'}>
+                {items?.map((item, index) => (
+                  <li key={index} style={{ marginBottom: '1%' }}>
+                    <Accordion.Item
+                      style={{ background: '#F5F5F5' }}
+                      eventKey={index}
+                    >
+                      <Accordion.Header
+                        className={'header-style list-item border-0'}
+                      >
+                        <Form.Control
+                          className={'item-text'}
+                          type="text"
+                          value={item.getName()}
+                          placeholder={'Room'}
+                          onChange={(event) => handleInputChange(index, event)}
+                          style={{
+                            backgroundColor: '#FFFFFF',
+                            border: 'none',
+                            boxShadow: 'none'
+                          }}
+                        />
+                      </Accordion.Header>
+                      <Accordion.Body>
+                        <Card.Body>
+                          <div className={'beamer-properties'}>
+                            <label className={'switch'}>
+                              <input
+                                type="checkbox"
+                                checked={item.hasBeamer()}
+                                onChange={(event) => handleBeamerChange(index)}
+                              />
+                              <span className={'slider round'}></span>
+                            </label>
+                            <span style={{ paddingLeft: 5 }}>
+                              Beamer needed
+                            </span>
+                          </div>
+                        </Card.Body>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </li>
+                ))}
+              </ul>
+            </Accordion>
+          </div>
+          <Button
+            variant={'light'}
+            type={'button'}
+            className={'add-room-button'}
+            onClick={addItem}
+          >
+            <Image src={add} alt={'addRoomIcon'} />
+          </Button>
+          <div className={'text-center'}>
+            <Button
+              variant={'light'}
+              className={'add-slot-button'}
+              onClick={handleSaveRoomSlot}
+            >
+              <span className={'add-slot-text'}>
+                {isEditMode ? 'Save Changes' : 'Add Slot'}
+              </span>
+            </Button>
+          </div>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 }
 SlotModal.propTypes = {

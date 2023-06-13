@@ -18,7 +18,6 @@ function SlotsWindow () {
       type: 'added',
       newRoomSlot: slot
     });
-
     /* eslint-enable object-shorthand */
   };
 
