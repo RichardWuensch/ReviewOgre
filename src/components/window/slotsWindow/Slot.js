@@ -18,6 +18,7 @@ function SlotCard (props) {
   const [objectToDelete, setObjectToDelete] = React.useState(null);
 
   const openAccordion = useAccordionButton(props.eventKey, () => {});
+
   const roomSlotdispatch = useRoomSlotsDispatch();
 
   const expandAndToggle = () => {
