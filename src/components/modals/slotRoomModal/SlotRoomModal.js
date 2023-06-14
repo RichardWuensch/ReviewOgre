@@ -51,6 +51,7 @@ function SlotModal ({ roomslot, ...props }) {
 
   const handleInputChange = (index, event) => {
     const newItems = [...items];
+    console.log(event.target.value);
     newItems[index].setName(event.target.value);
     setItems(newItems);
   };
@@ -83,7 +84,7 @@ function SlotModal ({ roomslot, ...props }) {
   function createTempRoomSlot () {
     const rooms = [];
     items.forEach((room) => {
-      rooms.push(new Room(room.getName(), room.hasBeamer()));
+      rooms.push(room.getName() ? new Room(room.getName(), room.hasBeamer()) : new Room('undefined', room.hasBeamer()));
     });
     return new RoomSlot(
       slotId,

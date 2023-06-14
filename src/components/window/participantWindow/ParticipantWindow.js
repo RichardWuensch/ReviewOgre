@@ -121,10 +121,10 @@ function ParticipantList () {
                       <th className={'column-firstName'} style={{ fontSize: '1.5em' }}>First Name</th>
                       <th className={'column-lastName'} style={{ fontSize: '1.5em' }}>Last Name</th>
                       <th className={'column-email-header'} style={{ fontSize: '1.5em' }}>Email Address</th>
-                      <th className={'column-group'} style={{ fontSize: '1.5em' }}>Group</th>
+                      <th className={'column-team'} style={{ fontSize: '1.5em' }}>Team</th>
                       <th className={'column-topic'} style={{ fontSize: '1.5em' }}>Topic</th>
                       <th className={'column-languageLevel'} style={{ fontSize: '1.5em' }}>German Skill Level</th>
-                      <th className={'column-options'} style={{ fontSize: '1.5em' }}>Options</th>
+                      <th className={'column-options'} style={{ fontSize: '1.5em' }}></th>
                   </tr>
                   </thead>
                 <tbody>
@@ -174,7 +174,7 @@ function ParticipantList () {
               show={showModalDeleteParticipant}
               onHide={() => setShowModalDeleteParticipant(false)}
               titleObject={'Participants'}
-              textObject={'the selected participants'}
+              textobject={'the selected participants ?'}
               onDeleteClick={(participant) => removeParticipants(participant)}
               deleteobject={ selectedParticipants }
               onClose={() => { setShowModalDeleteParticipant(false); }}/>
