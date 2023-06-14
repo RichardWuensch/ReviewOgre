@@ -10,6 +10,8 @@ import ParticipantModal from '../../modals/participantModals/addEditModal/Partic
 import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
 import { Button, Container, Image, Table } from 'react-bootstrap';
+import download from '../../../assets/media/download.svg';
+import ImportParticipants from '../../../api/ImportParticipants';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -41,6 +43,24 @@ function ParticipantList () {
     });
     /* eslint-enable object-shorthand */
   };
+
+  async function importStudentList (event) {
+    // deleteParticipantListFromContext(participants);
+    const importParticipants = new ImportParticipants();
+    const participantList = await importParticipants.runStudentImport(event);
+    addParticipantListToContext(participantList);
+  }
+
+  function addParticipantListToContext (list) {
+    /* eslint-disable object-shorthand */
+    for (const entry of list) {
+      participantsDispatch({
+        type: 'added',
+        newParticipant: entry
+      });
+    }
+    /* eslint-enable object-shorthand */
+  }
 
   function leaveEditMode () {
     setIsEditModeActive(false);
@@ -74,14 +94,24 @@ function ParticipantList () {
                           </Button>
                       </div>
                   )}
-              {isEditModeActive && (
+              {isEditModeActive
+                ? (
                   <div className={'button-container-participants'}>
                       <Button variant={'light'} className="button-container-green" onClick={() => leaveEditMode()}>
                           <Image src={exit} className={'button-image'} alt="exitEdit" height={16} width={16} />
                           <span className="button-text" >Cancel</span>
                       </Button>
+                  </div>)
+                : (
+                  <div className={'button-container-participants'}>
+                      <Button variant={'light'} className="button-container-green" onClick={() => document.getElementById('student-input').click()}>
+                          <Image src={download} className={'button-image'} alt="icon1" height={16} width={16} />
+                          <span className="button-text">Import Participants</span>
+                      </Button>
+                      <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
+                      accept='text/csv'/>
                   </div>
-              )
+                  )
 
               }
               {!isEditModeActive

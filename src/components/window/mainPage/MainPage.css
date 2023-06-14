@@ -1,6 +1,5 @@
 .main-page {
-    width: 100vw;
-    height: 100vh;
+    flex: 1;
     background-color: #f5f5f5;
     padding: 2% 5%;
     border: 1px solid #ddd;
