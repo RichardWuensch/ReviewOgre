@@ -11,11 +11,11 @@ import { useRoomSlotsDispatch } from '../context/RoomSlotContext';
 
 function SlotCard (props) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const [showModalDeleteRoom, setShowModalDeleteRoom] = React.useState(false);
+  /* const [showModalDeleteRoom, setShowModalDeleteRoom] = React.useState(false); */
   const [showModalDeleteSlot, setShowModalDeleteSlot] = React.useState(false);
   const [showModalEditSlot, setShowModalEditSlot] = React.useState(false);
-  const [deleteModalText, setDeleteModalText] = React.useState('');
-  const [objectToDelete, setObjectToDelete] = React.useState(null);
+  /* const [deleteModalText, setDeleteModalText] = React.useState(''); */
+  /* const [objectToDelete, setObjectToDelete] = React.useState(null); */
 
   const openAccordion = useAccordionButton(props.eventKey, () => {});
 
@@ -29,16 +29,17 @@ function SlotCard (props) {
     console.log('Delete successful');
   }
 
-  function removeRoom (slot, roomToRemove) {
+  /* function removeRoom (slot, roomToRemove) {
     slot.setRooms(
       slot.getRooms().filter(room => room.getId() !== roomToRemove.getId())
     );
 
     return slot;
-  }
+  } */
 
   function getSlotDescription () {
-    return props.roomSlot.getFormattedDate() + ' From: ' + props.roomSlot.getFormattedStartTime() + ' to ' + props.roomSlot.getFormattedEndTime();
+    const options = { weekday: 'long' };
+    return props.roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + props.roomSlot.getFormattedDate() + ' From: ' + props.roomSlot.getFormattedStartTime() + ' to ' + props.roomSlot.getFormattedEndTime();
   }
 
   const removeSlot = (roomSlot) => {
@@ -50,14 +51,14 @@ function SlotCard (props) {
     /* eslint-enable object-shorthand */
   };
 
-  const removeRoomFromSlot = (roomSlot) => {
-    /* eslint-disable object-shorthand */
+  /* const removeRoomFromSlot = (roomSlot) => {
+    // eslint-disable object-shorthand
     roomSlotdispatch({
       type: 'changed',
       updatedRoomSlot: roomSlot
     });
-    /* eslint-enable object-shorthand */
-  };
+    // eslint-enable object-shorthand
+  }; */
 
   const updateSlot = (roomSlot) => {
     /* eslint-disable object-shorthand */
@@ -110,16 +111,6 @@ function SlotCard (props) {
                                     <div className={'room-properties'}>
                                         <Image src={fileImage} alt={'fileImage'} />
                                         <span style={{ paddingLeft: 5 }}>{room.getName()}</span>
-                                        <div className={'options'}>
-                                            <button className={'button-options-delete'} onClick={() => {
-                                              // remove room from array
-                                              setDeleteModalText('the selectedRoom ?\n\nName: \'' + room.getName() + '\'');
-                                              setObjectToDelete(removeRoom(props.roomSlot.getDeepCopy(), room));
-                                              setShowModalDeleteRoom(true);
-                                            }}>
-                                                <Image src={deleteButton} alt={'icon'}/>
-                                            </button>
-                                        </div>
                                     </div>
                                 </li>
                             )}
@@ -149,15 +140,6 @@ function SlotCard (props) {
                 textobject={'the selected Slot ?\n\n\'' + getSlotDescription() + '\''}
                 deleteobject={props.roomSlot}
                 onDeleteClick={(slot) => removeSlot(slot)}/>
-            <DeleteModal
-                // remove a room from the slot
-                show={showModalDeleteRoom}
-                onHide={() => setShowModalDeleteRoom(false)}
-                onSave={handleDelete}
-                titleObject={'Room'}
-                textobject={deleteModalText}
-                deleteobject={objectToDelete}
-                onDeleteClick={(slot) => removeRoomFromSlot(slot)}/>
         </>
 
   );

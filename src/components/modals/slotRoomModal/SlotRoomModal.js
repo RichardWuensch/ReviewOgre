@@ -84,6 +84,7 @@ function SlotModal ({ roomslot, ...props }) {
   function createTempRoomSlot () {
     const rooms = [];
     items.forEach((room) => {
+      rooms.push(new Room(room.getName(), room.hasBeamer()));
       rooms.push(room.getName() ? new Room(room.getName(), room.hasBeamer()) : new Room('undefined', room.hasBeamer()));
     });
     return new RoomSlot(
