@@ -19,6 +19,7 @@ import RoomSlot from '../../../data/model/RoomSlot';
 import Room from '../../../data/model/Room';
 import { useRoomSlots } from '../../window/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
+import deleteButton from '../../../assets/media/trash.svg';
 
 function SlotModal ({ roomslot, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
@@ -47,6 +48,12 @@ function SlotModal ({ roomslot, ...props }) {
 
   const addItem = () => {
     setItems([...items, new Room('', false)]);
+  };
+
+  const deleteItem = (room, event) => {
+    event.stopPropagation();
+    const newItems = items.filter(tempItem => tempItem.getId() !== room.getId());
+    setItems(newItems);
   };
 
   const handleInputChange = (index, event) => {
@@ -84,7 +91,6 @@ function SlotModal ({ roomslot, ...props }) {
   function createTempRoomSlot () {
     const rooms = [];
     items.forEach((room) => {
-      rooms.push(new Room(room.getName(), room.hasBeamer()));
       rooms.push(room.getName() ? new Room(room.getName(), room.hasBeamer()) : new Room('undefined', room.hasBeamer()));
     });
     return new RoomSlot(
@@ -244,6 +250,17 @@ function SlotModal ({ roomslot, ...props }) {
                             boxShadow: 'none'
                           }}
                         />
+                        <div className={'options-delete'}>
+                            <Button
+                              variant={'link'}
+                              role={'submit'}
+                              type={'button'}
+                              className={'button-options-delete'}
+                              onClick={(event) => { deleteItem(item, event); }}
+                            >
+                              <Image src={deleteButton} alt={'icon'} />
+                            </Button>
+                        </div>
                       </Accordion.Header>
                       <Accordion.Body>
                         <Card.Body>

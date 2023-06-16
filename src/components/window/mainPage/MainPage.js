@@ -13,6 +13,7 @@ import LoadConfiguration from '../../../api/LoadConfiguration';
 import ImportParticipants from '../../../api/ImportParticipants';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
 import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/SuccessfulCalculationModal';
+import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { Button, Col, Image, Row } from 'react-bootstrap';
@@ -26,6 +27,9 @@ let authorIsNotary = false;
 function MainPage () {
   const [showModalFailedCalculations, setShowModalFailedCalculations] = React.useState(false);
   const [showModalSuccessfulCalculations, setShowModalSuccessfulCalculations] = React.useState(false);
+  const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
+  const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
+  const [importDataWithSlots, setImportDataWithSlots] = React.useState(false);
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
@@ -52,25 +56,27 @@ function MainPage () {
     }
   }
 
-  async function importStudentList (event) {
-    // deleteParticipantListFromContext(participants);
+  async function importDataCheck (event) {
+    setOverwriteExistingDataEvent(event);
+    setShowModalDataImportCheck(true);
+  }
+
+  async function importStudentList () {
     const importParticipants = new ImportParticipants();
-    const participantList = await importParticipants.runStudentImport(event);
+    const participantList = await importParticipants.runStudentImport(overwriteExistingDataEvent);
     addParticipantListToContext(participantList);
+  }
+
+  async function importConfiguration () {
+    const importConf = new LoadConfiguration();
+    await importConf.runConfigurationImport(overwriteExistingDataEvent);
+    addParticipantListToContext(importConf.getParticipants());
+    addRoomSlotListToContext(importConf.getRoomSlots());
+    authorIsNotary = importConf.getAuthorIsNotary();
   }
 
   function saveConfiguration () {
     new StoreConfiguration(participants, roomSlots, authorIsNotary).runFileSave();
-  }
-
-  async function importConfiguration (event) {
-    deleteParticipantListFromContext(participants);
-    deleteRoomSlotListFromContext(roomSlots);
-    const importConf = new LoadConfiguration();
-    await importConf.runConfigurationImport(event);
-    addParticipantListToContext(importConf.getParticipants());
-    addRoomSlotListToContext(importConf.getRoomSlots());
-    authorIsNotary = importConf.getAuthorIsNotary();
   }
 
   function addParticipantListToContext (list) {
@@ -138,7 +144,7 @@ function MainPage () {
                         <Image src={download} className={'button-image'} alt="icon1" height={16} width={16} />
                         <span className="button-text">Import Participants</span>
                     </Button>
-                    <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
+                    <input type="file" id="student-input" style={{ display: 'none' }} onChange={() => { importDataCheck(event); setImportDataWithSlots(false); }}
                            accept='text/csv'/>
                 </Col>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
@@ -146,7 +152,7 @@ function MainPage () {
                         <Image src={download} className={'button-image'} alt="icon2" height={16} width={16} />
                         <span className="button-text">Load Configuration</span>
                     </Button>
-                    <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}
+                    <input type="file" id="file-input" style={{ display: 'none' }} onChange={() => { importDataCheck(event); setImportDataWithSlots(true); }}
                            accept='application/json'/>
                 </Col>
                 <Col xs={8} md={4} className="mb-3 mb-md-0">
@@ -193,7 +199,7 @@ function MainPage () {
                             <div className={'start-button-container'}>
                                 <Button variant={'light'} className="button-start" onClick={runAlgorithm}>
                                     <Image src={start} alt="startCalculation" height={20} width={20} />
-                                    <span className="button-start-text">Start Calculations</span>
+                                    <span className="button-start-text">Compute Assignments</span>
                                 </Button>
                             </div>
                         </div>
@@ -205,6 +211,29 @@ function MainPage () {
                 <SuccessfulCalculationModal
                     show={showModalSuccessfulCalculations}
                     onHide={() => setShowModalSuccessfulCalculations(false)}/>
+                <DataImportCheckModal
+                    show={showModalDataImportCheck}
+                    overwritedata={() => {
+                      if (importDataWithSlots) {
+                        deleteParticipantListFromContext(participants);
+                        deleteRoomSlotListFromContext(roomSlots);
+                        importConfiguration();
+                      } else {
+                        deleteParticipantListFromContext(participants);
+                        importStudentList();
+                      }
+                    }}
+                    adddata={() => {
+                      if (importDataWithSlots) {
+                        importConfiguration();
+                      } else {
+                        importStudentList();
+                      }
+                    }}
+                    titleObject={ importDataWithSlots ? 'Load Configuration' : 'Import Participants' }
+                    textobject={ importDataWithSlots ? 'participants and slots' : 'participants' }
+                    onHide={() => setShowModalDataImportCheck(false)}
+                    onClose={() => setShowModalDataImportCheck(false)}/>
 
                 {/* end */}
             </Row>

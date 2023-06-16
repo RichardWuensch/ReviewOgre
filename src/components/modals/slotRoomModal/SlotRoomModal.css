@@ -235,6 +235,12 @@ input:checked + .slider:before {
     outline: inherit;
 }
 
+.options-delete{
+    display: inline-block;
+    position: absolute;
+    right: 25%;
+}
+
 
 
 
