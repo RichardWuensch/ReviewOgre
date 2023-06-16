@@ -14,6 +14,7 @@ import ImportParticipants from '../../../api/ImportParticipants';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
 import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/SuccessfulCalculationModal';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
+import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { Button, Col, Image, Row } from 'react-bootstrap';
@@ -28,6 +29,7 @@ function MainPage () {
   const [showModalFailedCalculations, setShowModalFailedCalculations] = React.useState(false);
   const [showModalSuccessfulCalculations, setShowModalSuccessfulCalculations] = React.useState(false);
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
+  const [showModalSettings, setShowModalSettings] = React.useState(false);
   const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
   const [importDataWithSlots, setImportDataWithSlots] = React.useState(false);
   const participantsDispatch = useParticipantsDispatch();
@@ -79,6 +81,10 @@ function MainPage () {
     new StoreConfiguration(participants, roomSlots, authorIsNotary).runFileSave();
   }
 
+  function openSettings () {
+    setShowModalSettings(true);
+  }
+
   function addParticipantListToContext (list) {
     /* eslint-disable object-shorthand */
     for (const entry of list) {
@@ -123,12 +129,12 @@ function MainPage () {
     /* eslint-enable object-shorthand */
   }
 
-  function handleNotaryIsAuthorChange () {
+  /* function handleNotaryIsAuthorChange () {
     console.log('Notary is Author');
     // this logs can be used to check if the algo writes correct in context
     console.log(roomSlots);
     console.log(participants);
-  }
+  } */
 
   return (
         <div className={'main-page'}>
@@ -173,28 +179,11 @@ function MainPage () {
                     <div className={'setupWindow'}>
                         <h2 className={'title-subheadline'}>Run Configuration</h2>
                         <div className={'setupContainer'}>
-                            <div className={'radio-container'}>
-                                <div className={'setupItems'}>
-                                    <label className={'switch'}>
-                                        <input type="checkbox" aria-label={'Notary is author'} onClick={handleNotaryIsAuthorChange}/>
-                                        <span className={'slider round'}></span>
-                                    </label>
-                                    <span style={{ paddingLeft: 10 }}>Notary is Author</span>
-                                </div>
-                                <div className={'setupItems'}>
-                                    <label className={'switch'}>
-                                        <input type="checkbox" aria-label={'International Groups needed'} onClick={handleModeratorNotReviewerChange}/>
-                                        <span className={'slider round'}></span>
-                                    </label>
-                                    <span style={{ paddingLeft: 10 }}>International Groups</span>
-                                </div>
-                                <div className={'setupItems'} style={{ paddingBottom: '0' }}>
-                                    <label className={'switch'}>
-                                        <input type="checkbox" aria-label={'A/B-Reviews allowed'} onClick={handleABReviewChange}/>
-                                        <span className={'slider round'}></span>
-                                    </label>
-                                    <span style={{ paddingLeft: 10 }}>A/B Review</span>
-                                </div>
+                            <div className={'start-button-container'}>
+                                <Button variant={'light'} className="button-start" onClick={openSettings}>
+                                    <Image src={start} alt="startCalculation" height={20} width={20} />
+                                    <span className="button-start-text">Settings</span>
+                                </Button>
                             </div>
                             <div className={'start-button-container'}>
                                 <Button variant={'light'} className="button-start" onClick={runAlgorithm}>
@@ -234,6 +223,10 @@ function MainPage () {
                     textobject={ importDataWithSlots ? 'participants and slots' : 'participants' }
                     onHide={() => setShowModalDataImportCheck(false)}
                     onClose={() => setShowModalDataImportCheck(false)}/>
+                <SettingsModal
+                    show={showModalSettings}
+                    onHide={() => setShowModalSettings(false)}
+                    onClose={() => setShowModalSettings(false)}/>
 
                 {/* end */}
             </Row>
@@ -241,12 +234,12 @@ function MainPage () {
   );
 }
 
-function handleModeratorNotReviewerChange () {
+/* function handleModeratorNotReviewerChange () {
   console.log('Moderator not Reviewer');
 }
 
 function handleABReviewChange () {
   console.log('A/B Review');
-}
+} */
 
 export default MainPage;

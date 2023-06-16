@@ -1,5 +1,6 @@
 import './SettingsModal.css';
 import Modal from 'react-bootstrap/Modal';
+import PropTypes from 'prop-types';
 import exit from '../../../assets/media/x-circle.svg';
 import { Button, Col, Image, Row } from 'react-bootstrap';
 
@@ -47,7 +48,7 @@ function SettingsModal (props) {
                                 variant={'light'}
                                 style={{ backgroundColor: '#B0D7AF', color: 'black' }}
                                 className={'confirm-button'}
-                                onClick={props.onHide()}>
+                                onClick={props.onHide}>
                                 Confirm
                             </Button>
                         </Col>
@@ -56,7 +57,7 @@ function SettingsModal (props) {
                                 variant={'light'}
                                 style={{ backgroundColor: '#C40233' }}
                                 className={'cancel-button'}
-                                onClick={props.onHide()}>
+                                onClick={props.onHide}>
                                 Abort
                             </Button>
                         </Col>
@@ -66,4 +67,7 @@ function SettingsModal (props) {
         </Modal>
   );
 }
+SettingsModal.propTypes = {
+  onHide: PropTypes.func.isRequired
+};
 export default SettingsModal;
