@@ -1,9 +1,9 @@
 import './Slot.css';
 import React, { useState } from 'react';
 import { Accordion, Card, Image, useAccordionButton } from 'react-bootstrap';
-import fileImage from '../../../assets/media/file-earmark.svg';
+import locationImage from '../../../assets/media/geo-alt-fill.svg';
 import deleteButton from '../../../assets/media/trash.svg';
-import folderImage from '../../../assets/media/folder.svg';
+import alarmImage from '../../../assets/media/alarm-fill.svg';
 import edit from '../../../assets/media/pencil-square.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
@@ -82,10 +82,10 @@ function SlotCard (props) {
                         >
                             {isAccordionOpen
                               ? (
-                                    <Image src={folderImage} alt={'folderImage'} />
+                                    <Image src={alarmImage} alt={'alarmImage'} />
                                 )
                               : (
-                                    <Image src={folderImage} alt={'folderImage'} />
+                                    <Image src={alarmImage} alt={'alarmImage'} />
                                 )}
                             <span className={'slot-text'} style={{ paddingLeft: 5 }}>
                                 {getSlotDescription()}
@@ -109,7 +109,7 @@ function SlotCard (props) {
                             {props.roomSlot.getRooms()?.map((room, roomIndex) =>
                                 <li key={roomIndex}>
                                     <div className={'room-properties'}>
-                                        <Image src={fileImage} alt={'fileImage'} />
+                                        <Image src={locationImage} alt={'locationImage'} />
                                         <span style={{ paddingLeft: 5 }}>{room.getName()}</span>
                                     </div>
                                 </li>
