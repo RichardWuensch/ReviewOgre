@@ -20,6 +20,7 @@ import { useParticipants, useParticipantsDispatch } from '../context/Participant
 import { Button, Col, Image, Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 // import StoreResult from '../../../api/StoreResult';
+// import StoreResult from '../../../api/StoreResult';
 // import RevagerLiteExport from '../../../api/mail/RevagerLiteExport';
 // import Mail from '../../../api/mail/Mail';
 // import SaveRoomPlan from '../../../api/SaveRoomPlan';
@@ -73,10 +74,13 @@ function MainPage () {
 
         // all on successful calculation window:
 
-        // new Mail(roomSlots).generateMailsForModerators();
+        // new Mail(roomSlots).openMailClient();
+        // new Mail(roomSlots).saveMailsInTxt();
         // new RevagerLiteExport().buildJSONAllReviews(roomSlots);
         // new SaveRoomPlan(roomSlots).runSave();
         // new StoreResult().runFileSave(roomSlots);
+        // new StoreResult().saveAsJSON(roomSlots);
+        // new StoreResult().saveAsTXT(roomSlots);
       } else {
         setShowModalFailedCalculations(true);
       }

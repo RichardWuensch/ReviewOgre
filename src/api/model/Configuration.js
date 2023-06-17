@@ -52,7 +52,7 @@ export default class Configuration {
       for (const room of roomSlot.getRooms()) {
         const newRoom = {
           name: room.getName(),
-          beamer: room.hasBeamer()
+          beamer: room.getBeamerNeeded()
         };
         newRoomSlot.rooms.push(newRoom);
       }

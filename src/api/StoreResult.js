@@ -2,25 +2,13 @@ import { saveAs } from 'file-saver';
 import ConverterForPrinting from './ConverterForPrinting';
 
 export default class StoreResult {
-  #roomSlots = [];
-
   /**
-  * Generate the file and start the download process
+  * save the result as .json-File
   * @param {list} roomSlots - all neccessary informations from the result
   */
-  runFileSave (roomSlots) {
-    this.parseRoomSlotsFromStore(roomSlots);
-    const resultString = JSON.stringify(this.#roomSlots, null, 1);
-    const blob = new Blob([resultString], { type: 'application/json' });
-    saveAs(blob, 'result.json');
-  }
-
-  /**
-  * Parse the result in a roomSlots object bc getters are needed for access
-  * @param {list} roomSlots - all neccessary informations from the result
-  */
-  parseRoomSlotsFromStore (roomSlots) {
+  saveAsJSON (roomSlots) {
     const converter = new ConverterForPrinting();
+    const result = [];
     for (const roomSlot of roomSlots) {
       const newRoomSlot = {
         date: converter.getDataDDmmYYYYforPrinting(roomSlot.getDate()),
@@ -32,7 +20,7 @@ export default class StoreResult {
         if (room.getReview() === null) continue;
         const newRoom = {
           name: room.getName(),
-          beamer: room.hasBeamer(),
+          beamer: room.getBeamerNeeded(),
           review: {}
         };
         const review = room.getReview();
@@ -51,8 +39,42 @@ export default class StoreResult {
         }
         newRoom.review = newReview;
         newRoomSlot.rooms.push(newRoom);
-      };
-      this.#roomSlots.push(newRoomSlot);
+      }
+      result.push(newRoomSlot);
     }
+    const resultString = JSON.stringify(result, null, 1);
+    const blob = new Blob([resultString], { type: 'application/json' });
+    saveAs(blob, 'result.json');
+  }
+
+  /**
+   * save the result as .txt-File
+   * @param {list} roomSlots - all neccessary informations from the result
+   */
+  saveAsTXT (roomSlots) {
+    let result = '';
+    const converter = new ConverterForPrinting();
+    for (const s of roomSlots) {
+      for (const room of s.getRooms()) {
+        if (room.getReview() === null) {
+          continue;
+        }
+        result += 'Review: ' + room.getReview().getGroupName() +
+            ' on ' + converter.getDataDDmmYYYYforPrinting(s.getDate()) +
+            ' from ' + converter.getTimeHHmm(s.getStartTime()) +
+            ' to ' + converter.getTimeHHmm(s.getEndTime()) +
+            ' in ' + room.getName() + '\n';
+        result += (room.getBeamerNeeded() ? 'Beamer needed' : 'No Beamer needed') + '\n';
+        result += 'Author: ' + converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()) + '\n';
+        result += 'Moderator: ' + converter.getParticipantAttributsForPrinting(room.getReview().getModerator()) + '\n';
+        result += 'Notary: ' + converter.getParticipantAttributsForPrinting(room.getReview().getNotary()) + '\n';
+        for (const reviewer of room.getReview().getReviewer()) {
+          result += 'Reviewer: ' + converter.getParticipantAttributsForPrinting(reviewer) + '\n';
+        }
+        result += '*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x' + '\n';
+      }
+    }
+    const blob = new Blob([result], { type: 'text/plain' });
+    saveAs(blob, 'result.txt');
   }
 }
