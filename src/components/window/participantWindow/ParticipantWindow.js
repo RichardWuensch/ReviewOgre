@@ -4,12 +4,12 @@ import add from '../../../assets/media/plus-circle.svg';
 import edit from '../../../assets/media/pencil-square.svg';
 import deleteButton from '../../../assets/media/trash.svg';
 import exit from '../../../assets/media/x-circle.svg';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './ParticipantWindow.css';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
 import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
-import { Button, Container, Image, Table } from 'react-bootstrap';
+import { Button, Container, Image, Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -42,6 +42,34 @@ function ParticipantList () {
     /* eslint-enable object-shorthand */
   };
 
+  const [showTooltip, setShowTooltip] = useState([false, false, false, false, false]);
+  const [popoverText, setPopoverText] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (event) => {
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  };
+  const handleMouseEnter = (buttonId) => {
+    const newShowTooltips = [false, false, false, false, false];
+    newShowTooltips[buttonId] = true;
+    setShowTooltip(newShowTooltips);
+  };
+  const handleMouseLeave = (buttonId) => {
+    const newShowTooltips = [false, false, false, false, false];
+    setShowTooltip(newShowTooltips);
+  };
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   function leaveEditMode () {
     setIsEditModeActive(false);
     setSelectedParticipants([]);
@@ -49,37 +77,67 @@ function ParticipantList () {
   }
 
   return (
-      <Container fluid className={'participantsWindow p-0'}>
+      <Container fluid className={'participantsWindow p-0'} onMouseMove={handleMouseMove}>
           <h2 className={'title-subheadline'} style={{ marginBottom: 0 }}>Participants</h2>
           <div className={'participant-button-container'}>
               {!isEditModeActive
                 ? (
                     <div className={'button-container-participants'}>
-                      <Button variant={'light'} className="button-container-green" onClick={() => setShowModalParticipant(true)}>
-                          <Image src={add} className={'button-image'} alt="addParticipant" height={16} width={16} />
-                          <span className="button-text">Add Participant</span>
-                      </Button>
+                      <OverlayTrigger
+                        key='0'
+                        placement="top"
+                        overlay={<Tooltip id="tooltip-0">{popoverText}</Tooltip>}
+                        show={showTooltip[0]}
+                        target={mousePosition}
+                      >
+                          <Button variant={'light'} className="button-container-green" onClick={() => setShowModalParticipant(true)}
+                            onMouseEnter={() => { setPopoverText('Add Participant'); handleMouseEnter(0); }}
+                            onMouseLeave={() => handleMouseLeave(0)}>
+                              <Image src={add} className={'button-image'} alt="addParticipant" height={16} width={16} />
+                              <span className="button-text">Add Participant</span>
+                          </Button>
+                      </OverlayTrigger>
                     </div>
                   )
                 : (
                       <div className={'button-container-participants'}>
-                          <Button
-                              variant={'light'}
-                              className="button-container-green"
-                              disabled={ selectedParticipants.length === 0 }
-                              style={{ background: '#B0D7AF' }}
-                              onClick={() => setShowModalEditMultipleParticipants(true)}>
-                                <Image src={edit} className={'button-image'} alt="editList" height={16} width={16} />
-                                <span className="button-text">Edit Selected</span>
-                          </Button>
+                          <OverlayTrigger
+                            key='1'
+                            placement="top"
+                            overlay={<Tooltip id="tooltip-1">{popoverText}</Tooltip>}
+                            show={showTooltip[1]}
+                            target={mousePosition}
+                          >
+                              <Button
+                                  variant={'light'}
+                                  className="button-container-green"
+                                  disabled={ selectedParticipants.length === 0 }
+                                  style={{ background: '#B0D7AF' }}
+                                  onClick={() => setShowModalEditMultipleParticipants(true)}
+                                    onMouseEnter={() => { setPopoverText('Edit Selected'); handleMouseEnter(1); }}
+                                    onMouseLeave={() => handleMouseLeave(1)}>
+                                    <Image src={edit} className={'button-image'} alt="editList" height={16} width={16} />
+                                    <span className="button-text">Edit Selected</span>
+                              </Button>
+                          </OverlayTrigger>
                       </div>
                   )}
               {isEditModeActive && (
                   <div className={'button-container-participants'}>
-                      <Button variant={'light'} className="button-container-green" onClick={() => leaveEditMode()}>
-                          <Image src={exit} className={'button-image'} alt="exitEdit" height={16} width={16} />
-                          <span className="button-text" >Cancel</span>
-                      </Button>
+                      <OverlayTrigger
+                        key='2'
+                        placement="top"
+                        overlay={<Tooltip id="tooltip-2">{popoverText}</Tooltip>}
+                        show={showTooltip[2]}
+                        target={mousePosition}
+                      >
+                          <Button variant={'light'} className="button-container-green" onClick={() => leaveEditMode()}
+                            onMouseEnter={() => { setPopoverText('Cancel'); handleMouseEnter(2); }}
+                            onMouseLeave={() => handleMouseLeave(2)}>
+                              <Image src={exit} className={'button-image'} alt="exitEdit" height={16} width={16} />
+                              <span className="button-text" >Cancel</span>
+                          </Button>
+                      </OverlayTrigger>
                   </div>
               )
 
@@ -87,18 +145,38 @@ function ParticipantList () {
               {!isEditModeActive
                 ? (
                       <div className={'button-container-participants'}>
-                          <Button variant={'light'} className="button-container-green" onClick={() => setIsEditModeActive(true)}>
-                              <Image src={edit} className={'button-image'} alt="editParticipants" height={16} width={16} />
-                              <span className="button-text" >Edit List</span>
-                          </Button>
+                          <OverlayTrigger
+                            key='3'
+                            placement="top"
+                            overlay={<Tooltip id="tooltip-3">{popoverText}</Tooltip>}
+                            show={showTooltip[3]}
+                            target={mousePosition}
+                          >
+                              <Button variant={'light'} className="button-container-green" onClick={() => setIsEditModeActive(true)}
+                                onMouseEnter={() => { setPopoverText('Edit List'); handleMouseEnter(3); }}
+                                onMouseLeave={() => handleMouseLeave(3)}>
+                                  <Image src={edit} className={'button-image'} alt="editParticipants" height={16} width={16} />
+                                  <span className="button-text" >Edit List</span>
+                              </Button>
+                          </OverlayTrigger>
                       </div>
                   )
                 : (
                   <div className={'button-container-participants'}>
-                    <Button variant={'light'} className="button-container-green" disabled={ selectedParticipants.length === 0 } onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }>
-                        <Image src={deleteButton} className={'button-image'} alt="delete" height={16} width={16} />
-                        <span className="button-text" style={{ color: '#F5F5F5' }}>Delete Selected</span>
-                    </Button>
+                    <OverlayTrigger
+                      key='4'
+                      placement="top"
+                      overlay={<Tooltip id="tooltip-4">{popoverText}</Tooltip>}
+                      show={showTooltip[4]}
+                      target={mousePosition}
+                    >
+                        <Button variant={'light'} className="button-container-green" disabled={ selectedParticipants.length === 0 } onClick={() => setShowModalDeleteParticipant(true)} style={ { background: '#C40233' } }
+                          onMouseEnter={() => { setPopoverText('Delete Selected'); handleMouseEnter(4); }}
+                          onMouseLeave={() => handleMouseLeave(4)}>
+                            <Image src={deleteButton} className={'button-image'} alt="delete" height={16} width={16} />
+                            <span className="button-text" style={{ color: '#F5F5F5' }}>Delete Selected</span>
+                        </Button>
+                    </OverlayTrigger>
                   </div>
                   )}
           </div>

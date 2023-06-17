@@ -1,6 +1,6 @@
 import './Slot.css';
-import React, { useState } from 'react';
-import { Accordion, Card, Image, useAccordionButton } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Accordion, Card, Image, useAccordionButton, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import locationImage from '../../../assets/media/geo-alt-fill.svg';
 import deleteButton from '../../../assets/media/trash.svg';
 import alarmImage from '../../../assets/media/alarm-fill.svg';
@@ -70,36 +70,99 @@ function SlotCard (props) {
     /* eslint-enable object-shorthand */
   };
 
+  const [showTooltip, setShowTooltip] = useState([false, false, false]);
+  const [popoverText, setPopoverText] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (event) => {
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  };
+  const handleMouseEnter = (buttonId) => {
+    const newShowTooltips = [false, false, false];
+    newShowTooltips[buttonId] = true;
+    setShowTooltip(newShowTooltips);
+  };
+  const handleMouseLeave = (buttonId) => {
+    const newShowTooltips = [false, false, false];
+    setShowTooltip(newShowTooltips);
+  };
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   const slotContent = (
         <>
             <Card>
                 <Card.Header className={'list-item'}>
-                    <div className={'slots-infos'}>
-                        <button
-                            type="button"
-                            onClick={expandAndToggle}
-                            className={'expand-structure-button'}
+                    <div className={'slots-infos'} onMouseMove={handleMouseMove}>
+                        <OverlayTrigger
+                          key='0'
+                          placement="top"
+                          overlay={<Tooltip id="tooltip-0">{popoverText}</Tooltip>}
+                          show={showTooltip[0]}
+                          target={mousePosition}
                         >
-                            {isAccordionOpen
-                              ? (
-                                    <Image src={alarmImage} alt={'alarmImage'} />
-                                )
-                              : (
-                                    <Image src={alarmImage} alt={'alarmImage'} />
-                                )}
-                            <span className={'slot-text'} style={{ paddingLeft: 5 }}>
-                                {getSlotDescription()}
-                            </span>
-                        </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                  isAccordionOpen ? setPopoverText('Show Rooms') : setPopoverText('Hide Rooms');
+                                  expandAndToggle();
+                                }}
+                                className={'expand-structure-button'}
+                                onMouseEnter={() => {
+                                  isAccordionOpen ? setPopoverText('Hide Rooms') : setPopoverText('Show Rooms');
+                                  handleMouseEnter(0);
+                                }}
+                                onMouseLeave={() => handleMouseLeave(0)}>
+                                {isAccordionOpen
+                                  ? (
+                                        <Image src={alarmImage} alt={'alarmImage'} />
+                                    )
+                                  : (
+                                        <Image src={alarmImage} alt={'alarmImage'} />
+                                    )}
+                                <span className={'slot-text'} style={{ paddingLeft: 5 }}>
+                                    {getSlotDescription()}
+                                </span>
+                            </button>
+                        </OverlayTrigger>
                         <div className={'options'}>
-                            <button className={'button-options-edit'} onClick={() => {
-                              setShowModalEditSlot(true);
-                            }}>
-                                <Image src={edit} alt={'icon'}/>
-                            </button>
-                            <button className={'button-options-delete'} onClick={() => setShowModalDeleteSlot(true)}>
-                                <img src={deleteButton} alt={'icon'}/>
-                            </button>
+                            <OverlayTrigger
+                              key='1'
+                              placement="top"
+                              overlay={<Tooltip id="tooltip-1">{popoverText}</Tooltip>}
+                              show={showTooltip[1]}
+                              target={mousePosition}
+                            >
+                                <button className={'button-options-edit'} onClick={() => {
+                                  setShowModalEditSlot(true);
+                                }}
+                                  onMouseEnter={() => { setPopoverText('Edit Slot with linked Rooms'); handleMouseEnter(1); }}
+                                  onMouseLeave={() => handleMouseLeave(1)}>
+                                    <Image src={edit} alt={'icon'}/>
+                                </button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                              key='2'
+                              placement="top"
+                              overlay={<Tooltip id="tooltip-2">{popoverText}</Tooltip>}
+                              show={showTooltip[2]}
+                              target={mousePosition}
+                            >
+                                <button className={'button-options-delete'} onClick={() => setShowModalDeleteSlot(true)}
+                                  onMouseEnter={() => { setPopoverText('Delete Slot with linked Rooms'); handleMouseEnter(2); }}
+                                  onMouseLeave={() => handleMouseLeave(2)}>
+                                    <img src={deleteButton} alt={'icon'}/>
+                                </button>
+                            </OverlayTrigger>
                         </div>
                     </div>
                 </Card.Header>
