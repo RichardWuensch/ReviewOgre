@@ -110,7 +110,7 @@ function MainPage () {
         // new StoreResult().saveAsTXT(roomSlots);
     } catch (error) {
       console.log(error.message);
-      setAlgorithmErrorMessage(error.message);
+      setAlgorithmErrorMessage(error);
     }
   }
 

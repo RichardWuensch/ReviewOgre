@@ -68,15 +68,6 @@ function SlotModal ({ roomslot, ...props }) {
     setItems(newItems);
   };
 
-  const handleClose = () => {
-    if (!isEditMode) {
-      setDate(new Date());
-      setStartTime('00:00');
-      setEndTime('00:00');
-      setItems([]);
-    }
-  };
-
   function parseTime (time) {
     const [hours, minutes] = time.split(':');
     return new Date(
@@ -129,6 +120,12 @@ function SlotModal ({ roomslot, ...props }) {
   }
 
   function hideModal () {
+    if (!isEditMode) {
+      setDate(new Date());
+      setStartTime('00:00');
+      setEndTime('00:00');
+      setItems([]);
+    }
     setInvalidSlotError(null);
     setErrorTooltipText(null);
     props.onHide();
@@ -145,7 +142,7 @@ function SlotModal ({ roomslot, ...props }) {
 
   return (
     <Modal
-      onExit={handleClose}
+      onExit={hideModal}
       {...props}
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
@@ -182,7 +179,7 @@ function SlotModal ({ roomslot, ...props }) {
               style={styleError()}
             />
           </Form.Group>
-          <Row style={{ paddingBottom: 20, paddingTop: 10 }}>
+          <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
             <Form.Group as={Col}>
               <Row>
                 <Col sm={3}>
