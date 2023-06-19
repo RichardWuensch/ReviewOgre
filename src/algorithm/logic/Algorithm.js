@@ -14,7 +14,7 @@ export default class Algorithm {
   #maximumTries;
 
   constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary, maximumTries) {
-    this.#participants = participants;
+    this.#participants = this.#resetParticipants(participants);
     this.#participantsDispatch = participantsDispatch;
     this.#roomSlotsDispatch = roomSlotsDispatch;
     this.#roomSlots = this.#resetRoomSlots(roomSlots);
@@ -30,6 +30,13 @@ export default class Algorithm {
       }
     }
     return roomSlots;
+  }
+
+  #resetParticipants (participants) {
+    for (const p of participants) {
+      p.resetStatistics();
+    }
+    return participants;
   }
 
   /**
@@ -74,7 +81,6 @@ export default class Algorithm {
         }
       }
     }
-    return true;
   }
 
   /**
