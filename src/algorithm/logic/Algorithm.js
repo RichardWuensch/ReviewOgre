@@ -52,7 +52,9 @@ export default class Algorithm {
     let errorCounter = 0;
     while (errorFound) {
       if (errorCounter > this.#maximumTries) {
-        throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.');
+        throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.',
+          { cause: 'noSolution' }
+        );
       }
 
       this.#setAuthorOfRandomGroupMember(groups);
@@ -116,10 +118,15 @@ export default class Algorithm {
     let errorMessage = '';
     if (numberOfGroups < 4) errorMessage += 'At least 4 groups are needed.\n';
     if (this.#participants.length < 12) errorMessage += 'At least 12 particpants are needed.\n';
-    if (numberOfGroups > roomCount) errorMessage += 'There are not enough rooms.\n';
-    if (minAmountOfSlots > this.#roomSlots.length) errorMessage += 'There are not enough Slots.\n';
-
-    if (errorMessage !== '') throw new Error(errorMessage);
+    if (!errorMessage) {
+      if (numberOfGroups > roomCount) errorMessage += `There are not enough rooms for ${numberOfGroups} groups.\n`;
+      if (minAmountOfSlots > this.#roomSlots.length) errorMessage += `There are not enough slots. Minimum amount: ${minAmountOfSlots}\n`;
+    }
+    if (errorMessage) {
+      throw new Error(errorMessage,
+        { cause: 'prechecksFailed' }
+      );
+    }
   }
 
   /**

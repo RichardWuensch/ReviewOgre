@@ -106,7 +106,7 @@ function MainPage () {
       // new StoreResult().runFileSave(roomSlots);
     } catch (error) {
       console.log(error.message);
-      setAlgorithmErrorMessage(error.message);
+      setAlgorithmErrorMessage(error);
     }
   }
 
