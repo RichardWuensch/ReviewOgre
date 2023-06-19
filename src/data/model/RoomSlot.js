@@ -25,7 +25,7 @@ export default class RoomSlot extends Slot {
   getDeepCopy () {
     const roomsCopy = [];
     this.#rooms.forEach((room) =>
-      roomsCopy.push(new Room(room.getName(), room.hasBeamer(), room.getId()))
+      roomsCopy.push(new Room(room.getName(), room.getBeamerNeeded(), room.getId()))
     );
     return new RoomSlot(
       super.getId(),

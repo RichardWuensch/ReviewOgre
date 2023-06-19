@@ -42,7 +42,7 @@ function SlotModal ({ roomslot, ...props }) {
     const initialItems =
       roomslot
         ?.getRooms()
-        .map((room) => new Room(room.getName(), room.hasBeamer())) ?? [];
+        .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
     setItems(initialItems);
   }, [roomslot]);
 
@@ -64,7 +64,7 @@ function SlotModal ({ roomslot, ...props }) {
   };
   const handleBeamerChange = (index) => {
     const newItems = [...items];
-    newItems[index].setHasBeamer(!newItems[index].hasBeamer());
+    newItems[index].setBeamerNeeded(!newItems[index].getBeamerNeeded());
     setItems(newItems);
   };
 
@@ -82,7 +82,7 @@ function SlotModal ({ roomslot, ...props }) {
   function createTempRoomSlot () {
     const rooms = [];
     items.forEach((room) => {
-      rooms.push(room.getName() ? new Room(room.getName(), room.hasBeamer()) : new Room('undefined', room.hasBeamer()));
+      rooms.push(room.getName() ? new Room(room.getName(), room.getBeamerNeeded()) : new Room('undefined', room.getBeamerNeeded()));
     });
     return new RoomSlot(
       slotId,
@@ -265,7 +265,7 @@ function SlotModal ({ roomslot, ...props }) {
                             <label className={'switch'}>
                               <input
                                 type="checkbox"
-                                checked={item.hasBeamer()}
+                                checked={item.getBeamerNeeded()}
                                 onChange={(event) => handleBeamerChange(index)}
                               />
                               <span className={'slider round'}></span>
