@@ -30,6 +30,7 @@ function FailedCalculationsModal (props) {
                     <div className={'response-container'}>
                         <div>Could not calculate a solution!</div>
                         <div>This is because of the following error:</div>
+                        <div>{props.errorMessage}</div>
                     </div>
                     <div className={'footer'}>
                         <button className={'exit-failed-calculation-button' } onClick={props.onHide}>

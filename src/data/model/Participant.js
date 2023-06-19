@@ -12,6 +12,7 @@ export default class Participant {
   #notaryCount;
   #moderatorCount;
   #activeInSlots;
+  #fairness;
 
   constructor (id, firstName, lastName, email, group, topic, languageLevel) {
     this.#id = id;
@@ -27,6 +28,11 @@ export default class Participant {
     this.#notaryCount = 0;
     this.#moderatorCount = 0;
     this.#activeInSlots = [];
+
+    this.#fairness = {
+      totalCountHigherThanAvg: false,
+      onlyOneRole: false
+    };
   }
 
   setId (id) {
@@ -143,6 +149,26 @@ export default class Participant {
 
   getActiveSlots () {
     return this.#activeInSlots;
+  }
+
+  getFairness () {
+    return this.#fairness;
+  }
+
+  calculateFairness (meanParticipantTotalCount) {
+    const totalCount = this.#activeInSlots.length;
+
+    if (totalCount > meanParticipantTotalCount) {
+      this.#fairness.totalCountHigherThanAvg = true;
+    }
+
+    if (this.#reviewerCount === totalCount ||
+      this.#notaryCount === totalCount ||
+      this.#authorCount === totalCount ||
+      this.#moderatorCount === totalCount ||
+      this.#reviewerCount === totalCount) {
+      this.#fairness.onlyOneRole = true;
+    }
   }
 
   /**
