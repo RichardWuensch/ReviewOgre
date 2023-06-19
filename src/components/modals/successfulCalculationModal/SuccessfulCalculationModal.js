@@ -14,7 +14,7 @@ function SuccessfulCalculationsModal (props) {
 
   function runAlgorithm () {
     try {
-      if (new Mail(roomSlots).generateMailsForModerators()) {
+      if (new Mail(roomSlots).openMailClient()) { // TODO if statement?
       // successful Email Calculation
         console.log('Successful Email Calculation');
         props.onHide();

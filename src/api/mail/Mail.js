@@ -1,16 +1,13 @@
 import ConverterForPrinting from '../ConverterForPrinting';
+import { saveAs } from 'file-saver';
 
 export default class Mail {
   #converter = new ConverterForPrinting();
   #roomSlots;
+  #mails = [];
   constructor (roomSlots) {
-    this.#roomSlots = roomSlots;// new RoomSlotHelper().getAllRoomSlots();
-  }
+    this.#roomSlots = roomSlots;
 
-  /**
-  * iterate through all reviews and call the mail gernation the the language regarding to the languagelevel of the moderator
-  */
-  generateMailsForModerators () {
     for (const roomSlot of this.#roomSlots) {
       for (const room of roomSlot.getRooms()) {
         const review = room.getReview();
@@ -18,23 +15,25 @@ export default class Mail {
           continue;
         }
         const moderator = review.getModerator();
-        // if (moderator.getLanguagelevel()==='A'){
-        this.germanVersion(roomSlot, room, review, moderator);
+        // if (moderator.getLanguagelevel()==='Native Speaker'){
+        this.#germanVersion(roomSlot, room, review, moderator);
         /* }else{
-          this.englischVersion(roomSlot, room, review, moderator);
+          this.#englischVersion(roomSlot, room, review, moderator);
         } */
       }
     }
   }
+
+  // this.#mails.forEach(m => this.openMailClient(m.recipient, m.ccRecipients, m.subject, m.body));
 
   /**
   * Generate content of the Mail in german and call the openMailClient-function
   * @param {RoomSlot} roomSlot
   * @param {Room} room
   * @param {Review} review
-  * @param {Moderator} moderator
+  * @param {Participant} moderator
   */
-  germanVersion (roomSlot, room, review, moderator) {
+  #germanVersion (roomSlot, room, review, moderator) {
     const recipient = moderator.getEmail();
     const ccRecipients = [review.getAuthor().getEmail(), review.getNotary().getEmail(), ...review.getReviewer().map(r => r.getEmail())];
     const subject = 'Sie sind der Moderator von Review ' + review.getGroupName();
@@ -45,15 +44,16 @@ export default class Mail {
                      ' von ' + this.#converter.getTimeHHmm(roomSlot.getStartTime()) +
                      ' bis ' + this.#converter.getTimeHHmm(roomSlot.getEndTime()) +
                      ' in Raum ' + room.getName();
-    body += room.hasBeamer() ? '\nBeamer verfügbar' : '\nKein Beamer verfügbar';
+    body += room.getBeamerNeeded() ? '\nBeamer needed' : '\nNo Beamer needed';
     body += '\nAutor: ' + this.#converter.getParticipantAttributsForPrinting(review.getAuthor());
     body += '\nNotar: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
     for (const reviewer of review.getReviewer()) {
       body += '\nReviewer: ' + this.#converter.getParticipantAttributsForPrinting(reviewer);
     }
-    body += '\n\n Bitte kontaktieren Sie Ihre Teilnehmer mit den entsprechenden Aufgaben.';
-    body += '\n Die RevAger-Lite-Datei im Anhang hilft Ihnen bei der Vorbereitung des Reviews.';
-    this.openMailClient(recipient, ccRecipients, subject, body);
+    body += '\n\nBitte kontaktieren Sie Ihre Teilnehmer mit den entsprechenden Aufgaben.';
+    body += '\nDie RevAger-Lite-Datei im Anhang hilft Ihnen bei der Vorbereitung des Reviews.';
+    // this.openMailClient(recipient, ccRecipients, subject, body);
+    this.#mails.push({ recipient, ccRecipients, subject, body });
   }
 
   /**
@@ -63,7 +63,7 @@ export default class Mail {
   * @param {Review} review
   * @param {Moderator} moderator
   */
-  englischVersion (roomSlot, room, review, moderator) {
+  #englischVersion (roomSlot, room, review, moderator) {
     const recipient = moderator.getEmail();
     const ccRecipients = [review.getAuthor().getEmail(), review.getNotary().getEmail(), ...review.getReviewer().map(r => r.getEmail())];
     const subject = 'Your are the moderator of ' + review.getGroupName();
@@ -74,16 +74,16 @@ export default class Mail {
                      ' from ' + this.#converter.getTimeHHmm(roomSlot.getStartTime()) +
                      ' to ' + this.#converter.getTimeHHmm(roomSlot.getEndTime()) +
                      ' in room ' + room.getName();
-    body += room.hasBeamer() ? '\nBeamer available' : '\nKein Beamer available';
+    body += room.getBeamerNeeded() ? '\nBeamer needed' : '\nNo Beamer needed';
     body += '\nAuthor: ' + this.#converter.getParticipantAttributsForPrinting(review.getAuthor());
     body += '\nNotary: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
     for (const reviewer of review.getReviewer()) {
       body += '\nReviewer: ' + this.#converter.getParticipantAttributsForPrinting(reviewer);
     }
-    body += '\n\n Please contact your participants with the appropriate tasks.';
-    body += '\n The RevAger Lite file in the appendix will help you prepaing the review.';
+    body += '\n\nPlease contact your participants with the appropriate tasks.';
+    body += '\nThe RevAger Lite file in the appendix will help you prepaing the review.';
 
-    this.openMailClient(recipient, ccRecipients, subject, body);
+    this.#mails.push({ recipient, ccRecipients, subject, body });
   }
 
   /**
@@ -92,14 +92,27 @@ export default class Mail {
   * URL scheme, which is used to trigger the user's mail client to open and pre-fill the email fields.
   * The attachment with the corresponding RevAger (lite) file has to be added manually because mailto
   * does not allow attachments
-  * @param {string} recipient - The email address of the recipient.
-  * @param {list} ccRecipients - Participants of the review be informed in CC
-  * @param {string} subject - The subject line of the email.
-  * @param {string} body - The body content of the email.
   */
-  openMailClient (recipient, ccRecipients, subject, body) {
-    const ccParams = ccRecipients.map(ccRecipient => `${encodeURIComponent(ccRecipient)}`).join(';');
-    const mailtoUrl = `mailto:${recipient}?cc=${ccParams}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoUrl;
+  openMailClient () {
+    for (const mail of this.#mails) {
+      const ccParams = mail.ccRecipients.map(ccRecipient => `${encodeURIComponent(ccRecipient)}`).join(';');
+      window.location.href = `mailto:${mail.recipient}?cc=${ccParams}&subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(mail.body)}`;
+    }
+  }
+
+  /**
+   * Saves the mails in a .txt-file -> can be used to save the result and send it later via copy+paste in a mail client
+   */
+  saveMailsInTxt () {
+    let result = '';
+    for (const mail of this.#mails) {
+      result += 'TO: ' + mail.recipient + '\n';
+      result += 'CC: ' + mail.ccRecipients.map(ccRecipient => `${ccRecipient}`).join(';') + '\n';
+      result += 'SUBJECT: ' + mail.subject + '\n';
+      result += 'BODY: \n' + mail.body + '\n';
+      result += '*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x' + '\n\n';
+    }
+    const blob = new Blob([result], { type: 'text/plain' });
+    saveAs(blob, 'mail.txt');
   }
 }

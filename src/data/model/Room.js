@@ -4,18 +4,18 @@ export default class Room {
   #id;
   #slotId;
   #name;
-  #beamer;
+  #beamerNeeded;
   #ignoreForAlgorithm;
   #review = null;
 
-  constructor (name, beamer, id = null) {
+  constructor (name, beamerNeeded, id = null) {
     if (id !== null) {
       this.#id = id;
     } else {
       this.#id = nextId++;
     }
     this.#name = name;
-    this.#beamer = beamer;
+    this.#beamerNeeded = beamerNeeded;
   }
 
   setId (id) {
@@ -42,12 +42,12 @@ export default class Room {
     this.#name = name;
   }
 
-  hasBeamer () {
-    return this.#beamer;
+  getBeamerNeeded () {
+    return this.#beamerNeeded;
   }
 
-  setHasBeamer (beamer) {
-    this.#beamer = beamer;
+  setBeamerNeeded (beamerNeeded) {
+    this.#beamerNeeded = beamerNeeded;
   }
 
   getIgnoreForAlgorithm () {
