@@ -5,7 +5,7 @@ export default class Room {
   #slotId;
   #name;
   #beamerNeeded;
-  #ignoreForAlgorithm;
+  #ignoreForAlgorithm = false;
   #review = null;
 
   constructor (name, beamerNeeded, id = null) {

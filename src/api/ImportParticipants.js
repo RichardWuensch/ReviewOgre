@@ -6,13 +6,13 @@ export default class ImportParticipants {
   async runStudentImport (event) {
     const fileType = event.target.files[0].type;
     let fileContent = null;
-    let index = 0;
+    const index = 1; // TODO check if it is really 1 in both cases, in some smaller tests it was sometimes 1 and sometimes 2 in vnd.ms-excel
     if (fileType === 'text/csv') {
       fileContent = await new ImportFile('text/csv').runFileLoad(event);
-      index = 1;
     } else if (fileType === 'application/vnd.ms-excel') { // bc Firefox on Windows use the content type defined by windows and need the excel format
       fileContent = await new ImportFile('application/vnd.ms-excel').runFileLoad(event);
-      index = 2;
+    } else {
+      throw new Error('Filetype differs from expected filetype text/csv. Actual filetype: ' + fileType);
     }
     return new Promise((resolve) => {
       let groups = Papa.parse(fileContent).data.slice(index); // get all groups starting from index that is defiend by the content type

@@ -185,11 +185,7 @@ export default class Participant {
   */
   isActiveInSlot (slot) {
     for (const activeInSlot of this.#activeInSlots) {
-      if (
-        slot.getDate() === activeInSlot.getDate() &&
-        slot.getEndTime() === activeInSlot.getEndTime() &&
-        slot.getStartTime() === activeInSlot.getStartTime()
-      ) { return true; }
+      if (slot.getStartTime().getTime() === activeInSlot.getStartTime().getTime()) return true;
     }
     return false;
   }

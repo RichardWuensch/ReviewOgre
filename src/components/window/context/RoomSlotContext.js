@@ -36,7 +36,7 @@ function roomSlotsReducer (roomSlots, action) {
       const temp = action.newRoomSlot;
       temp.setId(++nextId);
 
-      return [...roomSlots, temp];
+      return [...roomSlots, temp].sort((a, b) => a.getStartTime().getTime() - b.getStartTime().getTime());
     }
     case 'changed': {
       const updatedRoomSlot = action.updatedRoomSlot;

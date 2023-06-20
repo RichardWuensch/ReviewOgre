@@ -22,6 +22,7 @@ import CustomButton from '../../shared/button/CustomButton';
 // import Mail from '../../../api/mail/Mail';
 // import SaveRoomPlan from '../../../api/SaveRoomPlan';
 let authorIsNotary = false;
+const breakForModeratorAndReviewer = false;
 
 function MainPage () {
   const [algorithmErrorMessage, setAlgorithmErrorMessage] =
@@ -53,7 +54,8 @@ function MainPage () {
         participantsDispatch,
         roomSlots,
         roomSlotsDispatch,
-        authorIsNotary
+        authorIsNotary,
+        breakForModeratorAndReviewer
       );
 
       // successful run
