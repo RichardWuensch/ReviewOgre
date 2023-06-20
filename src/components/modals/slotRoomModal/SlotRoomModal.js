@@ -19,6 +19,7 @@ import RoomSlot from '../../../data/model/RoomSlot';
 import Room from '../../../data/model/Room';
 import { useRoomSlots } from '../../window/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
+import deleteButton from '../../../assets/media/trash.svg';
 
 function SlotModal ({ roomslot, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
@@ -41,7 +42,7 @@ function SlotModal ({ roomslot, ...props }) {
     const initialItems =
       roomslot
         ?.getRooms()
-        .map((room) => new Room(room.getName(), room.hasBeamer())) ?? [];
+        .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
     setItems(initialItems);
   }, [roomslot]);
 
@@ -49,24 +50,22 @@ function SlotModal ({ roomslot, ...props }) {
     setItems([...items, new Room('', false)]);
   };
 
+  const deleteItem = (room, event) => {
+    event.stopPropagation();
+    const newItems = items.filter(tempItem => tempItem.getId() !== room.getId());
+    setItems(newItems);
+  };
+
   const handleInputChange = (index, event) => {
     const newItems = [...items];
+    console.log(event.target.value);
     newItems[index].setName(event.target.value);
     setItems(newItems);
   };
   const handleBeamerChange = (index) => {
     const newItems = [...items];
-    newItems[index].setHasBeamer(!newItems[index].hasBeamer());
+    newItems[index].setBeamerNeeded(!newItems[index].getBeamerNeeded());
     setItems(newItems);
-  };
-
-  const handleClose = () => {
-    if (!isEditMode) {
-      setDate(new Date());
-      setStartTime('00:00');
-      setEndTime('00:00');
-      setItems([]);
-    }
   };
 
   function parseTime (time) {
@@ -83,7 +82,7 @@ function SlotModal ({ roomslot, ...props }) {
   function createTempRoomSlot () {
     const rooms = [];
     items.forEach((room) => {
-      rooms.push(new Room(room.getName(), room.hasBeamer()));
+      rooms.push(room.getName() ? new Room(room.getName(), room.getBeamerNeeded()) : new Room('undefined', room.getBeamerNeeded()));
     });
     return new RoomSlot(
       slotId,
@@ -121,6 +120,12 @@ function SlotModal ({ roomslot, ...props }) {
   }
 
   function hideModal () {
+    if (!isEditMode) {
+      setDate(new Date());
+      setStartTime('00:00');
+      setEndTime('00:00');
+      setItems([]);
+    }
     setInvalidSlotError(null);
     setErrorTooltipText(null);
     props.onHide();
@@ -137,7 +142,7 @@ function SlotModal ({ roomslot, ...props }) {
 
   return (
     <Modal
-      onExit={handleClose}
+      onExit={hideModal}
       {...props}
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
@@ -174,7 +179,7 @@ function SlotModal ({ roomslot, ...props }) {
               style={styleError()}
             />
           </Form.Group>
-          <Row style={{ paddingBottom: 20, paddingTop: 10 }}>
+          <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
             <Form.Group as={Col}>
               <Row>
                 <Col sm={3}>
@@ -242,6 +247,17 @@ function SlotModal ({ roomslot, ...props }) {
                             boxShadow: 'none'
                           }}
                         />
+                        <div className={'options-delete'}>
+                            <Button
+                              variant={'link'}
+                              role={'submit'}
+                              type={'button'}
+                              className={'button-options-delete'}
+                              onClick={(event) => { deleteItem(item, event); }}
+                            >
+                              <Image src={deleteButton} alt={'icon'} />
+                            </Button>
+                        </div>
                       </Accordion.Header>
                       <Accordion.Body>
                         <Card.Body>
@@ -249,7 +265,7 @@ function SlotModal ({ roomslot, ...props }) {
                             <label className={'switch'}>
                               <input
                                 type="checkbox"
-                                checked={item.hasBeamer()}
+                                checked={item.getBeamerNeeded()}
                                 onChange={(event) => handleBeamerChange(index)}
                               />
                               <span className={'slider round'}></span>

@@ -216,6 +216,31 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
+.room-options{
+    display: inline-block;
+    position: absolute;
+    float: left;
+    right: 25%;
+}
+.button-delete-room{
+    width: 20%;
+    float: right;
+    justify-content: center;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.options-delete{
+    display: inline-block;
+    position: absolute;
+    right: 25%;
+}
+
 
 
 

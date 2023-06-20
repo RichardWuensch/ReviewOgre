@@ -14,7 +14,7 @@ export default class Algorithm {
   #maximumTries;
 
   constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary, maximumTries) {
-    this.#participants = participants;
+    this.#participants = this.#resetParticipants(participants);
     this.#participantsDispatch = participantsDispatch;
     this.#roomSlotsDispatch = roomSlotsDispatch;
     this.#roomSlots = this.#resetRoomSlots(roomSlots);
@@ -32,6 +32,13 @@ export default class Algorithm {
     return roomSlots;
   }
 
+  #resetParticipants (participants) {
+    for (const p of participants) {
+      p.resetStatistics();
+    }
+    return participants;
+  }
+
   /**
   * Main function that runs through all nessecary parts
   * the algorithm works gready and tries as often as no soluten is found or the maximumTries are achived
@@ -45,7 +52,9 @@ export default class Algorithm {
     let errorCounter = 0;
     while (errorFound) {
       if (errorCounter > this.#maximumTries) {
-        throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.');
+        throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.',
+          { cause: 'noSolution' }
+        );
       }
 
       this.#setAuthorOfRandomGroupMember(groups);
@@ -74,7 +83,6 @@ export default class Algorithm {
         }
       }
     }
-    return true;
   }
 
   /**
@@ -110,10 +118,15 @@ export default class Algorithm {
     let errorMessage = '';
     if (numberOfGroups < 4) errorMessage += 'At least 4 groups are needed.\n';
     if (this.#participants.length < 12) errorMessage += 'At least 12 particpants are needed.\n';
-    if (numberOfGroups > roomCount) errorMessage += 'There are not enough rooms.\n';
-    if (minAmountOfSlots > this.#roomSlots.length) errorMessage += 'There are not enough Slots.\n';
-
-    if (errorMessage !== '') throw new Error(errorMessage);
+    if (!errorMessage) {
+      if (numberOfGroups > roomCount) errorMessage += `There are not enough rooms for ${numberOfGroups} groups.\n`;
+      if (minAmountOfSlots > this.#roomSlots.length) errorMessage += `There are not enough slots. Minimum amount: ${minAmountOfSlots}\n`;
+    }
+    if (errorMessage) {
+      throw new Error(errorMessage,
+        { cause: 'prechecksFailed' }
+      );
+    }
   }
 
   /**
@@ -282,7 +295,7 @@ export default class Algorithm {
                      ' von ' + converter.getTimeHHmm(s.getStartTime()) +
                      ' bis ' + converter.getTimeHHmm(s.getEndTime()) +
                      ' in ' + room.getName());
-        console.log(room.hasBeamer() ? 'Beamer verfügbar' : 'Kein Beamer verfügbar');
+        console.log(room.getBeamerNeeded() ? 'Beamer verfügbar' : 'Kein Beamer verfügbar');
         console.log('Author: ', converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()));
         console.log('Moderator: ', converter.getParticipantAttributsForPrinting(room.getReview().getModerator()));
         console.log('Notary: ', converter.getParticipantAttributsForPrinting(room.getReview().getNotary()));

@@ -24,8 +24,8 @@ function deleteModal (props) {
             </Modal.Header>
             <Modal.Body>
                 <div className={'text-container text-center'}>
-                    <div className={'delete-title-subheadline'}>
-                        Are you sure you want to delete {props.textobject}? <br/>
+                    <div className={'delete-title-subheadline'} style={{ whiteSpace: 'pre-line' }}>
+                        Are you sure you want to delete {props.textobject} <br/><br/>
                         This Action can&lsquo;t be undone.
                     </div>
                 </div>

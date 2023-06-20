@@ -78,3 +78,9 @@
     align-items: center;
     vertical-align: middle;
 }
+
+.error-message{
+    white-space: pre-line;
+    font-size: 15px;
+    color: red;
+}
