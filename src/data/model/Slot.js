@@ -3,12 +3,13 @@ export default class Slot {
   #date;
   #startTime;
   #endTime;
+  #breakSlotForUser = false;
 
   constructor (id, date, startTime, endTime) {
     this.#id = id;
     this.#date = date;
-    this.#startTime = startTime;
-    this.#endTime = endTime;
+    this.setStartTime(date, startTime);
+    this.setEndTime(date, endTime);
   }
 
   setId (id) {
@@ -47,8 +48,11 @@ export default class Slot {
     return `${hours}:${minutes}`;
   }
 
-  setStartTime (startTime) {
-    this.#startTime = startTime;
+  setStartTime (date, startTime) {
+    const dateTimeBuilder = new Date(date);
+    dateTimeBuilder.setHours(startTime.getHours());
+    dateTimeBuilder.setMinutes(startTime.getMinutes());
+    this.#startTime = dateTimeBuilder;
   }
 
   getEndTime () {
@@ -62,7 +66,18 @@ export default class Slot {
     return `${hours}:${minutes}`;
   }
 
-  setEndTime (endTime) {
-    this.#endTime = endTime;
+  setEndTime (date, endTime) {
+    const dateTimeBuilder = new Date(date);
+    dateTimeBuilder.setHours(endTime.getHours());
+    dateTimeBuilder.setMinutes(endTime.getMinutes());
+    this.#endTime = dateTimeBuilder;
+  }
+
+  setBreakSlotForUser (breakSlotForUser) {
+    this.#breakSlotForUser = breakSlotForUser;
+  }
+
+  getBreakSlotForUser () {
+    return this.#breakSlotForUser;
   }
 }

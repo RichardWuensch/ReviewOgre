@@ -30,7 +30,7 @@ export default class Review {
   setAuthor (roomSlot, author) {
     this.#author = author;
     this.#author.increaseAuthorCount();
-    this.#author.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot));
+    this.#author.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
     this.#deleteParticipantFromPossibleParticipants(this.#author);
   }
 
@@ -38,10 +38,17 @@ export default class Review {
     return this.#moderator;
   }
 
-  setModerator (roomSlot, moderator) {
+  setModerator (roomSlots, index, moderator, breakForModeratorAndReviewer) {
     this.#moderator = moderator;
     this.#moderator.increaseModeratorCount();
-    this.#moderator.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot));
+    this.#moderator.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
+    if (breakForModeratorAndReviewer) {
+      if (index < roomSlots.length - 1) {
+        if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
+          this.#moderator.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], true));
+        }
+      }
+    }
     this.#deleteParticipantFromPossibleParticipants(this.#moderator);
   }
 
@@ -53,7 +60,7 @@ export default class Review {
     this.#notary = notary;
     this.#notary.increaseNotaryCount();
     if (authorIsNotary === false) {
-      this.#notary.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot));
+      this.#notary.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
       this.#deleteParticipantFromPossibleParticipants(this.#notary);
     } else {
       // do nothing, this is done because of the double role
@@ -68,9 +75,16 @@ export default class Review {
     this.#reviewers = reviewers;
   }
 
-  addReviewer (roomSlot, participant) {
+  addReviewer (roomSlots, index, participant, breakForModeratorAndReviewer) {
     participant.increaseReviewerCount();
-    participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot));
+    participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
+    if (breakForModeratorAndReviewer) {
+      if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
+        if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
+          participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], true));
+        }
+      }
+    }
     this.#reviewers.push(participant);
     this.#deleteParticipantFromPossibleParticipants(participant);
   }
@@ -85,7 +99,7 @@ export default class Review {
 
   /**
   * delete a participant from the possibleParticipant list after he is assigned to a role in this review
-  * @param {Participant} participants - the participant to be deleted
+  * @param {Participant} participant - the participant to be deleted
   */
   #deleteParticipantFromPossibleParticipants (participant) {
     this.#possibleParticipants.splice(
@@ -99,7 +113,7 @@ export default class Review {
   * @param {Participant} participants - to check if the participant is not in the same group as the author and currently not ative in this timeslot
   */
   fillPossibleParticipantsOfReview (roomSlot, participants) {
-    const slot = this.#getSlotFromRoomSlot(roomSlot);
+    const slot = this.#getSlotFromRoomSlot(roomSlot, false);
     this.#setPossibleParticipants(
       participants.filter((p) => this.getAuthor().getGroup() !== p.getGroup() && !p.isActiveInSlot(slot))
     );
@@ -108,9 +122,12 @@ export default class Review {
   /**
   * parse the roomSlot in the upper class slot object
   * @param {RoomSlot} roomSlot
+  * @param {boolean} breakSlotForUser
   * @returns {Slot}
   */
-  #getSlotFromRoomSlot (roomSlot) {
-    return new Slot(roomSlot.getDate(), roomSlot.getStartTime(), roomSlot.getEndTime());
+  #getSlotFromRoomSlot (roomSlot, breakSlotForUser) {
+    const slot = new Slot(-1, roomSlot.getDate(), roomSlot.getStartTime(), roomSlot.getEndTime());
+    slot.setBreakSlotForUser(breakSlotForUser);
+    return slot;
   }
 }
