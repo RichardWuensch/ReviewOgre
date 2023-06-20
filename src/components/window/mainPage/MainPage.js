@@ -10,9 +10,9 @@ import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
-import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
+import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
 import { Col, Image, Row } from 'react-bootstrap';
-import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
+import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import Runner from '../../../algorithm/logic/Runner';
 import ImportParticipants from '../../../api/ImportParticipants';
 import CustomButton from '../../shared/button/CustomButton';
@@ -171,7 +171,7 @@ function MainPage () {
                     {/* replace with component */}
                     <Col xs={12} md={4} className={'mb-3 mb-md-0 slots-setup-container'}>
                         <SlotsWindow/>
-                        <div className={'setupWindow'}>
+                        <div className={'setupWindow'} style={{ paddingBottom: '4vh' }}>
                             <h2 className={'title-subheadline'}>Run Configuration</h2>
                             <div className={'setupContainer'}>
                                 <div className={'start-button-container'}>

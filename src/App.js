@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import MainPage from './components/window/mainPage/MainPage';
-import { ParticipantProvider } from './components/window/context/ParticipantsContext';
-import { RoomSlotProvider } from './components/window/context/RoomSlotContext';
+import { ParticipantProvider } from './components/shared/context/ParticipantsContext';
+import { RoomSlotProvider } from './components/shared/context/RoomSlotContext';
 import { Route, Routes } from 'react-router-dom';
 import CustomNavbar from './components/shared/navbar/CustomNavbar';
 
@@ -11,7 +11,7 @@ function App () {
     <>
         <RoomSlotProvider>
             <ParticipantProvider>
-                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', height: '100%', minWidth: '100%' }}>
                     <CustomNavbar/>
                     <Routes>
                         {/* add other routes here. New routes before default route! */}

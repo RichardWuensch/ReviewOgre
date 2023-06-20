@@ -1,5 +1,5 @@
-import Room from '../../data/model/Room';
-import RoomSlot from '../../data/model/RoomSlot';
+import Room from '../../data/models/Room';
+import RoomSlot from '../../data/models/RoomSlot';
 // import AbstractTestData from './AbstractTestData';
 
 export default class SmallTestDataUpdatedWithoutParticipants /* extends AbstractTestData */ {

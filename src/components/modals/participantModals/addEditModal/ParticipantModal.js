@@ -4,7 +4,7 @@ import './ParticipantModal.css';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import Participant from '../../../../data/model/Participant';
+import Participant from '../../../../data/models/Participant';
 
 function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, ...props }) {
   const [firstName, setFirstName] = useState(participant?.getFirstName() ?? '');

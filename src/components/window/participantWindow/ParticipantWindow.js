@@ -1,4 +1,4 @@
-import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
+import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
 import Participant from './participant/Participant';
 import add from '../../../assets/media/plus-circle.svg';
 import edit from '../../../assets/media/pencil-square.svg';

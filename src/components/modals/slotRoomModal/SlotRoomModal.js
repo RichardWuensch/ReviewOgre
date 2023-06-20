@@ -5,9 +5,9 @@ import exit from '../../../assets/media/x-circle.svg';
 import add from '../../../assets/media/plus-circle.svg';
 import React, { useEffect, useState } from 'react';
 import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
-import RoomSlot from '../../../data/model/RoomSlot';
-import Room from '../../../data/model/Room';
-import { useRoomSlots } from '../../window/context/RoomSlotContext';
+import RoomSlot from '../../../data/models/RoomSlot';
+import Room from '../../../data/models/Room';
+import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
 import deleteButton from '../../../assets/media/trash.svg';
 import CustomIconButton from '../../shared/iconButton/CustomIconButton';
@@ -167,12 +167,12 @@ function SlotModal ({ roomslot, ...props }) {
             />
           </Form.Group>
           <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
-            <Form.Group as={Col}>
-              <Row>
-                <Col xs={3}>
+            <Form.Group as={Col} xs={6}>
+              <Row style={{ alignContent: 'center' }}>
+                <Col xs={4}>
                   <Form.Label>From:</Form.Label>
                 </Col>
-                <Col xs={5}>
+                <Col xs={8}>
                   <Form.Control
                     className={'input-time-container'}
                     aria-label={'Enter start time'}
@@ -184,12 +184,12 @@ function SlotModal ({ roomslot, ...props }) {
                 </Col>
               </Row>
             </Form.Group>
-            <Form.Group as={Col}>
-              <Row>
-                <Col xs={3} style={{ paddingLeft: '0px' }}>
+            <Form.Group as={Col} xs={6}>
+              <Row style={{ alignContent: 'center' }}>
+                <Col xs={4}>
                   <Form.Label>To:</Form.Label>
                 </Col>
-                <Col xs={5}>
+                <Col xs={8}>
                   <Form.Control
                     className={'input-time-container'}
                     aria-label={'enter end time'}

@@ -1,6 +1,6 @@
-import Participant from '../../data/model/Participant';
-import Room from '../../data/model/Room';
-import RoomSlot from '../../data/model/RoomSlot';
+import Participant from '../../data/models/Participant';
+import Room from '../../data/models/Room';
+import RoomSlot from '../../data/models/RoomSlot';
 
 export default class OldTestData {
   constructor () {

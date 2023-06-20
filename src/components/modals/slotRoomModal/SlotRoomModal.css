@@ -48,7 +48,6 @@
 
 .date-container{
     display:flex;
-    padding: 5px;
 
 }
 .input-date-container{
@@ -66,7 +65,7 @@
 }
 .modal .time-container{
     display: flex;
-    padding: 4%;
+    padding: 1%;
     justify-content: center;
     align-items: center;
 }

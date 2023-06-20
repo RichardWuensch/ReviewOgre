@@ -7,7 +7,7 @@ import alarmImage from '../../../assets/media/alarm-fill.svg';
 import edit from '../../../assets/media/pencil-square.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
-import { useRoomSlotsDispatch } from '../context/RoomSlotContext';
+import { useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import CustomIconButton from '../../shared/iconButton/CustomIconButton';
 
 function SlotCard (props) {

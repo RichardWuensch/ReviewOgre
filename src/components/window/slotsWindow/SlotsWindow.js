@@ -4,7 +4,7 @@ import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import add from '../../../assets/media/plus-circle.svg';
 import { Accordion, Image, ListGroup } from 'react-bootstrap';
 import SlotCard from './Slot';
-import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
+import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import CustomButton from '../../shared/button/CustomButton';
 
 function SlotsWindow () {

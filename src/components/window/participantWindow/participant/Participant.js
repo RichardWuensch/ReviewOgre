@@ -4,7 +4,7 @@ import React from 'react';
 import { Image } from 'react-bootstrap';
 import DeleteModal from '../../../modals/deleteModal/DeleteModal';
 import ParticipantModal from '../../../modals/participantModals/addEditModal/ParticipantModal';
-import { useParticipantsDispatch } from '../../context/ParticipantsContext';
+import { useParticipantsDispatch } from '../../../shared/context/ParticipantsContext';
 import './Participant.css';
 import CustomIconButton from '../../../shared/iconButton/CustomIconButton';
 
