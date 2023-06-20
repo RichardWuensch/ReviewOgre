@@ -2,8 +2,8 @@ import React from 'react';
 import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from '../../../assets/media/favicon_ogre.png';
 import LoadConfiguration from '../../../api/LoadConfiguration';
-import { useParticipants, useParticipantsDispatch } from '../../window/context/ParticipantsContext';
-import { useRoomSlots, useRoomSlotsDispatch } from '../../window/context/RoomSlotContext';
+import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
+import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 import StoreConfiguration from '../../../api/StoreConfiguration';
 import { Link } from 'react-router-dom';
 
@@ -71,7 +71,7 @@ function CustomNavbar () {
   }
 
   return (
-      <Navbar expand="lg">
+      <Navbar expand="lg" style={{ backgroundColor: '#f5f5f5', borderBottom: 'solid rgba(0, 0, 0, 0.19) 1px' }}>
           <Container>
               <Navbar.Brand as={ Link } to="/">
                   <div className="d-flex align-items-center">

@@ -1,5 +1,5 @@
 import ConverterForPrinting from '../../api/ConverterForPrinting';
-import Review from '../../data/model/Review';
+import Review from '../../data/models/Review';
 
 export default class Algorithm {
   #numberOfReviewers = 0;

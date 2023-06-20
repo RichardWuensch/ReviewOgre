@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer } from 'react';
-import RoomSlot from '../../../data/model/RoomSlot';
-import Room from '../../../data/model/Room';
+import RoomSlot from '../../../data/models/RoomSlot';
+import Room from '../../../data/models/Room';
 
 const RoomSlotContext = createContext(null);
 const RoomSlotDispatchContext = createContext(null);

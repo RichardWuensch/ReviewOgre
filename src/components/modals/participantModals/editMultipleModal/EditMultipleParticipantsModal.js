@@ -4,7 +4,7 @@ import './EditMultipleParticipantsModal.css';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParticipantsDispatch } from '../../../window/context/ParticipantsContext';
+import { useParticipantsDispatch } from '../../../shared/context/ParticipantsContext';
 
 function EditMultipleParticipantsModal ({ participants, onClose, ...props }) {
   const [group, setGroup] = useState('');

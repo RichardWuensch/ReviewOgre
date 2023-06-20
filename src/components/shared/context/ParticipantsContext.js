@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react';
-import Participant from '../../../data/model/Participant';
+import Participant from '../../../data/models/Participant';
 
 const ParticipantContext = createContext(null);
 const ParticipantDispatchContext = createContext(null);

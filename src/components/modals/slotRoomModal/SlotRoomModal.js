@@ -4,32 +4,19 @@ import './SlotRoomModal.css';
 import exit from '../../../assets/media/x-circle.svg';
 import add from '../../../assets/media/plus-circle.svg';
 import React, { useEffect, useState } from 'react';
-import {
-  Accordion,
-  Alert,
-  Button,
-  Card,
-  Col,
-  Form,
-  FormControl,
-  Image,
-  Row
-} from 'react-bootstrap';
-import RoomSlot from '../../../data/model/RoomSlot';
-import Room from '../../../data/model/Room';
-import { useRoomSlots } from '../../window/context/RoomSlotContext';
+import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
+import RoomSlot from '../../../data/models/RoomSlot';
+import Room from '../../../data/models/Room';
+import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
 import deleteButton from '../../../assets/media/trash.svg';
+import CustomIconButton from '../../shared/iconButton/CustomIconButton';
 
 function SlotModal ({ roomslot, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
-  const [startTime, setStartTime] = useState(
-    roomslot?.getFormattedStartTime() ?? '00:00'
-  );
-  const [endTime, setEndTime] = useState(
-    roomslot?.getFormattedEndTime() ?? '00:00'
-  );
+  const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
+  const [endTime, setEndTime] = useState(roomslot?.getFormattedEndTime() ?? '00:00');
   const [invalidSlotError, setInvalidSlotError] = useState(null);
   const [errorTooltipText, setErrorTooltipText] = useState(null);
   const [items, setItems] = useState([]);
@@ -180,12 +167,12 @@ function SlotModal ({ roomslot, ...props }) {
             />
           </Form.Group>
           <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
-            <Form.Group as={Col}>
-              <Row>
-                <Col sm={3}>
+            <Form.Group as={Col} xs={6}>
+              <Row style={{ alignContent: 'center' }}>
+                <Col xs={4}>
                   <Form.Label>From:</Form.Label>
                 </Col>
-                <Col sm={5}>
+                <Col xs={8}>
                   <Form.Control
                     className={'input-time-container'}
                     aria-label={'Enter start time'}
@@ -197,12 +184,12 @@ function SlotModal ({ roomslot, ...props }) {
                 </Col>
               </Row>
             </Form.Group>
-            <Form.Group as={Col}>
-              <Row>
-                <Col sm={3}>
+            <Form.Group as={Col} xs={6}>
+              <Row style={{ alignContent: 'center' }}>
+                <Col xs={4}>
                   <Form.Label>To:</Form.Label>
                 </Col>
-                <Col sm={5}>
+                <Col xs={8}>
                   <Form.Control
                     className={'input-time-container'}
                     aria-label={'enter end time'}
@@ -248,15 +235,11 @@ function SlotModal ({ roomslot, ...props }) {
                           }}
                         />
                         <div className={'options-delete'}>
-                            <Button
-                              variant={'link'}
-                              role={'submit'}
-                              type={'button'}
-                              className={'button-options-delete'}
-                              onClick={(event) => { deleteItem(item, event); }}
-                            >
-                              <Image src={deleteButton} alt={'icon'} />
-                            </Button>
+                          <CustomIconButton
+                            toolTip={'Delete this room'}
+                            onButtonClick={(event) => deleteItem(item, event)}>
+                            <Image src={deleteButton} alt={'icon'} />
+                          </CustomIconButton>
                         </div>
                       </Accordion.Header>
                       <Accordion.Body>

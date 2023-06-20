@@ -1,4 +1,4 @@
-import Participant from '../data/model/Participant';
+import Participant from '../data/models/Participant';
 import ImportFile from './ImportFile';
 import Papa from 'papaparse';
 

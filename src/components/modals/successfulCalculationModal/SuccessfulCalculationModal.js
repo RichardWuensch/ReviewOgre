@@ -7,7 +7,7 @@ import { Button, Col, Image, Row } from 'react-bootstrap';
 import upload from '../../../assets/media/upload.svg';
 import ReviewWindow from './ReviewWindow';
 import Mail from '../../../api/mail/Mail';
-import { useRoomSlots } from '../../window/context/RoomSlotContext';
+import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 
 function SuccessfulCalculationsModal (props) {
   const roomSlots = useRoomSlots();

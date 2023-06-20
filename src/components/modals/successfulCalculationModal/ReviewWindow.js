@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ReviewWindow.css';
 import { Accordion, Table } from 'react-bootstrap';
-import { useRoomSlots } from '../../window/context/RoomSlotContext';
+import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 
 function ReviewWindow () {
   const roomSlots = useRoomSlots();
