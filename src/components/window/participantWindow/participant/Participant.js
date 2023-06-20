@@ -1,12 +1,12 @@
 import edit from '../../../../assets/media/pencil-square.svg';
 import deleteButton from '../../../../assets/media/trash.svg';
 import React from 'react';
-import { Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import DeleteModal from '../../../modals/deleteModal/DeleteModal';
 import ParticipantModal from '../../../modals/participantModals/addEditModal/ParticipantModal';
-import '../ParticipantWindow.css';
 import { useParticipantsDispatch } from '../../context/ParticipantsContext';
 import './Participant.css';
+import CustomIconButton from '../../../shared/iconButton/CustomIconButton';
 
 function Participant ({ participant }) {
   const [showModalEditParticipant, setShowModalEditParticipant] = React.useState(false);
@@ -34,12 +34,6 @@ function Participant ({ participant }) {
     /* eslint-enable object-shorthand */
   };
 
-  const renderTooltip = (props, tooltip) => (
-        <Tooltip id="button-tooltip" {...props}>
-            {tooltip}
-        </Tooltip>
-  );
-
   const participantContent = (
             <>
                 <td className={'column-firstName'}>{participant.getFirstName()}</td>
@@ -49,30 +43,17 @@ function Participant ({ participant }) {
                 <td className={'column-topic'}>{participant.getTopic()}</td>
                 <td className={'column-languageLevel'}>{participant.getLanguageLevel()}</td>
                 <td className={'column-options'}>
-                    <div className={'column-options-buttons'}>
-                        <OverlayTrigger
-                            trigger={['hover', 'focus']}
-                            placement="top"
-                            overlay={(props) => renderTooltip(props, 'Edit this participant')}
-                            delay={200}
-                        >
-                            <button className={'button-options-edit'}
-                                    onClick={() => setShowModalEditParticipant(true)}>
-                              <Image src={edit} alt={'icon'}/>
-                            </button>
-                        </OverlayTrigger>
-                        <OverlayTrigger
-                            trigger={['hover', 'focus']}
-                            placement="top"
-                            overlay={(props) => renderTooltip(props, 'Delete this participant')}
-                            delay={200}
-                        >
-                            <button
-                                className={'button-options-delete'}
-                                onClick={() => setShowModalDelete(true)}>
-                              <Image src={deleteButton} alt={'icon'}/>
-                            </button>
-                        </OverlayTrigger>
+                    <div>
+                        <CustomIconButton
+                            onButtonClick={() => setShowModalEditParticipant(true)}
+                            toolTip={'Edit this participant'}>
+                            <Image src={edit} alt={'icon'}/>
+                        </CustomIconButton>
+                        <CustomIconButton
+                            onButtonClick={() => setShowModalDelete(true)}
+                            toolTip={'Delete this participant'}>
+                            <Image src={deleteButton} alt={'icon'}/>
+                        </CustomIconButton>
                     </div>
                 </td>
             </>

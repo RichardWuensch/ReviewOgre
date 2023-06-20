@@ -21,7 +21,7 @@ function CustomButton ({ toolTip, onButtonClick, backgroundColor, children, disa
                 trigger={['hover', 'focus']}
                 placement="top"
                 overlay={renderTooltip}
-                delay={200}
+                delay={500}
             >
                 <Button
                     style={{ backgroundColor }}

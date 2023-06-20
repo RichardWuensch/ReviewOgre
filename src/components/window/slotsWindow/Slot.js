@@ -8,18 +8,16 @@ import edit from '../../../assets/media/pencil-square.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
 import { useRoomSlotsDispatch } from '../context/RoomSlotContext';
+import CustomIconButton from '../../shared/iconButton/CustomIconButton';
 
 function SlotCard (props) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  /* const [showModalDeleteRoom, setShowModalDeleteRoom] = React.useState(false); */
   const [showModalDeleteSlot, setShowModalDeleteSlot] = React.useState(false);
   const [showModalEditSlot, setShowModalEditSlot] = React.useState(false);
-  /* const [deleteModalText, setDeleteModalText] = React.useState(''); */
-  /* const [objectToDelete, setObjectToDelete] = React.useState(null); */
 
   const openAccordion = useAccordionButton(props.eventKey, () => {});
 
-  const roomSlotdispatch = useRoomSlotsDispatch();
+  const roomSlotDispatch = useRoomSlotsDispatch();
 
   const expandAndToggle = () => {
     openAccordion(undefined);
@@ -29,14 +27,6 @@ function SlotCard (props) {
     console.log('Delete successful');
   }
 
-  /* function removeRoom (slot, roomToRemove) {
-    slot.setRooms(
-      slot.getRooms().filter(room => room.getId() !== roomToRemove.getId())
-    );
-
-    return slot;
-  } */
-
   function getSlotDescription () {
     const options = { weekday: 'long' };
     return props.roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + props.roomSlot.getFormattedDate() + ' From: ' + props.roomSlot.getFormattedStartTime() + ' to ' + props.roomSlot.getFormattedEndTime();
@@ -44,25 +34,16 @@ function SlotCard (props) {
 
   const removeSlot = (roomSlot) => {
     /* eslint-disable object-shorthand */
-    roomSlotdispatch({
+    roomSlotDispatch({
       type: 'deleted',
       itemToDelete: roomSlot
     });
     /* eslint-enable object-shorthand */
   };
 
-  /* const removeRoomFromSlot = (roomSlot) => {
-    // eslint-disable object-shorthand
-    roomSlotdispatch({
-      type: 'changed',
-      updatedRoomSlot: roomSlot
-    });
-    // eslint-enable object-shorthand
-  }; */
-
   const updateSlot = (roomSlot) => {
     /* eslint-disable object-shorthand */
-    roomSlotdispatch({
+    roomSlotDispatch({
       type: 'changed',
       updatedRoomSlot: roomSlot
     });
@@ -104,26 +85,16 @@ function SlotCard (props) {
                             </button>
                         </OverlayTrigger>
                         <div className={'options'}>
-                            <OverlayTrigger
-                                trigger={['hover', 'focus']}
-                                placement="top"
-                                overlay={(props) => renderTooltip(props, 'Edit this slot')}
-                                delay={200}
-                            >
-                                <button className={'button-options-edit'} onClick={() => setShowModalEditSlot(true)}>
-                                    <Image src={edit} alt={'icon'}/>
-                                </button>
-                            </OverlayTrigger>
-                            <OverlayTrigger
-                                trigger={['hover', 'focus']}
-                                placement="top"
-                                overlay={(props) => renderTooltip(props, 'Delete this slot and linked rooms')}
-                                delay={200}
-                            >
-                                <button className={'button-options-delete'} onClick={() => setShowModalDeleteSlot(true)}>
-                                    <Image src={deleteButton} alt={'icon'}/>
-                                </button>
-                            </OverlayTrigger>
+                            <CustomIconButton
+                                onButtonClick={() => setShowModalEditSlot(true)}
+                                toolTip={'Edit this slot'}>
+                                <Image src={edit} alt={'icon'}/>
+                            </CustomIconButton>
+                            <CustomIconButton
+                                onButtonClick={() => setShowModalDeleteSlot(true)}
+                                toolTip={'Delete this slot and linked rooms'}>
+                                <Image src={deleteButton} alt={'icon'}/>
+                            </CustomIconButton>
                         </div>
                     </div>
                 </Card.Header>
