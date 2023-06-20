@@ -48,6 +48,7 @@
  .column-options-buttons{
     padding-right: 30%;
  }
+
  .button-options-edit{
     width: 20%;
     justify-content: center;
@@ -65,17 +66,6 @@
     justify-content: center;
     background: none;
     color: inherit;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
- }
- .button-email{
-    justify-content: center;
-    background: none;
-    color: inherit;
-    text-decoration: underline;
     border: none;
     padding: 0;
     font: inherit;
