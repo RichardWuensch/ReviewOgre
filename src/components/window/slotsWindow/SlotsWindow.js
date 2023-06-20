@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './SlotsWindow.css';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import add from '../../../assets/media/plus-circle.svg';
-import { Accordion, Button, Image, ListGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Accordion, Image, ListGroup } from 'react-bootstrap';
 import SlotCard from './Slot';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
+import CustomButton from '../../shared/button/CustomButton';
 
 function SlotsWindow () {
   const [showModalAddSlot, setShowModalAddSlot] = React.useState(false);
@@ -21,53 +22,24 @@ function SlotsWindow () {
     /* eslint-enable object-shorthand */
   };
 
-  const [showTooltip, setShowTooltip] = useState([false]);
-  const [popoverText, setPopoverText] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (event) => {
-    setMousePosition({ x: event.clientX, y: event.clientY });
-  };
-  const handleMouseEnter = (buttonId) => {
-    const newShowTooltips = [false];
-    newShowTooltips[buttonId] = true;
-    setShowTooltip(newShowTooltips);
-  };
-  const handleMouseLeave = (buttonId) => {
-    const newShowTooltips = [false];
-    setShowTooltip(newShowTooltips);
-  };
-  useEffect(() => {
-    const handleMouseMove = (event) => {
-      setMousePosition({ x: event.clientX, y: event.clientY });
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
   return (
-      <div className={'slotsWindow'} onMouseMove={handleMouseMove}>
+      <div className={'slotsWindow'}>
           <h2 className={'title-subheadline'} style={{ marginBottom: 0 }}>Slots</h2>
           <div className={'slots-button-container'} >
               <div className={'button-container-slots'}>
-                  <OverlayTrigger
-                    key='0'
-                    placement="top"
-                    overlay={<Tooltip id="tooltip-0">{popoverText}</Tooltip>}
-                    show={showTooltip[0]}
-                    target={mousePosition}
+                  <CustomButton
+                      toolTip={'Add Slot'}
+                      onButtonClick={() => setShowModalAddSlot(true)}
+                      backgroundColor={'#B0D7AF'}
                   >
-                      <Button variant={'light'} className="button-container-green" onClick={() => setShowModalAddSlot(true)}
-                        onMouseEnter={() => { setPopoverText('Add Slot'); handleMouseEnter(0); }}
-                        onMouseLeave={() => handleMouseLeave(0)}>
-                          <Image src={add} className={'button-image'} alt="addSlot" height={16} width={16} />
-                          <span className="button-text">Add Slot</span>
-                      </Button>
-                  </OverlayTrigger>
+                      <Image
+                          src={add}
+                          className={'button-image'}
+                          alt="addSlot"
+                          height={16}
+                          width={16} />
+                      <span className="button-text">Add Slot</span>
+                  </CustomButton>
               </div>
           </div>
           <div className={'slots-list-container'}>

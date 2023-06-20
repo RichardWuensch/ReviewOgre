@@ -59,21 +59,7 @@
     color: #363A3F;
 
 }
-.main-page .button-image {
-    margin-left: 5%;
-}
 
-.main-page .button-container-green:focus,
-.main-page .button-container-green:hover {
-    background: #B0D7AF;
-    color: black;
-}
-
-.main-page .button-container-white:focus,
-.main-page .button-container-white:hover {
-    background: #FFFFFF;
-    color: black;
-}
 /* ReviewOger reloaded */
 .title-text{
     margin-left: 3vw;
@@ -102,34 +88,12 @@
 .main-page .start-button-container{
     margin: 0 5% 0 5%;
 }
-.main-page .button-start{
-    display: flex;
-    align-self: end;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 50px;
-    background: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    padding: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
 
-.main-page .button-start:hover,
-.main-page .button-start:focus {
-    background: #B0D7AF;
-    color: black;
-}
 .main-page .button-start-text{
     font-weight: 400;
     font-size: 1em;
     color: #363A3F;
     margin-left:10px;
-}
-
-.button-container-green:hover{
-    background-color: #D1E8D0
 }
 
 table {
