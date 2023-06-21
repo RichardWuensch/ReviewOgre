@@ -11,6 +11,19 @@
     justify-content: space-between;
 }
 
+.exit-icon{
+    position: absolute;
+    height: 25px;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+}
+
+.exit-icon:hover{
+    border-radius: 100%;
+    background-color: #908f96;
+}
+
 .modal .exit-successful-calculation-button{
     display: flex;
     align-items: center;
@@ -19,7 +32,7 @@
     padding-left: 10%;
     padding-right: 10%;
     width: auto;
-    height: 6vh;
+    height: 20px;
     background-color: #B0D7AF;
     border-radius: 5px;
     border-style: none;
@@ -34,26 +47,18 @@
 .mail-export-button-container{
     margin: 0 5% 0 5%;
 }
-.modal .button-mail-export{
+.modal .button{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    margin-top: 20px;
-    padding-left: 10%;
-    padding-right: 10%;
-    width: auto;
-    height: 6vh;
+    justify-content: center;
+    padding: 20px;
+    width: 30vh;
+    height: 20px;
     background-color: #B0D7AF;
     border-radius: 5px;
     border-style: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.modal-mailExport-icon {
-    left: 42.21%;
-    right: 55.55%;
-    top: 55.53%;
-    bottom: 41.98%;
-    margin-right: 7px;
+    gap: 10px;
 }
 
 .reviews-table-container{
@@ -65,4 +70,28 @@
     justify-content: space-between;
     align-items: center;
     vertical-align: middle;
+}
+
+.button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    color: black;
+    font-size: larger;
+    margin-top: 15px;
+}
+
+.similar-buttons-container{
+    background-color: #cccccc;
+    border-radius: 5px;
+    padding: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }

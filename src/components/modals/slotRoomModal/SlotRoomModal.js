@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './SlotRoomModal.css';
 import exit from '../../../assets/media/x-circle.svg';
 import add from '../../../assets/media/plus-circle.svg';
+import info from '../../../assets/media/info-circle.svg';
 import React, { useEffect, useState } from 'react';
 import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
 import RoomSlot from '../../../data/models/RoomSlot';
@@ -154,6 +155,8 @@ function SlotModal ({ roomslot, ...props }) {
               title={errorTooltipText}
             >
               {invalidSlotError}
+
+              <Image src={info} alt={'errorInfoIcon'} className='error-info-icon'/>
             </Alert>
           )}
           <Form.Group>
