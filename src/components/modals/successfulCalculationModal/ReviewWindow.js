@@ -11,6 +11,7 @@ function ReviewWindow () {
     setActiveKey(eventKey === activeKey ? null : eventKey);
   };
 
+  // calculate fairness
   /* useEffect(() => {
     const meanParticipantTotalCount =
       participants.reduce(
@@ -25,7 +26,7 @@ function ReviewWindow () {
     <Accordion
       activeKey={activeKey}
       onSelect={handleAccordionItemClick}
-      style={{ height: '60vh' }}
+      style={{ height: '40vh' }}
     >
       <div className={'overflow-container'} style={{ maxHeight: '100%' }}>
         {roomSlots.map((roomSlot, roomSlotIndex) =>

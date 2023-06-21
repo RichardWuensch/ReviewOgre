@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import ConverterForPrinting from '../ConverterForPrinting';
+import ConverterForPrinting from './ConverterForPrinting';
 
 export default class RevagerLiteExport {
   buildJSONAllReviews (roomSlots) {

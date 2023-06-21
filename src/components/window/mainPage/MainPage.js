@@ -4,6 +4,7 @@ import '../setup_window.css';
 import '../checkboxstyling.css';
 import SlotsWindow from '../slotsWindow/SlotsWindow';
 import start from '../../../assets/media/play-circle.svg';
+import gear from '../../../assets/media/gear.svg';
 import LoadConfiguration from '../../../api/LoadConfiguration';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
 import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/SuccessfulCalculationModal';
@@ -16,13 +17,6 @@ import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlo
 import Runner from '../../../algorithm/logic/Runner';
 import ImportParticipants from '../../../api/ImportParticipants';
 import CustomButton from '../../shared/button/CustomButton';
-// import StoreResult from '../../../api/StoreResult';
-// import StoreResult from '../../../api/StoreResult';
-// import RevagerLiteExport from '../../../api/mail/RevagerLiteExport';
-// import Mail from '../../../api/mail/Mail';
-// import SaveRoomPlan from '../../../api/SaveRoomPlan';
-let authorIsNotary = false;
-const breakForModeratorAndReviewer = false;
 
 function MainPage () {
   const [algorithmErrorMessage, setAlgorithmErrorMessage] =
@@ -34,6 +28,12 @@ function MainPage () {
   const [showModalSettings, setShowModalSettings] = React.useState(false);
   const [overwriteExistingDataEvent] = React.useState(null);
   const [importDataWithSlots] = React.useState(false);
+  const [settings, setSettings] = React.useState({
+    authorIsNotary: false,
+    breakForModeratorAndReviewer: false,
+    ABReview: false,
+    internationalGroups: false
+  });
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
@@ -54,22 +54,12 @@ function MainPage () {
         participantsDispatch,
         roomSlots,
         roomSlotsDispatch,
-        authorIsNotary,
-        breakForModeratorAndReviewer
+        settings.authorIsNotary,
+        settings.breakForModeratorAndReviewer
       );
 
       // successful run
       setShowModalSuccessfulCalculations(true);
-
-      // all on successful calculation window:
-
-      // new Mail(roomSlots).openMailClient();
-      // new Mail(roomSlots).saveMailsInTxt();
-      // new RevagerLiteExport().buildJSONAllReviews(roomSlots);
-      // new SaveRoomPlan(roomSlots).runSave();
-      // new StoreResult().runFileSave(roomSlots);
-      // new StoreResult().saveAsJSON(roomSlots);
-      // new StoreResult().saveAsTXT(roomSlots);
     } catch (error) {
       console.log(error.message);
       setAlgorithmErrorMessage(error);
@@ -101,7 +91,10 @@ function MainPage () {
     await importConf.runConfigurationImport(overwriteExistingDataEvent);
     addParticipantListToContext(importConf.getParticipants());
     addRoomSlotListToContext(importConf.getRoomSlots());
-    authorIsNotary = importConf.getAuthorIsNotary();
+    setSettings({
+      ...settings,
+      authorIsNotary: importConf.getAuthorIsNotary()
+    });
   }
 
   /*
@@ -114,10 +107,6 @@ function MainPage () {
   }
 
   */
-
-  function openSettings () {
-    setShowModalSettings(true);
-  }
 
   function addParticipantListToContext (list) {
     /* eslint-disable object-shorthand */
@@ -163,6 +152,8 @@ function MainPage () {
     /* eslint-enable object-shorthand */
   }
 
+  React.useEffect(() => console.log(settings), [settings]);
+
   return (
             <div className={'main-page'}>
                 <Row className={'participant-slots-container'}>
@@ -179,12 +170,12 @@ function MainPage () {
                                 <div className={'start-button-container'}>
                                     <CustomButton
                                         toolTip={'Settings'}
-                                        onButtonClick={openSettings}
+                                        onButtonClick={() => setShowModalSettings(true)}
                                         backgroundColor={'#B0D7AF'}
                                     >
                                         <Image
-                                            src={start}
-                                            alt="startCalculation"
+                                            src={gear}
+                                            alt="settings"
                                             height={20}
                                             width={20}
                                         />
@@ -203,7 +194,7 @@ function MainPage () {
                                             height={20}
                                             width={20}
                                         />
-                                        <span className="button-start-text">Compute assignment </span>
+                                        <span className="button-start-text">Compute assignments</span>
                                     </CustomButton>
                                 </div>
                             </div>
@@ -249,10 +240,9 @@ function MainPage () {
                     <SettingsModal
                         show={showModalSettings}
                         onHide={() => setShowModalSettings(false)}
-                        onClose={() => setShowModalSettings(false)}
+                        settings={settings}
+                        setSettings={setSettings}
                     />
-
-                    {/* end */}
                 </Row>
             </div>
   );
