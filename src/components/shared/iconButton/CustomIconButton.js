@@ -1,6 +1,7 @@
 import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './CustomIconButton.css';
+import PropTypes from 'prop-types';
 
 function CustomIconButton ({ toolTip, onButtonClick, children }) {
   const renderTooltip = (props) => (
@@ -16,6 +17,7 @@ function CustomIconButton ({ toolTip, onButtonClick, children }) {
                 placement="top"
                 overlay={renderTooltip}
                 delay={500}
+
             >
                 <button className={'icon-button'}
                         onClick={onButtonClick}>
@@ -26,5 +28,9 @@ function CustomIconButton ({ toolTip, onButtonClick, children }) {
         </>
   );
 }
+CustomIconButton.propTypes = {
+  toolTip: PropTypes.string.isRequired,
+  onButtonClick: PropTypes.func.isRequired
+};
 
 export default CustomIconButton;

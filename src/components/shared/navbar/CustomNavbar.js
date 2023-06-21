@@ -5,26 +5,46 @@ import LoadConfiguration from '../../../api/LoadConfiguration';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 import StoreConfiguration from '../../../api/StoreConfiguration';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
 
 function CustomNavbar () {
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
   const roomSlots = useRoomSlots();
+  const location = useLocation();
+  const [importDataWithSlots, setImportDataWithSlots] = React.useState(false);
+  const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
+  const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
+
+  async function importDataCheck (event) {
+    setOverwriteExistingDataEvent(event);
+    setShowModalDataImportCheck(true);
+  }
 
   function saveConfiguration () {
     new StoreConfiguration(participants, roomSlots, false).runFileSave();
   }
 
-  async function importConfiguration (event) {
-    deleteParticipantListFromContext(participants);
-    deleteRoomSlotListFromContext(roomSlots);
+  async function importConfiguration () {
     const importConf = new LoadConfiguration();
-    await importConf.runConfigurationImport(event);
+    await importConf.runConfigurationImport(overwriteExistingDataEvent);
     addParticipantListToContext(importConf.getParticipants());
     addRoomSlotListToContext(importConf.getRoomSlots());
+    // authorIsNotary = importConf.getAuthorIsNotary();
   }
+
+  /*
+  async function importStudentList () {
+    const importParticipants = new ImportParticipants();
+    const participantList = await importParticipants.runStudentImport(
+      overwriteExistingDataEvent
+    );
+    addParticipantListToContext(participantList);
+  }
+
+  */
 
   function addParticipantListToContext (list) {
     /* eslint-disable object-shorthand */
@@ -90,16 +110,41 @@ function CustomNavbar () {
                       <Nav.Link as={ Link } to="/">Home</Nav.Link>
                       <Nav.Link as={ Link } to="/reviews">Reviews</Nav.Link>
                       <Nav.Link as={ Link } to="/docs">Docs</Nav.Link>
-                      <NavDropdown title="Save/Load Options" id="basic-nav-dropdown">
+                      <NavDropdown disabled={ location.pathname !== '/' } title="Save/Load Options" id="basic-nav-dropdown">
                           <NavDropdown.Item onClick={() => document.getElementById('file-input').click()}>Load Configuration</NavDropdown.Item>
-                          <input type="file" id="file-input" style={{ display: 'none' }} onChange={importConfiguration}
+                          <input type="file" id="file-input" style={{ display: 'none' }} onChange={() => { importDataCheck(event); setImportDataWithSlots(true); }}
                                  accept='application/json'/>
                           <NavDropdown.Item onClick={saveConfiguration}>Save Configuration</NavDropdown.Item>
                       </NavDropdown>
                   </Nav>
               </Navbar.Collapse>
           </Container>
+          <DataImportCheckModal
+              show={showModalDataImportCheck}
+              onOverwriteData={() => {
+                if (importDataWithSlots) {
+                  deleteParticipantListFromContext(participants);
+                  deleteRoomSlotListFromContext(roomSlots);
+                  importConfiguration();
+                } else {
+                  deleteParticipantListFromContext(participants);
+                  // importStudentList();
+                }
+              }}
+              onAddData={() => {
+                if (importDataWithSlots) {
+                  importConfiguration();
+                } else {
+                  // importStudentList();
+                }
+              }}
+              title={ importDataWithSlots ? 'Load Configuration' : 'Import Participants' }
+              text={ importDataWithSlots ? 'participants and slots' : 'participants' }
+              onHide={() => setShowModalDataImportCheck(false)}
+              onClose={() => setShowModalDataImportCheck(false)}
+          />
       </Navbar>
+
   );
 }
 export default CustomNavbar;

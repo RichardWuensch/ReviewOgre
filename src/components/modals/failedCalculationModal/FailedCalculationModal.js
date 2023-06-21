@@ -5,7 +5,7 @@ import exit from '../../../assets/media/return.svg';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
 
-function FailedCalculationsModal (props) {
+function FailedCalculationsModal ({ errorMessage, onHide, ...props }) {
   const [showModal, setShowModal] = useState(true);
   const [header, setHeader] = useState('');
 
@@ -14,10 +14,10 @@ function FailedCalculationsModal (props) {
   };
 
   useEffect(() => {
-    if (!props.errorMessage) {
+    if (!errorMessage) {
       return;
     }
-    switch (props.errorMessage.cause) {
+    switch (errorMessage.cause) {
       case 'noSolution':
         setHeader('No Solution found');
         break;
@@ -27,7 +27,7 @@ function FailedCalculationsModal (props) {
       default:
         setHeader('');
     }
-  }, [props.errorMessage]);
+  }, [errorMessage]);
 
   return (
     <Modal
@@ -44,12 +44,12 @@ function FailedCalculationsModal (props) {
             <span className={'modal-header border-0'}>{header}</span>
           </div>
           <div className={'response-container'}>
-            <div className={'error-message'}>{props.errorMessage?.message}</div>
+            <div className={'error-message'}>{errorMessage?.message}</div>
           </div>
           <div className={'footer'}>
             <button
               className={'exit-failed-calculation-button'}
-              onClick={props.onHide}
+              onClick={onHide}
             >
               <Image
                 src={exit}
@@ -67,6 +67,7 @@ function FailedCalculationsModal (props) {
   );
 }
 FailedCalculationsModal.propTypes = {
+  errorMessage: PropTypes.string.isRequired,
   onHide: PropTypes.func.isRequired
 };
 export default FailedCalculationsModal;

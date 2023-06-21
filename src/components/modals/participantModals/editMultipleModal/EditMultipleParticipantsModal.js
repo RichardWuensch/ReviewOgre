@@ -85,6 +85,7 @@ function EditMultipleParticipantsModal ({ participants, onClose, ...props }) {
   );
 }
 EditMultipleParticipantsModal.propTypes = {
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  participants: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 export default EditMultipleParticipantsModal;

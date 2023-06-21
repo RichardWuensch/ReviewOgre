@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
 import { Button, Col, Image, Row } from 'react-bootstrap';
 
-function deleteModal (props) {
+function deleteModal ({ onDeleteClick, deleteObject, titleObject, textObject, onHide, ...props }) {
   const deleteItem = () => {
-    props.onDeleteClick(props.deleteobject);
+    onDeleteClick(deleteObject);
   };
 
   return (
@@ -19,13 +19,13 @@ function deleteModal (props) {
             className={'modal'}
         >
             <Modal.Header>
-                <Modal.Title>{'Delete ' + props.titleObject}</Modal.Title>
-                <Image src={exit} alt={'exitModal'} className={'modal-header-icon'} onClick={props.onHide}/>
+                <Modal.Title>{'Delete ' + titleObject}</Modal.Title>
+                <Image src={exit} alt={'exitModal'} className={'modal-header-icon'} onClick={onHide}/>
             </Modal.Header>
             <Modal.Body>
                 <div className={'text-container text-center'}>
                     <div className={'delete-title-subheadline'} style={{ whiteSpace: 'pre-line' }}>
-                        Are you sure you want to delete {props.textobject} <br/><br/>
+                        Are you sure you want to delete {textObject} <br/><br/>
                         This Action can&lsquo;t be undone.
                     </div>
                 </div>
@@ -36,7 +36,7 @@ function deleteModal (props) {
                                 variant={'light'}
                                 style={{ backgroundColor: '#B0D7AF', color: 'black' }}
                                 className={'confirm-button'}
-                                onClick={props.onHide}>
+                                onClick={onHide}>
                                 Abort
                             </Button>
                         </Col>
@@ -45,7 +45,7 @@ function deleteModal (props) {
                                 variant={'light'}
                                 style={{ backgroundColor: '#C40233' }}
                                 className={'confirm-button'}
-                                onClick={() => { deleteItem(); props.onHide(); }}>
+                                onClick={() => { deleteItem(); onHide(); }}>
                                 Confirm
                             </Button>
                         </Col>
@@ -56,9 +56,10 @@ function deleteModal (props) {
   );
 }
 ParticipantModal.propTypes = {
-  textObject: PropTypes.string,
-  titleObject: PropTypes.string,
-  onClose: PropTypes.func,
-  onDeleteClick: PropTypes.func
+  textObject: PropTypes.string.isRequired,
+  titleObject: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+  deleteObject: PropTypes.object.isRequired
 };
 export default deleteModal;

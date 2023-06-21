@@ -1,6 +1,6 @@
 import './Slot.css';
 import React, { useState } from 'react';
-import { Accordion, Card, Image, useAccordionButton, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Accordion, Card, Image, useAccordionButton } from 'react-bootstrap';
 import locationImage from '../../../assets/media/geo-alt-fill.svg';
 import deleteButton from '../../../assets/media/trash.svg';
 import alarmImage from '../../../assets/media/alarm-fill.svg';
@@ -9,13 +9,14 @@ import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
 import { useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import CustomIconButton from '../../shared/iconButton/CustomIconButton';
+import PropTypes from 'prop-types';
 
-function SlotCard (props) {
+function SlotCard ({ roomSlot, eventKey, ...props }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [showModalDeleteSlot, setShowModalDeleteSlot] = React.useState(false);
   const [showModalEditSlot, setShowModalEditSlot] = React.useState(false);
 
-  const openAccordion = useAccordionButton(props.eventKey, () => {});
+  const openAccordion = useAccordionButton(eventKey, () => {});
 
   const roomSlotDispatch = useRoomSlotsDispatch();
 
@@ -29,7 +30,7 @@ function SlotCard (props) {
 
   function getSlotDescription () {
     const options = { weekday: 'long' };
-    return props.roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + props.roomSlot.getFormattedDate() + ' From: ' + props.roomSlot.getFormattedStartTime() + ' to ' + props.roomSlot.getFormattedEndTime();
+    return roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + roomSlot.getFormattedDate() + ' From: ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime();
   }
 
   const removeSlot = (roomSlot) => {
@@ -51,39 +52,19 @@ function SlotCard (props) {
     /* eslint-enable object-shorthand */
   };
 
-  const renderTooltip = (props, tooltip) => (
-        <Tooltip id="button-tooltip" {...props}>
-            {tooltip}
-        </Tooltip>
-  );
-
   const slotContent = (
         <>
             <Card>
                 <Card.Header className={'list-item'}>
                     <div className={'slots-infos'}>
-                        <OverlayTrigger
-                            trigger={['hover', 'focus']}
-                            placement="top"
-                            overlay={(props) => renderTooltip(props, isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms')}
-                            delay={200}
-                        >
-                            <button
-                                type="button"
-                                onClick={() => expandAndToggle()}
-                                className={'expand-structure-button'}>
-                                {isAccordionOpen
-                                  ? (
-                                        <Image src={alarmImage} alt={'alarmImage'} />
-                                    )
-                                  : (
-                                        <Image src={alarmImage} alt={'alarmImage'} />
-                                    )}
-                                <span className={'slot-text'} style={{ paddingLeft: 5 }}>
-                                    {getSlotDescription()}
-                                </span>
-                            </button>
-                        </OverlayTrigger>
+                        <CustomIconButton
+                            onButtonClick={() => expandAndToggle()}
+                            toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
+                            <Image src={alarmImage} alt={'alarmImage'} />
+                            <span className={'slot-text'} style={{ paddingLeft: 5 }}>
+                                {getSlotDescription()}
+                            </span>
+                        </CustomIconButton>
                         <div className={'options'}>
                             <CustomIconButton
                                 onButtonClick={() => setShowModalEditSlot(true)}
@@ -98,10 +79,10 @@ function SlotCard (props) {
                         </div>
                     </div>
                 </Card.Header>
-                <Accordion.Collapse eventKey={props.eventKey}>
+                <Accordion.Collapse eventKey={eventKey}>
                     <Card.Body>
                         <ul style={{ listStyle: 'none', overflowY: 'auto' }}>
-                            {props.roomSlot.getRooms()?.map((room, roomIndex) =>
+                            {roomSlot.getRooms()?.map((room, roomIndex) =>
                                 <li key={roomIndex}>
                                     <div className={'room-properties'}>
                                         <Image src={locationImage} alt={'locationImage'} />
@@ -123,7 +104,7 @@ function SlotCard (props) {
                 show={showModalEditSlot}
                 onHide={() => setShowModalEditSlot(false)}
                 header={'Edit Slot'}
-                roomslot={props.roomSlot}
+                roomslot={roomSlot}
                 edit={true}
                 onSaveClick={(slot) => updateSlot(slot)}/>
             <DeleteModal
@@ -132,11 +113,15 @@ function SlotCard (props) {
                 onHide={() => setShowModalDeleteSlot(false)}
                 onSave={handleDelete}
                 titleObject={'Slot'}
-                textobject={'the selected Slot ?\n\n\'' + getSlotDescription() + '\''}
-                deleteobject={props.roomSlot}
+                textObject={'the selected Slot ?\n\n\'' + getSlotDescription() + '\''}
+                deleteObject={roomSlot}
                 onDeleteClick={(slot) => removeSlot(slot)}/>
         </>
 
   );
 }
+SlotCard.propTypes = {
+  roomSlot: PropTypes.object.isRequired,
+  eventKey: PropTypes.string.isRequired
+};
 export default SlotCard;

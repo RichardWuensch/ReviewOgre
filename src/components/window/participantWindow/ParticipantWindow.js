@@ -127,7 +127,7 @@ function ParticipantList () {
                 : (
                   <div className={'button-container-participants'}>
                       <CustomButton
-                          toolTip={'Import Participants'}
+                          toolTip={'Import Participants from csv file'}
                           onButtonClick={() => document.getElementById('student-input').click()}
                           backgroundColor={'#B0D7AF'}
                       >
@@ -248,9 +248,9 @@ function ParticipantList () {
               show={showModalDeleteParticipant}
               onHide={() => setShowModalDeleteParticipant(false)}
               titleObject={'Participants'}
-              textobject={'the selected participants ?'}
+              textObject={'the selected participants ?'}
               onDeleteClick={(participant) => removeParticipants(participant)}
-              deleteobject={ selectedParticipants }
+              deleteObject={ selectedParticipants }
               onClose={() => { setShowModalDeleteParticipant(false); }}/>
       </Container>
   );

@@ -44,10 +44,10 @@ function SlotsWindow () {
           </div>
           <div className={'slots-list-container'}>
               <Accordion defaultActiveKey="0">
-                  <div className={'overflow-container'}>
+                  <div className={'overflow-container-roomslots'}>
                       <ListGroup className={'list-group'}>
                           {roomSlots.map((slot, index) => (
-                              <ListGroup.Item key={index}>
+                              <ListGroup.Item key={index} style={{ padding: 0 }}>
                                   <SlotCard
                                       key={slot.getId()}
                                       eventKey={index}
