@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './CustomButton.css';
+import PropTypes from 'prop-types';
 
 function CustomButton ({ toolTip, onButtonClick, backgroundColor, children, disabled = false }) {
   const [isDisabled, setIsDisabled] = useState(disabled);
@@ -36,5 +37,11 @@ function CustomButton ({ toolTip, onButtonClick, backgroundColor, children, disa
         </div>
   );
 }
+CustomButton.propTypes = {
+  toolTip: PropTypes.string.isRequired,
+  onButtonClick: PropTypes.func.isRequired,
+  backgroundColor: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
+};
 
 export default CustomButton;

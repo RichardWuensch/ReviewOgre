@@ -33,27 +33,6 @@
     justify-content: center;
 }
 
-.modal .save-button {
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 100;
-    margin-top: 50px;
-    padding-left: 10%;
-    padding-right: 10%;
-    width: auto;
-    height: 6vh;
-    background: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    color: black;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.modal .save-button:hover {
-    background: #B0D7AF;
-    color: black;
-}
-
 .modal .form-label {
     margin-top: .5rem;
     margin-bottom: 0;

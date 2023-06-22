@@ -5,7 +5,7 @@ import add from '../../../assets/media/plus-circle.svg';
 import { Accordion, Image, ListGroup } from 'react-bootstrap';
 import SlotCard from './Slot';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
-import CustomButton from '../../shared/button/CustomButton';
+import CustomButton from '../../shared/buttons/button/CustomButton';
 
 function SlotsWindow () {
   const [showModalAddSlot, setShowModalAddSlot] = React.useState(false);
@@ -28,7 +28,7 @@ function SlotsWindow () {
           <div className={'slots-button-container'} >
               <div className={'button-container-slots'}>
                   <CustomButton
-                      toolTip={'Add Slot'}
+                      toolTip={'Add Slot manually'}
                       onButtonClick={() => setShowModalAddSlot(true)}
                       backgroundColor={'#B0D7AF'}
                   >
@@ -44,10 +44,10 @@ function SlotsWindow () {
           </div>
           <div className={'slots-list-container'}>
               <Accordion defaultActiveKey="0">
-                  <div className={'overflow-container'}>
+                  <div className={'overflow-container-roomslots'}>
                       <ListGroup className={'list-group'}>
                           {roomSlots.map((slot, index) => (
-                              <ListGroup.Item key={index}>
+                              <ListGroup.Item key={index} style={{ padding: 0 }}>
                                   <SlotCard
                                       key={slot.getId()}
                                       eventKey={index}

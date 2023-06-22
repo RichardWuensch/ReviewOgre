@@ -6,7 +6,8 @@ import DeleteModal from '../../../modals/deleteModal/DeleteModal';
 import ParticipantModal from '../../../modals/participantModals/addEditModal/ParticipantModal';
 import { useParticipantsDispatch } from '../../../shared/context/ParticipantsContext';
 import './Participant.css';
-import CustomIconButton from '../../../shared/iconButton/CustomIconButton';
+import CustomIconButton from '../../../shared/buttons/iconButton/CustomIconButton';
+import PropTypes from 'prop-types';
 
 function Participant ({ participant }) {
   const [showModalEditParticipant, setShowModalEditParticipant] = React.useState(false);
@@ -66,9 +67,9 @@ function Participant ({ participant }) {
                 show={showModalDelete}
                 onHide={() => setShowModalDelete(false)}
                 titleObject={'Participant'}
-                textobject={'the selected Participant ?\n\nName: \'' + participant.getFirstName() + ' ' + participant.getLastName() + '\'\nEmail: \'' + participant.getEmail() + '\''}
+                textObject={'the selected Participant ?\n\nName: \'' + participant.getFirstName() + ' ' + participant.getLastName() + '\'\nEmail: \'' + participant.getEmail() + '\''}
                 onDeleteClick={(participant) => removeParticipant(participant)}
-                deleteobject={[participant]}
+                deleteObject={[participant]}
                 onClose={() => setShowModalDelete(false)}/>
             <ParticipantModal
                 onSaveClick={(tempParticipant) => updateParticipant(tempParticipant)}
@@ -81,5 +82,8 @@ function Participant ({ participant }) {
 
   );
 }
+Participant.prototypes = {
+  participant: PropTypes.object.isRequired
+};
 
 export default Participant;

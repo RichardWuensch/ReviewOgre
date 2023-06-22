@@ -4,8 +4,9 @@ import './FailedCalculationModal.css';
 import exit from '../../../assets/media/return.svg';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
+import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
-function FailedCalculationsModal (props) {
+function FailedCalculationsModal ({ errorMessage, onHide, ...props }) {
   const [showModal, setShowModal] = useState(true);
   const [header, setHeader] = useState('');
 
@@ -14,10 +15,10 @@ function FailedCalculationsModal (props) {
   };
 
   useEffect(() => {
-    if (!props.errorMessage) {
+    if (!errorMessage) {
       return;
     }
-    switch (props.errorMessage.cause) {
+    switch (errorMessage.cause) {
       case 'noSolution':
         setHeader('No Solution found');
         break;
@@ -27,7 +28,7 @@ function FailedCalculationsModal (props) {
       default:
         setHeader('');
     }
-  }, [props.errorMessage]);
+  }, [errorMessage]);
 
   return (
     <Modal
@@ -44,22 +45,19 @@ function FailedCalculationsModal (props) {
             <span className={'modal-header border-0'}>{header}</span>
           </div>
           <div className={'response-container'}>
-            <div className={'error-message'}>{props.errorMessage?.message}</div>
+            <div className={'error-message'}>{errorMessage?.message}</div>
           </div>
           <div className={'footer'}>
-            <button
-              className={'exit-failed-calculation-button'}
-              onClick={props.onHide}
-            >
+            <ModalButton
+                backgroundColor={'#B0D7AF'}
+                onButtonClick={onHide}>
               <Image
-                src={exit}
-                alt={'exitParticipantModal'}
-                className={'modal-exit-icon'}
+                  src={exit}
+                  alt={'exitParticipantModal'}
+                  className={'modal-exit-icon'}
               />
-              <span className={'return-to-main-text'}>
-                Return to Configuration
-              </span>
-            </button>
+              <span className={'return-to-main-text'}> Return to Configuration </span>
+            </ModalButton>
           </div>
         </div>
       </Modal.Body>
@@ -67,6 +65,7 @@ function FailedCalculationsModal (props) {
   );
 }
 FailedCalculationsModal.propTypes = {
+  errorMessage: PropTypes.string,
   onHide: PropTypes.func.isRequired
 };
 export default FailedCalculationsModal;

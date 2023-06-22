@@ -3,16 +3,10 @@ import './DataImportCheckModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import exit from '../../../assets/media/x-circle.svg';
-import { Button, Col, Image, Row } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
+import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
-function DataImportCheckModal (props) {
-  const handleAddData = () => {
-    props.adddata();
-  };
-  const handleOverwriteData = () => {
-    props.overwritedata();
-  };
-
+function DataImportCheckModal ({ onAddData, onOverwriteData, title, text, onHide, ...props }) {
   return (
         <Modal
             {...props}
@@ -22,45 +16,37 @@ function DataImportCheckModal (props) {
             className={'modal'}
         >
             <Modal.Header>
-                <Modal.Title>{props.titleObject}</Modal.Title>
-                <Image src={exit} alt={'exitModal'} className={'modal-header-icon'} onClick={props.onHide}/>
+                <Modal.Title>{title}</Modal.Title>
+                <Image src={exit} alt={'exitModal'} className={'modal-header-icon'} onClick={onHide}/>
             </Modal.Header>
             <Modal.Body>
                 <div className={'text-container text-center'}>
                     <div className={'delete-title-subheadline'} style={{ whiteSpace: 'pre-line' }}>
-                        Do you want to overwrite the already existing {props.textobject} in your list<br/>or<br/>add the imported {props.textobject} to the list?
+                        Do you want to overwrite the already existing { text } in your list
+                        <br/>or<br/>add the imported { text } to the list?
                     </div>
                 </div>
                 <div className={'footer'}>
-                    <Row className={'row'}>
-                        <Col className={'col'}>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
-                                className={'confirm-button'}
-                                onClick={() => { handleOverwriteData(); props.onHide(); }}>
-                                Overwrite
-                            </Button>
+                    <Row>
+                        <Col>
+                            <ModalButton
+                                backgroundColor={ '#B0D7AF' }
+                                onButtonClick={() => { onOverwriteData(); onHide(); }}
+                            > Overwrite </ModalButton>
                         </Col>
-                        <Col className={'col'}>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
-                                className={'confirm-button'}
-                                onClick={() => { handleAddData(); props.onHide(); }}>
-                                Add
-                            </Button>
+                        <Col>
+                            <ModalButton
+                                backgroundColor={ '#B0D7AF' }
+                                onButtonClick={() => { onAddData(); onHide(); }}
+                            > Add </ModalButton>
                         </Col>
                     </Row>
-                    <Row className={'row'}>
-                        <Col className={'col'}>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#C40233' }}
-                                className={'cancel-button'}
-                                onClick={props.onHide}>
-                                Cancel
-                            </Button>
+                    <Row>
+                        <Col>
+                            <ModalButton
+                                backgroundColor={ '#C40233' }
+                                onButtonClick={onHide}
+                            > Cancel </ModalButton>
                         </Col>
                     </Row>
                 </div>
@@ -69,10 +55,10 @@ function DataImportCheckModal (props) {
   );
 }
 DataImportCheckModal.propTypes = {
-  textObject: PropTypes.string,
-  titleObject: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   onHide: PropTypes.func.isRequired,
-  overwritedata: PropTypes.func.isRequired,
-  adddata: PropTypes.func.isRequired
+  onOverwriteData: PropTypes.func.isRequired,
+  onAddData: PropTypes.func.isRequired
 };
 export default DataImportCheckModal;
