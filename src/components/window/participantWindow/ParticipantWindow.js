@@ -11,7 +11,8 @@ import EditMultipleParticipantsModal from '../../modals/participantModals/editMu
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
 import ImportParticipants from '../../../api/ImportParticipants';
 import { Container, Image, Table } from 'react-bootstrap';
-import CustomButton from '../../shared/button/CustomButton';
+import CustomButton from '../../shared/buttons/button/CustomButton';
+import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -20,9 +21,16 @@ function ParticipantList () {
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(true);
   const [showModalDeleteParticipant, setShowModalDeleteParticipant] = React.useState(false);
+  const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
+  const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
 
   const participants = useParticipants();
   const participantsDispatch = useParticipantsDispatch();
+
+  async function importDataCheck (event) {
+    setOverwriteExistingDataEvent(event);
+    setShowModalDataImportCheck(true);
+  }
 
   const addParticipant = (participant) => {
     /* eslint-disable object-shorthand */
@@ -44,10 +52,22 @@ function ParticipantList () {
     /* eslint-enable object-shorthand */
   };
 
-  async function importStudentList (event) {
-    // deleteParticipantListFromContext(participants);
+  function deleteParticipantListFromContext (list) {
+    /* eslint-disable object-shorthand */
+    for (const entry of list) {
+      participantsDispatch({
+        type: 'deleted',
+        itemToDelete: entry
+      });
+    }
+    /* eslint-enable object-shorthand */
+  }
+
+  async function importStudentList () {
     const importParticipants = new ImportParticipants();
-    const participantList = await importParticipants.runStudentImport(event);
+    const participantList = await importParticipants.runStudentImport(
+      overwriteExistingDataEvent
+    );
     addParticipantListToContext(participantList);
   }
 
@@ -133,7 +153,7 @@ function ParticipantList () {
                       >
                           <span className="button-text"> Import Participants</span>
                       </CustomButton>
-                      <input type="file" id="student-input" style={{ display: 'none' }} onChange={importStudentList}
+                      <input type="file" id="student-input" style={{ display: 'none' }} onChange={() => { importDataCheck(event); }}
                       accept='text/csv'/>
                   </div>
                   )
@@ -233,6 +253,15 @@ function ParticipantList () {
             </Table>
                   </div>
           </div>
+          <DataImportCheckModal
+              show={showModalDataImportCheck}
+              onOverwriteData={() => { deleteParticipantListFromContext(participants); importStudentList(); }}
+              onAddData={() => { importStudentList(); }}
+              title={ 'Import Participants' }
+              text={ 'participants' }
+              onHide={() => setShowModalDataImportCheck(false)}
+              onClose={() => setShowModalDataImportCheck(false)}
+          />
           <ParticipantModal
               onSaveClick={(tempParticipant) => addParticipant(tempParticipant)}
               show={showModalParticipant}

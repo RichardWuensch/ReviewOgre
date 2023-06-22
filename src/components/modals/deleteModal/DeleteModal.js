@@ -3,7 +3,8 @@ import Modal from 'react-bootstrap/Modal';
 import exit from '../../../assets/media/x-circle.svg';
 import PropTypes from 'prop-types';
 import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
-import { Button, Col, Image, Row } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
+import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
 function deleteModal ({ onDeleteClick, deleteObject, titleObject, textObject, onHide, ...props }) {
   const deleteItem = () => {
@@ -32,22 +33,16 @@ function deleteModal ({ onDeleteClick, deleteObject, titleObject, textObject, on
                 <div className={'footer'}>
                     <Row>
                         <Col>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
-                                className={'confirm-button'}
-                                onClick={onHide}>
-                                Abort
-                            </Button>
+                            <ModalButton
+                                backgroundColor={'#B0D7AF'}
+                                onButtonClick={onHide}
+                            > Abort </ModalButton>
                         </Col>
                         <Col>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#C40233' }}
-                                className={'confirm-button'}
-                                onClick={() => { deleteItem(); onHide(); }}>
-                                Confirm
-                            </Button>
+                            <ModalButton
+                                backgroundColor={'#C40233'}
+                                onButtonClick={() => { deleteItem(); onHide(); }}
+                            > Confirm </ModalButton>
                         </Col>
                     </Row>
                 </div>
@@ -56,10 +51,10 @@ function deleteModal ({ onDeleteClick, deleteObject, titleObject, textObject, on
   );
 }
 ParticipantModal.propTypes = {
-  textObject: PropTypes.string.isRequired,
-  titleObject: PropTypes.string.isRequired,
+  textObject: PropTypes.string,
+  titleObject: PropTypes.string,
   onClose: PropTypes.func.isRequired,
-  onDeleteClick: PropTypes.func.isRequired,
-  deleteObject: PropTypes.object.isRequired
+  onDeleteClick: PropTypes.func,
+  deleteObject: PropTypes.object
 };
 export default deleteModal;

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import './SuccessfulCalculationModal.css';
 import exit from '../../../assets/media/return.svg';
 import React from 'react';
-import { Button, Col, Image, Row } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
 import upload from '../../../assets/media/upload.svg';
 import ReviewWindow from './ReviewWindow';
 import Mail from '../../../api/mail/Mail';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
+import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
 function SuccessfulCalculationsModal (props) {
   const roomSlots = useRoomSlots();
@@ -38,32 +39,30 @@ function SuccessfulCalculationsModal (props) {
         <div className={'d-flex justify-content-center'}>
           <Row>
             <Col>
-              <Button
-                variant={'light'}
-                className="button-mail-export"
-                onClick={runAlgorithm}
-              >
+              <ModalButton
+                  backgroundColor={'#B0D7AF'}
+                  onButtonClick={runAlgorithm}>
                 <Image
-                  src={upload}
-                  alt="mailExport"
-                  className={'modal-mailExport-icon'}
+                    style={{ marginRight: '10px' }}
+                    src={upload}
+                    alt="mailExport"
+                    className={'modal-mailExport-icon'}
                 />
                 Export for Mailing
-              </Button>
+              </ModalButton>
             </Col>
             <Col>
-              <Button
-                variant={'light'}
-                className="exit-successful-calculation-button"
-                onClick={props.onHide}
-              >
+              <ModalButton
+                  backgroundColor={'#B0D7AF'}
+                  onButtonClick={props.onHide}>
                 <Image
-                  src={exit}
-                  alt={'exitParticipantModal'}
-                  className={'modal-exit-icon'}
+                    style={{ marginRight: '10px' }}
+                    src={exit}
+                    alt={'exitParticipantModal'}
+                    className={'modal-exit-icon'}
                 />
                 Return to Main
-              </Button>
+              </ModalButton>
             </Col>
           </Row>
         </div>

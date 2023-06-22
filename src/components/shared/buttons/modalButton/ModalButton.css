@@ -1,0 +1,21 @@
+.modal .save-button {
+    min-width: 80px;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 100;
+    margin-top: 30px;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: auto;
+    height: 6vh;
+    background: #B0D7AF;
+    border-radius: 5px;
+    border-style: none;
+    color: black;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.modal .save-button:hover {
+    background: inherit;
+    color: inherit;
+}

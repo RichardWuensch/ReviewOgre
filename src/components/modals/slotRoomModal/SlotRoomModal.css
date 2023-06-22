@@ -87,21 +87,7 @@
     justify-content: flex-end;
     align-items: center;
 }
-.modal .add-slot-button{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 100;
-    margin-top: 50px;
-    padding-left: 10%;
-    padding-right: 10%;
-    width: auto;
-    height: 6vh;
-    background: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    color: black;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
+
 .add-slot-text{
     font-family: 'Roboto', sans-serif;
     font-style: normal;
@@ -144,11 +130,7 @@
     justify-content: space-between;
     height:5vh;
 }
-.expand-chevron-button{
-    border-style: none;
-    background-color: #F5F5F5;
-    justify-self: flex-end;
-}
+
 .item-text{
     border-style: none;
 }

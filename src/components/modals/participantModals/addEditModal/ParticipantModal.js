@@ -1,10 +1,11 @@
 import Modal from 'react-bootstrap/Modal';
-import { Button, Form, Image } from 'react-bootstrap';
+import { Form, Image } from 'react-bootstrap';
 import './ParticipantModal.css';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Participant from '../../../../data/models/Participant';
+import ModalButton from '../../../shared/buttons/modalButton/ModalButton';
 
 function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, ...props }) {
   const [firstName, setFirstName] = useState(participant?.getFirstName() ?? '');
@@ -106,12 +107,10 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                         </Form.Select>
                     </Form.Group>
                     <div className={'text-center'}>
-                        <Button
-                            variant={'light'}
-                            className={'save-button'}
-                            onClick={saveClick}>
-                                {newParticipant ? 'Add Participant' : 'Save Changes'}
-                        </Button>
+                        <ModalButton
+                            backgroundColor={'#B0D7AF'}
+                            onButtonClick={saveClick}
+                        > {newParticipant ? 'Add Participant' : 'Save Changes'} </ModalButton>
                     </div>
                 </Form>
             </Modal.Body>

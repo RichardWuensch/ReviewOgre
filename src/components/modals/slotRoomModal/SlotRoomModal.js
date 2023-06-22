@@ -10,7 +10,8 @@ import Room from '../../../data/models/Room';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
 import deleteButton from '../../../assets/media/trash.svg';
-import CustomIconButton from '../../shared/iconButton/CustomIconButton';
+import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
+import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
 function SlotModal ({ roomslot, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
@@ -274,15 +275,13 @@ function SlotModal ({ roomslot, ...props }) {
             <Image src={add} alt={'addRoomIcon'} />
           </Button>
           <div className={'text-center'}>
-            <Button
-              variant={'light'}
-              className={'add-slot-button'}
-              onClick={handleSaveRoomSlot}
-            >
+            <ModalButton
+                backgroundColor={'#B0D7AF'}
+                onButtonClick={handleSaveRoomSlot}>
               <span className={'add-slot-text'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>
-            </Button>
+            </ModalButton>
           </div>
         </Form>
       </Modal.Body>

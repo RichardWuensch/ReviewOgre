@@ -12,7 +12,7 @@ import { useParticipants, useParticipantsDispatch } from '../../shared/context/P
 import { Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import Runner from '../../../algorithm/logic/Runner';
-import CustomButton from '../../shared/button/CustomButton';
+import CustomButton from '../../shared/buttons/button/CustomButton';
 // import StoreResult from '../../../api/StoreResult';
 // import StoreResult from '../../../api/StoreResult';
 // import RevagerLiteExport from '../../../api/mail/RevagerLiteExport';

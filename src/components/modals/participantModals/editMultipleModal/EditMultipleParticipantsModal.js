@@ -1,10 +1,11 @@
 import Modal from 'react-bootstrap/Modal';
-import { Button, Form, Image } from 'react-bootstrap';
+import { Form, Image } from 'react-bootstrap';
 import './EditMultipleParticipantsModal.css';
 import exit from '../../../../assets/media/x-circle.svg';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParticipantsDispatch } from '../../../shared/context/ParticipantsContext';
+import ModalButton from '../../../shared/buttons/modalButton/ModalButton';
 
 function EditMultipleParticipantsModal ({ participants, onClose, ...props }) {
   const [group, setGroup] = useState('');
@@ -77,7 +78,10 @@ function EditMultipleParticipantsModal ({ participants, onClose, ...props }) {
                         </Form.Select>
                     </Form.Group>
                     <div className={'text-center'}>
-                        <Button variant={'light'} onClick={ onSaveUpdates } className={'save-button'}>Save Changes</Button>
+                        <ModalButton
+                            backgroundColor={'#B0D7AF'}
+                            onButtonClick={ onSaveUpdates }
+                        > Save Changes </ModalButton>
                     </div>
                 </Form>
             </Modal.Body>

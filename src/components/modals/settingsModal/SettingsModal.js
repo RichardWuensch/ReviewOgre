@@ -2,7 +2,8 @@ import './SettingsModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import exit from '../../../assets/media/x-circle.svg';
-import { Button, Col, Image, Row } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
+import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
 function SettingsModal (props) {
   return (
@@ -42,24 +43,20 @@ function SettingsModal (props) {
                     </div>
                 </div>
                 <div className={'footer'}>
-                    <Row className={'row'}>
-                        <Col className={'col'}>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
-                                className={'confirm-button'}
-                                onClick={props.onHide}>
+                    <Row>
+                        <Col>
+                            <ModalButton
+                                backgroundColor={'#B0D7AF'}
+                                onButtonClick={props.onHide}>
                                 Confirm
-                            </Button>
+                            </ModalButton>
                         </Col>
-                        <Col className={'col'}>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#C40233' }}
-                                className={'cancel-button'}
-                                onClick={props.onHide}>
+                        <Col>
+                            <ModalButton
+                                backgroundColor={'#C40233'}
+                                onButtonClick={props.onHide}>
                                 Abort
-                            </Button>
+                            </ModalButton>
                         </Col>
                     </Row>
                 </div>

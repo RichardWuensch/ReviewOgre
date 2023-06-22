@@ -11,49 +11,8 @@
     justify-content: space-between;
 }
 
-.modal .exit-successful-calculation-button{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 20px;
-    padding-left: 10%;
-    padding-right: 10%;
-    width: auto;
-    height: 6vh;
-    background-color: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.modal .exit-successful-calculation-button:focus,
-.modal .exit-successful-calculation-button:hover {
-     background: #B0D7AF;
-     color: black;
- }
-
 .mail-export-button-container{
     margin: 0 5% 0 5%;
-}
-.modal .button-mail-export{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 20px;
-    padding-left: 10%;
-    padding-right: 10%;
-    width: auto;
-    height: 6vh;
-    background-color: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.modal-mailExport-icon {
-    left: 42.21%;
-    right: 55.55%;
-    top: 55.53%;
-    bottom: 41.98%;
-    margin-right: 7px;
 }
 
 .reviews-table-container{

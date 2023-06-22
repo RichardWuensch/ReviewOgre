@@ -8,7 +8,7 @@ import edit from '../../../assets/media/pencil-square.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
 import { useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
-import CustomIconButton from '../../shared/iconButton/CustomIconButton';
+import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import PropTypes from 'prop-types';
 
 function SlotCard ({ roomSlot, eventKey, ...props }) {
@@ -122,6 +122,6 @@ function SlotCard ({ roomSlot, eventKey, ...props }) {
 }
 SlotCard.propTypes = {
   roomSlot: PropTypes.object.isRequired,
-  eventKey: PropTypes.string.isRequired
+  eventKey: PropTypes.number.isRequired
 };
 export default SlotCard;

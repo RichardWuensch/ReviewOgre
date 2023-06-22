@@ -3,7 +3,8 @@ import './DataImportCheckModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import exit from '../../../assets/media/x-circle.svg';
-import { Button, Col, Image, Row } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
+import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
 function DataImportCheckModal ({ onAddData, onOverwriteData, title, text, onHide, ...props }) {
   return (
@@ -28,33 +29,24 @@ function DataImportCheckModal ({ onAddData, onOverwriteData, title, text, onHide
                 <div className={'footer'}>
                     <Row>
                         <Col>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
-                                className={'confirm-button'}
-                                onClick={() => { onOverwriteData(); onHide(); }}>
-                                Overwrite
-                            </Button>
+                            <ModalButton
+                                backgroundColor={ '#B0D7AF' }
+                                onButtonClick={() => { onOverwriteData(); onHide(); }}
+                            > Overwrite </ModalButton>
                         </Col>
-                        <Col className={'col'}>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#B0D7AF', color: 'black' }}
-                                className={'confirm-button'}
-                                onClick={() => { onAddData(); onHide(); }}>
-                                Add
-                            </Button>
+                        <Col>
+                            <ModalButton
+                                backgroundColor={ '#B0D7AF' }
+                                onButtonClick={() => { onAddData(); onHide(); }}
+                            > Add </ModalButton>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <Button
-                                variant={'light'}
-                                style={{ backgroundColor: '#C40233' }}
-                                className={'cancel-button'}
-                                onClick={onHide}>
-                                Cancel
-                            </Button>
+                            <ModalButton
+                                backgroundColor={ '#C40233' }
+                                onButtonClick={onHide}
+                            > Cancel </ModalButton>
                         </Col>
                     </Row>
                 </div>
