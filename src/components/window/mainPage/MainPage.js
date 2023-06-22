@@ -99,19 +99,19 @@ function MainPage () {
   return (
             <div className={'main-page'}>
                 <Row className={'participant-slots-container'}>
-                    <Col xs={12} md={8} className="mb-3 mb-md-0 pl-0">
+                    <Col md={12} lg={8} className="mb-3 mb-md-0 pl-0">
                         {/* added context to participant store */}
                         <ParticipantList/>
                     </Col>
                     {/* replace with component */}
-                    <Col xs={12} md={4} className={'mb-3 mb-md-0 slots-setup-container'}>
+                    <Col md={12} lg={4} className={'mb-3 mb-md-0 slots-setup-container'}>
                         <SlotsWindow/>
                         <div className={'setupWindow'} style={{ paddingBottom: '4vh' }}>
                             <h2 className={'title-subheadline'}>Run Configuration</h2>
                             <div className={'setupContainer'}>
                                 <div className={'start-button-container'}>
                                     <CustomButton
-                                        toolTip={'Settings'}
+                                        toolTip={'Change the settings for the computation'}
                                         onButtonClick={openSettings}
                                         backgroundColor={'#B0D7AF'}
                                     >
@@ -126,7 +126,7 @@ function MainPage () {
                                 </div>
                                 <div className={'start-button-container'}>
                                     <CustomButton
-                                        toolTip={'Compute Assignments'}
+                                        toolTip={'Starts the computation. Results will be shown in a separate window'}
                                         onButtonClick={runAlgorithm}
                                         backgroundColor={'#B0D7AF'}
                                     >

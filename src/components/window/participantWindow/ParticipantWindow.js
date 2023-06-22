@@ -96,7 +96,7 @@ function ParticipantList () {
                 ? (
                     <div className={'button-container-participants'}>
                         <CustomButton
-                            toolTip={'Add Participant'}
+                            toolTip={'Add Participant manually'}
                             onButtonClick={() => setShowModalParticipant(true)}
                             backgroundColor={'#B0D7AF'}
                         >
@@ -163,7 +163,7 @@ function ParticipantList () {
                 ? (
                       <div className={'button-container-participants'}>
                           <CustomButton
-                              toolTip={'Edit List'}
+                              toolTip={'Edit multiple participants simultaneously'}
                               onButtonClick={() => setIsEditModeActive(true)}
                               backgroundColor={'#B0D7AF'}
                           >

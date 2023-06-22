@@ -1,6 +1,6 @@
 import './ModalButton.css';
 import React from 'react';
-import Button from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 function ModalButton ({ onButtonClick, backgroundColor, children }) {

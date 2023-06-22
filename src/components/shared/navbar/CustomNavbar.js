@@ -79,7 +79,7 @@ function CustomNavbar () {
   }
 
   return (
-      <Navbar expand="lg" style={{ backgroundColor: '#f5f5f5', borderBottom: 'solid rgba(0, 0, 0, 0.19) 1px' }}>
+      <Navbar className={'fixed-top'} expand="lg" style={{ backgroundColor: '#f5f5f5', borderBottom: 'solid rgba(0, 0, 0, 0.19) 1px' }}>
           <Container>
               <Navbar.Brand as={ Link } to="/">
                   <div className="d-flex align-items-center">

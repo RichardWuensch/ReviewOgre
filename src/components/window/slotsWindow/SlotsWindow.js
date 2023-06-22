@@ -28,7 +28,7 @@ function SlotsWindow () {
           <div className={'slots-button-container'} >
               <div className={'button-container-slots'}>
                   <CustomButton
-                      toolTip={'Add Slot'}
+                      toolTip={'Add Slot manually'}
                       onButtonClick={() => setShowModalAddSlot(true)}
                       backgroundColor={'#B0D7AF'}
                   >
