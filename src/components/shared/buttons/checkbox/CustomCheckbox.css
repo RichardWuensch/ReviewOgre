@@ -1,0 +1,19 @@
+.custom-checkbox .form-check-input:checked {
+    background-color: #B0D7AF;
+    border: 2px solid #82868B;
+}
+
+.custom-checkbox .form-check-input {
+    width: 2em;
+    height: 2em;
+    border: 2px solid #82868B;
+    border-radius: 20px !important;
+    background-color: #eee;
+    background-image: none;
+}
+
+.custom-checkbox .form-check-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 2px solid #82868b !important;
+}
