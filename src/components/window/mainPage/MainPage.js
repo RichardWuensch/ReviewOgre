@@ -18,8 +18,6 @@ import CustomButton from '../../shared/buttons/button/CustomButton';
 // import RevagerLiteExport from '../../../api/mail/RevagerLiteExport';
 // import Mail from '../../../api/mail/Mail';
 // import SaveRoomPlan from '../../../api/SaveRoomPlan';
-const authorIsNotary = false;
-const breakForModeratorAndReviewer = false;
 
 function MainPage () {
   const [algorithmErrorMessage, setAlgorithmErrorMessage] =
@@ -31,6 +29,12 @@ function MainPage () {
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
   const roomSlots = useRoomSlots();
+  const [settings, setSettings] = React.useState({
+    authorIsNotary: false,
+    breakForModeratorAndReviewer: false,
+    ABReview: false,
+    internationalGroups: false
+  });
 
   function runAlgorithm () {
     try {
@@ -39,22 +43,12 @@ function MainPage () {
         participantsDispatch,
         roomSlots,
         roomSlotsDispatch,
-        authorIsNotary,
-        breakForModeratorAndReviewer
+        settings.authorIsNotary,
+        settings.breakForModeratorAndReviewer
       );
 
       // successful run
       setShowModalSuccessfulCalculations(true);
-
-      // all on successful calculation window:
-
-      // new Mail(roomSlots).openMailClient();
-      // new Mail(roomSlots).saveMailsInTxt();
-      // new RevagerLiteExport().buildJSONAllReviews(roomSlots);
-      // new SaveRoomPlan(roomSlots).runSave();
-      // new StoreResult().runFileSave(roomSlots);
-      // new StoreResult().saveAsJSON(roomSlots);
-      // new StoreResult().saveAsTXT(roomSlots);
     } catch (error) {
       console.log(error.message);
       setAlgorithmErrorMessage(error);
@@ -154,7 +148,9 @@ function MainPage () {
                     <SettingsModal
                         show={showModalSettings}
                         onHide={() => setShowModalSettings(false)}
-                        onClose={() => setShowModalSettings(false)}
+                        settings={settings}
+                        setSettings={setSettings}
+
                     />
 
                     {/* end */}

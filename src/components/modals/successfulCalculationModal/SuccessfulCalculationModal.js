@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import './SuccessfulCalculationModal.css';
 import exit from '../../../assets/media/x-circle.svg';
 import React from 'react';
-import { Button, Image } from 'react-bootstrap';
 import mail from '../../../assets/media/envelope-at.svg';
 import download from '../../../assets/media/download.svg';
-import { Col, Image, Row } from 'react-bootstrap';
+import { Button, Col, Image, Row } from 'react-bootstrap';
 import upload from '../../../assets/media/upload.svg';
 import ReviewWindow from './ReviewWindow';
 import Mail from '../../../api/mail/Mail';
@@ -162,6 +161,7 @@ function SuccessfulCalculationsModal (props) {
               />
               Export Revager Lite file
             </Button>
+            </div>
           </div>
         </div>
       </Modal.Body>
