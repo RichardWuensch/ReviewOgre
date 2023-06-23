@@ -4,9 +4,9 @@ import './SuccessfulCalculationModal.css';
 import exit from '../../../assets/media/x-circle.svg';
 import React from 'react';
 import mail from '../../../assets/media/envelope-at.svg';
-import download from '../../../assets/media/download.svg';
-import { Button, Col, Image, Row } from 'react-bootstrap';
+import { Col, Image, Row } from 'react-bootstrap';
 import upload from '../../../assets/media/upload.svg';
+import download from '../../../assets/media/download.svg';
 import ReviewWindow from './ReviewWindow';
 import Mail from '../../../api/mail/Mail';
 import StoreResult from '../../../api/StoreResult';
@@ -17,15 +17,6 @@ import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
 function SuccessfulCalculationsModal (props) {
   const roomSlots = useRoomSlots();
-
-  function runAlgorithm () {
-    try {
-      new Mail(roomSlots).generateMailsForModerators();
-      props.onHide();
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
 
   return (
     <Modal
@@ -47,123 +38,88 @@ function SuccessfulCalculationsModal (props) {
       </Modal.Header>
       <Modal.Body>
         <ReviewWindow />
-        <div className={'d-flex justify-content-center'}>
-          <Row>
-            <Col>
+          <Row className={'button-container'}>
+            <Col className="similar-buttons-container">
+              Mail Operations
               <ModalButton
-                  backgroundColor={'#B0D7AF'}
-                  onButtonClick={runAlgorithm}>
+                backgroundColor={'#B0D7AF'}
+                onClick={() => new Mail(roomSlots).openMailClient()}
+              >
                 <Image
-                    style={{ marginRight: '10px' }}
-                    src={upload}
-                    alt="mailExport"
-                    className={'modal-mailExport-icon'}
+                  src={mail}
+                  alt="openInMailClient"
+                  className={'button-icon'}
                 />
-                Export for Mailing
+                Open in Mailclient
+              </ModalButton>
+              <ModalButton
+                backgroundColor={'#B0D7AF'}
+                onButtonClick={() => new Mail(roomSlots).saveMailsInTxt()}
+              >
+                <Image
+                  src={upload}
+                  alt="mailExport"
+                  className={'button-icon'}
+                />
+                Export Mail list
               </ModalButton>
             </Col>
-            <Col>
+            <Col className="similar-buttons-container">
+              Export Result
               <ModalButton
-                  backgroundColor={'#B0D7AF'}
-                  onButtonClick={props.onHide}>
+                backgroundColor={'#B0D7AF'}
+                onButtonClick={() => new StoreResult().saveAsTXT(roomSlots)}
+              >
                 <Image
-                    style={{ marginRight: '10px' }}
-                    src={exit}
-                    alt={'exitParticipantModal'}
-                    className={'modal-exit-icon'}
+                  src={upload}
+                  alt="exportResult"
+                  className={'button-icon'}
                 />
-                Return to Main
+                Result as txt
+              </ModalButton>
+              <ModalButton
+                backgroundColor={'#B0D7AF'}
+                onButtonClick={() => new StoreResult().saveAsJSON(roomSlots)}
+              >
+                <Image
+                  src={upload}
+                  alt="exportResult"
+                  className={'button-icon'}
+                />
+                Result as JSON
+              </ModalButton>
+            </Col>
+            <Col className="similar-buttons-container">
+              Room Plan
+              <ModalButton
+                backgroundColor={'#B0D7AF'}
+                onButtonClick={() => new SaveRoomPlan(roomSlots).runSave()}
+              >
+                <Image
+                  src={download}
+                  alt="exportResult"
+                  className={'button-icon'}
+                />
+                Download pdf
+              </ModalButton>
+            </Col>
+            <Col className="similar-buttons-container">
+              Revager lite
+              <ModalButton
+                backgroundColor={'#B0D7AF'}
+                onButtonClick={() =>
+                  new RevagerLiteExport().buildZipWithAllRevagerLiteFiles(roomSlots)
+                }
+              >
+                <Image
+                  src={upload}
+                  alt="exportResult"
+                  className={'button-icon'}
+                />
+                Export reviews
               </ModalButton>
             </Col>
           </Row>
-        <div className={'button-container'}>
-          <div className="similar-buttons-container">
-            Mail Operations
-            <Button
-              variant={'light'}
-              className="button"
-              onClick={() => new Mail(roomSlots).openMailClient()}
-            >
-              <Image
-                src={mail}
-                alt="openInMailClient"
-                className={'modal-mailExport-icon'}
-              />
-              Open in Mailclient
-            </Button>
-            <Button
-              variant={'light'}
-              className="button"
-              onClick={() => new Mail(roomSlots).saveMailsInTxt()}
-            >
-              <Image
-                src={download}
-                alt="mailExport"
-                className={'modal-mailExport-icon'}
-              />
-              Export Mail list
-            </Button>
-          </div>
-          <div className="similar-buttons-container">
-            Export Result
-            <Button
-              className="button"
-              variant="light"
-              type="button"
-              onClick={() => new StoreResult().saveAsTXT(roomSlots)}
-            >
-              <Image
-                src={download}
-                alt="exportResult"
-                className={'modal-mailExport-icon'}
-              />
-              Result as txt
-            </Button>
-            <Button
-              onClick={() => new StoreResult().saveAsJSON(roomSlots)}
-              variant="light"
-              className="button"
-            >
-              <Image
-                src={download}
-                alt="exportResult"
-                className={'modal-mailExport-icon'}
-              />
-              Result as JSON
-            </Button>
-          </div>
-          <div className="similar-buttons-container">
-            <Button
-              onClick={() => new SaveRoomPlan(roomSlots).runSave()}
-              variant="light"
-              className="button"
-            >
-              <Image
-                src={download}
-                alt="exportResult"
-                className={'modal-mailExport-icon'}
-              />
-              Room Plan
-            </Button>
-          </div>
-          <div className="similar-buttons-container">
-            <Button
-              onClick={() =>
-                new RevagerLiteExport().buildJSONAllReviews(roomSlots)
-              }
-              variant="light"
-              className="button"
-            >
-              <Image
-                src={download}
-                alt="exportResult"
-                className={'modal-mailExport-icon'}
-              />
-              Export Revager Lite file
-            </Button>
-            </div>
-          </div>
-        </div>
       </Modal.Body>
     </Modal>
   );

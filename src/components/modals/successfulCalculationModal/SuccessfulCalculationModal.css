@@ -44,23 +44,6 @@
      color: black;
  }
 
-.mail-export-button-container{
-    margin: 0 5% 0 5%;
-}
-.modal .button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    width: 30vh;
-    height: 20px;
-    background-color: #B0D7AF;
-    border-radius: 5px;
-    border-style: none;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    gap: 10px;
-}
-
 .reviews-table-container{
     padding-left: 4%;
     padding-right: 4%;
@@ -77,7 +60,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 5px;
     color: black;
     font-size: larger;
     margin-top: 15px;
@@ -86,12 +69,14 @@
 .similar-buttons-container{
     background-color: #cccccc;
     border-radius: 5px;
-    padding: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+}
+
+.button-icon{
+    margin-right: 5px;
 }

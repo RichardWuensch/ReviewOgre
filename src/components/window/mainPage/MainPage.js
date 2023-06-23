@@ -4,6 +4,7 @@ import '../setup_window.css';
 import '../checkboxstyling.css';
 import SlotsWindow from '../slotsWindow/SlotsWindow';
 import start from '../../../assets/media/play-circle.svg';
+import gear from '../../../assets/media/gear.svg';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
 import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/SuccessfulCalculationModal';
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
@@ -13,11 +14,6 @@ import { Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
-// import StoreResult from '../../../api/StoreResult';
-// import StoreResult from '../../../api/StoreResult';
-// import RevagerLiteExport from '../../../api/mail/RevagerLiteExport';
-// import Mail from '../../../api/mail/Mail';
-// import SaveRoomPlan from '../../../api/SaveRoomPlan';
 
 function MainPage () {
   const [algorithmErrorMessage, setAlgorithmErrorMessage] =
@@ -86,10 +82,6 @@ function MainPage () {
 
   */
 
-  function openSettings () {
-    setShowModalSettings(true);
-  }
-
   return (
             <div className={'main-page'}>
                 <Row className={'participant-slots-container'}>
@@ -106,12 +98,12 @@ function MainPage () {
                                 <div className={'start-button-container'}>
                                     <CustomButton
                                         toolTip={'Change the settings for the computation'}
-                                        onButtonClick={openSettings}
+                                        onButtonClick={() => setShowModalSettings(true)}
                                         backgroundColor={'#B0D7AF'}
                                     >
                                         <Image
-                                            src={start}
-                                            alt="startCalculation"
+                                            src={gear}
+                                            alt="settings"
                                             height={20}
                                             width={20}
                                         />
