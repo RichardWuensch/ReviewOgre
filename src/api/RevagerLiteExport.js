@@ -1,17 +1,28 @@
 import { saveAs } from 'file-saver';
 import ConverterForPrinting from './ConverterForPrinting';
+import JSZip from 'jszip';
 
 export default class RevagerLiteExport {
-  buildJSONAllReviews (roomSlots) {
+  buildZipWithAllRevagerLiteFiles (roomSlots) {
+    const jsZip = new JSZip();
     for (const roomSlot of roomSlots) {
       for (const room of roomSlot.getRooms()) {
-        this.buildJSONSingleReview(roomSlot, room);
+        if (!room.getReview()) {
+          continue;
+        }
+        const reviewJSON = this.buildJSONSingleReview(roomSlot, room);
+        const reviewFileName = `revager-lite-review-${room
+          .getReview()
+          .getGroupName()}.json`;
+        jsZip.file(reviewFileName, reviewJSON);
       }
     }
+    jsZip.generateAsync({ type: 'blob' }).then((content) => {
+      saveAs(content, 'revager-lite-reviews.zip');
+    });
   }
 
   buildJSONSingleReview (roomSlot, room) {
-    // TODO: check for room.getReview() === null necessary?
     const dateTimeConverter = new ConverterForPrinting();
     const outputSlot = {
       reviewType: 1,
@@ -29,21 +40,32 @@ export default class RevagerLiteExport {
     };
 
     const revagerLiteString = JSON.stringify(outputSlot, null, 1);
-    const blob = new Blob([revagerLiteString], { type: 'application/json' });
-    const fileName = 'revager-lite-review-' + room.getReview().getGroupName() + '.json';
-    saveAs(blob, fileName);
+    return revagerLiteString;
+
+    // const blob = new Blob([revagerLiteString], { type: 'application/json' });
+    // const fileName = 'revager-lite-review-' + room.getReview().getGroupName() + '.json';
+    // saveAs(blob, fileName);
   }
 
   #getParticipants (review) {
     const participants = [];
 
-    const exportAuthor = this.#getSingleParticipant(review.getAuthor(), 'Author');
+    const exportAuthor = this.#getSingleParticipant(
+      review.getAuthor(),
+      'Author'
+    );
     participants.push(exportAuthor);
 
-    const exportNotary = this.#getSingleParticipant(review.getNotary(), 'Notary');
+    const exportNotary = this.#getSingleParticipant(
+      review.getNotary(),
+      'Notary'
+    );
     participants.push(exportNotary);
 
-    const exportModerator = this.#getSingleParticipant(review.getModerator(), 'Moderator');
+    const exportModerator = this.#getSingleParticipant(
+      review.getModerator(),
+      'Moderator'
+    );
     participants.push(exportModerator);
 
     for (const reviewer of review.getReviewer()) {
