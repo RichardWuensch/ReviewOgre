@@ -6,6 +6,7 @@ import { RoomSlotProvider } from './components/shared/context/RoomSlotContext';
 import { Route, Routes } from 'react-router-dom';
 import CustomNavbar from './components/shared/navbar/CustomNavbar';
 import DocsComponent from './components/docs/DocsComponent';
+import ReviewComponent from './components/review/ReviewComponent';
 
 function App () {
   const contentRef = useRef(null);
@@ -35,6 +36,7 @@ function App () {
                             {/* add other routes here. New routes before default route! Otherwise, it will always math '/' */}
                             <Route path={'/docs'} element={<DocsComponent />} />
                             <Route path={'/'} element={<MainPage/>} />
+                            <Route path={'/reviews'} element={<ReviewComponent />} />
                         </Routes>
                     </div>
                 </div>

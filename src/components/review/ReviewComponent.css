@@ -1,0 +1,13 @@
+.docs-page {
+    flex: auto;
+    padding: 2% 5%;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 50%;
+}
+
+.docs-text {
+    font-size: 2em;
+    font-weight: 100;
+}
