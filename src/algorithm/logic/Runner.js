@@ -1,8 +1,8 @@
 import Algorithm from '../logic/Algorithm';
 
 export default class Runner {
-  runAlgorithm (participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary, breakForModeratorAndReviewer) {
-    const algo = new Algorithm(participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary, breakForModeratorAndReviewer);
+  runAlgorithm (participants, participantsDispatch, roomSlots, roomSlotsDispatch, settings) {
+    const algo = new Algorithm(participants, participantsDispatch, roomSlots, roomSlotsDispatch, settings);
     algo.run();
 
     algo.printResult();

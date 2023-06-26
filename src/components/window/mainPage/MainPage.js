@@ -28,7 +28,7 @@ function MainPage () {
   const [settings, setSettings] = React.useState({
     authorIsNotary: false,
     breakForModeratorAndReviewer: false,
-    ABReview: false,
+    abReview: false,
     internationalGroups: false
   });
 
@@ -39,8 +39,7 @@ function MainPage () {
         participantsDispatch,
         roomSlots,
         roomSlotsDispatch,
-        settings.authorIsNotary,
-        settings.breakForModeratorAndReviewer
+        settings
       );
 
       // successful run

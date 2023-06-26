@@ -7,6 +7,7 @@ export default class Algorithm {
   #participants;
   #roomSlots;
   #authorIsNotary;
+  #abReview;
   #breakForModeratorAndReviewer;
 
   #participantsDispatch;
@@ -14,15 +15,15 @@ export default class Algorithm {
 
   #maximumTries;
 
-  constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch, authorIsNotary, breakForModeratorAndReviewer, maximumTries) {
+  constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch, settings, maximumTries) {
     this.#participants = this.#resetParticipants(participants);
     this.#participantsDispatch = participantsDispatch;
     this.#roomSlotsDispatch = roomSlotsDispatch;
     this.#roomSlots = this.#resetRoomSlots(roomSlots);
 
-    this.#authorIsNotary = authorIsNotary;
-    this.#breakForModeratorAndReviewer = breakForModeratorAndReviewer;
-    console.log(this.#breakForModeratorAndReviewer);
+    this.#authorIsNotary = settings.authorIsNotary;
+    this.#abReview = settings.abReview;
+    this.#breakForModeratorAndReviewer = settings.breakForModeratorAndReviewer;
     this.#maximumTries = (maximumTries === undefined) ? 300 : maximumTries;
   }
 
@@ -71,7 +72,7 @@ export default class Algorithm {
           if (review === null) {
             continue;
           }
-          room.getReview().fillPossibleParticipantsOfReview(roomSlot, this.#participants);
+          room.getReview().fillPossibleParticipantsOfReview(roomSlot, this.#participants, this.#abReview);
           this.#assignModeratorToReview(roomSlot, review);
           this.#assignNotaryToReview(roomSlot, review);
           try {
@@ -100,15 +101,14 @@ export default class Algorithm {
    * @throws {Error} - to show what's the problem
    */
   #prechecks (numberOfGroups) {
+    // TODO add ABReview
     let roomCount = 0;
     const maxNumberOfRoomsInSlots = Math.floor(this.#participants.length / ((2 * this.#participants.length) / numberOfGroups)); // if there are more rooms they can be shown as unneccessary and the booking can canceled
     const minAmountOfSlots = this.#breakForModeratorAndReviewer ? (numberOfGroups / maxNumberOfRoomsInSlots) * 2 : (numberOfGroups / maxNumberOfRoomsInSlots);
-    // const saveDeletedRoomsForRoomPlaner = [];
     for (const s of this.#roomSlots) {
       const rooms = s.getRooms();
       if (rooms.length > maxNumberOfRoomsInSlots) {
         roomCount += maxNumberOfRoomsInSlots;
-        // saveDeletedRoomsForRoomPlaner.push(rooms.splice(maxNumberOfRoomsInSlots, rooms.length - maxNumberOfRoomsInSlots)); // can be shown as unnecessary rooms
         for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
           rooms[i].setIgnoreForAlgorithm(true);
         }
@@ -116,8 +116,6 @@ export default class Algorithm {
         roomCount += rooms.length;
       }
     }
-    // saveDeletedRoomsForRoomPlaner.forEach(room => console.log(room));
-    // this.#roomSlots.forEach(room => console.log(room));
     let errorMessage = '';
     if (numberOfGroups < 4) errorMessage += 'At least 4 groups are needed.\n';
     if (this.#participants.length < 12) errorMessage += 'At least 12 particpants are needed.\n';
