@@ -6,7 +6,7 @@ import ImportFile from './ImportFile';
 export default class LoadConfiguration {
   participants = [];
   roomSlots = [];
-  authorIsNotary;
+  settings = {};
 
   /**
    * Handles the file import and parse the configuration file
@@ -21,13 +21,12 @@ export default class LoadConfiguration {
       parseData.roomSlots.forEach(rs => this.roomSlots.push(new RoomSlot(-1, new Date(rs.date), new Date(rs.startTime), new Date(rs.endTime), // TODO -1
         rs.rooms.map(r => new Room(r.name, r.beamer))
       )));
-      this.authorIsNotary = parseData.authorIsNotary;
+      this.settings.authorIsNotary = parseData.settings.authorIsNotary;
+      this.settings.breakForModeratorAndReviewer = parseData.settings.breakForModeratorAndReviewer;
+      this.settings.abReview = parseData.settings.abReview;
+      this.settings.internationalGroups = parseData.settings.internationalGroups;
       resolve();
     });
-  }
-
-  getAuthorIsNotary () {
-    return this.authorIsNotary;
   }
 
   getParticipants () {
@@ -36,5 +35,9 @@ export default class LoadConfiguration {
 
   getRoomSlots () {
     return this.roomSlots;
+  }
+
+  getSettings () {
+    return this.settings;
   }
 }

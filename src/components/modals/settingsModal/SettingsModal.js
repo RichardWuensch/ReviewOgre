@@ -12,10 +12,10 @@ function SettingsModal (props) {
     });
   }
 
-  function setABReview () {
+  function setAbReview () {
     props.setSettings({
       ...props.settings,
-      ABReview: !props.settings.ABReview
+      abReview: !props.settings.abReview
     });
   }
 
@@ -85,8 +85,8 @@ function SettingsModal (props) {
               <input
                 type="checkbox"
                 aria-label={'A/B Reviews'}
-                onChange={setABReview}
-                checked={props.settings.ABReview}
+                onChange={setAbReview}
+                checked={props.settings.abReview}
               />
               <span className={'slider round'}></span>
             </label>

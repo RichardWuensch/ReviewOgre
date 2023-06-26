@@ -17,13 +17,21 @@ function CustomNavbar () {
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
   const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
 
+  // TODO: use correct settings from MainPage OR use dispatch for settings
+  let settings = {
+    authorIsNotary: false,
+    breakForModeratorAndReviewer: false,
+    abReview: false,
+    internationalGroups: false
+  };
+
   async function importDataCheck (event) {
     setOverwriteExistingDataEvent(event);
     setShowModalDataImportCheck(true);
   }
 
   function saveConfiguration () {
-    new StoreConfiguration(participants, roomSlots, false).runFileSave();
+    new StoreConfiguration(participants, roomSlots, settings).runFileSave();
   }
 
   async function importConfiguration () {
@@ -31,7 +39,9 @@ function CustomNavbar () {
     await importConf.runConfigurationImport(overwriteExistingDataEvent);
     addParticipantListToContext(importConf.getParticipants());
     addRoomSlotListToContext(importConf.getRoomSlots());
-    // authorIsNotary = importConf.getAuthorIsNotary();
+
+    // TODO: set correct settings from MainPage OR update dispatch for settings
+    settings = importConf.getSettings();
   }
 
   function addParticipantListToContext (list) {

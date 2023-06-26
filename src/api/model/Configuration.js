@@ -1,15 +1,7 @@
 export default class Configuration {
-  authorIsNotary;
   participants = [];
   roomSlots = [];
-
-  getAuthorIsNotary () {
-    return this.authorIsNotary;
-  }
-
-  setAuthorIsNotary (authorIsNotary) {
-    this.authorIsNotary = authorIsNotary;
-  }
+  settings = {};
 
   getParticipants () {
     return this.participants;
@@ -27,7 +19,7 @@ export default class Configuration {
     this.roomSlots = roomSlots;
   }
 
-  parseParticipantsFromStore (participants) {
+  parseParticipants (participants) {
     for (const p of participants) {
       const newParticipant = {
         firstName: p.getFirstName(),
@@ -41,7 +33,7 @@ export default class Configuration {
     }
   }
 
-  parseRoomSlotsFromStore (roomSlots) {
+  parseRoomSlots (roomSlots) {
     for (const roomSlot of roomSlots) {
       const newRoomSlot = {
         date: roomSlot.getDate(),
@@ -60,7 +52,10 @@ export default class Configuration {
     }
   }
 
-  parseConfigurationFromStore (authorIsNotary) {
-    this.authorIsNotary = authorIsNotary;
+  parseSettings (settings) {
+    this.settings.authorIsNotary = settings.authorIsNotary ? settings.authorIsNotary : false;
+    this.settings.breakForModeratorAndReviewer = settings.breakForModeratorAndReviewer ? settings.breakForModeratorAndReviewer : false;
+    this.settings.abReview = settings.abReview ? settings.abReview : false;
+    this.settings.internationalGroups = settings.internationalGroups ? settings.internationalGroups : false;
   }
 }

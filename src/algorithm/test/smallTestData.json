@@ -4,73 +4,73 @@
    "firstName": "RichardMod",
    "lastName": "RichardMod",
    "email": "RichardMod@email.de",
-   "group": 1
+   "group": "1"
   },
   {
    "firstName": "BastiMod",
    "lastName": "BastiMod",
    "email": "BastiMod@email.de",
-   "group": 1
+   "group": "1"
   },
   {
    "firstName": "DanielMod",
    "lastName": "DanielMod",
    "email": "DanielMod@email.de",
-   "group": 1
+   "group": "1"
   },
   {
    "firstName": "Jakob",
    "lastName": "Jakob",
    "email": "Jakob@email.de",
-   "group": 2
+   "group": "2"
   },
   {
    "firstName": "Nico",
    "lastName": "Nico",
    "email": "Nico@email.de",
-   "group": 2
+   "group": "2"
   },
   {
    "firstName": "Hannah",
    "lastName": "Hannah",
    "email": "Hannah@email.de",
-   "group": 2
+   "group": "2"
   },
   {
    "firstName": "A",
    "lastName": "A",
    "email": "A@email.de",
-   "group": 3
+   "group": "3"
   },
   {
    "firstName": "B",
    "lastName": "B",
    "email": "B@email.de",
-   "group": 3
+   "group": "3"
   },
   {
    "firstName": "C",
    "lastName": "C",
    "email": "C@email.de",
-   "group": 3
+   "group": "3"
   },
   {
    "firstName": "X",
    "lastName": "X",
    "email": "X@email.de",
-   "group": 4
+   "group": "4"
   },
   {
    "firstName": "Y",
    "lastName": "Y",
    "email": "Y@email.de",
-   "group": 4
+   "group": "4"
   },
   {
    "firstName": "Z",
    "lastName": "Z",
    "email": "Z@email.de",
-   "group": 4
+   "group": "4"
   }
  ],
  "roomSlots": [
@@ -109,5 +109,10 @@
    ]
   }
  ],
- "authorIsNotary": true
+ "settings": {
+  "authorIsNotary": false,
+  "breakForModeratorAndReviewer": false,
+  "abReview": false,
+  "internationalGroups": false
+ }
 }

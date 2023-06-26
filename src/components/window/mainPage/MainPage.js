@@ -32,6 +32,10 @@ function MainPage () {
     internationalGroups: false
   });
 
+  React.useEffect(() => {
+    console.log(settings);
+  }, [settings]);
+
   function runAlgorithm () {
     try {
       new Runner().runAlgorithm(
