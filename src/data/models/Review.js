@@ -34,11 +34,28 @@ export default class Review {
     this.#deleteParticipantFromPossibleParticipants(this.#author);
   }
 
+  setAuthorSuccessPage (roomSlot, author) {
+    if (!this.#possibleParticipants.includes(author)) { // TODO check if a suitable frontend exists
+      throw new Error('Author is not possible for this review');
+    }
+    this.setAuthor(roomSlot, author);
+  }
+
+  deleteAuthor (roomSlot) { // TODO check if a suitable frontend exists
+    this.#author.decreaseAuthorCount();
+    this.#author.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
+    this.#addParticipantToPossibleParticipants(this.#author);
+    this.#author = null;
+  }
+
   getModerator () {
     return this.#moderator;
   }
 
   setModerator (roomSlots, index, moderator, breakForModeratorAndReviewer) {
+    if (!this.#possibleParticipants.includes(moderator)) { // TODO check if a suitable frontend exists
+      throw new Error('Moderator is not possible for this review');
+    }
     this.#moderator = moderator;
     this.#moderator.increaseModeratorCount();
     this.#moderator.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
@@ -52,11 +69,28 @@ export default class Review {
     this.#deleteParticipantFromPossibleParticipants(this.#moderator);
   }
 
+  deleteModerator (roomSlots, index, moderator, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
+    moderator.decreaseModeratorCount();
+    moderator.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+    if (breakForModeratorAndReviewer) {
+      if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
+        if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
+          moderator.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+        }
+      }
+    }
+    this.#moderator = null;
+    this.#addParticipantToPossibleParticipants(moderator);
+  }
+
   getNotary () {
     return this.#notary;
   }
 
   setNotary (roomSlot, notary, authorIsNotary) {
+    if (!this.#possibleParticipants.includes(notary) && authorIsNotary === false) { // TODO check if a suitable frontend exists
+      throw new Error('Notary is not possible for this review');
+    }
     this.#notary = notary;
     this.#notary.increaseNotaryCount();
     if (authorIsNotary === false) {
@@ -65,6 +99,14 @@ export default class Review {
     } else {
       // do nothing, this is done because of the double role
     }
+  }
+
+  deleteNotary (roomSlot, notary) { // TODO check if a suitable frontend exists
+    this.#notary = notary;
+    this.#notary.decreaseNotaryCount();
+    this.#notary.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
+    this.#addParticipantToPossibleParticipants(this.#notary);
+    // no check against authorIsNotary to make it possible to break this rule in some cases in the successful calc page
   }
 
   getReviewer () {
@@ -76,10 +118,13 @@ export default class Review {
   }
 
   addReviewer (roomSlots, index, participant, breakForModeratorAndReviewer) {
+    if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
+      throw new Error('Participant is not possible for this review');
+    }
     participant.increaseReviewerCount();
     participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
-      if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
+      if (index < roomSlots.length - 1) {
         if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
           participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], true));
         }
@@ -87,6 +132,20 @@ export default class Review {
     }
     this.#reviewers.push(participant);
     this.#deleteParticipantFromPossibleParticipants(participant);
+  }
+
+  deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
+    reviewer.decreaseReviewerCount();
+    reviewer.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+    if (breakForModeratorAndReviewer) {
+      if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
+        if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
+          reviewer.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+        }
+      }
+    }
+    this.#reviewers.filter(r => r !== reviewer);
+    this.#addParticipantToPossibleParticipants(reviewer);
   }
 
   getPossibleParticipants () {
@@ -108,14 +167,29 @@ export default class Review {
   }
 
   /**
+   * add a participant to the possibleParticipant list after he is deleted from a role in this review
+   * @param {Participant} participant - the participant to be deleted
+   */
+  #addParticipantToPossibleParticipants (participant) {
+    this.#possibleParticipants.push(participant);
+  }
+
+  /**
   * search all possible participants for this review
   * @param {Slot} roomSlot - to get the slot and check if the participants is currently active in this slot
   * @param {Participant} participants - to check if the participant is not in the same group as the author and currently not ative in this timeslot
+  * @param {Boolean} abReview - it is not allowed to have participants with the same topic as the author in the review group
   */
-  fillPossibleParticipantsOfReview (roomSlot, participants) {
+  fillPossibleParticipantsOfReview (roomSlot, participants, abReview) {
     const slot = this.#getSlotFromRoomSlot(roomSlot, false);
     this.#setPossibleParticipants(
-      participants.filter((p) => this.getAuthor().getGroup() !== p.getGroup() && !p.isActiveInSlot(slot))
+      participants.filter((p) => {
+        if (abReview === true) {
+          return this.getAuthor().getGroup() !== p.getGroup() && !p.isActiveInSlot(slot) && this.getAuthor().getTopic() !== p.getTopic();
+        } else {
+          return this.getAuthor().getGroup() !== p.getGroup() && !p.isActiveInSlot(slot);
+        }
+      })
     );
   }
 

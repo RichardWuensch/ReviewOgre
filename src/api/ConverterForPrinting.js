@@ -35,9 +35,9 @@ export default class ConverterForPrinting {
   /**
   * Makes the participant to a simple string with the nessecary attributes
   * @param {participant} participant
-  * @returns {string} - in format 'FirstName LastName Email Group group'
+  * @returns {string} - in format 'FirstName LastName Email Group Topic'
   */
   getParticipantAttributsForPrinting (participant) {
-    return participant.getFirstName() + ' ' + participant.getLastName() + ' ' + participant.getEmail() + ' Gruppe ' + participant.getGroup();
+    return participant.getFirstName() + ' ' + participant.getLastName() + ' ' + participant.getEmail() + ' Gruppe ' + participant.getGroup() + ' Topic ' + participant.getTopic();
   }
 }

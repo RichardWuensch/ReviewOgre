@@ -107,6 +107,10 @@ export default class Participant {
     this.#reviewerCount++;
   }
 
+  decreaseReviewerCount () {
+    this.#reviewerCount--;
+  }
+
   getAuthorCount () {
     return this.#authorCount;
   }
@@ -117,6 +121,10 @@ export default class Participant {
 
   increaseAuthorCount () {
     this.#authorCount++;
+  }
+
+  decreaseAuthorCount () {
+    this.#authorCount--;
   }
 
   getNotaryCount () {
@@ -131,6 +139,10 @@ export default class Participant {
     this.#notaryCount++;
   }
 
+  decreaseNotaryCount () {
+    this.#notaryCount--;
+  }
+
   getModeratorCount () {
     return this.#moderatorCount;
   }
@@ -143,8 +155,16 @@ export default class Participant {
     this.#moderatorCount++;
   }
 
+  decreaseModeratorCount () {
+    this.#moderatorCount--;
+  }
+
   addSlotToActiveList (slot) {
     this.#activeInSlots.push(slot);
+  }
+
+  deleteSlotFromActiveList (slotToDelete) {
+    this.#activeInSlots.filter(item => item.slot !== slotToDelete);
   }
 
   getActiveSlots () {
