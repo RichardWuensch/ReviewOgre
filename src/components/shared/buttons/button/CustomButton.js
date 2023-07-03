@@ -17,7 +17,7 @@ function CustomButton ({ toolTip, onButtonClick, backgroundColor, children, disa
   );
 
   return (
-        <div className='button-with-overlay'>
+        <div className='button-with-overlay' style={{ paddingTop: '5px' }}>
             <OverlayTrigger
                 trigger={['hover', 'focus']}
                 placement="top"

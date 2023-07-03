@@ -26,7 +26,7 @@ function ReviewWindow () {
     <Accordion
       activeKey={activeKey}
       onSelect={handleAccordionItemClick}
-      style={{ height: '40vh' }}
+      style={{ height: '75vh' }}
     >
       <div className={'overflow-container'} style={{ maxHeight: '100%' }}>
         {roomSlots.map((roomSlot, roomSlotIndex) =>
