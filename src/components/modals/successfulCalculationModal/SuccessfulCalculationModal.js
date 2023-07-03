@@ -43,7 +43,7 @@ function SuccessfulCalculationsModal (props) {
               Mail Operations
               <ModalButton
                 backgroundColor={'#B0D7AF'}
-                onClick={() => new Mail(roomSlots).openMailClient()}
+                onButtonClick={() => new Mail(roomSlots).openMailClient()}
               >
                 <Image
                   src={mail}
