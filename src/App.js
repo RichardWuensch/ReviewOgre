@@ -5,7 +5,8 @@ import { ParticipantProvider } from './components/shared/context/ParticipantsCon
 import { RoomSlotProvider } from './components/shared/context/RoomSlotContext';
 import { Route, Routes } from 'react-router-dom';
 import CustomNavbar from './components/shared/navbar/CustomNavbar';
-import DocsComponent from './components/docs/DocsComponent';
+import DocsComponent from './components/docsPage/DocsComponent';
+import ResultCalculationPage from './components/resultPage/ResultCalculationPage';
 
 function App () {
   const contentRef = useRef(null);
@@ -14,7 +15,10 @@ function App () {
     const navbarElement = document.querySelector('.navbar');
     const observer = new ResizeObserver((entries) => {
       const navbarHeight = entries[0]?.contentRect?.height;
-      contentRef.current.style.marginTop = `${navbarHeight + 10}px`;
+
+      requestAnimationFrame(() => {
+        contentRef.current.style.marginTop = `${navbarHeight + 10}px`;
+      });
     });
 
     observer.observe(navbarElement);
@@ -33,6 +37,7 @@ function App () {
                     <div ref={contentRef} style={{ flexGrow: 1 }}>
                         <Routes>
                             {/* add other routes here. New routes before default route! Otherwise, it will always math '/' */}
+                            <Route path={'/reviews'} element={<ResultCalculationPage />} />
                             <Route path={'/docs'} element={<DocsComponent />} />
                             <Route path={'/'} element={<MainPage/>} />
                         </Routes>

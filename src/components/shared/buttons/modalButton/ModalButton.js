@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 function ModalButton ({ onButtonClick, backgroundColor, children }) {
   return (
         <Button
-            style={{ backgroundColor }}
+            style={{ backgroundColor, border: 'none', marginTop: '10px' }}
             variant="light"
             className="save-button"
             onClick={onButtonClick}

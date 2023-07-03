@@ -45,9 +45,6 @@
  }
 
 .reviews-table-container{
-    padding-left: 4%;
-    padding-right: 4%;
-    padding-top: 4%;
     width: 100%;
     font-size: 1.5em;
     justify-content: space-between;
@@ -70,7 +67,7 @@
     background-color: #cccccc;
     border-radius: 5px;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
