@@ -13,6 +13,7 @@ import ConverterForPrinting from '../../../api/ConverterForPrinting';
 import deleteButton from '../../../assets/media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
+import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
 
 function SlotModal ({ roomslot, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
@@ -249,17 +250,11 @@ function SlotModal ({ roomslot, ...props }) {
                       <Accordion.Body>
                         <Card.Body>
                           <div className={'beamer-properties'}>
-                            <label className={'switch'}>
-                              <input
-                                type="checkbox"
-                                checked={item.getBeamerNeeded()}
-                                onChange={(event) => handleBeamerChange(index)}
-                              />
-                              <span className={'slider round'}></span>
-                            </label>
-                            <span style={{ paddingLeft: 5 }}>
-                              Beamer needed
-                            </span>
+                            <CustomSwitch
+                                onSwitchClick={() => handleBeamerChange(index)}
+                                isChecked={item.getBeamerNeeded()}>
+                              <span style={{ paddingLeft: 5 }}> Beamer needed </span>
+                            </CustomSwitch>
                           </div>
                         </Card.Body>
                       </Accordion.Body>

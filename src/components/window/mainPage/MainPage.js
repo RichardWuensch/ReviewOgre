@@ -6,20 +6,18 @@ import SlotsWindow from '../slotsWindow/SlotsWindow';
 import start from '../../../assets/media/play-circle.svg';
 import gear from '../../../assets/media/gear.svg';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
-import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/SuccessfulCalculationModal';
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
-import { Col, Image, Row } from 'react-bootstrap';
+import { Card, Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
+import { useNavigate } from 'react-router-dom';
 
 function MainPage () {
   const [algorithmErrorMessage, setAlgorithmErrorMessage] =
         React.useState(null);
-  const [showModalSuccessfulCalculations, setShowModalSuccessfulCalculations] =
-        React.useState(false);
   const [showModalSettings, setShowModalSettings] = React.useState(false);
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
@@ -31,6 +29,7 @@ function MainPage () {
     abReview: false,
     internationalGroups: false
   });
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     console.log(settings);
@@ -47,7 +46,7 @@ function MainPage () {
       );
 
       // successful run
-      setShowModalSuccessfulCalculations(true);
+      navigate('/reviews');
     } catch (error) {
       console.log(error.message);
       setAlgorithmErrorMessage(error);
@@ -97,48 +96,46 @@ function MainPage () {
                         <SlotsWindow/>
                         <div className={'setupWindow'} style={{ paddingBottom: '4vh' }}>
                             <h2 className={'title-subheadline'}>Run Configuration</h2>
-                            <div className={'setupContainer'}>
-                                <div className={'start-button-container'}>
-                                    <CustomButton
-                                        toolTip={'Change the settings for the computation'}
-                                        onButtonClick={() => setShowModalSettings(true)}
-                                        backgroundColor={'#B0D7AF'}
-                                    >
-                                        <Image
-                                            src={gear}
-                                            alt="settings"
-                                            height={20}
-                                            width={20}
-                                        />
-                                        <span className="button-start-text">Settings</span>
-                                    </CustomButton>
-                                </div>
-                                <div className={'start-button-container'}>
-                                    <CustomButton
-                                        toolTip={'Starts the computation. Results will be shown in a separate window'}
-                                        onButtonClick={runAlgorithm}
-                                        backgroundColor={'#B0D7AF'}
-                                    >
-                                        <Image
-                                            src={start}
-                                            alt="startCalculation"
-                                            height={20}
-                                            width={20}
-                                        />
-                                        <span className="button-start-text">Compute assignment </span>
-                                    </CustomButton>
-                                </div>
-                            </div>
+                            <Card className={'setupContainer'}>
+                                <Row className="justify-content-between">
+                                    <Col xl={4} md={4} xs={4}>
+                                        <CustomButton
+                                            toolTip={'Change the settings for the computation'}
+                                            onButtonClick={() => setShowModalSettings(true)}
+                                            backgroundColor={'#B0D7AF'}
+                                        >
+                                            <Image
+                                                src={gear}
+                                                alt="settings"
+                                                height={20}
+                                                width={20}
+                                            />
+                                            <span className="button-start-text">Settings</span>
+                                        </CustomButton>
+                                    </Col>
+                                    <Col xl={8} md={8} xs={8}>
+                                        <CustomButton
+                                            toolTip={'Starts the computation. Results will be shown in a separate window'}
+                                            onButtonClick={runAlgorithm}
+                                            backgroundColor={'#B0D7AF'}
+                                        >
+                                            <Image
+                                                src={start}
+                                                alt="startCalculation"
+                                                height={20}
+                                                width={20}
+                                            />
+                                            <span className="button-start-text">Compute assignment </span>
+                                        </CustomButton>
+                                    </Col>
+                                </Row>
+                            </Card>
                         </div>
                     </Col>
                     <FailedCalculationModal
                         show={algorithmErrorMessage}
                         onHide={() => setAlgorithmErrorMessage(null)}
                         errorMessage={algorithmErrorMessage}
-                    />
-                    <SuccessfulCalculationModal
-                        show={showModalSuccessfulCalculations}
-                        onHide={() => setShowModalSuccessfulCalculations(false)}
                     />
                     <SettingsModal
                         show={showModalSettings}

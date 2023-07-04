@@ -13,13 +13,13 @@ import ImportParticipants from '../../../api/ImportParticipants';
 import { Container, Image, Table } from 'react-bootstrap';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
+import CustomCheckbox from '../../shared/buttons/checkbox/CustomCheckbox';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
   const [showModalParticipant, setShowModalParticipant] = React.useState(false);
   const [showModalEditMultipleParticipants, setShowModalEditMultipleParticipants] = React.useState(false);
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
-  const [allParticipantsSelected, setAllParticipantsSelected] = React.useState(true);
   const [showModalDeleteParticipant, setShowModalDeleteParticipant] = React.useState(false);
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
   const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
@@ -85,7 +85,6 @@ function ParticipantList () {
   function leaveEditMode () {
     setIsEditModeActive(false);
     setSelectedParticipants([]);
-    setAllParticipantsSelected(false);
   }
 
   return (
@@ -203,13 +202,18 @@ function ParticipantList () {
                   <tr>
                       {isEditModeActive && (
                           <th>
-                              <label className={'checkboxContainer'}>
-                                  <input type="checkbox" onClick={() => {
-                                    setAllParticipantsSelected(prev => !prev);
-                                    setSelectedParticipants(allParticipantsSelected === true ? participants : []);
-                                  }}/>
-                                  <span className={'checkmark'}></span>
-                              </label>
+                              <CustomCheckbox
+                                  onCheckboxClick={() => {
+                                    setSelectedParticipants(() => {
+                                      if (selectedParticipants.length === participants.length) {
+                                        return [];
+                                      } else {
+                                        return participants;
+                                      }
+                                    });
+                                  }
+                              }
+                                  isChecked={selectedParticipants.length === participants.length} />
                           </th>
                       )}
                       <th className={'column-firstName'} style={{ fontSize: '1.5em' }}>First Name</th>
@@ -227,23 +231,18 @@ function ParticipantList () {
                     <tr key={participant.getId()} style={{ borderBottom: '1px solid black' }}>
                         {isEditModeActive && (
                             <td>
-                                <label className={'checkboxContainer'}>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedParticipants.includes(participant)}
-                                        onChange={event => {
-                                          const isChecked = event.target.checked;
-                                          setSelectedParticipants(prevSelectedParticipants => {
-                                            if (isChecked) {
-                                              return [...prevSelectedParticipants, participant];
-                                            } else {
-                                              return prevSelectedParticipants.filter(p => p !== participant);
-                                            }
-                                          });
-                                        }}
-                                    />
-                                    <span className={'checkmark'}></span>
-                                </label>
+                                <CustomCheckbox
+                                    onCheckboxClick={() => {
+                                      setSelectedParticipants(() => {
+                                        if (!selectedParticipants.includes(participant)) {
+                                          return [...selectedParticipants, participant];
+                                        } else {
+                                          return selectedParticipants.filter(p => p !== participant);
+                                        }
+                                      });
+                                    }
+                                    }
+                                    isChecked={selectedParticipants.includes(participant)} />
                             </td>
                         )}
                         <Participant participant={participant} />

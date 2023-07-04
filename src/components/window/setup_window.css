@@ -4,16 +4,10 @@
     font-weight: 100;
 }
 .setupContainer{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2vh 0 2vh 1vw;
-    border-radius: 5px;
-    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    padding: 2vh 2vh 2vh 2vh;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 .setupItems{
-    font-size: 1.5em;
     padding-bottom: 5%;
 }
 .radio-container{

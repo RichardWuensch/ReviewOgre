@@ -1,6 +1,6 @@
 import './ResultCalculationPage.css';
 import { Col, Container, Row } from 'react-bootstrap';
-import ReviewWindow from '../modals/successfulCalculationModal/ReviewWindow';
+import ReviewWindow from './reviewWindow/ReviewWindow';
 import React, { useState } from 'react';
 import ExportOptions from './exportOptions/ExportOptions';
 import CustomButton from '../shared/buttons/button/CustomButton';
