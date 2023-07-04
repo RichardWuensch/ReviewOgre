@@ -9,7 +9,7 @@ import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCa
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
-import { Col, Image, Row } from 'react-bootstrap';
+import { Card, Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
@@ -96,38 +96,40 @@ function MainPage () {
                         <SlotsWindow/>
                         <div className={'setupWindow'} style={{ paddingBottom: '4vh' }}>
                             <h2 className={'title-subheadline'}>Run Configuration</h2>
-                            <div className={'setupContainer'}>
-                                <div className={'start-button-container'}>
-                                    <CustomButton
-                                        toolTip={'Change the settings for the computation'}
-                                        onButtonClick={() => setShowModalSettings(true)}
-                                        backgroundColor={'#B0D7AF'}
-                                    >
-                                        <Image
-                                            src={gear}
-                                            alt="settings"
-                                            height={20}
-                                            width={20}
-                                        />
-                                        <span className="button-start-text">Settings</span>
-                                    </CustomButton>
-                                </div>
-                                <div className={'start-button-container'}>
-                                    <CustomButton
-                                        toolTip={'Starts the computation. Results will be shown in a separate window'}
-                                        onButtonClick={runAlgorithm}
-                                        backgroundColor={'#B0D7AF'}
-                                    >
-                                        <Image
-                                            src={start}
-                                            alt="startCalculation"
-                                            height={20}
-                                            width={20}
-                                        />
-                                        <span className="button-start-text">Compute assignment </span>
-                                    </CustomButton>
-                                </div>
-                            </div>
+                            <Card className={'setupContainer'}>
+                                <Row className="justify-content-between">
+                                    <Col xl={4} md={4} xs={4}>
+                                        <CustomButton
+                                            toolTip={'Change the settings for the computation'}
+                                            onButtonClick={() => setShowModalSettings(true)}
+                                            backgroundColor={'#B0D7AF'}
+                                        >
+                                            <Image
+                                                src={gear}
+                                                alt="settings"
+                                                height={20}
+                                                width={20}
+                                            />
+                                            <span className="button-start-text">Settings</span>
+                                        </CustomButton>
+                                    </Col>
+                                    <Col xl={8} md={8} xs={8}>
+                                        <CustomButton
+                                            toolTip={'Starts the computation. Results will be shown in a separate window'}
+                                            onButtonClick={runAlgorithm}
+                                            backgroundColor={'#B0D7AF'}
+                                        >
+                                            <Image
+                                                src={start}
+                                                alt="startCalculation"
+                                                height={20}
+                                                width={20}
+                                            />
+                                            <span className="button-start-text">Compute assignment </span>
+                                        </CustomButton>
+                                    </Col>
+                                </Row>
+                            </Card>
                         </div>
                     </Col>
                     <FailedCalculationModal
