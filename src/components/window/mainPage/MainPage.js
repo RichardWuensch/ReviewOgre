@@ -6,7 +6,6 @@ import SlotsWindow from '../slotsWindow/SlotsWindow';
 import start from '../../../assets/media/play-circle.svg';
 import gear from '../../../assets/media/gear.svg';
 import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
-import SuccessfulCalculationModal from '../../modals/successfulCalculationModal/SuccessfulCalculationModal';
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
@@ -14,12 +13,11 @@ import { Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
+import { useNavigate } from 'react-router-dom';
 
 function MainPage () {
   const [algorithmErrorMessage, setAlgorithmErrorMessage] =
         React.useState(null);
-  const [showModalSuccessfulCalculations, setShowModalSuccessfulCalculations] =
-        React.useState(false);
   const [showModalSettings, setShowModalSettings] = React.useState(false);
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
@@ -31,6 +29,7 @@ function MainPage () {
     abReview: false,
     internationalGroups: false
   });
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     console.log(settings);
@@ -47,7 +46,7 @@ function MainPage () {
       );
 
       // successful run
-      setShowModalSuccessfulCalculations(true);
+      navigate('/reviews');
     } catch (error) {
       console.log(error.message);
       setAlgorithmErrorMessage(error);
@@ -135,10 +134,6 @@ function MainPage () {
                         show={algorithmErrorMessage}
                         onHide={() => setAlgorithmErrorMessage(null)}
                         errorMessage={algorithmErrorMessage}
-                    />
-                    <SuccessfulCalculationModal
-                        show={showModalSuccessfulCalculations}
-                        onHide={() => setShowModalSuccessfulCalculations(false)}
                     />
                     <SettingsModal
                         show={showModalSettings}
