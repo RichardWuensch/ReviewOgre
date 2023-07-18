@@ -159,6 +159,9 @@ export default class Algorithm {
           break;
         }
         for (const room of roomSlot.getRooms()) {
+          if (room.getIgnoreForAlgorithm() === true) {
+            continue;
+          }
           if (room.getReview() === null) {
             const rand = Math.floor(Math.random() * groupParticipants.length);
             room.setReview(new Review(roomSlot, groupParticipants[rand]));
