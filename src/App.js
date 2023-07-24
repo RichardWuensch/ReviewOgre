@@ -5,8 +5,9 @@ import { ParticipantProvider } from './components/shared/context/ParticipantsCon
 import { RoomSlotProvider } from './components/shared/context/RoomSlotContext';
 import { Route, Routes } from 'react-router-dom';
 import CustomNavbar from './components/shared/navbar/CustomNavbar';
-import DocsComponent from './components/docsPage/DocsComponent';
+import DocsComponent from './components/window/docsPage/DocsComponent';
 import ResultCalculationPage from './components/resultPage/ResultCalculationPage';
+import { SettingsProvider } from './components/shared/context/SettingsContext';
 
 function App () {
   const contentRef = useRef(null);
@@ -32,17 +33,19 @@ function App () {
     <>
         <RoomSlotProvider>
             <ParticipantProvider>
-                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', height: '100%', minWidth: '100%' }}>
-                    <CustomNavbar/>
-                    <div ref={contentRef} style={{ flexGrow: 1 }}>
-                        <Routes>
-                            {/* add other routes here. New routes before default route! Otherwise, it will always math '/' */}
-                            <Route path={'/reviews'} element={<ResultCalculationPage />} />
-                            <Route path={'/docs'} element={<DocsComponent />} />
-                            <Route path={'/'} element={<MainPage/>} />
-                        </Routes>
+                <SettingsProvider>
+                    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', height: '100%', minWidth: '100%' }}>
+                        <CustomNavbar/>
+                        <div ref={contentRef} style={{ flexGrow: 1 }}>
+                            <Routes>
+                                {/* add other routes here. New routes before default route! Otherwise, it will always math '/' */}
+                                <Route path={'/reviews'} element={<ResultCalculationPage />} />
+                                <Route path={'/docs'} element={<DocsComponent />} />
+                                <Route path={'/'} element={<MainPage/>} />
+                            </Routes>
+                        </div>
                     </div>
-                </div>
+                </SettingsProvider>
             </ParticipantProvider>
         </RoomSlotProvider>
     </>

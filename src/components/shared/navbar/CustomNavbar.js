@@ -7,23 +7,18 @@ import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 import StoreConfiguration from '../../../api/StoreConfiguration';
 import { Link, useLocation } from 'react-router-dom';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
+import { useSettings, useSettingsDispatch } from '../context/SettingsContext';
 
 function CustomNavbar () {
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
+  const settingsDispatch = useSettingsDispatch();
+  const settings = useSettings();
   const roomSlots = useRoomSlots();
   const location = useLocation();
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
   const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
-
-  // TODO: use correct settings from MainPage OR use dispatch for settings
-  let settings = {
-    authorIsNotary: false,
-    breakForModeratorAndReviewer: false,
-    abReview: false,
-    internationalGroups: false
-  };
 
   async function importDataCheck (event) {
     setOverwriteExistingDataEvent(event);
@@ -41,7 +36,7 @@ function CustomNavbar () {
     addRoomSlotListToContext(importConf.getRoomSlots());
 
     // TODO: set correct settings from MainPage OR update dispatch for settings
-    settings = importConf.getSettings();
+    addSettingsToContext(importConf.getSettings());
   }
 
   function addParticipantListToContext (list) {
@@ -85,6 +80,15 @@ function CustomNavbar () {
         itemToDelete: entry
       });
     }
+    /* eslint-enable object-shorthand */
+  }
+
+  function addSettingsToContext (settings) {
+    /* eslint-disable object-shorthand */
+    settingsDispatch({
+      type: 'changed',
+      updatedSettings: settings
+    });
     /* eslint-enable object-shorthand */
   }
 
