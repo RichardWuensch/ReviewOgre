@@ -1,7 +1,6 @@
 import React from 'react';
 import './MainPage.css';
 import '../setup_window.css';
-import '../checkboxstyling.css';
 import SlotsWindow from '../slotsWindow/SlotsWindow';
 import start from '../../../assets/media/play-circle.svg';
 import gear from '../../../assets/media/gear.svg';
@@ -14,6 +13,7 @@ import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlo
 import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import { useNavigate } from 'react-router-dom';
+import { useSettings } from '../../shared/context/SettingsContext';
 
 function MainPage () {
   const [algorithmErrorMessage, setAlgorithmErrorMessage] =
@@ -23,12 +23,7 @@ function MainPage () {
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
   const roomSlots = useRoomSlots();
-  const [settings, setSettings] = React.useState({
-    authorIsNotary: false,
-    breakForModeratorAndReviewer: false,
-    abReview: false,
-    internationalGroups: false
-  });
+  const settings = useSettings();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -52,37 +47,6 @@ function MainPage () {
       setAlgorithmErrorMessage(error);
     }
   }
-
-  // TODO: should be in header after import call
-  /*
-  async function importDataCheck (event) {
-    setOverwriteExistingDataEvent(event);
-    setShowModalDataImportCheck(true);
-  }
-
-  function handleNotaryIsAuthorChange () {
-    authorIsNotary = !authorIsNotary;
-
-    async function importStudentList () {
-      const importParticipants = new ImportParticipants();
-      const participantList = await importParticipants.runStudentImport(
-        overwriteExistingDataEvent
-      );
-      addParticipantListToContext(participantList);
-    }
-
-   */
-
-  /*
-  function saveConfiguration () {
-    new StoreConfiguration(
-      participants,
-      roomSlots,
-      authorIsNotary
-    ).runFileSave();
-  }
-
-  */
 
   return (
             <div className={'main-page'}>
@@ -140,8 +104,6 @@ function MainPage () {
                     <SettingsModal
                         show={showModalSettings}
                         onHide={() => setShowModalSettings(false)}
-                        settings={settings}
-                        setSettings={setSettings}
 
                     />
 
@@ -150,13 +112,5 @@ function MainPage () {
             </div>
   );
 }
-
-/* function handleModeratorNotReviewerChange () {
-  console.log('Moderator not Reviewer')
-}
-
-function handleABReviewChange () {
-  console.log('A/B Review')
-} */
 
 export default MainPage;
