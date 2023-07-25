@@ -65,7 +65,7 @@ export default class Algorithm {
       this.#calculateNumberOfReviewer(groups.length);
       for (const roomSlot of this.#roomSlots) {
         for (const room of roomSlot.getRooms()) {
-          if (room.getIgnoreForAlgorithm() === true) {
+          if (room.getNotNeeded() === true) {
             continue;
           }
           const review = room.getReview();
@@ -110,7 +110,7 @@ export default class Algorithm {
       if (rooms.length > maxNumberOfRoomsInSlots) {
         roomCount += maxNumberOfRoomsInSlots;
         for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
-          rooms[i].setIgnoreForAlgorithm(true);
+          rooms[i].setNotNeeded(true);
         }
       } else {
         roomCount += rooms.length;

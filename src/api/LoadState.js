@@ -56,6 +56,9 @@ export default class LoadState {
         this.#parseTime(rs.endTime),
         rs.rooms.map(roomData => {
           const room = new Room(roomData.name, roomData.beamerNeeded, roomData.roomId);
+          if (room.notNeeded) {
+            room.setNotNeeded(roomData.notNeeded);
+          }
           if (roomData.review) {
             const author = this.#participants.find(p => p.getId() === roomData.review.authorId);
             const moderator = this.#participants.find(p => p.getId() === roomData.review.moderatorId);
@@ -66,6 +69,7 @@ export default class LoadState {
             newReview.setPossibleParticipants(possibleParticipants);
             room.setReview(newReview);
           }
+          console.log(room);
           return room;
         })
       )));

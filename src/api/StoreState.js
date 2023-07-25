@@ -39,15 +39,18 @@ export default class StoreState {
           name: room.getName(),
           beamerNeeded: room.getBeamerNeeded()
         };
-        if (saveWithReviews && room.getReview()) {
-          newRoom.review = {
-            groupName: room.getReview().getGroupName(),
-            authorId: room.getReview().getAuthor().getId(),
-            moderatorId: room.getReview().getModerator().getId(),
-            notaryId: room.getReview().getNotary().getId(),
-            reviewerIds: room.getReview().getReviewer().map(reviewer => reviewer.getId()),
-            possibleParticipantIds: room.getReview().getPossibleParticipants().map(possibleP => possibleP.getId())
-          };
+        if (saveWithReviews) {
+          newRoom.notNeeded = room.getNotNeeded();
+          if (room.getReview()) {
+            newRoom.review = {
+              groupName: room.getReview().getGroupName(),
+              authorId: room.getReview().getAuthor().getId(),
+              moderatorId: room.getReview().getModerator().getId(),
+              notaryId: room.getReview().getNotary().getId(),
+              reviewerIds: room.getReview().getReviewer().map(reviewer => reviewer.getId()),
+              possibleParticipantIds: room.getReview().getPossibleParticipants().map(possibleP => possibleP.getId())
+            };
+          }
         }
         newRoomSlot.rooms.push(newRoom);
       }
