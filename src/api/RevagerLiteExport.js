@@ -11,9 +11,10 @@ export default class RevagerLiteExport {
           continue;
         }
         const reviewJSON = this.buildJSONSingleReview(roomSlot, room);
-        const reviewFileName = `revager-lite-review-${room
+        const reviewFileName = `revager-lite-${room
           .getReview()
-          .getGroupName()}.json`;
+          .getGroupName()}.rev`;
+
         jsZip.file(reviewFileName, reviewJSON);
       }
     }
@@ -24,13 +25,15 @@ export default class RevagerLiteExport {
 
   buildJSONSingleReview (roomSlot, room) {
     const dateTimeConverter = new ConverterForPrinting();
+    const procuctTitle = room.getReview().getAuthor().getTopic() ? room.getReview().getAuthor().getTopic() : 'Product title';
+
     const outputSlot = {
       reviewType: 1,
       product: {
-        title: 'Product Title',
-        description: 'Product Description'
+        title: procuctTitle,
+        description: 'Product description'
       },
-      description: 'Review ' + room.getReview().getGroupName(),
+      description: '',
       location: room.getName(),
       participants: this.#getParticipants(room.getReview()),
       allAspects: [],
@@ -41,10 +44,6 @@ export default class RevagerLiteExport {
 
     const revagerLiteString = JSON.stringify(outputSlot, null, 1);
     return revagerLiteString;
-
-    // const blob = new Blob([revagerLiteString], { type: 'application/json' });
-    // const fileName = 'revager-lite-review-' + room.getReview().getGroupName() + '.json';
-    // saveAs(blob, fileName);
   }
 
   #getParticipants (review) {
@@ -58,7 +57,7 @@ export default class RevagerLiteExport {
 
     const exportNotary = this.#getSingleParticipant(
       review.getNotary(),
-      'Notary'
+      'Scribe'
     );
     participants.push(exportNotary);
 
@@ -80,7 +79,7 @@ export default class RevagerLiteExport {
     return {
       firstName: participant.getFirstName(),
       lastName: participant.getLastName(),
-      id: 0,
+      id: participant.getId(),
       contact: participant.getEmail(),
       role,
       aspect: []

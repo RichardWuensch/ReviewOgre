@@ -31,7 +31,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
   };
 
   const saveClick = () => {
-    const participantTemp = new Participant(id, firstName, lastName, email, group, topic, languageLevel);
+    const participantTemp = new Participant(undefined, id, firstName, lastName, email, group, topic, languageLevel);
     onSaveClick(participantTemp);
     handleClose();
   };

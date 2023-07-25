@@ -26,10 +26,6 @@ function MainPage () {
   const settings = useSettings();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    console.log(settings);
-  }, [settings]);
-
   function runAlgorithm () {
     try {
       new Runner().runAlgorithm(

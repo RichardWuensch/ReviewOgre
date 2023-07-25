@@ -10,9 +10,19 @@ export default class Review {
 
   #possibleParticipants = [];
 
-  constructor (roomSlot, author) {
-    this.setAuthor(roomSlot, author);
-    this.#groupName = author.getGroup();
+  constructor (roomSlot, author, groupName, moderator, notary, reviewers, possibleParticipants) {
+    if (!moderator && !notary && !reviewers) {
+      this.setAuthor(roomSlot, author);
+      this.#groupName = author.getGroup();
+    } else {
+      // for the state import with the result you need to set all attributes without checking
+      this.#groupName = groupName;
+      this.#author = author;
+      this.#moderator = moderator;
+      this.#notary = notary;
+      this.#reviewers = reviewers;
+      this.#possibleParticipants = possibleParticipants;
+    }
   }
 
   getGroupName () {
@@ -152,7 +162,7 @@ export default class Review {
     return this.#possibleParticipants;
   }
 
-  #setPossibleParticipants (possibleParticipants) {
+  setPossibleParticipants (possibleParticipants) {
     this.#possibleParticipants = possibleParticipants;
   }
 
@@ -182,7 +192,7 @@ export default class Review {
   */
   fillPossibleParticipantsOfReview (roomSlot, participants, abReview) {
     const slot = this.#getSlotFromRoomSlot(roomSlot, false);
-    this.#setPossibleParticipants(
+    this.setPossibleParticipants(
       participants.filter((p) => {
         if (abReview === true) {
           return this.getAuthor().getGroup() !== p.getGroup() && !p.isActiveInSlot(slot) && this.getAuthor().getTopic() !== p.getTopic();
@@ -200,7 +210,7 @@ export default class Review {
   * @returns {Slot}
   */
   #getSlotFromRoomSlot (roomSlot, breakSlotForUser) {
-    const slot = new Slot(-1, roomSlot.getDate(), roomSlot.getStartTime(), roomSlot.getEndTime());
+    const slot = new Slot(roomSlot.getId(), roomSlot.getDate(), roomSlot.getStartTime(), roomSlot.getEndTime());
     slot.setBreakSlotForUser(breakSlotForUser);
     return slot;
   }

@@ -37,9 +37,10 @@ export default class RoomSlot extends Slot {
   }
 
   retrieveOverlappingSlots (allSlots) {
-    const slotsOnSameDay = allSlots.filter((slot) =>
-      this.#equalDates(slot.getDate(), this.getDate())
-    );
+    const slotsOnSameDay = allSlots
+      .filter((slot) =>
+        this.#equalDates(slot.getDate(), this.getDate()))
+      .filter(slot => slot.getId() !== this.getId());
 
     return slotsOnSameDay.filter((slot) =>
       this.#overlappingTimes(
@@ -52,21 +53,12 @@ export default class RoomSlot extends Slot {
   }
 
   #equalDates (date1, date2) {
-    if (
-      date1.getDate() === date2.getDate() &&
+    return date1.getDate() === date2.getDate() &&
       date1.getMonth() === date2.getMonth() &&
-      date1.getFullYear() === date2.getFullYear()
-    ) {
-      return true;
-    }
-    return false;
+      date1.getFullYear() === date2.getFullYear();
   }
 
   #overlappingTimes (start1, end1, start2, end2) {
-    if (start1 < end2 && start2 < end1) {
-      return true;
-    }
-
-    return false;
+    return start1 < end2 && start2 < end1;
   }
 }
