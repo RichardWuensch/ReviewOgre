@@ -1,21 +1,22 @@
 import React from 'react';
 import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from '../../../assets/media/favicon_ogre.png';
-import LoadConfiguration from '../../../api/LoadConfiguration';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
-import StoreConfiguration from '../../../api/StoreConfiguration';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
+import LoadState from '../../../api/LoadState';
+import StoreState from '../../../api/StoreState';
+import StateExportSaveReviewsModal from '../../modals/stateExportSaveReviewsModal/StateExportSaveReviewsModal';
 
 function CustomNavbar () {
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
   const roomSlots = useRoomSlots();
-  const location = useLocation();
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
   const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
+  const [showSaveReviewsModal, setShowSaveReviewsModal] = React.useState(false);
 
   // TODO: use correct settings from MainPage OR use dispatch for settings
   let settings = {
@@ -30,18 +31,27 @@ function CustomNavbar () {
     setShowModalDataImportCheck(true);
   }
 
-  function saveConfiguration () {
-    new StoreConfiguration(participants, roomSlots, settings).runFileSave();
+  function checkForAssignedReviews () {
+    const firstAssignedReview = roomSlots[0]?.getRooms()[0]?.getReview();
+    if (firstAssignedReview) {
+      setShowSaveReviewsModal(true);
+    } else {
+      saveState(false); // directly call saveState without having to ask whether to save reviews
+    }
   }
 
-  async function importConfiguration () {
-    const importConf = new LoadConfiguration();
-    await importConf.runConfigurationImport(overwriteExistingDataEvent);
-    addParticipantListToContext(importConf.getParticipants());
-    addRoomSlotListToContext(importConf.getRoomSlots());
+  function saveState (saveWithReviews) {
+    new StoreState().saveAsJSON(roomSlots, participants, settings, saveWithReviews);
+  }
+
+  async function loadState () {
+    const loadState = new LoadState();
+    await loadState.runStateImport(overwriteExistingDataEvent);
+    addRoomSlotListToContext(loadState.getRoomSlots());
+    addParticipantListToContext(loadState.getParticipants());
 
     // TODO: set correct settings from MainPage OR update dispatch for settings
-    settings = importConf.getSettings();
+    settings = loadState.getSettings();
   }
 
   function addParticipantListToContext (list) {
@@ -66,26 +76,16 @@ function CustomNavbar () {
     /* eslint-enable object-shorthand */
   }
 
-  function deleteParticipantListFromContext (list) {
-    /* eslint-disable object-shorthand */
-    for (const entry of list) {
-      participantsDispatch({
-        type: 'deleted',
-        itemToDelete: entry
-      });
-    }
-    /* eslint-enable object-shorthand */
+  function deleteAllParticipantsFromContext () {
+    participantsDispatch({
+      type: 'deleteAll'
+    });
   }
 
-  function deleteRoomSlotListFromContext (list) {
-    /* eslint-disable object-shorthand */
-    for (const entry of list) {
-      roomSlotsDispatch({
-        type: 'deleted',
-        itemToDelete: entry
-      });
-    }
-    /* eslint-enable object-shorthand */
+  function deleteAllRoomSlotsFromContext () {
+    roomSlotsDispatch({
+      type: 'deleteAll'
+    });
   }
 
   return (
@@ -108,14 +108,14 @@ function CustomNavbar () {
                       <Nav.Link as={ Link } to="/">Home</Nav.Link>
                       <Nav.Link as={ Link } to="/reviews">Reviews</Nav.Link>
                       <Nav.Link as={ Link } to="/docs">Docs</Nav.Link>
-                      <NavDropdown disabled={ location.pathname !== '/' } title="Save/Load Options" id="basic-nav-dropdown">
-                          <NavDropdown.Item onClick={() => document.getElementById('file-input').click()}>Load Configuration</NavDropdown.Item>
+                      <NavDropdown title="Save/Load Options" id="basic-nav-dropdown">
+                          <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
                           <input type="file"
-                                 id="file-input"
+                                 id="file-input-config"
                                  style={{ display: 'none' }}
                                  onChange={() => { importDataCheck(event); }}
                                  accept='application/json'/>
-                          <NavDropdown.Item onClick={saveConfiguration}>Save Configuration</NavDropdown.Item>
+                          <NavDropdown.Item onClick={checkForAssignedReviews}>Save State</NavDropdown.Item>
                       </NavDropdown>
                   </Nav>
               </Navbar.Collapse>
@@ -123,15 +123,21 @@ function CustomNavbar () {
           <DataImportCheckModal
               show={showModalDataImportCheck}
               onOverwriteData={() => {
-                deleteParticipantListFromContext(participants);
-                deleteRoomSlotListFromContext(roomSlots);
-                importConfiguration();
+                deleteAllParticipantsFromContext();
+                deleteAllRoomSlotsFromContext();
+                loadState();
               }}
-              onAddData={() => { importConfiguration(); }}
-              title={ 'Load Configuration' }
+              onAddData={loadState}
+              title={ 'Load State' }
               text={ 'participants and slots' }
               onHide={() => setShowModalDataImportCheck(false)}
               onClose={() => setShowModalDataImportCheck(false)}
+          />
+          <StateExportSaveReviewsModal
+            show={showSaveReviewsModal}
+            saveState={saveState}
+            onHide={() => setShowSaveReviewsModal(false)}
+            onClose={() => setShowSaveReviewsModal(false)}
           />
       </Navbar>
   );
