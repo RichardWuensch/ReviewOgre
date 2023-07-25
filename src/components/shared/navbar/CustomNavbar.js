@@ -8,23 +8,18 @@ import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCh
 import LoadState from '../../../api/LoadState';
 import StoreState from '../../../api/StoreState';
 import StateExportSaveReviewsModal from '../../modals/stateExportSaveReviewsModal/StateExportSaveReviewsModal';
+import { useSettings, useSettingsDispatch } from '../context/SettingsContext';
 
 function CustomNavbar () {
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
+  const settingsDispatch = useSettingsDispatch();
+  const settings = useSettings();
   const roomSlots = useRoomSlots();
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
   const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
   const [showSaveReviewsModal, setShowSaveReviewsModal] = React.useState(false);
-
-  // TODO: use correct settings from MainPage OR use dispatch for settings
-  let settings = {
-    authorIsNotary: false,
-    breakForModeratorAndReviewer: false,
-    abReview: false,
-    internationalGroups: false
-  };
 
   async function importDataCheck (event) {
     setOverwriteExistingDataEvent(event);
@@ -49,9 +44,7 @@ function CustomNavbar () {
     await loadState.runStateImport(overwriteExistingDataEvent);
     addRoomSlotListToContext(loadState.getRoomSlots());
     addParticipantListToContext(loadState.getParticipants());
-
-    // TODO: set correct settings from MainPage OR update dispatch for settings
-    settings = loadState.getSettings();
+    addSettingsToContext(loadState.getSettings());
   }
 
   function addParticipantListToContext (list) {
@@ -86,6 +79,15 @@ function CustomNavbar () {
     roomSlotsDispatch({
       type: 'deleteAll'
     });
+  }
+
+  function addSettingsToContext (settings) {
+    /* eslint-disable object-shorthand */
+    settingsDispatch({
+      type: 'changed',
+      updatedSettings: settings
+    });
+    /* eslint-enable object-shorthand */
   }
 
   return (
