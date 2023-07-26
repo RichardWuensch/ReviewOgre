@@ -21,7 +21,7 @@ export default class LoadState {
     const parseData = JSON.parse(fileContent);
     return new Promise((resolve) => {
       this.#parseParticipantsFromJSON(parseData.participants, parseData.roomSlots);
-      this.#parseRoomSlotsFromJSON(parseData.roomSlots, parseData.participants);
+      this.#parseRoomSlotsFromJSON(parseData.roomSlots);
       this.#settings = parseData.settings;
       resolve();
     });
@@ -55,7 +55,10 @@ export default class LoadState {
         this.#parseTime(rs.startTime),
         this.#parseTime(rs.endTime),
         rs.rooms.map(roomData => {
-          const room = new Room(roomData.name, roomData.beamerNeeded, roomData.roomId);
+          const room = new Room(
+            roomData.name,
+            roomData.beamerNeeded ?? roomData.beamer, // beamer for configuration files of version 1.0.0
+            roomData.roomId);
           if (room.notNeeded) {
             room.setNotNeeded(roomData.notNeeded);
           }
@@ -69,28 +72,35 @@ export default class LoadState {
             newReview.setPossibleParticipants(possibleParticipants);
             room.setReview(newReview);
           }
-          console.log(room);
           return room;
         })
       )));
   }
 
-  #parseTime (timeAsString) {
+  #parseTime (timeOrDateAsString) {
+    const parsedDate = Date.parse(timeOrDateAsString);
+    if (!isNaN(parsedDate)) {
+      // for configuration files of version 1.0.0
+      return new Date(parsedDate);
+    }
     const newDate = new Date();
-    newDate.setHours(timeAsString.substring(0, 2));
-    newDate.setMinutes(timeAsString.substring(3, 5));
+    newDate.setHours(timeOrDateAsString.substring(0, 2));
+    newDate.setMinutes(timeOrDateAsString.substring(3, 5));
     return newDate;
   }
 
   getParticipants () {
+    console.log(this.#participants);
     return this.#participants;
   }
 
   getRoomSlots () {
+    console.log(this.#roomSlots);
     return this.#roomSlots;
   }
 
   getSettings () {
+    console.log(this.#settings);
     return this.#settings;
   }
 }
