@@ -33,8 +33,16 @@ function participantsReducer (participants, action) {
   switch (action.type) {
     case 'added': {
       const temp = action.newParticipant;
-      temp.setId(nextId++);
-      return [...participants, temp].sort((a, b) => a.getGroup() - b.getGroup());
+      if (temp.getId() === undefined) {
+        temp.setId(nextId++);
+      } else {
+        const idAlreadyTaken = participants.find(p => p.getId() === temp.getId()) !== undefined;
+        if (idAlreadyTaken) {
+          nextId = Math.max(...participants.map(p => p.getId())) + 1;
+          temp.setId(nextId);
+        }
+      }
+      return [...participants, temp];
     }
     case 'changed': {
       return participants.map(t => {
@@ -48,6 +56,10 @@ function participantsReducer (participants, action) {
     case 'deleted': {
       return participants.filter(t => t.getId() !== action.itemToDelete.getId());
     }
+    case 'deleteAll': {
+      nextId = 1;
+      return [];
+    }
     case 'getAll': {
       return participants;
     }
@@ -58,6 +70,6 @@ function participantsReducer (participants, action) {
 }
 
 const initialParticipants = [
-  new Participant('-1', 'Max', 'Mustermann', 'max.mustermann@study.thws.de', '1', 'Informatik', 'A1'),
-  new Participant('0', 'Martina', 'Musterfrau', 'martina.musterfrau@study.thws.de', '2', 'Religion', 'B2')
+  new Participant(undefined, '-1', 'Max', 'Mustermann', 'max.mustermann@study.thws.de', '1', 'Informatik', 'A1'),
+  new Participant(undefined, '0', 'Martina', 'Musterfrau', 'martina.musterfrau@study.thws.de', '2', 'Religion', 'B2')
 ];

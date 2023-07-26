@@ -5,7 +5,7 @@ export default class Room {
   #slotId;
   #name;
   #beamerNeeded;
-  #ignoreForAlgorithm = false;
+  #notNeeded = false;
   #review = null;
 
   constructor (name, beamerNeeded, id = null) {
@@ -50,12 +50,12 @@ export default class Room {
     this.#beamerNeeded = beamerNeeded;
   }
 
-  getIgnoreForAlgorithm () {
-    return this.#ignoreForAlgorithm;
+  getNotNeeded () {
+    return this.#notNeeded;
   }
 
-  setIgnoreForAlgorithm (ignoreForAlgorithm) {
-    this.#ignoreForAlgorithm = ignoreForAlgorithm;
+  setNotNeeded (notNeeded) {
+    this.#notNeeded = notNeeded;
   }
 
   getReview () {

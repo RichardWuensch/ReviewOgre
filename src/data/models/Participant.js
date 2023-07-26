@@ -14,21 +14,34 @@ export default class Participant {
   #activeInSlots;
   #fairness;
 
-  constructor (id, firstName, lastName, email, group, topic, languageLevel) {
-    this.#id = id;
-    this.#firstName = firstName;
-    this.#lastName = lastName;
-    this.#email = email;
-    this.setGroup(group); // to trigger string parser
-    this.#topic = topic; // to know on which topic the Participant worked (A-/B-Review)
-    this.#languageLevel = languageLevel; // should this part of the constructor or will the user always set this attribute later?
+  constructor (jsonParticipant, id, firstName, lastName, email, group, topic, languageLevel) {
+    if (jsonParticipant) {
+      this.#id = jsonParticipant.participantId;
+      this.#firstName = jsonParticipant.firstName;
+      this.#lastName = jsonParticipant.lastName;
+      this.#email = jsonParticipant.email;
+      this.setGroup(jsonParticipant.group);
+      this.#topic = jsonParticipant.topic;
+      this.#languageLevel = jsonParticipant.languageLevel;
+      this.#reviewerCount = jsonParticipant.reviewerCount ?? 0;
+      this.#authorCount = jsonParticipant.authorCount ?? 0;
+      this.#notaryCount = jsonParticipant.notaryCount ?? 0;
+      this.#moderatorCount = jsonParticipant.moderatorCount ?? 0;
+    } else {
+      this.#id = id;
+      this.#firstName = firstName;
+      this.#lastName = lastName;
+      this.#email = email;
+      this.setGroup(group); // to trigger string parser
+      this.#topic = topic; // to know on which topic the Participant worked (A-/B-Review)
+      this.#languageLevel = languageLevel; // should this part of the constructor or will the user always set this attribute later?
+      this.#reviewerCount = 0;
+      this.#authorCount = 0;
+      this.#notaryCount = 0;
+      this.#moderatorCount = 0;
+    }
 
-    this.#reviewerCount = 0;
-    this.#authorCount = 0;
-    this.#notaryCount = 0;
-    this.#moderatorCount = 0;
     this.#activeInSlots = [];
-
     this.#fairness = {
       totalCountHigherThanAvg: false,
       onlyOneRole: false

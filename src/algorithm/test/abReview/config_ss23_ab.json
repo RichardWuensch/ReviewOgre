@@ -1,0 +1,547 @@
+{
+ "participants": [
+  {
+   "firstName": "G1P1",
+   "lastName": "G1P1",
+   "email": "G1P1@email.de",
+   "group": "1",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G1P2",
+   "lastName": "G1P2",
+   "email": "G1P2@email.de",
+   "group": "1",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G1P3",
+   "lastName": "G1P3",
+   "email": "G1P3@email.de",
+   "group": "1",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G2P1",
+   "lastName": "G2P1",
+   "email": "G2P1@email.de",
+   "group": "2",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G2P2",
+   "lastName": "G2P2",
+   "email": "G2P2E@email.de",
+   "group": "2",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G2P3",
+   "lastName": "G2P3",
+   "email": "G2P3@email.de",
+   "group": "2",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G3P1",
+   "lastName": "G3P1",
+   "email": "G3P1@email.de",
+   "group": "3",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G3P2",
+   "lastName": "G3P2",
+   "email": "G3P2@email.de",
+   "group": "3",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G3P3",
+   "lastName": "G3P3",
+   "email": "G3P3@email.de",
+   "group": "3",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G4P1",
+   "lastName": "G4P1",
+   "email": "G4P1@email.de",
+   "group": "4",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G4P2",
+   "lastName": "G4P2",
+   "email": "G4P2@email.de",
+   "group": "4",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G4P3",
+   "lastName": "G4P3",
+   "email": "G4P3@email.de",
+   "group": "4",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G5P1",
+   "lastName": "G5P1",
+   "email": "G5P1@email.de",
+   "group": "5",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G5P2",
+   "lastName": "G5P2",
+   "email": "G5P2@email.de",
+   "group": "5",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G5P3",
+   "lastName": "G5P3",
+   "email": "G5P3@email.de",
+   "group": "5",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G6P1",
+   "lastName": "G6P1",
+   "email": "G6P1@email.de",
+   "group": "6",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G6P2",
+   "lastName": "G6P2",
+   "email": "G6P2@email.de",
+   "group": "6",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G6P3",
+   "lastName": "G6P3",
+   "email": "G6P3@email.de",
+   "group": "6",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G7P1",
+   "lastName": "G7P1",
+   "email": "G7P1@email.de",
+   "group": "7",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G7P2",
+   "lastName": "G7P2",
+   "email": "G7P2@email.de",
+   "group": "7",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G7P3",
+   "lastName": "G7P3",
+   "email": "G7P3@email.de",
+   "group": "7",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G8P1",
+   "lastName": "G8P1",
+   "email": "G8P1@email.de",
+   "group": "8",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G8P2",
+   "lastName": "G8P2",
+   "email": "G8P2@email.de",
+   "group": "8",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G8P3",
+   "lastName": "G8P3",
+   "email": "G8P3@email.de",
+   "group": "8",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G9P1",
+   "lastName": "G9P1",
+   "email": "G9P1@email.de",
+   "group": "9",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G9P2",
+   "lastName": "G9P2",
+   "email": "G9P2@email.de",
+   "group": "9",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G9P3",
+   "lastName": "G9P3",
+   "email": "G9P3@email.de",
+   "group": "9",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G10P1",
+   "lastName": "G10P1",
+   "email": "G10P1@email.de",
+   "group": "10",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G10P2",
+   "lastName": "G10P2",
+   "email": "G10P2@email.de",
+   "group": "10",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G10P3",
+   "lastName": "G10P3",
+   "email": "G10P3@email.de",
+   "group": "10",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G11P1",
+   "lastName": "G11P1",
+   "email": "G11P1@email.de",
+   "group": "11",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G11P2",
+   "lastName": "G11P2",
+   "email": "G11P2@email.de",
+   "group": "11",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G11P3",
+   "lastName": "G11P3",
+   "email": "G11P3@email.de",
+   "group": "11",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G12P1",
+   "lastName": "G12P1",
+   "email": "G12P1@email.de",
+   "group": "12",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G12P2",
+   "lastName": "G12P2",
+   "email": "G12P2@email.de",
+   "group": "12",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G12P3",
+   "lastName": "G12P3",
+   "email": "G12P3@email.de",
+   "group": "12",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G13P1",
+   "lastName": "G13P1",
+   "email": "G13P1@email.de",
+   "group": "13",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G13P2",
+   "lastName": "G13P2",
+   "email": "G13P2@email.de",
+   "group": "13",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G13P3",
+   "lastName": "G13P3",
+   "email": "G13P3@email.de",
+   "group": "13",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G14P1",
+   "lastName": "G14P1",
+   "email": "G14P1@email.de",
+   "group": "14",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G14P2",
+   "lastName": "G14P2",
+   "email": "G14P2@email.de",
+   "group": "14",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G14P3",
+   "lastName": "G14P3",
+   "email": "G14P3@email.de",
+   "group": "14",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G15P1",
+   "lastName": "G15P1",
+   "email": "G15P1@email.de",
+   "group": "15",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G15P2",
+   "lastName": "G15P2",
+   "email": "G15P2@email.de",
+   "group": "15",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "G15P3",
+   "lastName": "G15P3",
+   "email": "G15P3@email.de",
+   "group": "15",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  }
+ ],
+ "roomSlots": [
+  {
+   "date": "2023-07-28T13:00:00.000Z",
+   "startTime": "2023-07-28T13:00:00.000Z",
+   "endTime": "2023-07-28T15:00:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-28T15:15:00.000Z",
+   "startTime": "2023-07-28T15:15:00.000Z",
+   "endTime": "2023-07-28T17:15:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-29T10:15:00.000Z",
+   "startTime": "2023-07-29T10:15:00.000Z",
+   "endTime": "2023-07-29T12:15:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-29T12:30:00.000Z",
+   "startTime": "2023-07-29T12:30:00.000Z",
+   "endTime": "2023-07-29T14:30:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-29T14:45:00.000Z",
+   "startTime": "2023-07-29T14:45:00.000Z",
+   "endTime": "2023-07-29T16:45:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  }
+ ],
+ "settings": {
+  "authorIsNotary": false,
+  "breakForModeratorAndReviewer": false,
+  "abReview": false,
+  "internationalGroups": false
+ }
+}

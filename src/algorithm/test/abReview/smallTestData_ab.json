@@ -1,0 +1,142 @@
+{
+ "participants": [
+  {
+   "firstName": "RichardMod",
+   "lastName": "RichardMod",
+   "email": "RichardMod@email.de",
+   "group": "1",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "BastiMod",
+   "lastName": "BastiMod",
+   "email": "BastiMod@email.de",
+   "group": "1",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "DanielMod",
+   "lastName": "DanielMod",
+   "email": "DanielMod@email.de",
+   "group": "1",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "Jakob",
+   "lastName": "Jakob",
+   "email": "Jakob@email.de",
+   "group": "2",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "Nico",
+   "lastName": "Nico",
+   "email": "Nico@email.de",
+   "group": "2",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "Hannah",
+   "lastName": "Hannah",
+   "email": "Hannah@email.de",
+   "group": "2",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "A",
+   "lastName": "A",
+   "email": "A@email.de",
+   "group": "3",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "B",
+   "lastName": "B",
+   "email": "B@email.de",
+   "group": "3",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "C",
+   "lastName": "C",
+   "email": "C@email.de",
+   "group": "3",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "X",
+   "lastName": "X",
+   "email": "X@email.de",
+   "group": "4",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "Y",
+   "lastName": "Y",
+   "email": "Y@email.de",
+   "group": "4",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  },
+  {
+   "firstName": "Z",
+   "lastName": "Z",
+   "email": "Z@email.de",
+   "group": "4",
+   "topic": "C",
+   "languageLevel": "Native Speaker"
+  }
+ ],
+ "roomSlots": [
+  {
+   "date": "2023-04-21T11:28:12.985Z",
+   "startTime": "2023-04-21T12:28:12.985Z",
+   "endTime": "2023-04-21T14:28:12.985Z",
+   "rooms": [
+    {
+     "name": "I.1.2",
+     "beamer": true
+    },
+    {
+     "name": "I.1.3",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-04-21T11:28:12.985Z",
+   "startTime": "2023-04-21T15:28:12.985Z",
+   "endTime": "2023-04-21T17:28:12.985Z",
+   "rooms": [
+    {
+     "name": "I.2.2",
+     "beamer": true
+    },
+    {
+     "name": "I.2.3",
+     "beamer": true
+    },
+    {
+     "name": "I.2.3f",
+     "beamer": true
+    }
+   ]
+  }
+ ],
+ "settings": {
+  "authorIsNotary": false,
+  "breakForModeratorAndReviewer": false,
+  "abReview": false,
+  "internationalGroups": false
+ }
+}
