@@ -34,7 +34,7 @@ function participantsReducer (participants, action) {
     case 'added': {
       const temp = action.newParticipant;
       temp.setId(nextId++);
-      return [...participants, temp];
+      return [...participants, temp].sort((a, b) => a.getGroup() - b.getGroup());
     }
     case 'changed': {
       return participants.map(t => {

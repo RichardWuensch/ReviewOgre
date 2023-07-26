@@ -3,6 +3,7 @@ import Review from '../../data/models/Review';
 
 export default class Algorithm {
   #numberOfReviewers = 0;
+  #participantsPerReview = 0;
 
   #participants;
   #roomSlots;
@@ -44,13 +45,14 @@ export default class Algorithm {
   }
 
   /**
-  * Main function that runs through all nessecary parts
-  * the algorithm works gready and tries as often as no soluten is found or the maximumTries are achived
+  * Main function that runs through all necessary parts
+  * the algorithm works gready and tries as often as no solution is found or the maximumTries are achieved
   * @returns {boolean} - return true if very thing was fine
   */
   run () {
     const groups = this.#getAllGroups();
-    this.#prechecks(groups.length);
+    this.#calculateNumberOfReviewer(groups.length);
+    this.#prechecks();
 
     let errorFound = true;
     let errorCounter = 0;
@@ -62,7 +64,6 @@ export default class Algorithm {
       }
 
       this.#setAuthorOfRandomGroupMember(groups);
-      this.#calculateNumberOfReviewer(groups.length);
       for (const roomSlot of this.#roomSlots) {
         for (const room of roomSlot.getRooms()) {
           if (room.getIgnoreForAlgorithm() === true) {
@@ -93,20 +94,30 @@ export default class Algorithm {
    * Do some prechecks before the algorithm run to make sure that there is a possibility that a solution can be found
    * Criteria:
    * there must be at least 4 groups
-   * there must be at least 12 particpants
-   * there must be as much rooms as reviews
-   * per Slot are only as much rooms necessary as amout of Participants divided by amout of participants per review (the rest of the rooms can be returned to the roomplaner)
-   * there must be at least as much slots as the result from the amount of Groups divided by max number of rooms calculated in the step befor
+   * there must be at least 12 participants
+   * there must be as many rooms as reviews
+   * per Slot are only as many rooms necessary as amount of Participants divided by amount of participants per review (the rest of the rooms can be returned to the roomplaner)
+   * there must be at least as many slots as the result from the amount of Groups divided by max number of rooms calculated in the step before
    * @param {int} numberOfGroups
    * @throws {Error} - to show what's the problem
    */
-  #prechecks (numberOfGroups) {
+  /* #prechecks (numberOfGroups) {
     // TODO add ABReview
+    if (this.#abReview === true) {
+      this.#prechecksAB();
+      return;
+    }
     let roomCount = 0;
-    const maxNumberOfRoomsInSlots = Math.floor(this.#participants.length / ((2 * this.#participants.length) / numberOfGroups)); // if there are more rooms they can be shown as unneccessary and the booking can canceled
-    const minAmountOfSlots = this.#breakForModeratorAndReviewer ? (numberOfGroups / maxNumberOfRoomsInSlots) * 2 : (numberOfGroups / maxNumberOfRoomsInSlots);
+    let roomCountWithNotNeededRooms = 0;
+    let errorMessage = '';
+    const groupMap = this.#getGroupMap(this.#participants);
+    console.log(numberOfGroups + ' vs ' + groupMap.size)
+
+    const maxNumberOfRoomsInSlots = Math.floor(this.#participants.length / this.#participantsPerReview); // if there are more rooms they can be shown as unnecessary and the booking can canceled
+    const minAmountOfSlots = Math.ceil(this.#breakForModeratorAndReviewer ? (numberOfGroups / maxNumberOfRoomsInSlots) * 2 : (numberOfGroups / maxNumberOfRoomsInSlots));
     for (const s of this.#roomSlots) {
       const rooms = s.getRooms();
+      roomCountWithNotNeededRooms += rooms.length;
       if (rooms.length > maxNumberOfRoomsInSlots) {
         roomCount += maxNumberOfRoomsInSlots;
         for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
@@ -116,17 +127,86 @@ export default class Algorithm {
         roomCount += rooms.length;
       }
     }
-    let errorMessage = '';
-    if (numberOfGroups < 4) errorMessage += 'At least 4 groups are needed.\n';
-    if (this.#participants.length < 12) errorMessage += 'At least 12 particpants are needed.\n';
+    for (const value of this.#getGroupMap(this.#participants).values()) {
+      if ((this.#participants.length - value.length) < (this.#participantsPerReview - 1)) {
+        errorMessage += 'There are not enough participants to build review groups.\n';
+        break;
+      }
+    }
+    if (this.#authorIsNotary === false && numberOfGroups === 2) errorMessage += 'If only 2 groups exist, authorIsNotary must be active.\n';
+    if (numberOfGroups < 2) errorMessage += 'At least 2 groups are needed.\n';
     if (!errorMessage) {
-      if (numberOfGroups > roomCount) errorMessage += `There are not enough rooms for ${numberOfGroups} groups.\n`;
+      if (numberOfGroups > roomCountWithNotNeededRooms) errorMessage += `There are not enough rooms for ${numberOfGroups} groups.\n`;
+      else if (numberOfGroups > roomCount) errorMessage += `With the current configuration only ${maxNumberOfRoomsInSlots} rooms per slot can be used to schedule reviews. Please add more rooms to the slots with less then ${maxNumberOfRoomsInSlots} rooms or create more slots.\n`;
       if (minAmountOfSlots > this.#roomSlots.length) errorMessage += `There are not enough slots. Minimum amount: ${minAmountOfSlots}\n`;
     }
     if (errorMessage) {
       throw new Error(errorMessage,
         { cause: 'prechecksFailed' }
       );
+    }
+  } */
+
+  #prechecks () {
+    if (this.#abReview === false) {
+      this.checks(this.#participants);
+    } else {
+      this.#participants.forEach(p => {
+        if (p.getTopic() === undefined) {
+          throw new Error('Some participants have no topic', { cause: 'prechecksFailed' }); // TODO check in frontend
+        }
+      });
+      /* this.#numberOfReviewers = 3;
+      this.#participantsPerReview = this.#numberOfReviewers + 2; */
+      for (const participantsPerTopic of this.#getTopicMap().values()) {
+        console.log(participantsPerTopic);
+        this.checks(participantsPerTopic);
+      }
+    }
+  }
+
+  checks (participants) {
+    let roomCount = 0;
+    let roomCountWithNotNeededRooms = 0;
+    let errorMessage = '';
+    const groupMap = this.#getGroupMap(participants);
+
+    const maxNumberOfRoomsInSlots = Math.floor(participants.length / this.#participantsPerReview); // if there are more rooms they can be shown as unnecessary and the booking can canceled
+    const minAmountOfSlots = Math.ceil(this.#breakForModeratorAndReviewer ? (groupMap.size / maxNumberOfRoomsInSlots) * 2 : (groupMap.size / maxNumberOfRoomsInSlots));
+    for (const s of this.#roomSlots) {
+      const rooms = s.getRooms();
+      roomCountWithNotNeededRooms += rooms.length;
+      if (rooms.length > maxNumberOfRoomsInSlots) {
+        roomCount += maxNumberOfRoomsInSlots;
+        for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
+          rooms[i].setIgnoreForAlgorithm(true);
+        }
+      } else {
+        roomCount += rooms.length;
+      }
+    }
+    for (const value of this.#getGroupMap(participants).values()) {
+      if (this.#abReview === false) {
+        if ((participants.length - value.length) < (this.#participantsPerReview - 1)) {
+          errorMessage += 'There are not enough participants to build review groups.\n';
+          break;
+        }
+      } else {
+        if ((participants.length) < (this.#participantsPerReview - 1)) {
+          errorMessage += 'There are not enough participants to build review groups.\n';
+          break;
+        }
+      }
+    }
+    if (this.#authorIsNotary === false && groupMap.size === 2) errorMessage += 'If only 2 groups exist, authorIsNotary must be active.\n';
+    if (groupMap.size < 2) errorMessage += 'At least 2 groups are needed.\n';
+    if (!errorMessage) {
+      if (groupMap.size > roomCountWithNotNeededRooms) errorMessage += `There are not enough rooms for ${groupMap.size} groups.\n`;
+      else if (groupMap.size > roomCount) errorMessage += `With the current configuration only ${maxNumberOfRoomsInSlots} rooms per slot can be used to schedule reviews. Please add more rooms to the slots with less then ${maxNumberOfRoomsInSlots} rooms or create more slots.\n`;
+      if (minAmountOfSlots > this.#roomSlots.length) errorMessage += `There are not enough slots. Minimum amount: ${minAmountOfSlots}\n`;
+    }
+    if (errorMessage) {
+      throw new Error(errorMessage, { cause: 'prechecksFailed' });
     }
   }
 
@@ -142,6 +222,30 @@ export default class Algorithm {
       }
     }
     return groups;
+  }
+
+  #getGroupMap (participants) {
+    const groupMap = new Map();
+    for (const p of participants) {
+      const group = p.getGroup();
+      if (!groupMap.has(group)) {
+        groupMap.set(group, []);
+      }
+      groupMap.get(group).push(p);
+    }
+    return groupMap;
+  }
+
+  #getTopicMap () {
+    const topicMap = new Map();
+    for (const p of this.#participants) {
+      const topic = p.getTopic();
+      if (!topicMap.has(topic)) {
+        topicMap.set(topic, []);
+      }
+      topicMap.get(topic).push(p);
+    }
+    return topicMap;
   }
 
   /**
@@ -265,15 +369,23 @@ export default class Algorithm {
   * @param {int} numberOfGroups
   */
   #calculateNumberOfReviewer (numberOfGroups) {
-    if (this.#authorIsNotary) {
-      this.#numberOfReviewers = (2 * this.#participants.length) / numberOfGroups - 2;
+    if (this.#authorIsNotary === true && numberOfGroups > 2) {
+      const numberOfReviewers = Math.floor((2 * this.#participants.length) / numberOfGroups - 2);
+      numberOfReviewers < 3 ? this.#numberOfReviewers = 3 : this.#numberOfReviewers = numberOfReviewers;
+      this.#participantsPerReview = this.#numberOfReviewers + 2;
+    } else if (this.#authorIsNotary === true && numberOfGroups <= 2) {
+      const numberOfReviewers = Math.floor(this.#participants.length / numberOfGroups - 2);
+      numberOfReviewers < 3 ? this.#numberOfReviewers = 3 : this.#numberOfReviewers = numberOfReviewers;
+      this.#participantsPerReview = this.#numberOfReviewers + 2;
     } else {
-      this.#numberOfReviewers = (2 * this.#participants.length) / numberOfGroups - 3;
+      const numberOfReviewers = Math.floor((2 * this.#participants.length) / numberOfGroups - 3);
+      numberOfReviewers < 3 ? this.#numberOfReviewers = 3 : this.#numberOfReviewers = numberOfReviewers;
+      this.#participantsPerReview = this.#numberOfReviewers + 3;
     }
   }
 
   /**
-  * clears the up to now setted reviews, the activeInSlot list of eaach participant and the roleCounter of each participant
+  * clears the up to now set reviews, the activeInSlot list of each participant and the roleCounter of each participant
   * after no solution could found so the algorithm can be restarted
   */
   #clearReviews () {
@@ -295,7 +407,7 @@ export default class Algorithm {
   }
 
   printLikeOldRevOger () {
-    // print the Review without unneccesary attributs
+    // print the Review without unnecessary attributes
     const converter = new ConverterForPrinting();
     for (const s of this.#roomSlots) {
       for (const room of s.getRooms()) {
