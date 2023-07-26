@@ -13,8 +13,6 @@ export function RoomSlotProvider ({ children }) {
     initialRoomSlots
   );
 
-  console.log(tasks);
-
   return (
         <RoomSlotContext.Provider value={tasks}>
             <RoomSlotDispatchContext.Provider value={dispatch}>
