@@ -34,7 +34,15 @@ function roomSlotsReducer (roomSlots, action) {
   switch (action.type) {
     case 'added': {
       const temp = action.newRoomSlot;
-      temp.setId(++nextId);
+      if (temp.getId() === undefined) {
+        temp.setId(nextId++);
+      } else {
+        const idAlreadyTaken = roomSlots.find(rs => rs.getId() === temp.getId()) !== undefined;
+        if (idAlreadyTaken) {
+          nextId = Math.max(...roomSlots.map(rs => rs.getId())) + 1;
+          temp.setId(nextId);
+        }
+      }
 
       return [...roomSlots, temp].sort((a, b) => a.getStartTime().getTime() - b.getStartTime().getTime());
     }
@@ -50,6 +58,10 @@ function roomSlotsReducer (roomSlots, action) {
     }
     case 'deleted': {
       return roomSlots.filter(t => t.getId() !== action.itemToDelete.getId());
+    }
+    case 'deleteAll': {
+      nextId = 1;
+      return [];
     }
     default: {
       throw Error('Unknown action: ' + action.type);
