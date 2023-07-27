@@ -118,9 +118,9 @@ export default class Review {
   }
 
   addReviewer (roomSlots, index, participant, breakForModeratorAndReviewer) {
-    if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
+    /** if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
       throw new Error('Participant is not possible for this review');
-    }
+    } */
     participant.increaseReviewerCount();
     participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
@@ -135,6 +135,7 @@ export default class Review {
   }
 
   deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
+    console.log(reviewer);
     reviewer.decreaseReviewerCount();
     reviewer.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
     if (breakForModeratorAndReviewer) {
