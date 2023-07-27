@@ -18,11 +18,13 @@ function CustomNavbar () {
   const settings = useSettings();
   const roomSlots = useRoomSlots();
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
-  const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
   const [showSaveReviewsModal, setShowSaveReviewsModal] = React.useState(false);
+  const [importedRoomSlots, setImportedRoomSlots] = React.useState({});
+  const [importedParticipants, setImportedParticipants] = React.useState({});
+  const [importedSettings, setImportedSettings] = React.useState({});
 
   async function importDataCheck (event) {
-    setOverwriteExistingDataEvent(event);
+    loadStateIntoLocalObjects(event);
     setShowModalDataImportCheck(true);
   }
 
@@ -39,12 +41,18 @@ function CustomNavbar () {
     new StoreState().saveAsJSON(roomSlots, participants, settings, saveWithReviews);
   }
 
-  async function loadState () {
+  async function loadStateIntoLocalObjects (event) {
     const loadState = new LoadState();
-    await loadState.runStateImport(overwriteExistingDataEvent);
-    addRoomSlotListToContext(loadState.getRoomSlots());
-    addParticipantListToContext(loadState.getParticipants());
-    addSettingsToContext(loadState.getSettings());
+    await loadState.runStateImport(event);
+    setImportedRoomSlots(loadState.getRoomSlots());
+    setImportedParticipants(loadState.getParticipants());
+    setImportedSettings(loadState.getSettings());
+  }
+
+  function addLocalObjectsToContext () {
+    addRoomSlotListToContext(importedRoomSlots);
+    addParticipantListToContext(importedParticipants);
+    addSettingsToContext(importedSettings);
   }
 
   function addParticipantListToContext (list) {
@@ -124,12 +132,15 @@ function CustomNavbar () {
           </Container>
           <DataImportCheckModal
               show={showModalDataImportCheck}
+              importedRoomSlots={importedRoomSlots}
+              importedParticipants={importedParticipants}
+              importedSettings={importedSettings}
               onOverwriteData={() => {
                 deleteAllParticipantsFromContext();
                 deleteAllRoomSlotsFromContext();
-                loadState();
+                addLocalObjectsToContext();
               }}
-              onAddData={loadState}
+              onAddData={addLocalObjectsToContext}
               title={ 'Load State' }
               text={ 'participants and slots' }
               onHide={() => setShowModalDataImportCheck(false)}

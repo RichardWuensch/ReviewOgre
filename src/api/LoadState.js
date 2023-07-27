@@ -90,17 +90,14 @@ export default class LoadState {
   }
 
   getParticipants () {
-    console.log(this.#participants);
     return this.#participants;
   }
 
   getRoomSlots () {
-    console.log(this.#roomSlots);
     return this.#roomSlots;
   }
 
   getSettings () {
-    console.log(this.#settings);
     return this.#settings;
   }
 }
