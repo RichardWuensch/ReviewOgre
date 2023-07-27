@@ -19,8 +19,8 @@ function CustomNavbar () {
   const roomSlots = useRoomSlots();
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
   const [showSaveReviewsModal, setShowSaveReviewsModal] = React.useState(false);
-  const [importedRoomSlots, setImportedRoomSlots] = React.useState({});
-  const [importedParticipants, setImportedParticipants] = React.useState({});
+  const [importedRoomSlots, setImportedRoomSlots] = React.useState([]);
+  const [importedParticipants, setImportedParticipants] = React.useState([]);
   const [importedSettings, setImportedSettings] = React.useState({});
 
   async function importDataCheck (event) {
