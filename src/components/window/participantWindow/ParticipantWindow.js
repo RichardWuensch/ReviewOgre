@@ -22,15 +22,10 @@ function ParticipantList () {
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [showModalDeleteParticipant, setShowModalDeleteParticipant] = React.useState(false);
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
-  const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
+  const [importedParticipants, setImportedParticipants] = React.useState([]);
 
   const participants = useParticipants();
   const participantsDispatch = useParticipantsDispatch();
-
-  async function importDataCheck (event) {
-    setOverwriteExistingDataEvent(event);
-    setShowModalDataImportCheck(true);
-  }
 
   const addParticipant = (participant) => {
     /* eslint-disable object-shorthand */
@@ -52,23 +47,23 @@ function ParticipantList () {
     /* eslint-enable object-shorthand */
   };
 
-  function deleteParticipantListFromContext (list) {
-    /* eslint-disable object-shorthand */
-    for (const entry of list) {
-      participantsDispatch({
-        type: 'deleted',
-        itemToDelete: entry
-      });
-    }
-    /* eslint-enable object-shorthand */
+  function deleteAllParticipantsFromContext () {
+    participantsDispatch({
+      type: 'deleteAll'
+    });
   }
 
-  async function importStudentList () {
+  async function importDataCheck (event) {
+    importStudentListToLocalList(event);
+    setShowModalDataImportCheck(true);
+  }
+
+  async function importStudentListToLocalList (event) {
     const importParticipants = new ImportParticipants();
     const participantList = await importParticipants.runStudentImport(
-      overwriteExistingDataEvent
+      event
     );
-    addParticipantListToContext(participantList);
+    setImportedParticipants(participantList);
   }
 
   function addParticipantListToContext (list) {
@@ -254,8 +249,9 @@ function ParticipantList () {
           </div>
           <DataImportCheckModal
               show={showModalDataImportCheck}
-              onOverwriteData={() => { deleteParticipantListFromContext(participants); importStudentList(); }}
-              onAddData={() => { importStudentList(); }}
+              importedParticipants={importedParticipants}
+              onOverwriteData={() => { deleteAllParticipantsFromContext(); addParticipantListToContext(importedParticipants); }}
+              onAddData={() => { addParticipantListToContext(importedParticipants); }}
               title={ 'Import Participants' }
               text={ 'participants' }
               onHide={() => setShowModalDataImportCheck(false)}

@@ -11,7 +11,7 @@ import alarmImage from '../../../assets/media/alarm-fill.svg';
 import locationImage from '../../../assets/media/geo-alt-fill.svg';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
 
-function DataImportCheckModal ({ onAddData, onOverwriteData, title, text, onHide, ...props }) {
+function DataImportCheckModal ({ importedRoomSlots, importedParticipants, importedSettings, onAddData, onOverwriteData, title, text, onHide, ...props }) {
   const participantData = [
     new Participant(675, 'Richard', 'Wünsch', 'richard.wuensch@study.thws.de', 1),
     new Participant(676, 'Basti', 'Schindler', 'richard.wuensch@study.thws.de', 1),
@@ -158,6 +158,9 @@ function DataImportCheckModal ({ onAddData, onOverwriteData, title, text, onHide
   );
 }
 DataImportCheckModal.propTypes = {
+  importedRoomSlots: PropTypes.array,
+  importedParticipants: PropTypes.array.isRequired,
+  importedSettings: PropTypes.object,
   text: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onHide: PropTypes.func.isRequired,
