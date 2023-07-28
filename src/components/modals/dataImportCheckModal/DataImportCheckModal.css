@@ -1,10 +1,30 @@
+.modal {
+  display: flex;
+  align-items: center; /* Vertikal zentrieren */
+  justify-content: center; /* Horizontal zentrieren */
+  height: 100%;
+}
+
 .modal .modal-dialog{
-    max-width: 70vw;
-    max-height: 90vh;
+    max-width: 90vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal .modal-content{
+  flex-grow: 1; /* Nutzt den verfügbaren Platz im Flexbox-Container vollständig aus */
+  display: flex;
+  flex-direction: column;
 }
 
 .modal .modal-header{
     padding-bottom: 0px;
+}
+
+.modal .modal-body{
+    padding-top: 0;
+    padding-bottom: 2%;
 }
 
 .modal .modal-header-icon{
@@ -17,25 +37,30 @@
     cursor: pointer;
 }
 
-.text-container{
-    padding: 4% 4% 0 4%;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-}
-.modal .delete-title-subheadline{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: 100;
-    color: #363A3F;
+.text-container {
+  padding: 6% 0 0 0;
+  text-align: center;
 }
 
-.modal .footer{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 0px;
+.modal .delete-title-subheadline {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  color: #363A3F;
 }
+
+.import-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  height: 50px;
+}
+
+.button-import-options {
+  margin: 0 15px;
+}
+
 
 .cancel-text{
     font-family: 'Roboto', sans-serif;
@@ -54,43 +79,55 @@
     margin: 0 5px;
 }
 
-.participant-import{
-    display: block;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 1.0em;
-    color: #82868B;
-    border-radius: 5px;
-    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    overflow-x: hidden;
-}
-
-.button-import-options{
-    display: flex;
-    justify-content: center;
-    margin: 20px;
-}
-
-.slots-settings-import{
+.participants-slots-settings-import{
     display: flex;
     margin: 40px 0 20px 0;
     justify-content: space-around;
-    align-items: center;
+    height: auto;
+    max-height: 50vh;
 }
 
-.slots-import{
-    width: 50%;
+.participant-import{
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.0em;
+    width: 60%;
+}
+.list-description{
+    width: 100%;
+}
+.participant-list-container{
+    height: auto;
+    width: 100%;
+    max-height: 50vh;
     font-style: normal;
     font-weight: 300;
     font-size: 1em;
     color: #82868B;
+    overflow: auto;
+}
+.participant-table{
+    width: 100%;
+    max-height: 50vh;
+    padding: 10px;
+}
+
+.slots-settings-import{
+    width: 35%;
+}
+
+.slots-import{
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1em;
+    color: #82868B;
+    width: 100%;
 }
 
 .radio-container-import{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
 
 .radio-container-import-content{
@@ -98,14 +135,9 @@
     font-style: normal;
     font-weight: 300;
     font-size: 1em;
-    color: #82868B;
     border-radius: 5px;
     background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    overflow-x: hidden;
-    padding: 20px 30px 0 30px;
+    padding: 20px 20px 10px 20px;
 }
 
-.radio-container-import > .custom-switch{
-    margin-right: 10px;
-}
