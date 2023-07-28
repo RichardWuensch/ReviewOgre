@@ -1,24 +1,24 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import './FailedCalculationModal.css';
+import './ErrorModal.css';
 import exit from '../../../assets/media/return.svg';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
-function FailedCalculationsModal ({ errorMessage, onHide, ...props }) {
+function ErrorModal ({ errorObject, modalHeader, onHide, ...props }) {
   const [showModal, setShowModal] = useState(true);
-  const [header, setHeader] = useState('');
+  const [header, setHeader] = useState(modalHeader);
 
   const handleClose = () => {
     setShowModal(false);
   };
 
   useEffect(() => {
-    if (!errorMessage) {
+    if (!errorObject || modalHeader) {
       return;
     }
-    switch (errorMessage.cause) {
+    switch (errorObject.cause) {
       case 'noSolution':
         setHeader('No Solution found');
         break;
@@ -28,14 +28,14 @@ function FailedCalculationsModal ({ errorMessage, onHide, ...props }) {
       default:
         setHeader('');
     }
-  }, [errorMessage]);
+  }, [errorObject]);
 
   return (
     <Modal
       onExit={handleClose}
       show={showModal}
       {...props}
-      size="xl"
+      size="l"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -45,7 +45,7 @@ function FailedCalculationsModal ({ errorMessage, onHide, ...props }) {
             <span className={'modal-header border-0'}>{header}</span>
           </div>
           <div className={'response-container'}>
-            <div className={'error-message'}>{errorMessage?.message}</div>
+            <div className={'error-message'}>{errorObject?.message}</div>
           </div>
           <div className={'footer'}>
             <ModalButton
@@ -64,8 +64,9 @@ function FailedCalculationsModal ({ errorMessage, onHide, ...props }) {
     </Modal>
   );
 }
-FailedCalculationsModal.propTypes = {
-  errorMessage: PropTypes.string,
+ErrorModal.propTypes = {
+  errorObject: PropTypes.object,
+  modalHeader: PropTypes.string,
   onHide: PropTypes.func.isRequired
 };
-export default FailedCalculationsModal;
+export default ErrorModal;

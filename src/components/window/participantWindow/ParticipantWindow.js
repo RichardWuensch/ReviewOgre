@@ -14,6 +14,7 @@ import { Container, Image, Table } from 'react-bootstrap';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
 import CustomCheckbox from '../../shared/buttons/checkbox/CustomCheckbox';
+import ErrorModal from '../../modals/errorModal/ErrorModal';
 
 function ParticipantList () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
@@ -22,15 +23,11 @@ function ParticipantList () {
   const [selectedParticipants, setSelectedParticipants] = React.useState([]);
   const [showModalDeleteParticipant, setShowModalDeleteParticipant] = React.useState(false);
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
-  const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
+  const [participantImportError, setParticipantImportError] = React.useState(null);
+  const [importedParticipants, setImportedParticipants] = React.useState([]);
 
   const participants = useParticipants();
   const participantsDispatch = useParticipantsDispatch();
-
-  async function importDataCheck (event) {
-    setOverwriteExistingDataEvent(event);
-    setShowModalDataImportCheck(true);
-  }
 
   const addParticipant = (participant) => {
     /* eslint-disable object-shorthand */
@@ -63,12 +60,17 @@ function ParticipantList () {
     /* eslint-enable object-shorthand */
   }
 
-  async function importStudentList () {
+  async function importStudentListToLocalList (event) {
     const importParticipants = new ImportParticipants();
-    const participantList = await importParticipants.runStudentImport(
-      overwriteExistingDataEvent
-    );
-    addParticipantListToContext(participantList);
+    importParticipants.runStudentImport(event)
+      .then(participantList => {
+        console.log(participantList);
+        setImportedParticipants(participantList);
+        setShowModalDataImportCheck(true);
+      })
+      .catch(error => {
+        setParticipantImportError(error);
+      });
   }
 
   function addParticipantListToContext (list) {
@@ -146,13 +148,13 @@ function ParticipantList () {
                 : (
                   <div className={'button-container-participants'}>
                       <CustomButton
-                          toolTip={'Import Participants from csv file'}
+                          toolTip={'Import Participants from csv file (moodle or other)'}
                           onButtonClick={() => document.getElementById('student-input').click()}
                           backgroundColor={'#B0D7AF'}
                       >
                           <span className="button-text"> Import Participants</span>
                       </CustomButton>
-                      <input type="file" id="student-input" style={{ display: 'none' }} onChange={() => { importDataCheck(event); }}
+                      <input type="file" id="student-input" style={{ display: 'none' }} onChange={() => { importStudentListToLocalList(event); }}
                       accept='text/csv'/>
                   </div>
                   )
@@ -254,8 +256,8 @@ function ParticipantList () {
           </div>
           <DataImportCheckModal
               show={showModalDataImportCheck}
-              onOverwriteData={() => { deleteParticipantListFromContext(participants); importStudentList(); }}
-              onAddData={() => { importStudentList(); }}
+              onOverwriteData={() => { deleteParticipantListFromContext(participants); addParticipantListToContext(importedParticipants); }}
+              onAddData={() => { addParticipantListToContext(importedParticipants); }}
               title={ 'Import Participants' }
               text={ 'participants' }
               onHide={() => setShowModalDataImportCheck(false)}
@@ -280,6 +282,11 @@ function ParticipantList () {
               onDeleteClick={(participant) => removeParticipants(participant)}
               deleteObject={ selectedParticipants }
               onClose={() => { setShowModalDeleteParticipant(false); }}/>
+          <ErrorModal
+            show={participantImportError !== null}
+            errorObject={participantImportError}
+            modalHeader='Error importing Participant csv'
+            onHide={() => setParticipantImportError(null)}/>
       </Container>
   );
 }

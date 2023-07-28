@@ -5,7 +5,7 @@ import '../checkboxstyling.css';
 import SlotsWindow from '../slotsWindow/SlotsWindow';
 import start from '../../../assets/media/play-circle.svg';
 import gear from '../../../assets/media/gear.svg';
-import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
+import ErrorModal from '../../modals/errorModal/ErrorModal';
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
@@ -30,10 +30,6 @@ function MainPage () {
     internationalGroups: false
   });
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    console.log(settings);
-  }, [settings]);
 
   function runAlgorithm () {
     try {
@@ -132,10 +128,10 @@ function MainPage () {
                             </Card>
                         </div>
                     </Col>
-                    <FailedCalculationModal
+                    <ErrorModal
                         show={algorithmErrorMessage}
+                        errorObject={algorithmErrorMessage}
                         onHide={() => setAlgorithmErrorMessage(null)}
-                        errorMessage={algorithmErrorMessage}
                     />
                     <SettingsModal
                         show={showModalSettings}
