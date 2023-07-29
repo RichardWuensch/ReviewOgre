@@ -105,30 +105,36 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                             <h3 className={'title-subheadline'} style={{ paddingTop: '20px' }}>Settings</h3>
                             <div className={'radio-container-import-content'}>
                                 {!importedSettings
-                                  ?
-                                  (<span>No imported Settings</span>)
-                                    :
-                                  (
-                                    <ul className="bullet-list">
-                                      <li>
-                                        <span style={{ display: 'block', paddingLeft: 10 }}>Author is
-                                            {!importedSettings?.authorIsNotary ? (<span><strong>not</strong> a </span>) : (<span>A </span>)
-                                            }
-                                            Notary</span>
-                                      </li>
-                                      <li>
-                                        <span style={{ display: 'block', paddingLeft: 10 }}>
-                                            {!importedSettings?.breakForModeratorAndReviewer ? (<span><strong>No</strong> b</span>) : (<span>B</span>)
-                                            }
-                                        reak for Moderator and Reviewer</span>
-                                      </li>
-                                      <li>
-                                        <span style={{ display: 'block', paddingLeft: 10 }}><strong>No</strong> A/B Review</span>
-                                      </li>
-                                      <li>
-                                        <span style={{ display: 'block', paddingLeft: 10 }}><strong>No</strong> International Groups</span>
-                                      </li>
-                                    </ul>
+                                  ? (
+                                      <span>No imported Settings</span>
+                                    )
+                                  : (
+                                        <ul className="bullet-list">
+                                          <li>
+                                            <span style={{ display: 'block', paddingLeft: 10 }}>Author is
+                                                {!importedSettings?.authorIsNotary ? (<span><strong> not </strong> a </span>) : (<span> </span>)
+                                                }
+                                                a Notary</span>
+                                          </li>
+                                          <li>
+                                            <span style={{ display: 'block', paddingLeft: 10 }}>
+                                                {!importedSettings?.breakForModeratorAndReviewer ? (<span><strong>No</strong> b</span>) : (<span>B</span>)
+                                                }
+                                            reak for Moderator and Reviewer</span>
+                                          </li>
+                                          <li>
+                                            <span style={{ display: 'block', paddingLeft: 10 }}>
+                                                {!importedSettings?.abReview ? (<strong>No </strong>) : (<span></span>)
+                                                }
+                                                A/B Review</span>
+                                          </li>
+                                          <li>
+                                            <span style={{ display: 'block', paddingLeft: 10 }}>
+                                                {!importedSettings?.internationalGroups ? (<strong>No </strong>) : (<span></span>)
+                                                }
+                                                International Groups</span>
+                                          </li>
+                                        </ul>
                                     )}
                             </div>
                         </div>
