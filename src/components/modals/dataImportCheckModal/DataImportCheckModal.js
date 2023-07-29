@@ -10,12 +10,19 @@ import alarmImage from '../../../assets/media/alarm-fill.svg';
 import locationImage from '../../../assets/media/geo-alt-fill.svg';
 
 function DataImportCheckModal ({ importedRoomSlots, importedParticipants, importedSettings, onAddData, onOverwriteData, title, text, onHide, ...props }) {
-  const openAccordion = useAccordionButton(0, () => {});
+  const openAccordion = (eventKey) => {
+    useAccordionButton(eventKey, () => {});
+  };
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const expandAndToggle = () => {
-    openAccordion(undefined);
+  const expandAndToggle = (eventKey) => {
+    openAccordion(eventKey);
     setIsAccordionOpen(prevOpen => prevOpen !== true);
   };
+
+  function getSlotDescription (roomSlot) {
+    const options = { weekday: 'long' };
+    return roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + roomSlot.getFormattedDate() + ' From: ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime();
+  }
 
   return (
         <Modal
@@ -48,7 +55,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {importedParticipants.map((participant) => (
+                                        {importedParticipants?.map((participant) => (
                                             <tr key={participant.getId()} style={{ borderBottom: '1px solid black' }}>
                                                 <td className={'column-firstName'}>{participant.getFirstName()}</td>
                                                 <td className={'column-lastName'}>{participant.getLastName()}</td>
@@ -66,40 +73,46 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                     <div className={'slots-settings-import'}>
                         <div className={'slots-import'}>
                             <h3 className={'title-subheadline'}>Slots</h3>
-                            <Accordion defaultActiveKey="0">
-                                <div className={'overflow-container-roomslots-import'}>
-                                    <ListGroup className={'list-group-import'}>
-                                        <ListGroup.Item style={{ padding: 0 }}>
-                                            <Card>
-                                                <Card.Header className={'list-item-import'}>
-                                                    <div className={'slots-import-infos'}>
-                                                        <CustomIconButton
-                                                            onButtonClick={() => expandAndToggle()}
-                                                            toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
-                                                            <Image src={alarmImage} alt={'alarmImage'} />
-                                                            <span className={'slot-text'} style={{ paddingLeft: 5 }}>
-                                                                Slot Description
-                                                            </span>
-                                                        </CustomIconButton>
-                                                    </div>
-                                                </Card.Header>
-                                                <Accordion.Collapse eventKey='0'>
-                                                    <Card.Body>
-                                                        <ul style={{ listStyle: 'none', overflowY: 'auto' }}>
-                                                            <li>
-                                                                <div className={'room-import-properties'}>
-                                                                    <Image src={locationImage} alt={'locationImage'} />
-                                                                    <span style={{ paddingLeft: 5 }}>Raum Name</span>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </Card.Body>
-                                                </Accordion.Collapse>
-                                            </Card>
-                                        </ListGroup.Item>
-                                    </ListGroup>
-                                </div>
-                            </Accordion>
+                            <div className={'slots-list-container'}>
+                                <Accordion defaultActiveKey="0">
+                                    <div className={'overflow-container-roomslots'}>
+                                        <ListGroup className={'list-group'}>
+                                          {importedRoomSlots?.map((slot, index) => (
+                                              <ListGroup.Item key={index} style={{ padding: 0 }}>
+                                                  <Card>
+                                                      <Card.Header className={'list-item'}>
+                                                          <div className={'slots-infos'}>
+                                                              <CustomIconButton
+                                                                  onButtonClick={(index) => expandAndToggle(index)}
+                                                                  toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
+                                                                  <Image src={alarmImage} alt={'alarmImage'} />
+                                                                  <span className={'slot-text'} style={{ paddingLeft: 5 }}>
+                                                                      {getSlotDescription(slot)}
+                                                                  </span>
+                                                              </CustomIconButton>
+                                                          </div>
+                                                      </Card.Header>
+                                                      <Accordion.Collapse eventKey={index}>
+                                                          <Card.Body>
+                                                              <ul style={{ listStyle: 'none', overflowY: 'auto' }}>
+                                                                  {slot.getRooms()?.map((room, roomIndex) =>
+                                                                      <li key={roomIndex}>
+                                                                          <div className={'room-properties'}>
+                                                                              <Image src={locationImage} alt={'locationImage'} />
+                                                                              <span style={{ paddingLeft: 5 }}>{room.getName()}</span>
+                                                                          </div>
+                                                                      </li>
+                                                                  )}
+                                                              </ul>
+                                                          </Card.Body>
+                                                      </Accordion.Collapse>
+                                                  </Card>
+                                              </ListGroup.Item>
+                                          ))}
+                                        </ListGroup>
+                                    </div>
+                                </Accordion>
+                            </div>
                         </div>
                         <div className={'radio-container-import'}>
                             <h3 className={'title-subheadline'} style={{ paddingTop: '20px' }}>Settings</h3>
