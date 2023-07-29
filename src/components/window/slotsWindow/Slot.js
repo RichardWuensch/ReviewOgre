@@ -11,7 +11,7 @@ import { useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import PropTypes from 'prop-types';
 
-function SlotCard ({ roomSlot, eventKey, ...props }) {
+function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [showModalDeleteSlot, setShowModalDeleteSlot] = React.useState(false);
   const [showModalEditSlot, setShowModalEditSlot] = React.useState(false);
@@ -65,18 +65,24 @@ function SlotCard ({ roomSlot, eventKey, ...props }) {
                                 {getSlotDescription()}
                             </span>
                         </CustomIconButton>
-                        <div className={'options'}>
-                            <CustomIconButton
-                                onButtonClick={() => setShowModalEditSlot(true)}
-                                toolTip={'Edit this slot'}>
-                                <Image src={edit} alt={'icon'}/>
-                            </CustomIconButton>
-                            <CustomIconButton
-                                onButtonClick={() => setShowModalDeleteSlot(true)}
-                                toolTip={'Delete this slot and linked rooms'}>
-                                <Image src={deleteButton} alt={'icon'}/>
-                            </CustomIconButton>
-                        </div>
+                        {changePossible
+                          ? (
+                                <div className={'options'}>
+                                    <CustomIconButton
+                                        onButtonClick={() => setShowModalEditSlot(true)}
+                                        toolTip={'Edit this slot'}>
+                                        <Image src={edit} alt={'icon'}/>
+                                    </CustomIconButton>
+                                    <CustomIconButton
+                                        onButtonClick={() => setShowModalDeleteSlot(true)}
+                                        toolTip={'Delete this slot and linked rooms'}>
+                                        <Image src={deleteButton} alt={'icon'}/>
+                                    </CustomIconButton>
+                                </div>
+                            )
+                          : (
+                                <div className={'options'}></div>
+                            )}
                     </div>
                 </Card.Header>
                 <Accordion.Collapse eventKey={eventKey}>
@@ -121,6 +127,7 @@ function SlotCard ({ roomSlot, eventKey, ...props }) {
   );
 }
 SlotCard.propTypes = {
+  changePossible: PropTypes.object,
   roomSlot: PropTypes.object.isRequired,
   eventKey: PropTypes.number.isRequired
 };

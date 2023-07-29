@@ -51,7 +51,8 @@ function SlotsWindow () {
                                   <SlotCard
                                       key={slot.getId()}
                                       eventKey={index}
-                                      roomSlot={slot}/>
+                                      roomSlot={slot}
+                                      changePossible={true}/>
                               </ListGroup.Item>
                           ))}
                       </ListGroup>

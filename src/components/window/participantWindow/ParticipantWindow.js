@@ -240,7 +240,9 @@ function ParticipantList () {
                                     isChecked={selectedParticipants.includes(participant)} />
                             </td>
                         )}
-                        <Participant participant={participant} />
+                        <Participant
+                          participant={participant}
+                          changePossible={true}/>
                     </tr>
                 ))}
                 </tbody>

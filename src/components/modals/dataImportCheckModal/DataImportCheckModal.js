@@ -1,29 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './DataImportCheckModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import exit from '../../../assets/media/x-circle.svg';
-import { Accordion, ListGroup, Image, Card, Table, useAccordionButton } from 'react-bootstrap';
-import ModalButton from '../../shared/buttons/modalButton/ModalButton';
-import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
-import alarmImage from '../../../assets/media/alarm-fill.svg';
-import locationImage from '../../../assets/media/geo-alt-fill.svg';
+import { Accordion, ListGroup, Image, Table } from 'react-bootstrap';
+import CustomButton from '../../shared/buttons/button/CustomButton';
+import SlotCard from '../../window/slotsWindow/Slot';
+import Participant from '../../window/participantWindow/participant/Participant';
 
 function DataImportCheckModal ({ importedRoomSlots, importedParticipants, importedSettings, onAddData, onOverwriteData, title, text, onHide, ...props }) {
-  const openAccordion = (eventKey) => {
-    useAccordionButton(eventKey, () => {});
-  };
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const expandAndToggle = (eventKey) => {
-    openAccordion(eventKey);
-    setIsAccordionOpen(prevOpen => prevOpen !== true);
-  };
-
-  function getSlotDescription (roomSlot) {
-    const options = { weekday: 'long' };
-    return roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + roomSlot.getFormattedDate() + ' From: ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime();
-  }
-
   return (
         <Modal
             {...props}
@@ -40,9 +25,9 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                 <div className={'participants-slots-settings-import'}>
                     <div className={'participant-import'}>
                         <h3 className={'title-subheadline'}>Participants</h3>
-                        <div className={'list-description'}>
-                            <div className={'participant-list-container'}>
-                                <Table responsive borderless className={'participant-table'}>
+                        <div className={'list-description-import'}>
+                            <div className={'participant-list-container-import'}>
+                                <Table responsive borderless className={'participant-table-import'}>
                                     <thead style={{ position: 'sticky', top: '0', zIndex: '1', background: 'white' }}>
                                         <tr>
                                             <th className={'column-firstName'} style={{ fontSize: '1.2em' }}>First Name</th>
@@ -57,12 +42,9 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                                     <tbody>
                                         {importedParticipants?.map((participant) => (
                                             <tr key={participant.getId()} style={{ borderBottom: '1px solid black' }}>
-                                                <td className={'column-firstName'}>{participant.getFirstName()}</td>
-                                                <td className={'column-lastName'}>{participant.getLastName()}</td>
-                                                <td className={'column-email'}>{participant.getEmail()}</td>
-                                                <td className={'column-group'} style={{ justifySelf: 'center' }} >{participant.getGroup()}</td>
-                                                <td className={'column-topic'}>{participant.getTopic()}</td>
-                                                <td className={'column-languageLevel'}>{participant.getLanguageLevel()}</td>
+                                                <Participant
+                                                  participant={participant}
+                                                  changePossible={false}/>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -73,46 +55,31 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                     <div className={'slots-settings-import'}>
                         <div className={'slots-import'}>
                             <h3 className={'title-subheadline'}>Slots</h3>
-                            <div className={'slots-list-container'}>
-                                <Accordion defaultActiveKey="0">
-                                    <div className={'overflow-container-roomslots'}>
-                                        <ListGroup className={'list-group'}>
-                                          {importedRoomSlots?.map((slot, index) => (
-                                              <ListGroup.Item key={index} style={{ padding: 0 }}>
-                                                  <Card>
-                                                      <Card.Header className={'list-item'}>
-                                                          <div className={'slots-infos'}>
-                                                              <CustomIconButton
-                                                                  onButtonClick={(index) => expandAndToggle(index)}
-                                                                  toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
-                                                                  <Image src={alarmImage} alt={'alarmImage'} />
-                                                                  <span className={'slot-text'} style={{ paddingLeft: 5 }}>
-                                                                      {getSlotDescription(slot)}
-                                                                  </span>
-                                                              </CustomIconButton>
-                                                          </div>
-                                                      </Card.Header>
-                                                      <Accordion.Collapse eventKey={index}>
-                                                          <Card.Body>
-                                                              <ul style={{ listStyle: 'none', overflowY: 'auto' }}>
-                                                                  {slot.getRooms()?.map((room, roomIndex) =>
-                                                                      <li key={roomIndex}>
-                                                                          <div className={'room-properties'}>
-                                                                              <Image src={locationImage} alt={'locationImage'} />
-                                                                              <span style={{ paddingLeft: 5 }}>{room.getName()}</span>
-                                                                          </div>
-                                                                      </li>
-                                                                  )}
-                                                              </ul>
-                                                          </Card.Body>
-                                                      </Accordion.Collapse>
-                                                  </Card>
-                                              </ListGroup.Item>
-                                          ))}
-                                        </ListGroup>
-                                    </div>
-                                </Accordion>
-                            </div>
+                            {!importedRoomSlots
+                              ? (
+                                  <div className={'radio-container-import-content'}>
+                                      <span>No imported Slots</span>
+                                  </div>
+                                )
+                              : (
+                                  <div className={'slots-list-container-import'}>
+                                      <Accordion defaultActiveKey="0">
+                                          <div className={'overflow-container-roomslots-import'}>
+                                              <ListGroup className={'list-group'}>
+                                                {importedRoomSlots?.map((slot, index) => (
+                                                    <ListGroup.Item className={'slots-infos-import'} key={index} style={{ padding: 0 }}>
+                                                        <SlotCard
+                                                          key={slot.getId()}
+                                                          eventKey={index}
+                                                          roomSlot={slot}
+                                                          changePossible={false}/>
+                                                    </ListGroup.Item>
+                                                ))}
+                                              </ListGroup>
+                                          </div>
+                                      </Accordion>
+                                  </div>
+                                )}
                         </div>
                         <div className={'radio-container-import'}>
                             <h3 className={'title-subheadline'} style={{ paddingTop: '20px' }}>Settings</h3>
@@ -155,29 +122,32 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                 </div>
                   <div className={'text-container text-center'}>
                     <div className={'delete-title-subheadline'} style={{ fontSize: '1.2em', whiteSpace: 'pre-line', fontWeight: 'bold' }}>
-                      Do you want to overwrite the already existing data in your list or add the imported data to the list?
+                      Do you want to overwrite the already existing data or add the imported data to the list?
                     </div>
                   </div>
                   <div className={'import-buttons'}>
                     <div className={'button-import-options'}>
-                      <ModalButton
+                      <CustomButton
+                        toolTip={'Overwrite the already existing data'}
                         backgroundColor={ '#B0D7AF' }
                         onButtonClick={() => { onOverwriteData(); onHide(); }}
-                      > Overwrite </ModalButton>
+                      > Overwrite </CustomButton>
                     </div>
                     <div className={'button-import-options'}>
-                      <ModalButton
+                      <CustomButton
+                        toolTip={'Add the imported data to the already existing data'}
                         className={'button-import-options'}
                         backgroundColor={ '#B0D7AF' }
                         onButtonClick={() => { onAddData(); onHide(); }}
-                      > Add </ModalButton>
+                      > Add </CustomButton>
                     </div>
                     <div className={'button-import-options'}>
-                      <ModalButton
+                      <CustomButton
+                        toolTip={'Cancel'}
                         className={'button-import-options'}
                         backgroundColor={ '#C40233' }
                         onButtonClick={onHide}
-                      > Cancel </ModalButton>
+                      > Cancel </CustomButton>
                   </div>
                 </div>
 

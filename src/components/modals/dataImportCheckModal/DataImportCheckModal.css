@@ -93,10 +93,13 @@
     font-size: 1.0em;
     width: 60%;
 }
-.list-description{
+.list-description-import{
     width: 100%;
+    font-style: normal;
+    color: #82868B;
+    padding: 0 0 1% 0;
 }
-.participant-list-container{
+.participant-list-container-import{
     height: auto;
     width: 100%;
     max-height: 50vh;
@@ -104,12 +107,21 @@
     font-weight: 300;
     font-size: 1em;
     color: #82868B;
-    overflow: auto;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: block;
+    color: #82868B;
+    border-radius: 5px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
-.participant-table{
-    width: 100%;
+.participant-table-import{
+    width: auto;
     max-height: 50vh;
     padding: 10px;
+    border-style: none;
+    font-size: 1em;
+    font-weight: 100;
 }
 
 .slots-settings-import{
@@ -117,27 +129,32 @@
 }
 
 .slots-import{
-    color: #82868B;
     width: 100%;
 }
-.slots-list-container{
+.slots-list-container-import{
     max-height: calc(50vh - 145.517px);
     font-style: normal;
     font-weight: 300;
     font-size: 1em;
+    border-radius: 5px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
-.overflow-container-roomslots{
+.overflow-container-roomslots-import{
     height: auto;
     max-height: calc(50vh - 145.517px);
+    overflow: auto;
 }
-.list-item{
-    min-height: 40px;
+.list-item-import{
+    min-height: 30px;
     align-items: center;
 }
-.slots-infos{
+.slots-infos-import{
     overflow-x: auto;
     white-space: nowrap;
-    min-height: 40px;
+    min-height: 30px;
+    width: 100%;
+    display: flex;
 }
 
 .radio-container-import{
