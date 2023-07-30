@@ -541,7 +541,7 @@
  "settings": {
   "authorIsNotary": false,
   "breakForModeratorAndReviewer": false,
-  "abReview": false,
+  "abReview": true,
   "internationalGroups": false
  }
 }

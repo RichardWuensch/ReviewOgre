@@ -134,9 +134,9 @@
   }
  ],
  "settings": {
-  "authorIsNotary": false,
+  "authorIsNotary": true,
   "breakForModeratorAndReviewer": false,
-  "abReview": false,
+  "abReview": true,
   "internationalGroups": false
  }
 }
