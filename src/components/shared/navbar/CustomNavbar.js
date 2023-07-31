@@ -99,7 +99,7 @@ function CustomNavbar () {
   }
 
   return (
-      <Navbar className={'fixed-top'} expand="lg" style={{ backgroundColor: '#f5f5f5', borderBottom: 'solid rgba(0, 0, 0, 0.19) 1px' }}>
+      <Navbar collapseOnSelect className={'fixed-top'} expand="lg" style={{ backgroundColor: '#f5f5f5', borderBottom: 'solid rgba(0, 0, 0, 0.19) 1px' }}>
           <Container>
               <Navbar.Brand as={ Link } to="/">
                   <div className="d-flex align-items-center">
@@ -112,9 +112,10 @@ function CustomNavbar () {
                       </div>
                   </div>
               </Navbar.Brand>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                  <Nav className="me-auto">
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="me-auto"></Nav>
+                  <Nav>
                       <Nav.Link as={ Link } to="/">Home</Nav.Link>
                       <Nav.Link as={ Link } to="/reviews">Reviews</Nav.Link>
                       <Nav.Link as={ Link } to="/docs">Docs</Nav.Link>

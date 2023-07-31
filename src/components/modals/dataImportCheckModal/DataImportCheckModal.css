@@ -1,7 +1,9 @@
+/***
+
 .modal {
   display: flex;
-  align-items: center; /* Vertikal zentrieren */
-  justify-content: center; /* Horizontal zentrieren */
+  align-items: center;
+  justify-content: center;
   height: 100%;
 }
 
@@ -11,6 +13,8 @@
     display: flex;
     flex-direction: column;
 }
+
+*/
 
 .modal .modal-content{
   flex-grow: 1; /* Nutzt den verfügbaren Platz im Flexbox-Container vollständig aus */
