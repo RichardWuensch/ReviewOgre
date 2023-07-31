@@ -6,10 +6,7 @@ export default class Room {
   #name;
   #beamerNeeded;
   #review = null;
-  #notNeeded = {
-    bool: false,
-    topic: ''
-  };
+  #notNeeded = { bool: false, topic: '' };
 
   constructor (name, beamerNeeded, id = null) {
     if (id !== null) {
@@ -68,5 +65,10 @@ export default class Room {
 
   setReview (review) {
     this.#review = review;
+  }
+
+  resetReview () {
+    this.#review = null;
+    this.#notNeeded = { bool: false, topic: '' };
   }
 }
