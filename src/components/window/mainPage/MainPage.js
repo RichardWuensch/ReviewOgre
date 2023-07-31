@@ -93,9 +93,9 @@ function MainPage () {
                         </div>
                     </Col>
                     <ErrorModal
-                        show={algorithmErrorObject}
-                        onHide={() => setAlgorithmErrorObject(null)}
-                        errorObject={algorithmErrorObject}
+                        show={algorithmErrorMessage}
+                        errorObject={algorithmErrorMessage}
+                        onHide={() => setAlgorithmErrorMessage(null)}
                     />
                     <SettingsModal
                         show={showModalSettings}
