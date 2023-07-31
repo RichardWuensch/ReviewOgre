@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../shared/context/SettingsContext';
 
 function MainPage () {
-  const [algorithmErrorMessage, setAlgorithmErrorMessage] =
+  const [algorithmErrorObject, setAlgorithmErrorObject] =
         React.useState(null);
   const [showModalSettings, setShowModalSettings] = React.useState(false);
   const participantsDispatch = useParticipantsDispatch();
@@ -40,7 +40,7 @@ function MainPage () {
       navigate('/reviews');
     } catch (error) {
       console.log(error.message);
-      setAlgorithmErrorMessage(error);
+      setAlgorithmErrorObject(error);
     }
   }
 
@@ -93,9 +93,9 @@ function MainPage () {
                         </div>
                     </Col>
                     <ErrorModal
-                        show={algorithmErrorMessage}
-                        errorObject={algorithmErrorMessage}
-                        onHide={() => setAlgorithmErrorMessage(null)}
+                        show={algorithmErrorObject}
+                        errorObject={algorithmErrorObject}
+                        onHide={() => setAlgorithmErrorObject(null)}
                     />
                     <SettingsModal
                         show={showModalSettings}

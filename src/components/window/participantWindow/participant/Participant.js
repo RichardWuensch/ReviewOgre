@@ -9,7 +9,7 @@ import './Participant.css';
 import CustomIconButton from '../../../shared/buttons/iconButton/CustomIconButton';
 import PropTypes from 'prop-types';
 
-function Participant ({ participant }) {
+function Participant ({ participant, changePossible }) {
   const [showModalEditParticipant, setShowModalEditParticipant] = React.useState(false);
   const [showModalDelete, setShowModalDelete] = React.useState(false);
 
@@ -43,20 +43,26 @@ function Participant ({ participant }) {
                 <td className={'column-group'} style={{ justifySelf: 'center' }} >{participant.getGroup()}</td>
                 <td className={'column-topic'}>{participant.getTopic()}</td>
                 <td className={'column-languageLevel'}>{participant.getLanguageLevel()}</td>
-                <td className={'column-options'}>
-                    <div>
-                        <CustomIconButton
-                            onButtonClick={() => setShowModalEditParticipant(true)}
-                            toolTip={'Edit this participant'}>
-                            <Image src={edit} alt={'icon'}/>
-                        </CustomIconButton>
-                        <CustomIconButton
-                            onButtonClick={() => setShowModalDelete(true)}
-                            toolTip={'Delete this participant'}>
-                            <Image src={deleteButton} alt={'icon'}/>
-                        </CustomIconButton>
-                    </div>
-                </td>
+                {changePossible
+                  ? (
+                        <td className={'column-options'}>
+                            <div>
+                                <CustomIconButton
+                                    onButtonClick={() => setShowModalEditParticipant(true)}
+                                    toolTip={'Edit this participant'}>
+                                    <Image src={edit} alt={'icon'}/>
+                                </CustomIconButton>
+                                <CustomIconButton
+                                    onButtonClick={() => setShowModalDelete(true)}
+                                    toolTip={'Delete this participant'}>
+                                    <Image src={deleteButton} alt={'icon'}/>
+                                </CustomIconButton>
+                            </div>
+                        </td>
+                    )
+                  : (
+                        <td className={'column-options'}></td>
+                    )}
             </>
   );
 
@@ -83,6 +89,7 @@ function Participant ({ participant }) {
   );
 }
 Participant.prototypes = {
+  changePossible: PropTypes.object,
   participant: PropTypes.object.isRequired
 };
 
