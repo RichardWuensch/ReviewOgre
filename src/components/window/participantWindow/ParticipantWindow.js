@@ -55,11 +55,6 @@ function ParticipantList () {
     });
   }
 
-  async function importDataCheck (event) {
-    importStudentListToLocalList(event);
-    setShowModalDataImportCheck(true);
-  }
-
   async function importStudentListToLocalList (event) {
     const importParticipants = new ImportParticipants();
     importParticipants.runStudentImport(event)
