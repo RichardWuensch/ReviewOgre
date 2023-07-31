@@ -15,19 +15,15 @@ import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
 
-function SlotModal ({ roomslot, ...props }) {
+function SlotModal ({ roomslot, onSaveClick, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
   const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
   const [endTime, setEndTime] = useState(roomslot?.getFormattedEndTime() ?? '00:00');
   const [invalidSlotError, setInvalidSlotError] = useState(null);
   const [errorTooltipText, setErrorTooltipText] = useState(null);
-  const [items, setItems] = useState([]);
-  const [isEditMode] = useState(props.edit || false);
-  const [deletedRooms, setDeletedRooms] = useState([]);
-  const [newRooms, setNewRooms] = useState([]);
-  const [updatedRooms, setUpdatedRooms] = useState([]);
-  const [initialItems, setInitialItems] = useState(roomslot
+  const [isEditMode] = useState(props.edit === 'true');
+  const [items, setItems] = useState(roomslot
     ?.getRooms()
     .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
 
@@ -43,8 +39,6 @@ function SlotModal ({ roomslot, ...props }) {
   }, [roomslot]);
 
   const addItem = () => {
-    console.log('addItem');
-    setNewRooms([...newRooms, new Room('', false)]);
     setItems([...items, new Room('', false)]);
   };
 
@@ -54,35 +48,11 @@ function SlotModal ({ roomslot, ...props }) {
 
   const deleteItem = (roomId, event) => {
     event.preventDefault(); // Prevents the default behavior of the button
-
-    // Check if the item is in the 'items' array and update state accordingly
-    if (initialItems.some((room) => room.getId() === roomId)) {
-      const filteredItems = filterDeletedRoom(initialItems, roomId);
-      setInitialItems(filteredItems);
-      const roomToDelete = items.find((room) => room.getId() === roomId);
-      setDeletedRooms([...deletedRooms, roomToDelete]);
-    }
-
-    // Check if the item is in the 'newRooms' array and update state accordingly
-    const newItems = filterDeletedRoom(newRooms, roomId);
-    setNewRooms(newItems);
     const filteredItems = filterDeletedRoom(items, roomId);
     setItems(filteredItems);
   };
 
   const handleInputChange = (roomId, event) => {
-    if (initialItems.some(room => room.id === roomId)) {
-      const newItems = initialItems.map(room => {
-        if (room.getId() === roomId) {
-          return { ...room, name: event.target.value };
-        } else {
-          return room;
-        }
-      });
-      setInitialItems(newItems);
-      const roomToUpdate = initialItems.find(room => room.id === roomId);
-      setUpdatedRooms([...updatedRooms, roomToUpdate]);
-    }
     if (items.some(room => room.id === roomId)) {
       const newItems = items.map(room => {
         if (room.getId() === roomId) {
@@ -92,32 +62,10 @@ function SlotModal ({ roomslot, ...props }) {
         }
       });
       setItems(newItems);
-    }
-    if (newRooms.some(room => room.id === roomId)) {
-      const newItems = newRooms.map(room => {
-        if (room.getId() === roomId) {
-          return { ...room, name: event.target.value };
-        } else {
-          return room;
-        }
-      });
-      setNewRooms(newItems);
     }
   };
 
   const handleBeamerChange = (roomId) => {
-    if (initialItems.some(room => room.id === roomId)) {
-      const newItems = initialItems.map(room => {
-        if (room.getId() === roomId) {
-          return { ...room, beamerNeeded: !room.getBeamerNeeded() };
-        } else {
-          return room;
-        }
-      });
-      setInitialItems(newItems);
-      const roomToUpdate = items.find(room => room.id === roomId);
-      setUpdatedRooms([...updatedRooms, roomToUpdate]);
-    }
     if (items.some(room => room.id === roomId)) {
       const newItems = items.map(room => {
         if (room.getId() === roomId) {
@@ -127,16 +75,6 @@ function SlotModal ({ roomslot, ...props }) {
         }
       });
       setItems(newItems);
-    }
-    if (newRooms.some(room => room.id === roomId)) {
-      const newItems = newRooms.map(room => {
-        if (room.getId() === roomId) {
-          return { ...room, beamerNeeded: !room.getBeamerNeeded() };
-        } else {
-          return room;
-        }
-      });
-      setNewRooms(newItems);
     }
   };
 
@@ -153,10 +91,7 @@ function SlotModal ({ roomslot, ...props }) {
 
   function createTempRoomSlot () {
     const rooms = [];
-    initialItems.forEach((room) => {
-      rooms.push(room.getName() ? new Room(room.getName(), room.getBeamerNeeded()) : new Room('undefined', room.getBeamerNeeded()));
-    });
-    newRooms.forEach((room) => {
+    items.forEach((room) => {
       rooms.push(room.getName() ? new Room(room.getName(), room.getBeamerNeeded()) : new Room('undefined', room.getBeamerNeeded()));
     });
     return new RoomSlot(
@@ -172,7 +107,7 @@ function SlotModal ({ roomslot, ...props }) {
     const slot = createTempRoomSlot();
     const overlappingSlots = slot.retrieveOverlappingSlots(roomSlots);
     if (overlappingSlots.length === 0) {
-      props.onSaveClick(slot, deletedRooms, newRooms, updatedRooms);
+      props.onSaveClick(slot);
       hideModal();
       return;
     }
@@ -325,9 +260,7 @@ function SlotModal ({ roomslot, ...props }) {
                           }}
                         />
                         <div className={'options-delete'}>
-                          <CustomIconButton
-                            toolTip={'Delete this room'}
-                            onButtonClick={(event) => deleteItem(item.getId(), event)}>
+                          <CustomIconButton as="div" toolTip={'Delete this room'} onButtonClick={(event) => deleteItem(item.getId(), event)}>
                             <Image src={deleteButton} alt={'icon'} />
                           </CustomIconButton>
                         </div>
@@ -376,10 +309,11 @@ SlotModal.propTypes = {
   onHide: PropTypes.any,
   id: PropTypes.number,
   header: PropTypes.string,
-  edit: PropTypes.bool,
+  edit: PropTypes.string,
   date: PropTypes.number,
   startTime: PropTypes.string,
   endTime: PropTypes.string,
-  items: PropTypes.any
+  items: PropTypes.any,
+  onSaveClick: PropTypes.func.isRequired
 };
 export default SlotModal;

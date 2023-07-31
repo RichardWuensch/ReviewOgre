@@ -52,21 +52,13 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
     /* eslint-enable object-shorthand */
   };
 
-  const deleteRooms = (deletedRooms) => {
-  };
-
-  const addRooms = (newRooms) => {
-  };
-
-  const updateRooms = (updatedRooms) => {
-  };
-
   const slotContent = (
         <>
             <Card>
                 <Card.Header className={'list-item'}>
                     <div className={'slots-infos'}>
                         <CustomIconButton
+                            as="button"
                             onButtonClick={() => expandAndToggle()}
                             toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
                             <Image src={alarmImage} alt={'alarmImage'} />
@@ -78,11 +70,13 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                           ? (
                                 <div className={'options'}>
                                     <CustomIconButton
+                                        as="button"
                                         onButtonClick={() => setShowModalEditSlot(true)}
                                         toolTip={'Edit this slot'}>
                                         <Image src={editImage} alt={'icon'}/>
                                     </CustomIconButton>
                                     <CustomIconButton
+                                        as="button"
                                         onButtonClick={() => setShowModalDeleteSlot(true)}
                                         toolTip={'Delete this slot and linked rooms'}>
                                         <Image src={deleteButton} alt={'icon'}/>
@@ -120,8 +114,8 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                 onHide={() => setShowModalEditSlot(false)}
                 header={'Edit Slot'}
                 roomslot={roomSlot}
-                edit={true}
-                onSaveClick={(slot, deletedRooms, newRooms, updatedRooms) => { deleteRooms(deletedRooms); addRooms(newRooms); updateRooms(updatedRooms); updateSlot(slot); }}/>
+                edit={'true'}
+                onSaveClick={(slot) => { updateSlot(slot); }}/>
             <DeleteModal
                 // modal to delete the whole slot
                 show={showModalDeleteSlot}
