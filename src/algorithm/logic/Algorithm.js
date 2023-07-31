@@ -165,7 +165,12 @@ export default class Algorithm {
     // if (maxNumberOfRoomsInSlots < 1) maxNumberOfRoomsInSlots = 1;
     const minAmountOfSlots = Math.ceil(this.#breakForModeratorAndReviewer ? (groupMap.size / maxNumberOfRoomsInSlots) * 2 : (groupMap.size / maxNumberOfRoomsInSlots));
     for (const s of this.#roomSlots) {
-      const rooms = s.getRooms().filter(r => (r.getNotNeeded().bool === true && r.getNotNeeded().topic !== topic) || r.getNotNeeded().topic === '');
+      let rooms = [];
+      if (this.#abReview === true) {
+        rooms = s.getRooms().filter(r => (r.getNotNeeded().bool === true && r.getNotNeeded().topic !== topic) || r.getNotNeeded().topic === '');
+      } else {
+        rooms = s.getRooms();
+      }
       rooms.forEach(r => r.setNotNeeded(false, ''));
       // maxNumberOfRoomsInSlots += s.getRooms().length - rooms.length;
       roomCountWithNotNeededRooms += rooms.length;
