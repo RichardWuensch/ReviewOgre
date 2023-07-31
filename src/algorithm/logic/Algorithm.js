@@ -31,7 +31,7 @@ export default class Algorithm {
   #resetRoomSlots (roomSlots) {
     for (const roomSlot of roomSlots) {
       for (const room of roomSlot.getRooms()) {
-        room.setReview(null);
+        room.resetReview();
       }
     }
     return roomSlots;
@@ -51,8 +51,6 @@ export default class Algorithm {
   */
   run () {
     const groups = this.#getAllGroups();
-    // this.#calculateNumberOfReviewer(groups.length);
-    // this.#numberOfReviewers = 2;
     this.#prechecks(groups.length);
 
     let errorFound = true;
@@ -71,14 +69,6 @@ export default class Algorithm {
           if (review === null) {
             continue;
           }
-          // console.log(room.getName() + ' ' + room.getNotNeeded().bool + ' ' + room.getNotNeeded().topic + ' ' + review.getAuthor().getTopic());
-          if (this.#checkSkipRoom(room.getNotNeeded().bool, room.getNotNeeded().topic, review.getAuthor().getTopic()) === true) {
-            continue;
-          }
-          /* if (room.getNotNeeded().bool === true || (room.getNotNeeded().bool === false && room.getNotNeeded().topic === review.getAuthor().getTopic())) {
-            console.log(review);
-            continue;
-          } */
           room.getReview().fillPossibleParticipantsOfReview(roomSlot, this.#participants, this.#abReview);
           this.#assignModeratorToReview(roomSlot, review);
           this.#assignNotaryToReview(roomSlot, review);
@@ -98,7 +88,7 @@ export default class Algorithm {
 
   #checkSkipRoom (notNeeded, roomTopic, reviewTopic) {
     if (this.#abReview === true) {
-      if (notNeeded.bool === true || (notNeeded === false && roomTopic === reviewTopic)) {
+      if (notNeeded === true || (notNeeded === false && roomTopic !== reviewTopic)) {
         return true;
       }
     } else {
@@ -116,7 +106,7 @@ export default class Algorithm {
    * there must be as many rooms as reviews
    * per Slot are only as many rooms necessary as amount of Participants divided by amount of participants per review (the rest of the rooms can be returned to the roomplaner)
    * there must be at least as many slots as the result from the amount of Groups divided by max number of rooms calculated in the step before
-   * @param {int} numberOfGroups
+   * @param {int} groupsLength
    * @throws {Error} - to show what's the problem
    */
   #prechecks (groupsLength) {
@@ -128,23 +118,23 @@ export default class Algorithm {
     } else {
       this.#participants.forEach(p => {
         if (p.getTopic() === undefined) {
-          throw new Error('Some participants have no topic', { cause: 'prechecksFailed' }); // TODO check in frontend
+          throw new Error('Some participants have no topic', { cause: 'prechecksFailed' });
         }
       });
       const topicMap = this.#getTopicMap();
+      if (topicMap.size < 2) {
+        throw new Error('For AB-Reviews at least 2 different topics are needed', { cause: 'prechecksFailed' }); // TODO check in frontend
+      }
       const listOfNumberOfReviewers = [];
       const listOfParticipantsPerReview = [];
       for (const participantsPerTopic of topicMap.values()) {
         const groupMap = this.#getGroupMap(participantsPerTopic);
         const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(participantsPerTopic.length, groupMap.size);
         listOfNumberOfReviewers.push(sumOfParticipantsAndReviewerPerReview.numberOfReviewers);
-        console.log(sumOfParticipantsAndReviewerPerReview.participantsPerReview);
         listOfParticipantsPerReview.push(sumOfParticipantsAndReviewerPerReview.participantsPerReview);
       }
       this.#numberOfReviewers = Math.min(...listOfNumberOfReviewers);
       this.#participantsPerReview = Math.min(...listOfParticipantsPerReview);
-      console.log(listOfParticipantsPerReview);
-      console.log(this.#numberOfReviewers + ' ' + this.#participantsPerReview);
       for (const [topic, participantsPerTopic] of topicMap) {
         this.checks(participantsPerTopic, topic);
       }
@@ -157,12 +147,7 @@ export default class Algorithm {
     let errorMessage = '';
     const groupMap = this.#getGroupMap(participants);
 
-    console.log(this.#abReview);
-
     const maxNumberOfRoomsInSlots = Math.floor(participants.length / this.#participantsPerReview); // if there are more rooms they can be shown as unnecessary and the booking can canceled
-    console.log(maxNumberOfRoomsInSlots);
-    // console.log(participants.length + ' ' + this.#participantsPerReview);
-    // if (maxNumberOfRoomsInSlots < 1) maxNumberOfRoomsInSlots = 1;
     const minAmountOfSlots = Math.ceil(this.#breakForModeratorAndReviewer ? (groupMap.size / maxNumberOfRoomsInSlots) * 2 : (groupMap.size / maxNumberOfRoomsInSlots));
     for (const s of this.#roomSlots) {
       let rooms = [];
@@ -172,15 +157,20 @@ export default class Algorithm {
         rooms = s.getRooms();
       }
       rooms.forEach(r => r.setNotNeeded(false, ''));
-      // maxNumberOfRoomsInSlots += s.getRooms().length - rooms.length;
       roomCountWithNotNeededRooms += rooms.length;
       for (let i = 0; i < roomCountWithNotNeededRooms && i < rooms.length; i++) {
         rooms[i].setNotNeeded(false, topic);
       }
       if (rooms.length > maxNumberOfRoomsInSlots) {
         roomCount += maxNumberOfRoomsInSlots;
-        for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
-          rooms[i].setNotNeeded(true, topic);
+        if (maxNumberOfRoomsInSlots === 1 || this.#abReview === false) {
+          for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
+            rooms[i].setNotNeeded(true, topic);
+          }
+        } else {
+          for (let i = maxNumberOfRoomsInSlots - 1; i < rooms.length; i++) {
+            rooms[i].setNotNeeded(true, topic);
+          }
         }
       } else {
         roomCount += rooms.length;
@@ -193,7 +183,6 @@ export default class Algorithm {
           break;
         }
       } else {
-        console.log('achtung' + participants.length + ' ' + this.#participantsPerReview); // ---------------------------------------------------------------------------------------------------------------------------------------
         if ((participants.length) < (this.#participantsPerReview - 1)) { // TODO einfach per OR mit der vorherigen Bedingung verknüpfen ????????
           errorMessage += 'There are not enough participants to build review groups.\n';
           break;
@@ -203,7 +192,6 @@ export default class Algorithm {
     if (this.#authorIsNotary === false && groupMap.size === 2 && this.#participantsPerReview < 6) errorMessage += 'If only 2 groups per topic exist, authorIsNotary must be active.\n';
     if (groupMap.size < 2) errorMessage += 'At least 2 groups are needed.\n';
     if (!errorMessage) {
-      console.log(groupMap.size + ' ' + roomCountWithNotNeededRooms + ' ' + roomCount);
       if (groupMap.size > roomCountWithNotNeededRooms) errorMessage += `There are not enough rooms for ${groupMap.size} groups.\n`;
       else if (groupMap.size > roomCount) errorMessage += `With the current configuration only ${maxNumberOfRoomsInSlots} rooms per slot can be used to schedule reviews. Please add more rooms to the slots with less then ${maxNumberOfRoomsInSlots} rooms or create more slots.\n`;
       if (minAmountOfSlots > this.#roomSlots.length) errorMessage += `There are not enough slots. Minimum amount: ${minAmountOfSlots}\n`;
@@ -389,12 +377,8 @@ export default class Algorithm {
       participantsPerReview = numberOfReviewers + 3;
       // numberOfReviewers = 2;
     } else {
-      console.log('??????????????????????????????');
       numberOfReviewers = Math.floor((2 * participantsLength) / numberOfGroups - 3);
-      console.log(numberOfReviewers);
       if (numberOfReviewers < 3) numberOfReviewers = 3;
-      console.log(numberOfReviewers);
-      // numberOfReviewers = 2;
       participantsPerReview = numberOfReviewers + 3;
     }
     return { numberOfReviewers, participantsPerReview };
