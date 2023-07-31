@@ -59,7 +59,7 @@ export default class LoadState {
             roomData.name,
             roomData.beamerNeeded ?? roomData.beamer, // beamer for configuration files of version 1.0.0
             roomData.roomId);
-          if (room.notNeeded) {
+          if (room.notNeeded) { // TODO mit Basti abchecken ob das noch so valide ist nach Änderung
             room.setNotNeeded(roomData.notNeeded);
           }
           if (roomData.review) {

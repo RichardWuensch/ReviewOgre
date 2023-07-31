@@ -1,0 +1,162 @@
+{
+ "participants": [
+  {
+   "firstName": "A",
+   "lastName": "A",
+   "email": "A@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "B",
+   "lastName": "B",
+   "email": "B@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "C",
+   "lastName": "C",
+   "email": "C@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "B1",
+   "lastName": "B1",
+   "email": "B1@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "C1",
+   "lastName": "C1",
+   "email": "C1@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "D",
+   "lastName": "D",
+   "email": "D@email.de",
+   "group": "2"
+  },
+  {
+   "firstName": "E",
+   "lastName": "E",
+   "email": "E@email.de",
+   "group": "2"
+  },
+  {
+   "firstName": "F",
+   "lastName": "F",
+   "email": "F@email.de",
+   "group": "2"
+  },
+  {
+   "firstName": "G",
+   "lastName": "G",
+   "email": "G@email.de",
+   "group": "3"
+  },
+  {
+   "firstName": "H",
+   "lastName": "H",
+   "email": "H@email.de",
+   "group": "3"
+  },
+  {
+   "firstName": "I",
+   "lastName": "I",
+   "email": "I@email.de",
+   "group": "3"
+  },
+  {
+   "firstName": "J",
+   "lastName": "J",
+   "email": "J@email.de",
+   "group": "4"
+  },
+  {
+   "firstName": "K",
+   "lastName": "K",
+   "email": "K@email.de",
+   "group": "4"
+  },
+  {
+   "firstName": "L",
+   "lastName": "L",
+   "email": "L@email.de",
+   "group": "4"
+  },
+  {
+   "firstName": "M",
+   "lastName": "M",
+   "email": "M@email.de",
+   "group": "5"
+  },
+  {
+   "firstName": "N",
+   "lastName": "N",
+   "email": "N@email.de",
+   "group": "6"
+  },
+  {
+   "firstName": "O",
+   "lastName": "O",
+   "email": "O@email.de",
+   "group": "6"
+  },
+  {
+   "firstName": "P",
+   "lastName": "P",
+   "email": "P@email.de",
+   "group": "7"
+  }
+ ],
+ "roomSlots": [
+  {
+   "date": "2023-04-21T11:28:12.985Z",
+   "startTime": "2023-04-21T12:28:12.985Z",
+   "endTime": "2023-04-21T14:28:12.985Z",
+   "rooms": [
+    {
+     "name": "Slot1Raum1",
+     "beamer": true
+    },
+    {
+     "name": "Slot1Raum2",
+     "beamer": true
+    },
+    {
+     "name": "Slot1Raum3",
+     "beamer": true
+    },
+    {
+     "name": "Slot1Raum4",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-04-21T11:28:12.985Z",
+   "startTime": "2023-04-21T15:28:12.985Z",
+   "endTime": "2023-04-21T17:28:12.985Z",
+   "rooms": [
+    {
+     "name": "Slot2Raum1",
+     "beamer": true
+    },
+    {
+     "name": "Slot2Raum2",
+     "beamer": true
+    },
+    {
+     "name": "Slot2Raum3",
+     "beamer": true
+    }
+   ]
+  }
+ ],
+ "settings": {
+  "authorIsNotary": false,
+  "breakForModeratorAndReviewer": false,
+  "abReview": false,
+  "internationalGroups": false
+ }
+}

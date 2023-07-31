@@ -5,8 +5,8 @@ export default class Room {
   #slotId;
   #name;
   #beamerNeeded;
-  #notNeeded = false;
   #review = null;
+  #notNeeded = { bool: false, topic: '' };
 
   constructor (name, beamerNeeded, id = null) {
     if (id !== null) {
@@ -54,8 +54,9 @@ export default class Room {
     return this.#notNeeded;
   }
 
-  setNotNeeded (notNeeded) {
-    this.#notNeeded = notNeeded;
+  setNotNeeded (notNeeded, topic) {
+    this.#notNeeded.bool = notNeeded;
+    this.#notNeeded.topic = topic;
   }
 
   getReview () {
@@ -64,5 +65,10 @@ export default class Room {
 
   setReview (review) {
     this.#review = review;
+  }
+
+  resetReview () {
+    this.#review = null;
+    this.#notNeeded = { bool: false, topic: '' };
   }
 }
