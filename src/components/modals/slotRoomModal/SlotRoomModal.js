@@ -24,38 +24,120 @@ function SlotModal ({ roomslot, ...props }) {
   const [errorTooltipText, setErrorTooltipText] = useState(null);
   const [items, setItems] = useState([]);
   const [isEditMode] = useState(props.edit || false);
+  const [deletedRooms, setDeletedRooms] = useState([]);
+  const [newRooms, setNewRooms] = useState([]);
+  const [updatedRooms, setUpdatedRooms] = useState([]);
+  const [initialItems, setInitialItems] = useState(roomslot
+    ?.getRooms()
+    .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
 
   const roomSlots = useRoomSlots();
 
   useEffect(() => {
     // register deleted rooms
-    const initialItems =
+    const tempInitialItems =
       roomslot
         ?.getRooms()
         .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
-    setItems(initialItems);
+    setItems(tempInitialItems);
   }, [roomslot]);
 
   const addItem = () => {
+    console.log('addItem');
+    setNewRooms([...newRooms, new Room('', false)]);
     setItems([...items, new Room('', false)]);
   };
 
-  const deleteItem = (room, event) => {
-    event.stopPropagation();
-    const newItems = items.filter(tempItem => tempItem.getId() !== room.getId());
-    setItems(newItems);
+  function filterDeletedRoom (rooms, roomIdToDelete) {
+    return rooms.filter((room) => room.getId() !== roomIdToDelete);
+  }
+
+  const deleteItem = (roomId, event) => {
+    event.preventDefault(); // Prevents the default behavior of the button
+
+    // Check if the item is in the 'items' array and update state accordingly
+    if (initialItems.some((room) => room.getId() === roomId)) {
+      const filteredItems = filterDeletedRoom(initialItems, roomId);
+      setInitialItems(filteredItems);
+      const roomToDelete = items.find((room) => room.getId() === roomId);
+      setDeletedRooms([...deletedRooms, roomToDelete]);
+    }
+
+    // Check if the item is in the 'newRooms' array and update state accordingly
+    const newItems = filterDeletedRoom(newRooms, roomId);
+    setNewRooms(newItems);
+    const filteredItems = filterDeletedRoom(items, roomId);
+    setItems(filteredItems);
   };
 
-  const handleInputChange = (index, event) => {
-    const newItems = [...items];
-    console.log(event.target.value);
-    newItems[index].setName(event.target.value);
-    setItems(newItems);
+  const handleInputChange = (roomId, event) => {
+    if (initialItems.some(room => room.id === roomId)) {
+      const newItems = initialItems.map(room => {
+        if (room.getId() === roomId) {
+          return { ...room, name: event.target.value };
+        } else {
+          return room;
+        }
+      });
+      setInitialItems(newItems);
+      const roomToUpdate = initialItems.find(room => room.id === roomId);
+      setUpdatedRooms([...updatedRooms, roomToUpdate]);
+    }
+    if (items.some(room => room.id === roomId)) {
+      const newItems = items.map(room => {
+        if (room.getId() === roomId) {
+          return { ...room, name: event.target.value };
+        } else {
+          return room;
+        }
+      });
+      setItems(newItems);
+    }
+    if (newRooms.some(room => room.id === roomId)) {
+      const newItems = newRooms.map(room => {
+        if (room.getId() === roomId) {
+          return { ...room, name: event.target.value };
+        } else {
+          return room;
+        }
+      });
+      setNewRooms(newItems);
+    }
   };
-  const handleBeamerChange = (index) => {
-    const newItems = [...items];
-    newItems[index].setBeamerNeeded(!newItems[index].getBeamerNeeded());
-    setItems(newItems);
+
+  const handleBeamerChange = (roomId) => {
+    if (initialItems.some(room => room.id === roomId)) {
+      const newItems = initialItems.map(room => {
+        if (room.getId() === roomId) {
+          return { ...room, beamerNeeded: !room.getBeamerNeeded() };
+        } else {
+          return room;
+        }
+      });
+      setInitialItems(newItems);
+      const roomToUpdate = items.find(room => room.id === roomId);
+      setUpdatedRooms([...updatedRooms, roomToUpdate]);
+    }
+    if (items.some(room => room.id === roomId)) {
+      const newItems = items.map(room => {
+        if (room.getId() === roomId) {
+          return { ...room, beamerNeeded: !room.getBeamerNeeded() };
+        } else {
+          return room;
+        }
+      });
+      setItems(newItems);
+    }
+    if (newRooms.some(room => room.id === roomId)) {
+      const newItems = newRooms.map(room => {
+        if (room.getId() === roomId) {
+          return { ...room, beamerNeeded: !room.getBeamerNeeded() };
+        } else {
+          return room;
+        }
+      });
+      setNewRooms(newItems);
+    }
   };
 
   function parseTime (time) {
@@ -71,7 +153,10 @@ function SlotModal ({ roomslot, ...props }) {
 
   function createTempRoomSlot () {
     const rooms = [];
-    items.forEach((room) => {
+    initialItems.forEach((room) => {
+      rooms.push(room.getName() ? new Room(room.getName(), room.getBeamerNeeded()) : new Room('undefined', room.getBeamerNeeded()));
+    });
+    newRooms.forEach((room) => {
       rooms.push(room.getName() ? new Room(room.getName(), room.getBeamerNeeded()) : new Room('undefined', room.getBeamerNeeded()));
     });
     return new RoomSlot(
@@ -87,7 +172,7 @@ function SlotModal ({ roomslot, ...props }) {
     const slot = createTempRoomSlot();
     const overlappingSlots = slot.retrieveOverlappingSlots(roomSlots);
     if (overlappingSlots.length === 0) {
-      props.onSaveClick(slot);
+      props.onSaveClick(slot, deletedRooms, newRooms, updatedRooms);
       hideModal();
       return;
     }
@@ -219,10 +304,10 @@ function SlotModal ({ roomslot, ...props }) {
             >
               <ul className={'list-style'}>
                 {items?.map((item, index) => (
-                  <li key={index} style={{ marginBottom: '1%' }}>
+                  <li key={item.getId()} style={{ marginBottom: '1%' }}>
                     <Accordion.Item
                       style={{ background: '#F5F5F5' }}
-                      eventKey={index}
+                      eventKey={item.getId()}
                     >
                       <Accordion.Header
                         className={'header-style list-item border-0'}
@@ -232,7 +317,7 @@ function SlotModal ({ roomslot, ...props }) {
                           type="text"
                           value={item.getName()}
                           placeholder={'Room'}
-                          onChange={(event) => handleInputChange(index, event)}
+                          onChange={(event) => handleInputChange(item.getId(), event)}
                           style={{
                             backgroundColor: '#FFFFFF',
                             border: 'none',
@@ -242,7 +327,7 @@ function SlotModal ({ roomslot, ...props }) {
                         <div className={'options-delete'}>
                           <CustomIconButton
                             toolTip={'Delete this room'}
-                            onButtonClick={(event) => deleteItem(item, event)}>
+                            onButtonClick={(event) => deleteItem(item.getId(), event)}>
                             <Image src={deleteButton} alt={'icon'} />
                           </CustomIconButton>
                         </div>
@@ -251,7 +336,7 @@ function SlotModal ({ roomslot, ...props }) {
                         <Card.Body>
                           <div className={'beamer-properties'}>
                             <CustomSwitch
-                                onSwitchClick={() => handleBeamerChange(index)}
+                                onSwitchClick={() => handleBeamerChange(item.getId())}
                                 isChecked={item.getBeamerNeeded()}>
                               <span style={{ paddingLeft: 5 }}> Beamer needed </span>
                             </CustomSwitch>

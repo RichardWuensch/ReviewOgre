@@ -89,7 +89,7 @@ function Participant ({ participant, changePossible }) {
   );
 }
 Participant.prototypes = {
-  changePossible: PropTypes.object,
+  changePossible: PropTypes.bool,
   participant: PropTypes.object.isRequired
 };
 

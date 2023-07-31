@@ -4,7 +4,7 @@ import { Accordion, Card, Image, useAccordionButton } from 'react-bootstrap';
 import locationImage from '../../../assets/media/geo-alt-fill.svg';
 import deleteButton from '../../../assets/media/trash.svg';
 import alarmImage from '../../../assets/media/alarm-fill.svg';
-import edit from '../../../assets/media/pencil-square.svg';
+import editImage from '../../../assets/media/pencil-square.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
 import { useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
@@ -52,6 +52,15 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
     /* eslint-enable object-shorthand */
   };
 
+  const deleteRooms = (deletedRooms) => {
+  };
+
+  const addRooms = (newRooms) => {
+  };
+
+  const updateRooms = (updatedRooms) => {
+  };
+
   const slotContent = (
         <>
             <Card>
@@ -71,7 +80,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                                     <CustomIconButton
                                         onButtonClick={() => setShowModalEditSlot(true)}
                                         toolTip={'Edit this slot'}>
-                                        <Image src={edit} alt={'icon'}/>
+                                        <Image src={editImage} alt={'icon'}/>
                                     </CustomIconButton>
                                     <CustomIconButton
                                         onButtonClick={() => setShowModalDeleteSlot(true)}
@@ -112,7 +121,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                 header={'Edit Slot'}
                 roomslot={roomSlot}
                 edit={true}
-                onSaveClick={(slot) => updateSlot(slot)}/>
+                onSaveClick={(slot, deletedRooms, newRooms, updatedRooms) => { deleteRooms(deletedRooms); addRooms(newRooms); updateRooms(updatedRooms); updateSlot(slot); }}/>
             <DeleteModal
                 // modal to delete the whole slot
                 show={showModalDeleteSlot}
@@ -127,7 +136,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
   );
 }
 SlotCard.propTypes = {
-  changePossible: PropTypes.object,
+  changePossible: PropTypes.bool,
   roomSlot: PropTypes.object.isRequired,
   eventKey: PropTypes.number.isRequired
 };
