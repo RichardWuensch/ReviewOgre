@@ -58,7 +58,7 @@ function MainPage () {
                             <h2 className={'title-subheadline'}>Run Configuration</h2>
                             <Card className={'setupContainer'}>
                                 <Row className="justify-content-between">
-                                    <Col xl={4} md={4} xs={4}>
+                                    <Col xl={4} lg={5} md={5}>
                                         <CustomButton
                                             toolTip={'Change the settings for the computation'}
                                             onButtonClick={() => setShowModalSettings(true)}
@@ -73,7 +73,7 @@ function MainPage () {
                                             <span className="button-start-text">Settings</span>
                                         </CustomButton>
                                     </Col>
-                                    <Col xl={8} md={8} xs={8}>
+                                    <Col xl={8} lg={7} md={7}>
                                         <CustomButton
                                             toolTip={'Starts the computation. Results will be shown in a separate window'}
                                             onButtonClick={runAlgorithm}
