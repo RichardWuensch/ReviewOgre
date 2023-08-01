@@ -3,14 +3,16 @@ import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from '../../../assets/media/favicon_ogre.png';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
 import LoadState from '../../../api/LoadState';
 import StoreState from '../../../api/StoreState';
 import StateExportSaveReviewsModal from '../../modals/stateExportSaveReviewsModal/StateExportSaveReviewsModal';
 import { useSettings, useSettingsDispatch } from '../context/SettingsContext';
+import './CustomNavbar.css';
 
 function CustomNavbar () {
+  const location = useLocation();
   const participantsDispatch = useParticipantsDispatch();
   const participants = useParticipants();
   const roomSlotsDispatch = useRoomSlotsDispatch();
@@ -18,11 +20,13 @@ function CustomNavbar () {
   const settings = useSettings();
   const roomSlots = useRoomSlots();
   const [showModalDataImportCheck, setShowModalDataImportCheck] = React.useState(false);
-  const [overwriteExistingDataEvent, setOverwriteExistingDataEvent] = React.useState(null);
   const [showSaveReviewsModal, setShowSaveReviewsModal] = React.useState(false);
+  const [importedRoomSlots, setImportedRoomSlots] = React.useState([]);
+  const [importedParticipants, setImportedParticipants] = React.useState([]);
+  const [importedSettings, setImportedSettings] = React.useState({});
 
   async function importDataCheck (event) {
-    setOverwriteExistingDataEvent(event);
+    loadStateIntoLocalObjects(event);
     setShowModalDataImportCheck(true);
   }
 
@@ -39,12 +43,18 @@ function CustomNavbar () {
     new StoreState().saveAsJSON(roomSlots, participants, settings, saveWithReviews);
   }
 
-  async function loadState () {
+  async function loadStateIntoLocalObjects (event) {
     const loadState = new LoadState();
-    await loadState.runStateImport(overwriteExistingDataEvent);
-    addRoomSlotListToContext(loadState.getRoomSlots());
-    addParticipantListToContext(loadState.getParticipants());
-    addSettingsToContext(loadState.getSettings());
+    await loadState.runStateImport(event);
+    setImportedRoomSlots(loadState.getRoomSlots());
+    setImportedParticipants(loadState.getParticipants());
+    setImportedSettings(loadState.getSettings());
+  }
+
+  function addLocalObjectsToContext () {
+    addRoomSlotListToContext(importedRoomSlots);
+    addParticipantListToContext(importedParticipants);
+    addSettingsToContext(importedSettings);
   }
 
   function addParticipantListToContext (list) {
@@ -90,8 +100,10 @@ function CustomNavbar () {
     /* eslint-enable object-shorthand */
   }
 
+  const isActiveTab = (path) => location.pathname === path;
+
   return (
-      <Navbar className={'fixed-top'} expand="lg" style={{ backgroundColor: '#f5f5f5', borderBottom: 'solid rgba(0, 0, 0, 0.19) 1px' }}>
+      <Navbar collapseOnSelect className={'fixed-top'} expand="lg" style={{ backgroundColor: '#f5f5f5', borderBottom: 'solid rgba(0, 0, 0, 0.19) 1px' }}>
           <Container>
               <Navbar.Brand as={ Link } to="/">
                   <div className="d-flex align-items-center">
@@ -104,12 +116,13 @@ function CustomNavbar () {
                       </div>
                   </div>
               </Navbar.Brand>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                  <Nav className="me-auto">
-                      <Nav.Link as={ Link } to="/">Home</Nav.Link>
-                      <Nav.Link as={ Link } to="/reviews">Reviews</Nav.Link>
-                      <Nav.Link as={ Link } to="/docs">Docs</Nav.Link>
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="me-auto"></Nav>
+                  <Nav>
+                      <Nav.Link className={(isActiveTab('/') ? 'active' : '')} as={ Link } to="/">Home</Nav.Link>
+                      <Nav.Link className={(isActiveTab('/reviews') ? 'active' : '')} as={ Link } to="/reviews">Reviews</Nav.Link>
+                      <Nav.Link className={(isActiveTab('/docs') ? 'active' : '')} as={ Link } to="/docs">Docs</Nav.Link>
                       <NavDropdown title="Save/Load Options" id="basic-nav-dropdown">
                           <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
                           <input type="file"
@@ -124,12 +137,15 @@ function CustomNavbar () {
           </Container>
           <DataImportCheckModal
               show={showModalDataImportCheck}
+              importedRoomSlots={importedRoomSlots}
+              importedParticipants={importedParticipants}
+              importedSettings={importedSettings}
               onOverwriteData={() => {
                 deleteAllParticipantsFromContext();
                 deleteAllRoomSlotsFromContext();
-                loadState();
+                addLocalObjectsToContext();
               }}
-              onAddData={loadState}
+              onAddData={addLocalObjectsToContext}
               title={ 'Load State' }
               text={ 'participants and slots' }
               onHide={() => setShowModalDataImportCheck(false)}

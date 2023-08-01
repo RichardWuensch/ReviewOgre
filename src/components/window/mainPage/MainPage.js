@@ -4,7 +4,7 @@ import '../setup_window.css';
 import SlotsWindow from '../slotsWindow/SlotsWindow';
 import start from '../../../assets/media/play-circle.svg';
 import gear from '../../../assets/media/gear.svg';
-import FailedCalculationModal from '../../modals/failedCalculationModal/FailedCalculationModal';
+import ErrorModal from '../../modals/errorModal/ErrorModal';
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../shared/context/SettingsContext';
 
 function MainPage () {
-  const [algorithmErrorMessage, setAlgorithmErrorMessage] =
+  const [algorithmErrorObject, setAlgorithmErrorObject] =
         React.useState(null);
   const [showModalSettings, setShowModalSettings] = React.useState(false);
   const participantsDispatch = useParticipantsDispatch();
@@ -40,7 +40,7 @@ function MainPage () {
       navigate('/reviews');
     } catch (error) {
       console.log(error.message);
-      setAlgorithmErrorMessage(error);
+      setAlgorithmErrorObject(error);
     }
   }
 
@@ -58,7 +58,7 @@ function MainPage () {
                             <h2 className={'title-subheadline'}>Run Configuration</h2>
                             <Card className={'setupContainer'}>
                                 <Row className="justify-content-between">
-                                    <Col xl={4} md={4} xs={4}>
+                                    <Col xl={4} lg={5} md={5}>
                                         <CustomButton
                                             toolTip={'Change the settings for the computation'}
                                             onButtonClick={() => setShowModalSettings(true)}
@@ -73,7 +73,7 @@ function MainPage () {
                                             <span className="button-start-text">Settings</span>
                                         </CustomButton>
                                     </Col>
-                                    <Col xl={8} md={8} xs={8}>
+                                    <Col xl={8} lg={7} md={7}>
                                         <CustomButton
                                             toolTip={'Starts the computation. Results will be shown in a separate window'}
                                             onButtonClick={runAlgorithm}
@@ -92,10 +92,10 @@ function MainPage () {
                             </Card>
                         </div>
                     </Col>
-                    <FailedCalculationModal
-                        show={algorithmErrorMessage}
-                        onHide={() => setAlgorithmErrorMessage(null)}
-                        errorMessage={algorithmErrorMessage}
+                    <ErrorModal
+                        show={algorithmErrorObject}
+                        errorObject={algorithmErrorObject}
+                        onHide={() => setAlgorithmErrorObject(null)}
                     />
                     <SettingsModal
                         show={showModalSettings}
