@@ -130,9 +130,9 @@ export default class Review {
   }
 
   addReviewer (roomSlots, index, participant, breakForModeratorAndReviewer) {
-    /** if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
+    if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
       throw new Error('Participant is not possible for this review');
-    } */
+    }
     participant.increaseReviewerCount();
     participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
@@ -219,8 +219,12 @@ export default class Review {
     return slot;
   }
 
+  /**
+   * validate reviews after changing so make sure that the author, moderator and notary is not null and there are
+   * at least 3 reviewer
+   */
   #validateReview () {
-    if (this.#author === {} || this.#moderator === {} || this.#notary === {} || this.#reviewers.length <= 3) {
+    if (this.#author === {} || this.#moderator === {} || this.#notary === {} || this.#reviewers.length < 3) {
       this.#invalidReview = true;
     } else {
       this.#invalidReview = false;
