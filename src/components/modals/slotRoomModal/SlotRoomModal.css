@@ -124,10 +124,9 @@
     align-items: center;
 }
 .list-item{
-    display: flex;
+    padding-top: 5px;
     color: #F5F5F5;
     justify-content: space-between;
-    height:5vh;
 }
 
 .item-text{

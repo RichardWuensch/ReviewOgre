@@ -1,6 +1,6 @@
 import './Slot.css';
 import React, { useState } from 'react';
-import { Accordion, Card, Image, useAccordionButton } from 'react-bootstrap';
+import { Accordion, Card, Col, Image, Row, useAccordionButton } from 'react-bootstrap';
 import locationImage from '../../../assets/media/geo-alt-fill.svg';
 import deleteButton from '../../../assets/media/trash.svg';
 import alarmImage from '../../../assets/media/alarm-fill.svg';
@@ -13,8 +13,8 @@ import PropTypes from 'prop-types';
 
 function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const [showModalDeleteSlot, setShowModalDeleteSlot] = React.useState(false);
-  const [showModalEditSlot, setShowModalEditSlot] = React.useState(false);
+  const [showModalDeleteSlot, setShowModalDeleteSlot] = useState(false);
+  const [showModalEditSlot, setShowModalEditSlot] = useState(false);
 
   const openAccordion = useAccordionButton(eventKey, () => {});
 
@@ -30,7 +30,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
 
   function getSlotDescription () {
     const options = { weekday: 'long' };
-    return roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + roomSlot.getFormattedDate() + ' From: ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime();
+    return roomSlot.getDate().toLocaleDateString('en-US', options) + ' ' + roomSlot.getFormattedDate() + ' from ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime() + ' o\'Clock';
   }
 
   const removeSlot = (roomSlot) => {
@@ -55,35 +55,37 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
   const slotContent = (
         <>
             <Card>
-                <Card.Header className={'list-item'}>
-                    <div className={'slots-infos'}>
-                        <CustomIconButton
-                            onButtonClick={() => expandAndToggle()}
-                            toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
-                            <Image src={alarmImage} alt={'alarmImage'} />
-                            <span className={'slot-text'} style={{ paddingLeft: 5 }}>
+                <Card.Header className={'list-item'} >
+                    <Row style={{ marginTop: '6px', marginBottom: '6px' }}>
+                        <Col lg={9} md={9} sm={9}>
+                            <CustomIconButton
+                                onButtonClick={() => expandAndToggle()}
+                                toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
+                                <Image src={alarmImage} alt={'alarmImage'} />
+                                <span className={'w-100'} style={{ paddingLeft: 5 }}>
                                 {getSlotDescription()}
                             </span>
-                        </CustomIconButton>
-                        {changePossible
-                          ? (
-                                <div className={'options'}>
-                                    <CustomIconButton
-                                        onButtonClick={() => setShowModalEditSlot(true)}
-                                        toolTip={'Edit this slot'}>
-                                        <Image src={edit} alt={'icon'}/>
-                                    </CustomIconButton>
-                                    <CustomIconButton
-                                        onButtonClick={() => setShowModalDeleteSlot(true)}
-                                        toolTip={'Delete this slot and linked rooms'}>
-                                        <Image src={deleteButton} alt={'icon'}/>
-                                    </CustomIconButton>
-                                </div>
-                            )
-                          : (
-                                <div className={'options'}></div>
-                            )}
-                    </div>
+                            </CustomIconButton>
+                        </Col>
+                        <Col lg={3} md={3} sm={3} className="d-flex justify-content-end">
+                            {changePossible
+                              ? (
+                                    <>
+                                        <CustomIconButton
+                                            onButtonClick={() => setShowModalEditSlot(true)}
+                                            toolTip={'Edit this slot'}>
+                                            <Image src={edit} alt={'icon'}/>
+                                        </CustomIconButton>
+                                        <CustomIconButton
+                                            onButtonClick={() => setShowModalDeleteSlot(true)}
+                                            toolTip={'Delete this slot and linked rooms'}>
+                                            <Image src={deleteButton} alt={'icon'}/>
+                                        </CustomIconButton>
+                                    </>
+                                )
+                              : null}
+                        </Col>
+                    </Row>
                 </Card.Header>
                 <Accordion.Collapse eventKey={eventKey}>
                     <Card.Body>

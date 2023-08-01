@@ -1,5 +1,4 @@
 import { createContext, useContext, useReducer } from 'react';
-import Participant from '../../../data/models/Participant';
 
 const ParticipantContext = createContext(null);
 const ParticipantDispatchContext = createContext(null);
@@ -69,7 +68,4 @@ function participantsReducer (participants, action) {
   }
 }
 
-const initialParticipants = [
-  new Participant(undefined, '-1', 'Max', 'Mustermann', 'max.mustermann@study.thws.de', '1', 'Informatik', 'A1'),
-  new Participant(undefined, '0', 'Martina', 'Musterfrau', 'martina.musterfrau@study.thws.de', '2', 'Religion', 'B2')
-];
+const initialParticipants = [];
