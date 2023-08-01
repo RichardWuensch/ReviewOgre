@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './ReviewWindow.css';
 import { Accordion, Image, Table } from 'react-bootstrap';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
-import Participant from '../../../data/models/Participant';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
 import deleteButton from '../../../assets/media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
+import { useParticipants } from '../../shared/context/ParticipantsContext';
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -43,14 +43,7 @@ function ReviewWindow () {
   const roomSlots = useRoomSlots();
   const [activeKey, setActiveKey] = useState(0);
   const [containerOfItem, setContainerOfItem] = useState({});
-  const items = [
-    new Participant(false, 675, 'Richard', 'Wünsch', 'richard.wuensch@study.thws.de', 5),
-    new Participant(false, 676, 'Basti', 'Schindler', 'richard.wuensch@study.thws.de', 14),
-    new Participant(false, 666, 'Daniel', 'Kulesz', 'richard.wuensch@study.thws.de', 56),
-    new Participant(false, 555, 'Jakob', 'Rechberger', 'richard.wuensch@study.thws.de', 5),
-    new Participant(false, 444, 'Nico', 'Stoll', 'richard.wuensch@study.thws.de', 99),
-    new Participant(false, 333, 'Hannah', 'Meinhardt', 'richard.wuensch@study.thws.de', 3)
-  ];
+  const items = useParticipants();
 
   const handleAccordionItemClick = (eventKey) => {
     setActiveKey(eventKey === activeKey ? null : eventKey);
