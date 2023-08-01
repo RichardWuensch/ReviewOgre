@@ -155,7 +155,7 @@ export default class Review {
         }
       }
     }
-    this.#reviewers.filter(r => r !== reviewer);
+    this.#reviewers = this.#reviewers.filter(r => r !== reviewer);
     this.#addParticipantToPossibleParticipants(reviewer);
   }
 
