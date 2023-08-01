@@ -230,4 +230,8 @@ export default class Review {
       this.#invalidReview = false;
     }
   }
+
+  isReviewValid () {
+    return this.#invalidReview;
+  }
 }
