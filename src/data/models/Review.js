@@ -10,6 +10,8 @@ export default class Review {
 
   #possibleParticipants = [];
 
+  #invalidReview = false;
+
   constructor (roomSlot, author, groupName, moderator, notary, reviewers, possibleParticipants) {
     if (!moderator && !notary && !reviewers) {
       this.setAuthor(roomSlot, author);
@@ -128,9 +130,9 @@ export default class Review {
   }
 
   addReviewer (roomSlots, index, participant, breakForModeratorAndReviewer) {
-    /** if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
+    if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
       throw new Error('Participant is not possible for this review');
-    } */
+    }
     participant.increaseReviewerCount();
     participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
@@ -155,8 +157,9 @@ export default class Review {
         }
       }
     }
-    this.#reviewers.filter(r => r !== reviewer);
+    this.#reviewers = this.#reviewers.filter(r => r !== reviewer);
     this.#addParticipantToPossibleParticipants(reviewer);
+    this.#validateReview();
   }
 
   getPossibleParticipants () {
@@ -214,5 +217,17 @@ export default class Review {
     const slot = new Slot(roomSlot.getId(), roomSlot.getDate(), roomSlot.getStartTime(), roomSlot.getEndTime());
     slot.setBreakSlotForUser(breakSlotForUser);
     return slot;
+  }
+
+  /**
+   * validate reviews after changing so make sure that the author, moderator and notary is not null and there are
+   * at least 3 reviewer
+   */
+  #validateReview () {
+    if (this.#author === {} || this.#moderator === {} || this.#notary === {} || this.#reviewers.length < 3) {
+      this.#invalidReview = true;
+    } else {
+      this.#invalidReview = false;
+    }
   }
 }
