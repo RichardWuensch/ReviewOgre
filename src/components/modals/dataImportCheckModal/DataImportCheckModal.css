@@ -1,20 +1,16 @@
-/***
-
-.modal {
+.modal-dataimportcheck {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
 }
 
-.modal .modal-dialog{
+.modal-dataimportcheck .modal-dialog{
     max-width: 90vw;
     height: 80vh;
     display: flex;
     flex-direction: column;
 }
-
-*/
 
 .modal .modal-content{
   flex-grow: 1; /* Nutzt den verfügbaren Platz im Flexbox-Container vollständig aus */

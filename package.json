@@ -9,6 +9,7 @@
     "@types/react": "^18.0.37",
     "bootstrap": "^5.2.3",
     "file-saver": "^2.0.5",
+    "formik": "^2.4.3",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",
     "jszip": "^3.10.1",
@@ -31,7 +32,8 @@
     "workbox-range-requests": "^6.5.4",
     "workbox-routing": "^6.5.4",
     "workbox-strategies": "^6.5.4",
-    "workbox-streams": "^6.5.4"
+    "workbox-streams": "^6.5.4",
+    "yup": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
