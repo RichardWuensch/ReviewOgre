@@ -2,7 +2,6 @@ import Modal from 'react-bootstrap/Modal';
 import { Form, Image } from 'react-bootstrap';
 import './ParticipantModal.css';
 import exit from '../../../../assets/media/x-circle.svg';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Participant from '../../../../data/models/Participant';
 import ModalButton from '../../../shared/buttons/modalButton/ModalButton';
@@ -10,14 +9,6 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 
 function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, ...props }) {
-  const [firstName, setFirstName] = useState(participant?.getFirstName() ?? '');
-  const [lastName, setLastName] = useState(participant?.getLastName() ?? '');
-  const [email, setEmail] = useState(participant?.getEmail() ?? '');
-  const [group, setGroup] = useState(participant?.getGroup() ?? '0');
-  const [topic, setTopic] = useState(participant?.getTopic() ?? '');
-  const [languageLevel, setLanguageLevel] = useState(participant?.getLanguageLevel() ?? 'Native Speaker');
-  const [id] = useState(participant?.getId() ?? -1);
-
   const { Formik } = formik;
 
   const schema = yup.object().shape({
@@ -26,33 +17,21 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
     lastName: yup.string().required(),
     email: yup.string(),
     group: yup.string(),
-    topic: yup.string().required(),
-    languageLevel: yup.string().required(),
+    topic: yup.string(),
+    languageLevel: yup.string().required().oneOf(['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Native Speaker'], 'Invalid Language Level')
   });
 
-  const handleClose = () => {
-    if (newParticipant) clearData();
-    onClose();
-  };
-
-  const clearData = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setEmail('');
-    setTopic('');
-    setGroup('0');
-  };
-
-  const saveClick = () => {
-    const participantTemp = new Participant(undefined, id, firstName, lastName, email, group, topic, languageLevel);
+  const saveClick = (formData) => {
+    console.log(formData);
+    const participantTemp = new Participant(undefined, formData.id, formData.firstName, formData.lastName,
+      formData.email, formData.group, formData.topic, formData.languageLevel);
     onSaveClick(participantTemp);
-    handleClose();
+    onClose();
   };
 
   return (
         <Modal
-            onExit={handleClose}
+            onExit={onClose}
             size="sm"
             {...props}
             aria-labelledby="contained-modal-title-vcenter"
@@ -61,86 +40,106 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
         >
             <Modal.Header>
                 <Modal.Title>{newParticipant ? 'Add new Participant' : 'Edit Participant'}</Modal.Title>
-                <Image src={exit} onClick={handleClose} alt={'exit'} className={'modal-header-icon'} />
+                <Image src={exit} onClick={onClose} alt={'exit'} className={'modal-header-icon'} />
             </Modal.Header>
             <Modal.Body>
                 <Formik
                     validationSchema={schema}
-                    onSubmit={console.log}
+                    onSubmit={(formData) => saveClick(formData)}
                     initialValues={{
-                        firstName: participant?.getFirstName() ?? '',
-                        lastName: participant?.getLastName() ?? '',
-                        email: participant?.getEmail() ?? '',
-                        group: participant?.getGroup() ?? '0',
-                        topic: participant?.getTopic() ?? '',
-                        languageLevel: participant?.getFirstName() ?? 'Native Speaker',
+                      firstName: participant?.getFirstName() ?? '',
+                      lastName: participant?.getLastName() ?? '',
+                      email: participant?.getEmail() ?? '',
+                      group: participant?.getGroup() ?? '0',
+                      topic: participant?.getTopic() ?? '',
+                      languageLevel: participant?.getFirstName() ?? 'Native Speaker'
                     }}
                 >
                     {({ handleSubmit, handleChange, values, touched, errors }) => (
-                <Form style={{ padding: 10 }}>
-                    <Form.Group>
-                        <Form.Label>First name:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="firstName"
-                            value={values.firstName}
-                            onChange={handleChange}
-                            isValid={touched.firstName && !errors.firstName}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Last name:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Last Name"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Email:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Group:</Form.Label>
-                        <Form.Control
-                            type={'text'}
-                            value={group}
-                            placeholder='Group'
-                            onChange={(e) => setGroup(e.target.value)}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Topic:</Form.Label>
-                        <Form.Control
-                            type={'text'}
-                            value={topic}
-                            placeholder='Topic'
-                            onChange={(e) => setTopic(e.target.value)}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>German Skill Level:</Form.Label>
-                        <Form.Select
-                            placeholder={'Native Speaker'}
-                            value={languageLevel}
-                            onChange={(e) => setLanguageLevel(e.target.value)}>
-                            <option value={'A1'}>A1</option>
-                            <option value={'A2'}>A2</option>
-                            <option value={'B1'}>B1</option>
-                            <option value={'B2'}>B2</option>
-                            <option value={'C1'}>C1</option>
-                            <option value={'C2'}>C2</option>
-                            <option value={'Native Speaker'}>Native Speaker</option>
-                        </Form.Select>
-                    </Form.Group>
-                    <div className={'text-center'}>
-                        <ModalButton
-                            backgroundColor={'#B0D7AF'}
-                            onButtonClick={saveClick}
-                        > {newParticipant ? 'Add Participant' : 'Save Changes'} </ModalButton>
-                    </div>
-                </Form> )}
+                    <Form style={{ padding: 10 }}>
+                        <Form.Group controlId="validationFormik02">
+                            <Form.Label>First name:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="firstName"
+                                value={values.firstName}
+                                placeholder={'First Name'}
+                                onChange={handleChange}
+                                isInvalid={!!errors.firstName}
+                                isValid={touched.firstName && !errors.firstName}/>
+                            <Form.Control.Feedback type="invalid">First Name is a required field</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="validationFormik03">
+                            <Form.Label>Last name:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="lastName"
+                                placeholder={'Last Name'}
+                                value={values.lastName}
+                                onChange={handleChange}
+                                isInvalid={!!errors.lastName}
+                                isValid={touched.lastName && !errors.lastName}/>
+                            <Form.Control.Feedback type="invalid">Last Name is a required field</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="validationFormik04">
+                            <Form.Label>Email:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="email"
+                                placeholder={'Email'}
+                                value={values.email}
+                                onChange={handleChange}
+                                isInvalid={!!errors.email}
+                                isValid={touched.email && !errors.email}/>
+                            <Form.Control.Feedback type="invalid">Email is a required field</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="validationFormik05">
+                            <Form.Label>Group:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="group"
+                                placeholder={'Group'}
+                                value={values.group}
+                                onChange={handleChange}
+                                isInvalid={!!errors.group}
+                                isValid={touched.group && !errors.group}/>
+                        </Form.Group>
+                        <Form.Group controlId="validationFormik06">
+                            <Form.Label>Topic:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="topic"
+                                placeholder={'Topic'}
+                                value={values.topic}
+                                onChange={handleChange}
+                                isInvalid={!!errors.topic}
+                                isValid={touched.topic && !errors.topic}/>
+                        </Form.Group>
+                        <Form.Group controlId="validationFormik07">
+                            <Form.Label>German Skill Level:</Form.Label>
+                            <Form.Select
+                                placeholder={'Native Speaker'}
+                                name="languageLevel"
+                                value={values.languageLevel}
+                                onChange={handleChange}
+                                isInvalid={!!errors.languageLevel}
+                                isValid={touched.languageLevel && !errors.languageLevel}>
+                                <option value={'A1'}>A1</option>
+                                <option value={'A2'}>A2</option>
+                                <option value={'B1'}>B1</option>
+                                <option value={'B2'}>B2</option>
+                                <option value={'C1'}>C1</option>
+                                <option value={'C2'}>C2</option>
+                                <option value={'Native Speaker'}>Native Speaker</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <div className={'text-center'}>
+                            <ModalButton
+                                backgroundColor={'#B0D7AF'}
+                                onButtonClick={() => handleSubmit()}
+                            > {newParticipant ? 'Add Participant' : 'Save Changes'} </ModalButton>
+                        </div>
+                    </Form>)}
                 </Formik>
             </Modal.Body>
         </Modal>
