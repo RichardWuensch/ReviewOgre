@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './ReviewWindow.css';
-import { Accordion, Image, Table } from 'react-bootstrap';
+import { Col, Image, Row, Table } from 'react-bootstrap';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
 import deleteButton from '../../../assets/media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import { useParticipants } from '../../shared/context/ParticipantsContext';
+import CustomButton from '../../shared/buttons/button/CustomButton';
+import ExportOptions from '../exportOptions/ExportOptions';
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -28,7 +30,7 @@ function Draggable ({ id, children }) {
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
         backgroundColor: '#D3D3D3',
-        zIndex: 999
+        position: 'relative'
       }
     : undefined;
 
@@ -41,24 +43,10 @@ function Draggable ({ id, children }) {
 
 function ReviewWindow () {
   const roomSlots = useRoomSlots();
-  const [activeKey, setActiveKey] = useState(0);
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
+  const [showExportOptions, setShowExportOptions] = useState(false);
 
-  const handleAccordionItemClick = (eventKey) => {
-    setActiveKey(eventKey === activeKey ? null : eventKey);
-  };
-
-  // calculate fairness
-  /* useEffect(() => {
-    const meanParticipantTotalCount =
-      participants.reduce(
-        (slotCount, p) => slotCount + p.getActiveSlots().length,
-        0
-      ) / participants.length;
-
-    participants.forEach((p) => p.calculateFairness(meanParticipantTotalCount));
-  }, [participants]); */
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
@@ -79,130 +67,111 @@ function ReviewWindow () {
   };
 
   return (
-      <DndContext onDragEnd={handleDragEnd}>
-      <div className={'result-container'}>
-        <Table
-            responsive
-            borderless
-            className={'overflow-auto reviews-table'}
-            style={{ zIndex: 0 }}
-        >
-          <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email Address</th>
-            <th>Role</th>
-          </tr>
-          </thead>
-          {items.map((reviewer) => (
-              <Draggable key={reviewer.getId()} id={reviewer.getId().toString()}>
-                  <td>{reviewer.getFirstName()}</td>
-                  <td>{reviewer.getLastName()}</td>
-                  <td>{reviewer.getEmail()}</td>
-                <td>Reviewer</td>
-              </Draggable>
-          ))}
-        </Table>
-    <Accordion
-      activeKey={activeKey}
-      onSelect={handleAccordionItemClick}
-      style={{ height: '70vh' }}
-    >
-      <div className={'overflow-container'} style={{ maxHeight: '100%' }}>
-        {roomSlots.map((roomSlot, roomSlotIndex) =>
-          roomSlot.getRooms().map((room, roomIndex) => {
-            const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
+        <DndContext onDragEnd={handleDragEnd}>
+          <Row style={{ maxHeight: '75vh' }}>
+            <Col xl={8}>
+                <div style={{ maxHeight: '100%' }}>
+                  {roomSlots.map((roomSlot, roomSlotIndex) =>
+                    roomSlot.getRooms().map((room, roomIndex) => {
+                      const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
 
-            return (
-              <Accordion.Item
-                key={accordionItemKey}
-                eventKey={accordionItemKey}
+                      return (
+                              <Droppable id={accordionItemKey} key={accordionItemKey}>
+                                  <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
+                                      ' from ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime() + ' o\'Clock'}</h5>
+
+                                  <Table
+                                      responsive
+                                      borderless
+                                  >
+                                    <thead>
+                                    <tr>
+                                      <th>First Name</th>
+                                      <th>Last Name</th>
+                                      <th>Email Address</th>
+                                      <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                      <td>{room.getReview()?.getAuthor()?.getFirstName()}</td>
+                                      <td>{room.getReview()?.getAuthor()?.getLastName()}</td>
+                                      <td>{room.getReview()?.getAuthor()?.getEmail()}</td>
+                                      <td>Author</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        {room.getReview()?.getModerator()?.getFirstName()}
+                                      </td>
+                                      <td>
+                                        {room.getReview()?.getModerator()?.getLastName()}
+                                      </td>
+                                      <td>{room.getReview()?.getModerator()?.getEmail()}</td>
+                                      <td>Moderator</td>
+                                    </tr>
+                                    <tr>
+                                      <td>{room.getReview()?.getNotary()?.getFirstName()}</td>
+                                      <td>{room.getReview()?.getNotary()?.getLastName()}</td>
+                                      <td>{room.getReview()?.getNotary()?.getEmail()}</td>
+                                      <td>Notary</td>
+                                    </tr>
+                                    {room
+                                      .getReview()?.getReviewer()
+                                      .map((reviewer) => (
+                                            <tr key={reviewer.getId()}>
+                                              <td>{reviewer.getFirstName()}</td>
+                                              <td>{reviewer.getLastName()}</td>
+                                              <td>{reviewer.getEmail()}</td>
+                                              <td>Reviewer</td>
+                                              <td>
+                                                  <CustomIconButton
+                                                  onButtonClick={() => { room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer); }}
+                                                  toolTip={'Remove Reviewer from review'}>
+                                                    <Image src={deleteButton} alt={'icon'} height={12} width={12}/>
+                                                </CustomIconButton>
+                                              </td>
+                                            </tr>
+                                      ))}
+                                  </Table>
+                              </Droppable>
+                      );
+                    })
+                  )}
+                </div>
+            </Col>
+            <Col xl={4}>
+              <CustomButton
+                  backgroundColor={'#B0D7AF'}
+                  onButtonClick={() => setShowExportOptions(true)}
+                  toolTip={'Click to show export options, e.g. export results, room plan, RevAger Lite files, ...'}>
+                Show Export Options
+              </CustomButton>
+
+              <Table
+                  responsive
+                  borderless
+                  className={'reviews-table'}
+                  style={{ zIndex: 0, marginTop: '20px' }}
               >
-                <Droppable id={accordionItemKey}>
-                  <Accordion.Header
-                      className={'header-style list-item border-0'}
-                  >
-                  <div className={'review-header'}>
-                     <div className={'review-text'} style={{ paddingLeft: 5 }}>
-                      {room.getReview()?.getGroupName()}
-                     </div>
-                    <span className={'review-text'} style={{ paddingLeft: 5 }}>
-                      {roomSlot.getFormattedStartTime() +
-                        ' - ' +
-                        roomSlot.getFormattedEndTime()}
-                    </span>
-                    <span className={'review-text'} style={{ paddingLeft: 5 }}>
-                      {room.getName()}
-                    </span>
-                  </div>
-                </Accordion.Header>
-                <Accordion.Body>
-                  <Table
-                    responsive
-                    borderless
-                    className={'overflow-auto'}
-                  >
-                    <thead>
-                      <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email Address</th>
-                        <th>Role</th>
-                      </tr>
-                    </thead>
-                      <tr>
-                        <td>{room.getReview()?.getAuthor()?.getFirstName()}</td>
-                        <td>{room.getReview()?.getAuthor()?.getLastName()}</td>
-                        <td>{room.getReview()?.getAuthor()?.getEmail()}</td>
-                        <td>Author</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          {room.getReview()?.getModerator()?.getFirstName()}
-                        </td>
-                        <td>
-                          {room.getReview()?.getModerator()?.getLastName()}
-                        </td>
-                        <td>{room.getReview()?.getModerator()?.getEmail()}</td>
-                        <td>Moderator</td>
-                      </tr>
-                      <tr>
-                        <td>{room.getReview()?.getNotary()?.getFirstName()}</td>
-                        <td>{room.getReview()?.getNotary()?.getLastName()}</td>
-                        <td>{room.getReview()?.getNotary()?.getEmail()}</td>
-                        <td>Notary</td>
-                      </tr>
-                      {room
-                        .getReview()
-                        ?.getReviewer()
-                        .map((reviewer) => (
-                          <tr key={reviewer.getId()}>
-                            <td>{reviewer.getFirstName()}</td>
-                            <td>{reviewer.getLastName()}</td>
-                            <td>{reviewer.getEmail()}</td>
-                            <td>Reviewer</td>
-                            <td> <CustomIconButton
-                                onButtonClick={() => {
-                                  room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
-                                }}
-                                toolTip={'Remove Reviewer from review'}>
-                              <Image src={deleteButton} alt={'icon'} height={12}
-                                     width={12}/>
-                            </CustomIconButton></td>
-                          </tr>
-                        ))}
-                  </Table>
-                </Accordion.Body>
-                </Droppable>
-              </Accordion.Item>
-            );
-          })
-        )}
-      </div>
-    </Accordion>
-      </div>
-      </DndContext>
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                </tr>
+                </thead>
+                {items.map((reviewer) => (
+                    <Draggable key={reviewer.getId()} id={reviewer.getId().toString()}>
+                      <td>{reviewer.getFirstName() + ' ' + reviewer.getLastName()}</td>
+                      <td>{reviewer.getEmail()}</td>
+                    </Draggable>
+                ))}
+              </Table>
+            </Col>
+          </Row>
+          <ExportOptions
+              show={showExportOptions}
+              onHide={() => setShowExportOptions(false)}
+          />
+        </DndContext>
   );
 }
 
