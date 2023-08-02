@@ -15,7 +15,7 @@ import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
 
-function SlotModal ({ roomslot, onSaveClick, ...props }) {
+function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
   const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
@@ -53,29 +53,23 @@ function SlotModal ({ roomslot, onSaveClick, ...props }) {
   };
 
   const handleInputChange = (roomId, event) => {
-    if (items.some(room => room.id === roomId)) {
-      const newItems = items.map(room => {
-        if (room.getId() === roomId) {
-          return { ...room, name: event.target.value };
-        } else {
-          return room;
-        }
-      });
-      setItems(newItems);
-    }
+    const newItems = items.map(room => {
+      if (room.getId() === roomId) {
+        room.setName(event.target.value);
+      }
+      return room;
+    });
+    setItems(newItems);
   };
 
   const handleBeamerChange = (roomId) => {
-    if (items.some(room => room.id === roomId)) {
-      const newItems = items.map(room => {
-        if (room.getId() === roomId) {
-          return { ...room, beamerNeeded: !room.getBeamerNeeded() };
-        } else {
-          return room;
-        }
-      });
-      setItems(newItems);
-    }
+    const newItems = items.map(room => {
+      if (room.getId() === roomId) {
+        room.setBeamerNeeded(!room.getBeamerNeeded());
+      }
+      return room;
+    });
+    setItems(newItems);
   };
 
   function parseTime (time) {
@@ -103,11 +97,11 @@ function SlotModal ({ roomslot, onSaveClick, ...props }) {
     );
   }
 
-  function handleSaveRoomSlot () {
+  const saveClick = () => {
     const slot = createTempRoomSlot();
     const overlappingSlots = slot.retrieveOverlappingSlots(roomSlots);
     if (overlappingSlots.length === 0) {
-      props.onSaveClick(slot);
+      onSaveClick(slot);
       hideModal();
       return;
     }
@@ -127,7 +121,7 @@ function SlotModal ({ roomslot, onSaveClick, ...props }) {
     });
 
     setErrorTooltipText(overlappingSlotsTooltipText);
-  }
+  };
 
   function hideModal () {
     if (!isEditMode) {
@@ -138,7 +132,7 @@ function SlotModal ({ roomslot, onSaveClick, ...props }) {
     }
     setInvalidSlotError(null);
     setErrorTooltipText(null);
-    props.onHide();
+    onHide();
   }
 
   function styleError () {
@@ -250,7 +244,7 @@ function SlotModal ({ roomslot, onSaveClick, ...props }) {
                         <Form.Control
                           className={'item-text'}
                           type="text"
-                          value={item.getName()}
+                          defaultValue={item.getName()} // Hier den defaultValue-Prop verwenden
                           placeholder={'Room'}
                           onChange={(event) => handleInputChange(item.getId(), event)}
                           style={{
@@ -293,7 +287,7 @@ function SlotModal ({ roomslot, onSaveClick, ...props }) {
           <div className={'text-center'}>
             <ModalButton
                 backgroundColor={'#B0D7AF'}
-                onButtonClick={handleSaveRoomSlot}>
+                onButtonClick={saveClick}>
               <span className={'add-slot-text'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>

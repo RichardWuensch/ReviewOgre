@@ -115,7 +115,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                 header={'Edit Slot'}
                 roomslot={roomSlot}
                 edit={'true'}
-                onSaveClick={(slot) => { updateSlot(slot); }}/>
+                onSaveClick={(slot) => updateSlot(slot) }/>
             <DeleteModal
                 // modal to delete the whole slot
                 show={showModalDeleteSlot}
