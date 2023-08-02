@@ -15,7 +15,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
             size="sm"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            className={'modal'}
+            className={'modal-dataimportcheck'}
         >
             <Modal.Header>
                 <Modal.Title>{title}</Modal.Title>
@@ -33,7 +33,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                                             <th className={'column-firstName'} style={{ fontSize: '1.2em' }}>First Name</th>
                                             <th className={'column-lastName'} style={{ fontSize: '1.2em' }}>Last Name</th>
                                             <th className={'column-email-header'} style={{ fontSize: '1.2em' }}>Email Address</th>
-                                            <th className={'column-team'} style={{ fontSize: '1.2em' }}>Team</th>
+                                            <th className={'column-team'} style={{ fontSize: '1.2em' }}>Group</th>
                                             <th className={'column-topic'} style={{ fontSize: '1.2em' }}>Topic</th>
                                             <th className={'column-languageLevel'} style={{ fontSize: '1.2em' }}>German Skill Level</th>
                                             <th className={'column-options'} style={{ fontSize: '1.2em' }}></th>
