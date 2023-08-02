@@ -75,7 +75,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                                             as="button"
                                             onButtonClick={() => setShowModalEditSlot(true)}
                                             toolTip={'Edit this slot'}>
-                                            <Image src={edit} alt={'icon'}/>
+                                            <Image src={editImage} alt={'icon'}/>
                                         </CustomIconButton>
                                         <CustomIconButton
                                             as="button"

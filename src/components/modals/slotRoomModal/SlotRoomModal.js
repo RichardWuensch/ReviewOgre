@@ -104,7 +104,7 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
       onSaveClick(slot);
       hideModal();
     }
-  }
+  };
 
   function hideModal () {
     if (!isEditMode) {
