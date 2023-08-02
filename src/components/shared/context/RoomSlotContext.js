@@ -1,6 +1,4 @@
 import { createContext, useContext, useReducer } from 'react';
-import RoomSlot from '../../../data/models/RoomSlot';
-import Room from '../../../data/models/Room';
 
 const RoomSlotContext = createContext(null);
 const RoomSlotDispatchContext = createContext(null);
@@ -69,13 +67,4 @@ function roomSlotsReducer (roomSlots, action) {
   }
 }
 
-const initialRoomSlots = [
-  new RoomSlot(-1, new Date(), new Date(), new Date(), [
-    new Room('I.1.2', true),
-    new Room('I.1.3', true)
-  ]),
-  new RoomSlot(0, new Date(), new Date(), new Date(), [
-    new Room('I.2.2', true),
-    new Room('I.2.3', true)
-  ])
-];
+const initialRoomSlots = [];

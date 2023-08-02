@@ -1,0 +1,241 @@
+{
+ "participants": [
+  {
+   "firstName": "G1P1",
+   "lastName": "G1P1",
+   "email": "G1P1@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "G1P2",
+   "lastName": "G1P2",
+   "email": "G1P2@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "G1P3",
+   "lastName": "G1P3",
+   "email": "G1P3@email.de",
+   "group": "1"
+  },
+  {
+   "firstName": "G2P1",
+   "lastName": "G2P1",
+   "email": "G2P1@email.de",
+   "group": "2"
+  },
+  {
+   "firstName": "G2P2",
+   "lastName": "G2P2",
+   "email": "G2P2E@email.de",
+   "group": "2"
+  },
+  {
+   "firstName": "G2P3",
+   "lastName": "G2P3",
+   "email": "G2P3@email.de",
+   "group": "2"
+  },
+  {
+   "firstName": "G3P1",
+   "lastName": "G3P1",
+   "email": "G3P1@email.de",
+   "group": "3"
+  },
+  {
+   "firstName": "G3P2",
+   "lastName": "G3P2",
+   "email": "G3P2@email.de",
+   "group": "3"
+  },
+  {
+   "firstName": "G3P3",
+   "lastName": "G3P3",
+   "email": "G3P3@email.de",
+   "group": "3"
+  }
+ ],
+ "roomSlots": [
+  {
+   "date": "2023-07-28T13:00:00.000Z",
+   "startTime": "2023-07-28T13:00:00.000Z",
+   "endTime": "2023-07-28T15:00:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-28T15:15:00.000Z",
+   "startTime": "2023-07-28T15:15:00.000Z",
+   "endTime": "2023-07-28T17:15:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-29T10:15:00.000Z",
+   "startTime": "2023-07-29T10:15:00.000Z",
+   "endTime": "2023-07-29T12:15:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-29T12:30:00.000Z",
+   "startTime": "2023-07-29T12:30:00.000Z",
+   "endTime": "2023-07-29T14:30:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  },
+  {
+   "date": "2023-07-29T14:45:00.000Z",
+   "startTime": "2023-07-29T14:45:00.000Z",
+   "endTime": "2023-07-29T16:45:00.000Z",
+   "rooms": [
+    {
+     "name": "I.2.1",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15",
+     "beamer": true
+    },
+    {
+     "name": "I.2.15a",
+     "beamer": true
+    },
+    {
+     "name": "I.2.18",
+     "beamer": true
+    },
+    {
+     "name": "I.3.16",
+     "beamer": true
+    },
+    {
+     "name": "I.3.20",
+     "beamer": true
+    },
+    {
+     "name": "I.3.24",
+     "beamer": true
+    }
+   ]
+  }
+ ],
+ "settings": {
+  "authorIsNotary": false,
+  "breakForModeratorAndReviewer": false,
+  "abReview": false,
+  "internationalGroups": false
+ }
+}

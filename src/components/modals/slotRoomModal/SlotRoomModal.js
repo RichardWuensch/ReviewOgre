@@ -15,13 +15,18 @@ import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
 
+const noErrorState = {
+  overlappingSlots: null,
+  endTimeAndStartTimeNotCompliant: null,
+  tooltipText: null
+};
+
 function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
   const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
   const [endTime, setEndTime] = useState(roomslot?.getFormattedEndTime() ?? '00:00');
-  const [invalidSlotError, setInvalidSlotError] = useState(null);
-  const [errorTooltipText, setErrorTooltipText] = useState(null);
+  const [error, setError] = useState(noErrorState);
   const [isEditMode] = useState(props.edit === 'true');
   const [items, setItems] = useState(roomslot
     ?.getRooms()
@@ -84,44 +89,22 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
   }
 
   function createTempRoomSlot () {
-    const rooms = [];
-    items.forEach((room) => {
-      rooms.push(room.getName() ? new Room(room.getName(), room.getBeamerNeeded()) : new Room('undefined', room.getBeamerNeeded()));
-    });
     return new RoomSlot(
       slotId,
       date,
       parseTime(startTime),
       parseTime(endTime),
-      rooms
+      items
     );
   }
 
   const saveClick = () => {
     const slot = createTempRoomSlot();
-    const overlappingSlots = slot.retrieveOverlappingSlots(roomSlots);
-    if (overlappingSlots.length === 0) {
+    if (!errorOccured()) {
       onSaveClick(slot);
       hideModal();
-      return;
     }
-
-    setInvalidSlotError(
-      `Error: The slot is overlapping with ${overlappingSlots.length} slot${
-        overlappingSlots.length > 1 ? 's' : ''
-      }.`
-    );
-
-    const converter = new ConverterForPrinting();
-    let overlappingSlotsTooltipText = `Overlapping slots on ${converter.getDataDDmmYYYYforPrinting(
-      date
-    )}:`;
-    overlappingSlotsTooltipText += overlappingSlots.map((slot) => {
-      return `\n${slot.getFormattedStartTime()} to ${slot.getFormattedEndTime()}`;
-    });
-
-    setErrorTooltipText(overlappingSlotsTooltipText);
-  };
+  }
 
   function hideModal () {
     if (!isEditMode) {
@@ -129,18 +112,124 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
       setStartTime('00:00');
       setEndTime('00:00');
       setItems([]);
+    } else {
+      setStartTime(roomslot.getFormattedStartTime());
+      setEndTime(roomslot.getFormattedEndTime());
     }
-    setInvalidSlotError(null);
-    setErrorTooltipText(null);
+    setError(noErrorState);
     onHide();
   }
 
-  function styleError () {
-    if (invalidSlotError) {
-      return {
-        borderColor: 'red',
-        borderWidth: 2
-      };
+  useEffect(() => {
+    checkOverlappingSlots();
+  }, [date, startTime, endTime]);
+
+  function checkOverlappingSlots () {
+    const slot = createTempRoomSlot();
+    const overlappingSlots = slot.retrieveOverlappingSlots(roomSlots);
+    if (overlappingSlots.length === 0) {
+      setError({
+        ...error,
+        overlappingSlots: null
+      });
+    } else {
+      const overlappingSlotError =
+      `Error: The current slot is overlapping with ${overlappingSlots.length} slot${
+        overlappingSlots.length > 1 ? 's' : ''
+      }. `;
+
+      const converter = new ConverterForPrinting();
+      let overlappingSlotsTooltipText = `Overlapping slots on ${converter.getDataDDmmYYYYforPrinting(date)}:`;
+      overlappingSlotsTooltipText += overlappingSlots.map((slot) => {
+        return `\n${slot.getFormattedStartTime()} to ${slot.getFormattedEndTime()}`;
+      });
+
+      setError({
+        ...error,
+        overlappingSlots: {
+          message: overlappingSlotError,
+          tooltipText: overlappingSlotsTooltipText
+        }
+      });
+    }
+  }
+
+  function checkAndSetDate (event) {
+    if (event.target.value !== '') {
+      setDate(new Date(event.target.value));
+    }
+  }
+
+  function checkAndSetEndTime (event) {
+    if (event.target.value < startTime) {
+      setError({
+        ...error,
+        endTimeAndStartTimeNotCompliant: {
+          message: 'Error: Endtime cannot be smaller than Starttime. ',
+          tooltipText: `The entered Endtime "${event.target.value}" is smaller than the Starttime "${startTime}"`
+        }
+      });
+    } else {
+      setError({
+        ...error,
+        endTimeAndStartTimeNotCompliant: null
+      });
+    }
+    setEndTime(event.target.value);
+  }
+
+  function checkAndSetStartTime (event) {
+    if (event.target.value > endTime) {
+      setError({
+        ...error,
+        endTimeAndStartTimeNotCompliant: {
+          message: 'Error: Starttime cannot be greater than Endtime. ',
+          tooltipText: `The entered Starttime "${event.target.value}" is smaller than the Endtime "${endTime}"`
+        }
+      });
+    } else {
+      setError({
+        ...error,
+        endTimeAndStartTimeNotCompliant: null
+      });
+    }
+    setStartTime(event.target.value);
+  }
+
+  function buildGlobalTooltipText () {
+    let tooltipText = null;
+    if (error.overlappingSlots) {
+      if (tooltipText) {
+        tooltipText = `${tooltipText}\n\n${error.overlappingSlots.tooltipText}`;
+      } else {
+        tooltipText = error.overlappingSlots.tooltipText;
+      }
+    }
+    if (error.endTimeAndStartTimeNotCompliant) {
+      if (tooltipText) {
+        tooltipText = `${tooltipText}\n\n${error.endTimeAndStartTimeNotCompliant.tooltipText}`;
+      } else {
+        tooltipText = error.endTimeAndStartTimeNotCompliant.tooltipText;
+      }
+    }
+
+    return tooltipText;
+  }
+
+  function errorOccured () {
+    return error.overlappingSlots ||
+      error.endTimeAndStartTimeNotCompliant;
+  }
+
+  function styleIfError (...errors) {
+    for (const error of errors) {
+      if (error) {
+        return {
+          borderColor: 'red',
+          borderWidth: 2,
+          color: 'red'
+        };
+      }
     }
   }
 
@@ -164,14 +253,14 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
       </Modal.Header>
       <Modal.Body>
         <Form style={{ padding: 5 }}>
-          {invalidSlotError && (
+          {errorOccured() && (
             <Alert
               variant="danger"
               data-bs-toggle="tooltip"
-              title={errorTooltipText}
+              title={buildGlobalTooltipText()}
             >
-              {invalidSlotError}
-
+              {error.overlappingSlots?.message}
+              {error.endTimeAndStartTimeNotCompliant?.message}
               <Image src={info} alt={'errorInfoIcon'} className='error-info-icon'/>
             </Alert>
           )}
@@ -181,8 +270,8 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
               aria-label={'Enter Date'}
               className={'input-date-container'}
               value={date.toISOString().slice(0, 10)}
-              onChange={(e) => setDate(new Date(e.target.value))}
-              style={styleError()}
+              onChange={(e) => checkAndSetDate(e)}
+              style={styleIfError(false, error.overlappingSlots)}
             />
           </Form.Group>
           <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
@@ -197,8 +286,8 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
                     aria-label={'Enter start time'}
                     type={'time'}
                     value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    style={styleError()}
+                    onChange={(e) => checkAndSetStartTime(e)}
+                    style={styleIfError(false, error.overlappingSlots, error.endTimeAndStartTimeNotCompliant)}
                   />
                 </Col>
               </Row>
@@ -214,8 +303,8 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
                     aria-label={'enter end time'}
                     type={'time'}
                     value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    style={styleError()}
+                    onChange={(e) => checkAndSetEndTime(e)}
+                    style={styleIfError(false, error.overlappingSlots, error.endTimeAndStartTimeNotCompliant)}
                   />
                 </Col>
               </Row>
@@ -280,13 +369,12 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
             variant={'light'}
             type={'button'}
             className={'add-room-button'}
-            onClick={addItem}
-          >
+            onClick={addItem}>
             <Image src={add} alt={'addRoomIcon'} />
           </Button>
           <div className={'text-center'}>
             <ModalButton
-                backgroundColor={'#B0D7AF'}
+                backgroundColor={errorOccured() ? '#bbbbbb' : '#B0D7AF'}
                 onButtonClick={saveClick}>
               <span className={'add-slot-text'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
