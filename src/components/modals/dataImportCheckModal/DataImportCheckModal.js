@@ -15,7 +15,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
             size="sm"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            className={'modal'}
+            className={'modal-dataimportcheck'}
         >
             <Modal.Header>
                 <Modal.Title>{title}</Modal.Title>
