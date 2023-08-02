@@ -47,22 +47,38 @@ function ReviewWindow () {
   const items = useParticipants();
   const [showExportOptions, setShowExportOptions] = useState(false);
 
+  const [deleteTrigger, setDeleteTrigger] = useState(0);
+
   const handleDragEnd = (event) => {
-    const { active, over } = event;
+    try {
+      const { active, over } = event;
 
-    if (over) {
-      const reviewer = items.find(item => item.getId().toString() === active.id);
-      const roomSlotId = over.id.split('-')[0];
-      const roomId = over.id.split('-')[1];
+      if (over) {
+        const reviewer = items.find(item => item.getId().toString() === active.id);
+        const roomSlotId = over.id.split('-')[0];
+        const roomId = over.id.split('-')[1];
 
-      const roomSlot = roomSlots[roomSlotId];
-      const room = roomSlot.getRooms()[roomId];
-      room.getReview().addReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+        const roomSlot = roomSlots[roomSlotId];
+        const room = roomSlot.getRooms()[roomId];
+        room.getReview().addReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
 
-      setContainerOfItem({
-        ...containerOfItem,
-        [active.id]: over.id
-      });
+        setContainerOfItem({
+          ...containerOfItem,
+          [active.id]: over.id
+        });
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const deleteFromReview = (room, roomSlot, reviewer) => {
+    try {
+      room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+      console.log(deleteTrigger);
+      setDeleteTrigger(prev => prev + 1);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -83,6 +99,7 @@ function ReviewWindow () {
                                   <Table
                                       responsive
                                       borderless
+                                      style={{ borderColor: room.getReview()?.isReviewValid() ? 'indianred' : 'white' }}
                                   >
                                     <thead>
                                     <tr>
@@ -124,7 +141,7 @@ function ReviewWindow () {
                                               <td>Reviewer</td>
                                               <td>
                                                   <CustomIconButton
-                                                  onButtonClick={() => { room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer); }}
+                                                  onButtonClick={() => deleteFromReview(room, roomSlot, reviewer)}
                                                   toolTip={'Remove Reviewer from review'}>
                                                     <Image src={deleteButton} alt={'icon'} height={12} width={12}/>
                                                 </CustomIconButton>
