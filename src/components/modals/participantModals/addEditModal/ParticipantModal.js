@@ -6,6 +6,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Participant from '../../../../data/models/Participant';
 import ModalButton from '../../../shared/buttons/modalButton/ModalButton';
+import * as formik from 'formik';
+import * as yup from 'yup';
 
 function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, ...props }) {
   const [firstName, setFirstName] = useState(participant?.getFirstName() ?? '');
@@ -15,6 +17,18 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
   const [topic, setTopic] = useState(participant?.getTopic() ?? '');
   const [languageLevel, setLanguageLevel] = useState(participant?.getLanguageLevel() ?? 'Native Speaker');
   const [id] = useState(participant?.getId() ?? -1);
+
+  const { Formik } = formik;
+
+  const schema = yup.object().shape({
+    id: yup.number(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
+    email: yup.string(),
+    group: yup.string(),
+    topic: yup.string().required(),
+    languageLevel: yup.string().required(),
+  });
 
   const handleClose = () => {
     if (newParticipant) clearData();
@@ -50,14 +64,28 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                 <Image src={exit} onClick={handleClose} alt={'exit'} className={'modal-header-icon'} />
             </Modal.Header>
             <Modal.Body>
+                <Formik
+                    validationSchema={schema}
+                    onSubmit={console.log}
+                    initialValues={{
+                        firstName: participant?.getFirstName() ?? '',
+                        lastName: participant?.getLastName() ?? '',
+                        email: participant?.getEmail() ?? '',
+                        group: participant?.getGroup() ?? '0',
+                        topic: participant?.getTopic() ?? '',
+                        languageLevel: participant?.getFirstName() ?? 'Native Speaker',
+                    }}
+                >
+                    {({ handleSubmit, handleChange, values, touched, errors }) => (
                 <Form style={{ padding: 10 }}>
                     <Form.Group>
                         <Form.Label>First name:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="First Name"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)} autoFocus/>
+                            name="firstName"
+                            value={values.firstName}
+                            onChange={handleChange}
+                            isValid={touched.firstName && !errors.firstName}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Last name:</Form.Label>
@@ -112,7 +140,8 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                             onButtonClick={saveClick}
                         > {newParticipant ? 'Add Participant' : 'Save Changes'} </ModalButton>
                     </div>
-                </Form>
+                </Form> )}
+                </Formik>
             </Modal.Body>
         </Modal>
   );
