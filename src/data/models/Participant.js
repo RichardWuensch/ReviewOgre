@@ -184,6 +184,10 @@ export default class Participant {
     return this.#activeInSlots;
   }
 
+  getActiveSlotsWithoutBrakes () {
+    return this.#activeInSlots.filter(s => s.getBreakSlotForUser() === false);
+  }
+
   getFairness () {
     return this.#fairness;
   }
