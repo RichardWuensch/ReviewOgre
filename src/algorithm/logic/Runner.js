@@ -1,4 +1,4 @@
-import Algorithm from '../logic/Algorithm';
+import Algorithm from './Algorithm';
 
 export default class Runner {
   runAlgorithm (participants, participantsDispatch, roomSlots, roomSlotsDispatch, settings) {
