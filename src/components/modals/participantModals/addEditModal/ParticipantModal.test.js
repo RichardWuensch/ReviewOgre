@@ -7,6 +7,7 @@ describe('ParticipantModal', () => {
   const onSaveClickMock = jest.fn();
 
   const defaultProps = {
+    newParticipant: true,
     onClose: onCloseMock,
     onSaveClick: onSaveClickMock
   };
