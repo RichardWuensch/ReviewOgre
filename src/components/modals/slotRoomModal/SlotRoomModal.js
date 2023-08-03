@@ -21,44 +21,59 @@ const noErrorState = {
   tooltipText: null
 };
 
-function SlotModal ({ roomslot, ...props }) {
+function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
   const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
   const [endTime, setEndTime] = useState(roomslot?.getFormattedEndTime() ?? '00:00');
   const [error, setError] = useState(noErrorState);
-  const [items, setItems] = useState([]);
-  const [isEditMode] = useState(props.edit || false);
+  const [isEditMode] = useState(props.edit === 'true');
+  const [items, setItems] = useState(roomslot
+    ?.getRooms()
+    .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
 
   const roomSlots = useRoomSlots();
 
   useEffect(() => {
     // register deleted rooms
-    const initialItems =
+    const tempInitialItems =
       roomslot
         ?.getRooms()
         .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
-    setItems(initialItems);
+    setItems(tempInitialItems);
   }, [roomslot]);
 
   const addItem = () => {
     setItems([...items, new Room('', false)]);
   };
 
-  const deleteItem = (room, event) => {
-    event.stopPropagation();
-    const newItems = items.filter(tempItem => tempItem.getId() !== room.getId());
+  function filterDeletedRoom (rooms, roomIdToDelete) {
+    return rooms.filter((room) => room.getId() !== roomIdToDelete);
+  }
+
+  const deleteItem = (roomId, event) => {
+    event.preventDefault(); // Prevents the default behavior of the button
+    const filteredItems = filterDeletedRoom(items, roomId);
+    setItems(filteredItems);
+  };
+
+  const handleInputChange = (roomId, event) => {
+    const newItems = items.map(room => {
+      if (room.getId() === roomId) {
+        room.setName(event.target.value);
+      }
+      return room;
+    });
     setItems(newItems);
   };
 
-  const handleInputChange = (index, event) => {
-    const newItems = [...items];
-    newItems[index].setName(event.target.value);
-    setItems(newItems);
-  };
-  const handleBeamerChange = (index) => {
-    const newItems = [...items];
-    newItems[index].setBeamerNeeded(!newItems[index].getBeamerNeeded());
+  const handleBeamerChange = (roomId) => {
+    const newItems = items.map(room => {
+      if (room.getId() === roomId) {
+        room.setBeamerNeeded(!room.getBeamerNeeded());
+      }
+      return room;
+    });
     setItems(newItems);
   };
 
@@ -83,14 +98,13 @@ function SlotModal ({ roomslot, ...props }) {
     );
   }
 
-  function handleSaveRoomSlot () {
+  const saveClick = () => {
     const slot = createTempRoomSlot();
-
     if (!errorOccured()) {
-      props.onSaveClick(slot);
+      onSaveClick(slot);
       hideModal();
     }
-  }
+  };
 
   function hideModal () {
     if (!isEditMode) {
@@ -103,7 +117,7 @@ function SlotModal ({ roomslot, ...props }) {
       setEndTime(roomslot.getFormattedEndTime());
     }
     setError(noErrorState);
-    props.onHide();
+    onHide();
   }
 
   useEffect(() => {
@@ -308,10 +322,10 @@ function SlotModal ({ roomslot, ...props }) {
             >
               <ul className={'list-style'}>
                 {items?.map((item, index) => (
-                  <li key={index} style={{ marginBottom: '1%' }}>
+                  <li key={item.getId()} style={{ marginBottom: '1%' }}>
                     <Accordion.Item
                       style={{ background: '#F5F5F5' }}
-                      eventKey={index}
+                      eventKey={item.getId()}
                     >
                       <Accordion.Header
                         className={'header-style list-item border-0'}
@@ -319,9 +333,9 @@ function SlotModal ({ roomslot, ...props }) {
                         <Form.Control
                           className={'item-text'}
                           type="text"
-                          value={item.getName()}
+                          defaultValue={item.getName()} // Hier den defaultValue-Prop verwenden
                           placeholder={'Room'}
-                          onChange={(event) => handleInputChange(index, event)}
+                          onChange={(event) => handleInputChange(item.getId(), event)}
                           style={{
                             backgroundColor: '#FFFFFF',
                             border: 'none',
@@ -329,9 +343,7 @@ function SlotModal ({ roomslot, ...props }) {
                           }}
                         />
                         <div className={'options-delete'}>
-                          <CustomIconButton
-                            toolTip={'Delete this room'}
-                            onButtonClick={(event) => deleteItem(item, event)}>
+                          <CustomIconButton as="div" toolTip={'Delete this room'} onButtonClick={(event) => deleteItem(item.getId(), event)}>
                             <Image src={deleteButton} alt={'icon'} />
                           </CustomIconButton>
                         </div>
@@ -340,7 +352,7 @@ function SlotModal ({ roomslot, ...props }) {
                         <Card.Body>
                           <div className={'beamer-properties'}>
                             <CustomSwitch
-                                onSwitchClick={() => handleBeamerChange(index)}
+                                onSwitchClick={() => handleBeamerChange(item.getId())}
                                 isChecked={item.getBeamerNeeded()}>
                               <span style={{ paddingLeft: 5 }}> Beamer needed </span>
                             </CustomSwitch>
@@ -363,7 +375,7 @@ function SlotModal ({ roomslot, ...props }) {
           <div className={'text-center'}>
             <ModalButton
                 backgroundColor={errorOccured() ? '#bbbbbb' : '#B0D7AF'}
-                onButtonClick={handleSaveRoomSlot}>
+                onButtonClick={saveClick}>
               <span className={'add-slot-text'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>
@@ -379,10 +391,11 @@ SlotModal.propTypes = {
   onHide: PropTypes.any,
   id: PropTypes.number,
   header: PropTypes.string,
-  edit: PropTypes.bool,
+  edit: PropTypes.string,
   date: PropTypes.number,
   startTime: PropTypes.string,
   endTime: PropTypes.string,
-  items: PropTypes.any
+  items: PropTypes.any,
+  onSaveClick: PropTypes.func.isRequired
 };
 export default SlotModal;

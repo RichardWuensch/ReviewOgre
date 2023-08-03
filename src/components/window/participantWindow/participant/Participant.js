@@ -48,11 +48,13 @@ function Participant ({ participant, changePossible }) {
                         <td className={'column-options'}>
                             <div>
                                 <CustomIconButton
+                                    as="button"
                                     onButtonClick={() => setShowModalEditParticipant(true)}
                                     toolTip={'Edit this participant'}>
                                     <Image src={edit} alt={'icon'}/>
                                 </CustomIconButton>
                                 <CustomIconButton
+                                    as="button"
                                     onButtonClick={() => setShowModalDelete(true)}
                                     toolTip={'Delete this participant'}>
                                     <Image src={deleteButton} alt={'icon'}/>
@@ -89,7 +91,7 @@ function Participant ({ participant, changePossible }) {
   );
 }
 Participant.prototypes = {
-  changePossible: PropTypes.object,
+  changePossible: PropTypes.bool,
   participant: PropTypes.object.isRequired
 };
 
