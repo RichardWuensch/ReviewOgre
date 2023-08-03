@@ -73,6 +73,8 @@ export default class Algorithm {
           this.#assignModeratorToReview(roomSlot, review);
           this.#assignNotaryToReview(roomSlot, review);
           try {
+            this.#assignModeratorToReview(roomSlot, review);
+            this.#assignNotaryToReview(roomSlot, review);
             this.#assignReviewersToReview(roomSlot, review);
             errorFound = false;
           } catch (error) {
@@ -281,7 +283,7 @@ export default class Algorithm {
       const filteredModerator = review.getPossibleParticipants()
         .filter((m) => m.getModeratorCount() < counter)
         .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
-        .filter((p, i, arr) => p.getActiveSlots().length === arr[0].getActiveSlots().length);
+        .filter((p, i, arr) => p.getActiveSlots().filter(s => s.getBreakSlotForUser() === false).length === arr[0].getActiveSlots().filter(s => s.getBreakSlotForUser() === false).length);
       if (filteredModerator.length > 0) {
         const rand = Math.floor(Math.random() * filteredModerator.length);
         review.setModerator(this.#roomSlots, this.#roomSlots.indexOf(roomSlot), filteredModerator[rand], this.#breakForModeratorAndReviewer);
@@ -304,9 +306,9 @@ export default class Algorithm {
       let counter = 1;
       while (true) {
         const filteredNotary = review.getPossibleParticipants()
-          .filter((m) => m.getModeratorCount() < counter)
+          .filter((m) => m.getNotaryCount() < counter)
           .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
-          .filter((p, i, arr) => p.getActiveSlots().length === arr[0].getActiveSlots().length);
+          .filter((p, i, arr) => p.getActiveSlots().filter(s => s.getBreakSlotForUser() === false).length === arr[0].getActiveSlots().filter(s => s.getBreakSlotForUser() === false).length);
         if (filteredNotary.length > 0) {
           const rand = Math.floor(Math.random() * filteredNotary.length);
           review.setNotary(roomSlot, filteredNotary[rand], false);
@@ -337,9 +339,9 @@ export default class Algorithm {
         let counter = 1;
         while (true) {
           const filteredReviewer = review.getPossibleParticipants()
-            .filter((m) => m.getModeratorCount() < counter)
-            .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
-            .filter((p, i, arr) => p.getActiveSlots().length === arr[0].getActiveSlots().length);
+            .filter((r) => r.getReviewerCount() < counter)
+            .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length) // TODO filter brakes see printer
+            .filter((p, i, arr) => p.getActiveSlots().filter(s => s.getBreakSlotForUser() === false).length === arr[0].getActiveSlots().filter(s => s.getBreakSlotForUser() === false).length);
           if (filteredReviewer.length > 0) {
             const rand = Math.floor(Math.random() * filteredReviewer.length);
             review.addReviewer(this.#roomSlots, this.#roomSlots.indexOf(roomSlot), filteredReviewer[rand], this.#breakForModeratorAndReviewer);
