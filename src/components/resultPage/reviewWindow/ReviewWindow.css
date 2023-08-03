@@ -1,7 +1,6 @@
 
 .review-text{
     color: black;
-    width: 25%;
     display: inline-block;
     float: left;
     text-align: left;
@@ -20,9 +19,28 @@
 .overflow-container {
     overflow: auto;
     max-height: 70vh;
+    overflow-x: hidden;
 }
 
 .overflow-container .list-group {
     --bs-list-group-item-padding-x: 0rem;
     --bs-list-group-item-padding-y: 0rem;
+}
+
+.draggable-items{
+    display: flex;
+}
+
+.participant-draggable-list {
+    display: block;
+    font-style: normal;
+    max-height: 72vh;
+    font-weight: 300;
+    font-size: 1.2em;
+    color: #82868B;
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    overflow-x: hidden;
 }
