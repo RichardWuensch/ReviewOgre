@@ -1,8 +1,8 @@
 import './ResultCalculationPage.css';
 import { Container } from 'react-bootstrap';
-import ReviewWindow from './reviewWindow/ReviewWindow';
 import React from 'react';
 import { useRoomSlots } from '../shared/context/RoomSlotContext';
+import ReviewWindowV1 from "./reviewWindowV1/ReviewWindowV1";
 
 function ResultCalculationPage () {
   const roomSlots = useRoomSlots();
@@ -17,7 +17,7 @@ function ResultCalculationPage () {
       <div className="review-page">
           {hasReviewResults()
             ? <Container>
-                  <ReviewWindow />
+                  <ReviewWindowV1 />
               </Container>
             : <Container className="d-flex justify-content-center align-items-center">
                 <h3>No Reviews calculated yet</h3>
