@@ -1,6 +1,46 @@
 # Changelog
 
-## [Unreleased]
+## [Released]
+
+## [1.1.0] - 2023-08-03
+
+## Added
+- Pre-Import Modal to check the imported data
+- Checks for creating participant. Can't create empty ones anymore
+
+## Changed
+- Moved navbar items to the right
+
+## Fixed
+- Overlapping items in the slotList on certain screen ratios
+- Overlapping items in 'settings'-button
+
+## Removed
+
+## [1.0.0] - 2023-07-13
+
+## Added
+- OffCanvas for export options
+- Router
+- Result page
+- Docs page
+- Navbar
+- Analytics for participant
+- Date overlap checking when creating a new slot
+
+## Changed
+- Styling of export options
+- Moved settings into modal
+- Stored settings into context
+- Moved import into  navbar
+- Naming of some text changed
+
+## Fixed
+- Font issues
+- Overlapping in participant list in certain screen ratios
+- 
+## Removed
+- Successful calculation modal
 
 ## [0.1.1] - 2023-05-01
 
