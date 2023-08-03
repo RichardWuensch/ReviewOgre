@@ -15,8 +15,8 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
     id: yup.number(),
     firstName: yup.string().required(),
     lastName: yup.string().required(),
-    email: yup.string(),
-    group: yup.string(),
+    email: yup.string().required(),
+    group: yup.string().required(),
     topic: yup.string(),
     languageLevel: yup.string().required().oneOf(['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Native Speaker'], 'Invalid Language Level')
   });
@@ -50,7 +50,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                       firstName: participant?.getFirstName() ?? '',
                       lastName: participant?.getLastName() ?? '',
                       email: participant?.getEmail() ?? '',
-                      group: participant?.getGroup() ?? '0',
+                      group: participant?.getGroup() ?? '',
                       topic: participant?.getTopic() ?? '',
                       languageLevel: participant?.getFirstName() ?? 'Native Speaker'
                     }}
@@ -103,6 +103,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                                 onChange={handleChange}
                                 isInvalid={!!errors.group}
                                 isValid={touched.group && !errors.group}/>
+                            <Form.Control.Feedback type="invalid">Group is a required field</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="validationFormik06">
                             <Form.Label>Topic:</Form.Label>
