@@ -33,7 +33,7 @@ function Draggable ({ id, children }) {
         position: 'fixed',
         display: 'flex',
         justifyContent: 'space-between',
-        width: '15vw',
+        width: '25vw',
         borderRadius: '5px',
         fontWeight: 'bold'
       }
