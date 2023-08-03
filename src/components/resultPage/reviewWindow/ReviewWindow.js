@@ -30,7 +30,12 @@ function Draggable ({ id, children }) {
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
         backgroundColor: '#D3D3D3',
-        position: 'fixed'
+        position: 'fixed',
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '15vw',
+        borderRadius: '5px',
+        fontWeight: 'bold'
       }
     : undefined;
 
