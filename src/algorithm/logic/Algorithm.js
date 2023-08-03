@@ -406,6 +406,10 @@ export default class Algorithm {
     console.log(this.#roomSlots);
   }
 
+  getResult () {
+    return this.#roomSlots;
+  }
+
   printLikeOldRevOger () {
     // print the Review without unnecessary attributes
     const converter = new ConverterForPrinting();

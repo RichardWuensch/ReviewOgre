@@ -10,6 +10,8 @@ export default class Review {
 
   #possibleParticipants = [];
 
+  #invalidReview = false;
+
   constructor (roomSlot, author, groupName, moderator, notary, reviewers, possibleParticipants) {
     if (!moderator && !notary && !reviewers) {
       this.setAuthor(roomSlot, author);
@@ -145,6 +147,7 @@ export default class Review {
   }
 
   deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
+    console.log(reviewer);
     reviewer.decreaseReviewerCount();
     reviewer.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
     if (breakForModeratorAndReviewer) {
@@ -154,8 +157,9 @@ export default class Review {
         }
       }
     }
-    this.#reviewers.filter(r => r !== reviewer);
+    this.#reviewers = this.#reviewers.filter(r => r !== reviewer);
     this.#addParticipantToPossibleParticipants(reviewer);
+    this.#validateReview();
   }
 
   getPossibleParticipants () {
@@ -213,5 +217,21 @@ export default class Review {
     const slot = new Slot(roomSlot.getId(), roomSlot.getDate(), roomSlot.getStartTime(), roomSlot.getEndTime());
     slot.setBreakSlotForUser(breakSlotForUser);
     return slot;
+  }
+
+  /**
+   * validate reviews after changing so make sure that the author, moderator and notary is not null and there are
+   * at least 3 reviewer
+   */
+  #validateReview () {
+    if (this.#author === {} || this.#moderator === {} || this.#notary === {} || this.#reviewers.length < 3) {
+      this.#invalidReview = true;
+    } else {
+      this.#invalidReview = false;
+    }
+  }
+
+  isReviewValid () {
+    return this.#invalidReview;
   }
 }
