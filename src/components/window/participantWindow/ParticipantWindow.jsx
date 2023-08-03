@@ -127,7 +127,7 @@ function ParticipantList () {
                 ? (
                   <div className={'button-container-participants'}>
                       <CustomButton
-                          toolTip={'Cancel'}
+                          toolTip={'Exit the edit mode'}
                           onButtonClick={() => leaveEditMode()}
                           backgroundColor={'#B0D7AF'}
                       >
@@ -137,7 +137,7 @@ function ParticipantList () {
                               alt="exitEdit"
                               height={16}
                               width={16} />
-                          <span className="button-text" > Cancel</span>
+                          <span className="button-text" > Exit Edit Mode</span>
                       </CustomButton>
                   </div>)
                 : (
@@ -276,7 +276,8 @@ function ParticipantList () {
               show={showModalDeleteParticipant}
               onHide={() => setShowModalDeleteParticipant(false)}
               titleObject={'Participants'}
-              textObject={'the selected participants ?'}
+              textType={'the selected participants ? \n\n'}
+              textObject={ selectedParticipants.map((participant) => `${participant.getFirstName()} ${participant.getLastName()}`).join('\n')}
               onDeleteClick={(participant) => removeParticipants(participant)}
               deleteObject={ selectedParticipants }
               onClose={() => { setShowModalDeleteParticipant(false); }}/>

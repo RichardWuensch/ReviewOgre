@@ -75,7 +75,8 @@ function Participant ({ participant, changePossible }) {
                 show={showModalDelete}
                 onHide={() => setShowModalDelete(false)}
                 titleObject={'Participant'}
-                textObject={'the selected Participant ?\n\nName: \'' + participant.getFirstName() + ' ' + participant.getLastName() + '\'\nEmail: \'' + participant.getEmail() + '\''}
+                textType={'the selected Participant ?\n\n'}
+                textObject={'Name: \'' + participant.getFirstName() + ' ' + participant.getLastName() + '\'\nEmail: \'' + participant.getEmail() + '\''}
                 onDeleteClick={(participant) => removeParticipant(participant)}
                 deleteObject={[participant]}
                 onClose={() => setShowModalDelete(false)}/>
