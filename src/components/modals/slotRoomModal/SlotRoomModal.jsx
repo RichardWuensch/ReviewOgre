@@ -21,7 +21,7 @@ const noErrorState = {
   tooltipText: null
 };
 
-function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
+function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
   const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
@@ -30,7 +30,8 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
   const [isEditMode] = useState(props.edit === 'true');
   const [items, setItems] = useState(roomslot
     ?.getRooms()
-    .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
+    .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? copiedRooms
+    ?.map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
 
   const roomSlots = useRoomSlots();
 
@@ -39,7 +40,8 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
     const tempInitialItems =
       roomslot
         ?.getRooms()
-        .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
+        .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? copiedRooms
+        ?.map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
     setItems(tempInitialItems);
   }, [roomslot]);
 
