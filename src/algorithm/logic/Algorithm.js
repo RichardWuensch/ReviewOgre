@@ -73,8 +73,6 @@ export default class Algorithm {
           this.#assignModeratorToReview(roomSlot, review);
           this.#assignNotaryToReview(roomSlot, review);
           try {
-            this.#assignModeratorToReview(roomSlot, review);
-            this.#assignNotaryToReview(roomSlot, review);
             this.#assignReviewersToReview(roomSlot, review);
             errorFound = false;
           } catch (error) {
