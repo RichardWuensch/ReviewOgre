@@ -16,7 +16,7 @@ import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCh
 import CustomCheckbox from '../../shared/buttons/checkbox/CustomCheckbox';
 import ErrorModal from '../../modals/errorModal/ErrorModal';
 
-function ParticipantList () {
+function ParticipantWindow () {
   const [isEditModeActive, setIsEditModeActive] = React.useState(false);
   const [showModalParticipant, setShowModalParticipant] = React.useState(false);
   const [showModalEditMultipleParticipants, setShowModalEditMultipleParticipants] = React.useState(false);
@@ -194,62 +194,62 @@ function ParticipantList () {
           </div>
           <div className={'list-description'}>
               <div className={'participant-list-container'}>
-              <Table responsive borderless className={'participant-table'}>
-                  <thead style={{ position: 'sticky', top: '0', zIndex: '1', background: 'white' }}>
-                  <tr>
-                      {isEditModeActive && (
-                          <th>
-                              <CustomCheckbox
-                                  onCheckboxClick={() => {
-                                    setSelectedParticipants(() => {
-                                      if (selectedParticipants.length === participants.length) {
-                                        return [];
-                                      } else {
-                                        return participants;
+                  <Table responsive borderless className={'participant-table'}>
+                      <thead style={{ position: 'sticky', top: '0', zIndex: '1', background: 'white' }}>
+                      <tr>
+                          {isEditModeActive && (
+                              <th>
+                                  <CustomCheckbox
+                                      onCheckboxClick={() => {
+                                        setSelectedParticipants(() => {
+                                          if (selectedParticipants.length === participants.length) {
+                                            return [];
+                                          } else {
+                                            return participants;
+                                          }
+                                        });
                                       }
-                                    });
                                   }
-                              }
-                                  isChecked={selectedParticipants.length === participants.length} />
-                          </th>
-                      )}
-                      <th className={'column-firstName'} style={{ fontSize: '1.5em' }}>First Name</th>
-                      <th className={'column-lastName'} style={{ fontSize: '1.5em' }}>Last Name</th>
-                      <th className={'column-email-header'} style={{ fontSize: '1.5em' }}>Email Address</th>
-                      <th className={'column-team'} style={{ fontSize: '1.5em' }}>Group</th>
-                      <th className={'column-topic'} style={{ fontSize: '1.5em' }}>Topic</th>
-                      <th className={'column-languageLevel'} style={{ fontSize: '1.5em' }}>German Skill Level</th>
-                      <th className={'column-options'} style={{ fontSize: '1.5em' }}></th>
-                  </tr>
-                  </thead>
-                <tbody>
+                                      isChecked={selectedParticipants.length === participants.length} />
+                              </th>
+                          )}
+                          <th className={'column-firstName'} style={{ fontSize: '1.5em' }}>First Name</th>
+                          <th className={'column-lastName'} style={{ fontSize: '1.5em' }}>Last Name</th>
+                          <th className={'column-email-header'} style={{ fontSize: '1.5em' }}>Email Address</th>
+                          <th className={'column-team'} style={{ fontSize: '1.5em' }}>Group</th>
+                          <th className={'column-topic'} style={{ fontSize: '1.5em' }}>Topic</th>
+                          <th className={'column-languageLevel'} style={{ fontSize: '1.5em' }}>German Skill Level</th>
+                          <th className={'column-options'} style={{ fontSize: '1.5em' }}></th>
+                      </tr>
+                      </thead>
+                    <tbody>
 
-                {participants.map((participant) => (
-                    <tr key={participant.getId()} style={{ borderBottom: '1px solid black' }}>
-                        {isEditModeActive && (
-                            <td>
-                                <CustomCheckbox
-                                    onCheckboxClick={() => {
-                                      setSelectedParticipants(() => {
-                                        if (!selectedParticipants.includes(participant)) {
-                                          return [...selectedParticipants, participant];
-                                        } else {
-                                          return selectedParticipants.filter(p => p !== participant);
+                    {participants.map((participant) => (
+                        <tr key={participant.getId()} style={{ borderBottom: '1px solid black' }}>
+                            {isEditModeActive && (
+                                <td>
+                                    <CustomCheckbox
+                                        onCheckboxClick={() => {
+                                          setSelectedParticipants(() => {
+                                            if (!selectedParticipants.includes(participant)) {
+                                              return [...selectedParticipants, participant];
+                                            } else {
+                                              return selectedParticipants.filter(p => p !== participant);
+                                            }
+                                          });
                                         }
-                                      });
-                                    }
-                                    }
-                                    isChecked={selectedParticipants.includes(participant)} />
-                            </td>
-                        )}
-                        <Participant
-                          participant={participant}
-                          changePossible={true}/>
-                    </tr>
-                ))}
-                </tbody>
-            </Table>
-                  </div>
+                                        }
+                                        isChecked={selectedParticipants.includes(participant)} />
+                                </td>
+                            )}
+                            <Participant
+                              participant={participant}
+                              changePossible={true}/>
+                        </tr>
+                    ))}
+                    </tbody>
+                </Table>
+            </div>
           </div>
           <DataImportCheckModal
               show={showModalDataImportCheck}
@@ -290,4 +290,4 @@ function ParticipantList () {
   );
 }
 
-export default ParticipantList;
+export default ParticipantWindow;
