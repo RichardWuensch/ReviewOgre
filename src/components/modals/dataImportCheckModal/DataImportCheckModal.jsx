@@ -12,7 +12,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
   return (
         <Modal
             {...props}
-            size="sm"
+            size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
             className={'modal-dataimportcheck'}

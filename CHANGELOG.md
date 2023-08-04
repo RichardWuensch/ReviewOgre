@@ -2,11 +2,29 @@
 
 ## [Released]
 
-## [1.1.0] - 2023-08-03
+## [2.0.0alpha] - 2023-08-03
+
+## Added
+- Drag-and-Drop
+- Updated Review View
+- Draggable Participant list
+
+## Changed
+- Review description
+
+## Fixed
+
+## Removed
+- old Result page
+
+## [1.1.1] - 2023-08-03
 
 ## Added
 - Pre-Import Modal to check the imported data
 - Checks for creating participant. Can't create empty ones anymore
+- Importing of 'simple' csv data now possible
+- Overlapping timeslots will be flagged instantly
+- Preview modals shows the data found in the imported file
 
 ## Changed
 - Moved navbar items to the right
@@ -14,8 +32,10 @@
 ## Fixed
 - Overlapping items in the slotList on certain screen ratios
 - Overlapping items in 'settings'-button
+- Active tab highlighted in navbar
 
 ## Removed
+- Sample data in tables
 
 ## [1.0.0] - 2023-07-13
 
@@ -38,7 +58,7 @@
 ## Fixed
 - Font issues
 - Overlapping in participant list in certain screen ratios
-- 
+
 ## Removed
 - Successful calculation modal
 

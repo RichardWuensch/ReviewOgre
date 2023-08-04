@@ -141,7 +141,8 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                 onHide={() => setShowModalDeleteSlot(false)}
                 onSave={handleDelete}
                 titleObject={'Slot'}
-                textObject={'the selected Slot ?\n\n\'' + getSlotDescription() + '\''}
+                textType={'the selected Slot and the associated rooms?\n\n'}
+                textObject={'\'' + getSlotDescription() + '\''}
                 deleteObject={roomSlot}
                 onDeleteClick={(slot) => removeSlot(slot)}/>
             <AddCopyModal
