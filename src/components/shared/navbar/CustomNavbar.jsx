@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import logo from '../../../assets/media/favicon_ogre.png';
+import logo from '../../../../public/ogre96.png';
 import { useParticipants, useParticipantsDispatch } from '../context/ParticipantsContext';
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 import { Link, useLocation } from 'react-router-dom';

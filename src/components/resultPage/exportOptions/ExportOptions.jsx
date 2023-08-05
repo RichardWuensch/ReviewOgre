@@ -1,11 +1,11 @@
 import './ExportOptions.css';
 import { Card, Col, Container, Image, Offcanvas, Row } from 'react-bootstrap';
 import Mail from '../../../api/mail/Mail';
-import mail from '../../../assets/media/envelope-at.svg';
-import upload from '../../../assets/media/upload.svg';
+import mail from '../../../../public/media/envelope-at.svg';
+import upload from '../../../../public/media/upload.svg';
 import StoreState from '../../../api/StoreState';
 import SaveRoomPlan from '../../../api/SaveRoomPlan';
-import download from '../../../assets/media/download.svg';
+import download from '../../../../public/media/download.svg';
 import RevagerLiteExport from '../../../api/RevagerLiteExport';
 import React from 'react';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';

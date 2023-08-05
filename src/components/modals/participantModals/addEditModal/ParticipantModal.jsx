@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { Form, Image } from 'react-bootstrap';
 import './ParticipantModal.css';
-import exit from '../../../../assets/media/x-circle.svg';
+import exit from '../../../../../public/media/x-circle.svg';
 import PropTypes from 'prop-types';
 import Participant from '../../../../data/models/Participant';
 import ModalButton from '../../../shared/buttons/modalButton/ModalButton';
