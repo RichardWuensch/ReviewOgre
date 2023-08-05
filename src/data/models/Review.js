@@ -159,7 +159,7 @@ export default class Review {
     }
     this.#reviewers = this.#reviewers.filter(r => r !== reviewer);
     this.#addParticipantToPossibleParticipants(reviewer);
-    this.#validateReview();
+    this.validateReview();
   }
 
   getPossibleParticipants () {
@@ -223,7 +223,7 @@ export default class Review {
    * validate reviews after changing so make sure that the author, moderator and notary is not null and there are
    * at least 3 reviewer
    */
-  #validateReview () {
+  validateReview () {
     if (this.#author === {} || this.#moderator === {} || this.#notary === {} || this.#reviewers.length < 3) {
       this.#invalidReview = true;
     } else {
