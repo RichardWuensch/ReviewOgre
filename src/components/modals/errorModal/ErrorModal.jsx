@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import './ErrorModal.css';
-import exit from '../../../assets/media/return.svg';
+import exit from '../../../../public/media/return.svg';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';

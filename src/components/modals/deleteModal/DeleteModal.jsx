@@ -1,6 +1,6 @@
 import './DeleteModal.css';
 import Modal from 'react-bootstrap/Modal';
-import exit from '../../../assets/media/x-circle.svg';
+import exit from '../../../../public/media/x-circle.svg';
 import PropTypes from 'prop-types';
 import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
 import { Col, Image, Row } from 'react-bootstrap';
