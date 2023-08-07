@@ -3,7 +3,7 @@ import './ReviewWindow.css';
 import { Col, Image, Row, Table } from 'react-bootstrap';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
-import deleteButton from '../../../../public/media/trash.svg';
+import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import { useParticipants } from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';

@@ -1,9 +1,9 @@
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
 import Participant from './participant/Participant';
-import add from '../../../../public/media/plus-circle.svg';
-import edit from '../../../../public/media/pencil-square.svg';
-import deleteButton from '../../../../public/media/trash.svg';
-import exit from '../../../../public/media/x-circle.svg';
+import add from '../../../media/plus-circle.svg';
+import edit from '../../../media/pencil-square.svg';
+import deleteButton from '../../../media/trash.svg';
+import exit from '../../../media/x-circle.svg';
 import React from 'react';
 import './ParticipantWindow.css';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
