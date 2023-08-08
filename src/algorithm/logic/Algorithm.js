@@ -84,6 +84,58 @@ export default class Algorithm {
         }
       }
     }
+    let notReviewerList = this.#participants.filter(p => p.getReviewerCount() === 0);
+    const toOftenReviewerList = this.#participants.filter(p => p.getReviewerCount() > 1);
+    if (notReviewerList.length > 0 && toOftenReviewerList.length > 0) {
+      this.#swapReviewer(notReviewerList, toOftenReviewerList);
+    }
+    notReviewerList = this.#participants.filter(p => p.getReviewerCount() === 0);
+    if (notReviewerList.length > 0) {
+      this.#addReviewToParticipantsWithoutReviewerRole(notReviewerList);
+    }
+  }
+
+  #addReviewToParticipantsWithoutReviewerRole (notReviewerList) {
+    let i = 0;
+    while (notReviewerList.length > 0) {
+      for (const s of this.#roomSlots) {
+        for (const notReviewer of notReviewerList) {
+          if (i >= s.getRooms().length) break;
+          const review = s.getRooms()[i].getReview();
+          try {
+            review.addReviewer(this.#roomSlots, this.#roomSlots.indexOf(s), notReviewer, false);
+            notReviewerList = notReviewerList.filter(p => p !== notReviewer);
+            break;
+          } catch (error) {
+            // do nothing
+          }
+        }
+      }
+      i++;
+    }
+  }
+
+  #swapReviewer (notReviewerList, toOftenReviewerList) {
+    for (const toOftenReviewer of toOftenReviewerList) {
+      let found = false;
+      const reviewSlotsMap = toOftenReviewer.getActiveInSlotsAsReviewer();
+      for (const notReviewer of notReviewerList) {
+        for (const reviewSlot of Array.from(reviewSlotsMap.keys())) {
+          if (!notReviewer.getActiveSlots().includes(reviewSlot)) {
+            try {
+              reviewSlotsMap.get(reviewSlot).addReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), notReviewer, this.#breakForModeratorAndReviewer);
+              reviewSlotsMap.get(reviewSlot).deleteReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), toOftenReviewer, this.#breakForModeratorAndReviewer);
+              notReviewerList = notReviewerList.filter(p => p !== notReviewer);
+              found = true;
+              break;
+            } catch {
+              found = false;
+            }
+          }
+        }
+        if (found) break;
+      }
+    }
   }
 
   #checkSkipRoom (notNeeded, roomTopic, reviewTopic) {

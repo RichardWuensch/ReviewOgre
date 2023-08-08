@@ -42,7 +42,7 @@ export default class Review {
   setAuthor (roomSlot, author) {
     this.#author = author;
     this.#author.increaseAuthorCount();
-    this.#author.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
+    this.#author.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlot, false));
     this.#deleteParticipantFromPossibleParticipants(this.#author);
   }
 
@@ -55,7 +55,7 @@ export default class Review {
 
   deleteAuthor (roomSlot) { // TODO check if a suitable frontend exists
     this.#author.decreaseAuthorCount();
-    this.#author.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
+    this.#author.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlot, false));
     this.#addParticipantToPossibleParticipants(this.#author);
     this.#author = null;
   }
@@ -70,11 +70,11 @@ export default class Review {
     }
     this.#moderator = moderator;
     this.#moderator.increaseModeratorCount();
-    this.#moderator.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
+    this.#moderator.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
       if (index < roomSlots.length - 1) {
         if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
-          this.#moderator.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], true));
+          this.#moderator.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], true));
         }
       }
     }
@@ -83,11 +83,11 @@ export default class Review {
 
   deleteModerator (roomSlots, index, moderator, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
     moderator.decreaseModeratorCount();
-    moderator.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+    moderator.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], false));
     if (breakForModeratorAndReviewer) {
       if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
         if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
-          moderator.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+          moderator.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], false));
         }
       }
     }
@@ -106,7 +106,7 @@ export default class Review {
     this.#notary = notary;
     this.#notary.increaseNotaryCount();
     if (authorIsNotary === false) {
-      this.#notary.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
+      this.#notary.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlot, false));
       this.#deleteParticipantFromPossibleParticipants(this.#notary);
     } else {
       // do nothing, this is done because of the double role
@@ -116,7 +116,7 @@ export default class Review {
   deleteNotary (roomSlot, notary) { // TODO check if a suitable frontend exists
     this.#notary = notary;
     this.#notary.decreaseNotaryCount();
-    this.#notary.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlot, false));
+    this.#notary.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlot, false));
     this.#addParticipantToPossibleParticipants(this.#notary);
     // no check against authorIsNotary to make it possible to break this rule in some cases in the successful calc page
   }
@@ -130,30 +130,37 @@ export default class Review {
   }
 
   addReviewer (roomSlots, index, participant, breakForModeratorAndReviewer) {
-    if (!this.#possibleParticipants.includes(participant)) { // TODO check if a suitable frontend exists
+    if (!this.#possibleParticipants.includes(participant)) {
       throw new Error('Participant is not possible for this review');
     }
-    participant.increaseReviewerCount();
-    participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
       if (index < roomSlots.length - 1) {
         if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
-          participant.addSlotToActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], true));
+          for (const room of roomSlots[index + 1].getRooms()) {
+            if (!room.getReview().getPossibleParticipants().includes(participant)) {
+              throw new Error('Because of breakForModeratorAndReviewer is selected, this participant is not possible for this review');
+            }
+          }
+          participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], true));
         }
       }
     }
+    participant.increaseReviewerCount();
+    participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
+    participant.addSlotToActiveInSlotsAsReviewer(this, this.getSlotFromRoomSlot(roomSlots[index])); // check in method
     this.#reviewers.push(participant);
     this.#deleteParticipantFromPossibleParticipants(participant);
+    this.#validateReview();
   }
 
   deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
-    console.log(reviewer);
     reviewer.decreaseReviewerCount();
-    reviewer.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+    reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index], false)); // hier war index +1
+    reviewer.deleteSlotFromActiveInSlotsAsReviewer(this.#groupName);
     if (breakForModeratorAndReviewer) {
       if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
         if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
-          reviewer.deleteSlotFromActiveList(this.#getSlotFromRoomSlot(roomSlots[index + 1], false));
+          reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], false));
         }
       }
     }
@@ -195,7 +202,7 @@ export default class Review {
   * @param {Boolean} abReview - it is not allowed to have participants with the same topic as the author in the review group
   */
   fillPossibleParticipantsOfReview (roomSlot, participants, abReview) {
-    const slot = this.#getSlotFromRoomSlot(roomSlot, false);
+    const slot = this.getSlotFromRoomSlot(roomSlot, false);
     this.setPossibleParticipants(
       participants.filter((p) => {
         if (abReview === true) {
@@ -213,7 +220,7 @@ export default class Review {
   * @param {boolean} breakSlotForUser
   * @returns {Slot}
   */
-  #getSlotFromRoomSlot (roomSlot, breakSlotForUser) {
+  getSlotFromRoomSlot (roomSlot, breakSlotForUser) {
     const slot = new Slot(roomSlot.getId(), roomSlot.getDate(), roomSlot.getStartTime(), roomSlot.getEndTime());
     slot.setBreakSlotForUser(breakSlotForUser);
     return slot;
