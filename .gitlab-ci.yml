@@ -2,6 +2,7 @@
 stages:
   - build
   - test
+  - e2e
   - lint
   - deploy
 
@@ -26,6 +27,11 @@ test:
   image: node:latest
   script:
     - npm run test
+
+e2e:
+  stage: e2e
+  image: node:latest
+  script: cy:run-e2e
 
 # run eslint
 lint:
