@@ -150,7 +150,7 @@ export default class Review {
     participant.addSlotToActiveInSlotsAsReviewer(this, this.getSlotFromRoomSlot(roomSlots[index])); // check in method
     this.#reviewers.push(participant);
     this.#deleteParticipantFromPossibleParticipants(participant);
-    this.#validateReview();
+    this.validateReview();
   }
 
   deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
