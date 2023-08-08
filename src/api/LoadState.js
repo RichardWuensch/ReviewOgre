@@ -59,8 +59,8 @@ export default class LoadState {
             roomData.name,
             roomData.beamerNeeded ?? roomData.beamer, // beamer for configuration files of version 1.0.0
             roomData.roomId);
-          if (room.notNeeded) { // TODO mit Basti abchecken ob das noch so valide ist nach Änderung
-            room.setNotNeeded(roomData.notNeeded);
+          if (roomData.notNeeded) {
+            room.setNotNeeded(roomData.notNeeded.bool, roomData.notNeeded.topic);
           }
           if (roomData.review) {
             const author = this.#participants.find(p => p.getId() === roomData.review.authorId);
@@ -70,6 +70,7 @@ export default class LoadState {
             const possibleParticipants = roomData.review.possibleParticipantIds.map(pId => this.#participants.find(p => p.getId() === pId));
             const newReview = new Review(undefined, author, roomData.review.groupName, moderator, notary, reviewers);
             newReview.setPossibleParticipants(possibleParticipants);
+            newReview.validateReview();
             room.setReview(newReview);
           }
           return room;
