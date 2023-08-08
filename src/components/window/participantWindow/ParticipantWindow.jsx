@@ -262,6 +262,7 @@ function ParticipantWindow () {
               onClose={() => setShowModalDataImportCheck(false)}
           />
           <ParticipantModal
+              data-testid='participant-modal'
               onSaveClick={(tempParticipant) => addParticipant(tempParticipant)}
               show={showModalParticipant}
               onClose={() => setShowModalParticipant(false)}

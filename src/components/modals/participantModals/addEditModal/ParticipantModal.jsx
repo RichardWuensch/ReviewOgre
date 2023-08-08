@@ -138,7 +138,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                             <ModalButton
                                 backgroundColor={'#B0D7AF'}
                                 onButtonClick={() => handleSubmit()}
-                            > {newParticipant ? 'Add Participant' : 'Save Changes'} </ModalButton>
+                            > <div className='participant-modal-submit'>{newParticipant ? 'Add Participant' : 'Save Changes'} </div></ModalButton>
                         </div>
                     </Form>)}
                 </Formik>

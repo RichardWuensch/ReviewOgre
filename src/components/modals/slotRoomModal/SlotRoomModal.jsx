@@ -378,7 +378,7 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
             <ModalButton
                 backgroundColor={errorOccured() ? '#bbbbbb' : '#B0D7AF'}
                 onButtonClick={saveClick}>
-              <span className={'add-slot-text'}>
+              <span className={'add-slot-text e2e-location-add-slot-button'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>
             </ModalButton>
