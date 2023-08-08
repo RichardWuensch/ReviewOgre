@@ -136,11 +136,11 @@ export default class Review {
     if (breakForModeratorAndReviewer) {
       if (index < roomSlots.length - 1) {
         if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
-          for (const room of roomSlots[index + 1].getRooms()) {
-            if (!room.getReview().getPossibleParticipants().includes(participant)) {
-              throw new Error('Because of breakForModeratorAndReviewer is selected, this participant is not possible for this review');
-            }
-          }
+          // for (const room of roomSlots[index + 1].getRooms()) {
+          // if (!room.getReview().getPossibleParticipants().includes(participant)) {
+          //    throw new Error('Because of breakForModeratorAndReviewer is selected, this participant is not possible for this review');
+          // }
+          // }
           participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], true));
         }
       }
@@ -155,7 +155,7 @@ export default class Review {
 
   deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
     reviewer.decreaseReviewerCount();
-    reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index], false)); // hier war index +1
+    reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index], false)); // Todo hier war index +1
     reviewer.deleteSlotFromActiveInSlotsAsReviewer(this.#groupName);
     if (breakForModeratorAndReviewer) {
       if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
