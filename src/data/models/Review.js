@@ -135,12 +135,40 @@ export default class Review {
     }
     if (breakForModeratorAndReviewer) {
       if (index < roomSlots.length - 1) {
-        if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
-          // for (const room of roomSlots[index + 1].getRooms()) {
-          // if (!room.getReview().getPossibleParticipants().includes(participant)) {
-          //    throw new Error('Because of breakForModeratorAndReviewer is selected, this participant is not possible for this review');
-          // }
-          // }
+        const dateCurrentSlot = roomSlots[index].getDate();
+        const dateNextSlot = roomSlots[index + 1].getDate();
+        const dateCurrent = new Date(dateCurrentSlot.getFullYear(), dateCurrentSlot.getMonth(), dateCurrentSlot.getDate());
+        const dateNext = new Date(dateNextSlot.getFullYear(), dateNextSlot.getMonth(), dateNextSlot.getDate());
+        if (dateCurrent.getTime() === dateNext.getTime()) {
+          participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], true));
+        }
+      }
+    }
+    participant.increaseReviewerCount();
+    participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
+    participant.addSlotToActiveInSlotsAsReviewer(this, this.getSlotFromRoomSlot(roomSlots[index])); // check in method
+    this.#reviewers.push(participant);
+    this.#deleteParticipantFromPossibleParticipants(participant);
+    this.validateReview();
+  }
+
+  addReviewerFE (roomSlots, index, participant, breakForModeratorAndReviewer) { // TODO check possibility of refactoring, method must exist bc break-Error will always thrown (by execution from algo possibleParticipants of the next slots are always empty)
+    if (!this.#possibleParticipants.includes(participant)) {
+      throw new Error('Participant is not possible for this review');
+    }
+    if (breakForModeratorAndReviewer) {
+      if (index < roomSlots.length - 1) {
+        const dateCurrentSlot = roomSlots[index].getDate();
+        const dateNextSlot = roomSlots[index + 1].getDate();
+        const dateCurrent = new Date(dateCurrentSlot.getFullYear(), dateCurrentSlot.getMonth(), dateCurrentSlot.getDate());
+        const dateNext = new Date(dateNextSlot.getFullYear(), dateNextSlot.getMonth(), dateNextSlot.getDate());
+        if (dateCurrent.getTime() === dateNext.getTime()) {
+          for (const room of roomSlots[index + 1].getRooms()) {
+            if (!room.getReview().getPossibleParticipants().includes(participant)) {
+              throw new Error('Because of breakForModeratorAndReviewer is selected, this participant is not possible for this review. ' +
+                  'If you want to break the rule, please change the appropriate setting and return.');
+            }
+          }
           participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], true));
         }
       }
