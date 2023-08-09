@@ -30,8 +30,9 @@ test:
 
 e2e:
   stage: e2e
-  image: node:latest
-  script: npm run cy:run-e2e
+  image: cypress/included
+  script:
+  - npm run cy:run-e2e
 
 # run eslint
 lint:
