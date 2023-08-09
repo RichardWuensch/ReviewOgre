@@ -121,12 +121,13 @@ function CustomNavbar () {
                   <Nav className="me-auto"></Nav>
                   <Nav>
                       <Nav.Link className={(isActiveTab('/') ? 'active' : '')} as={ Link } to="/">Home</Nav.Link>
-                      <Nav.Link className={(isActiveTab('/reviews') ? 'active' : '')} as={ Link } to="/reviews">Reviews</Nav.Link>
+                      <Nav.Link className={(isActiveTab('/reviews') ? 'active' : '') + 'cypress-e2e-review-page-nav'} as={ Link } to="/reviews">Reviews</Nav.Link>
                       <Nav.Link className={(isActiveTab('/docs') ? 'active' : '')} as={ Link } to="/docs">Docs</Nav.Link>
                       <NavDropdown title="Save/Load Options" id="basic-nav-dropdown">
                           <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
                           <input type="file"
                                  id="file-input-config"
+                                 className='e2e-testing-load-state'
                                  style={{ display: 'none' }}
                                  onChange={() => { importDataCheck(event); }}
                                  accept='application/json'/>
