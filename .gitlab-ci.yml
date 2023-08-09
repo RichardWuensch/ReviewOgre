@@ -30,7 +30,7 @@ test:
 
 e2e:
   stage: e2e
-  image: cypress/included
+  image: cypress/base
   script:
   - npm run cy:run-e2e
 
