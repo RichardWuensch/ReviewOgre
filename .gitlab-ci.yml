@@ -32,7 +32,9 @@ e2e:
   stage: e2e
   image: cypress/base
   script:
-  - npm run cy:run-e2e
+    - npm start &
+    - sleep 15
+    - npm run cy:run-e2e
 
 # run eslint
 lint:
