@@ -67,7 +67,7 @@ function ReviewWindow () {
 
         const roomSlot = roomSlots[roomSlotId];
         const room = roomSlot.getRooms()[roomId];
-        room.getReview().addReviewerFE(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
+        room.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
 
         setContainerOfItem({
           ...containerOfItem,

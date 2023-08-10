@@ -144,15 +144,10 @@ export default class Review {
         }
       }
     }
-    participant.increaseReviewerCount();
-    participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
-    participant.addSlotToActiveInSlotsAsReviewer(this, this.getSlotFromRoomSlot(roomSlots[index])); // check in method
-    this.#reviewers.push(participant);
-    this.#deleteParticipantFromPossibleParticipants(participant);
-    this.validateReview();
+    this.#performAdd(participant, roomSlots, index);
   }
 
-  addReviewerFE (roomSlots, index, participant, breakForModeratorAndReviewer) { // TODO check possibility of refactoring, method must exist bc break-Error will always thrown (by execution from algo possibleParticipants of the next slots are always empty)
+  addReviewerDragnDrop (roomSlots, index, participant, breakForModeratorAndReviewer) { // TODO check possibility of refactoring, method must exist bc break-Error will always thrown (by execution from algo possibleParticipants of the next slots are always empty)
     if (!this.#possibleParticipants.includes(participant)) {
       throw new Error('Participant is not possible for this review');
     }
@@ -173,6 +168,10 @@ export default class Review {
         }
       }
     }
+    this.#performAdd(participant, roomSlots, index);
+  }
+
+  #performAdd (participant, roomSlots, index) {
     participant.increaseReviewerCount();
     participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
     participant.addSlotToActiveInSlotsAsReviewer(this, this.getSlotFromRoomSlot(roomSlots[index])); // check in method
