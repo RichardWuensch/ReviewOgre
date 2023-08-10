@@ -2,7 +2,7 @@ import React from 'react';
 import '../dataImportCheckModal/DataImportCheckModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import exit from '../../../assets/media/x-circle.svg';
+import exit from '../../../../public/media/x-circle.svg';
 import { Col, Image, Row } from 'react-bootstrap';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 

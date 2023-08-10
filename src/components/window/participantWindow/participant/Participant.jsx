@@ -1,5 +1,5 @@
-import edit from '../../../../assets/media/pencil-square.svg';
-import deleteButton from '../../../../assets/media/trash.svg';
+import edit from '../../../../../public/media/pencil-square.svg';
+import deleteButton from '../../../../../public/media/trash.svg';
 import React from 'react';
 import { Image } from 'react-bootstrap';
 import DeleteModal from '../../../modals/deleteModal/DeleteModal';
@@ -48,11 +48,13 @@ function Participant ({ participant, changePossible }) {
                         <td className={'column-options'}>
                             <div>
                                 <CustomIconButton
+                                    as="button"
                                     onButtonClick={() => setShowModalEditParticipant(true)}
                                     toolTip={'Edit this participant'}>
                                     <Image src={edit} alt={'icon'}/>
                                 </CustomIconButton>
                                 <CustomIconButton
+                                    as="button"
                                     onButtonClick={() => setShowModalDelete(true)}
                                     toolTip={'Delete this participant'}>
                                     <Image src={deleteButton} alt={'icon'}/>
@@ -73,7 +75,8 @@ function Participant ({ participant, changePossible }) {
                 show={showModalDelete}
                 onHide={() => setShowModalDelete(false)}
                 titleObject={'Participant'}
-                textObject={'the selected Participant ?\n\nName: \'' + participant.getFirstName() + ' ' + participant.getLastName() + '\'\nEmail: \'' + participant.getEmail() + '\''}
+                textType={'the selected Participant ?\n\n'}
+                textObject={'Name: \'' + participant.getFirstName() + ' ' + participant.getLastName() + '\'\nEmail: \'' + participant.getEmail() + '\''}
                 onDeleteClick={(participant) => removeParticipant(participant)}
                 deleteObject={[participant]}
                 onClose={() => setShowModalDelete(false)}/>
@@ -89,7 +92,7 @@ function Participant ({ participant, changePossible }) {
   );
 }
 Participant.prototypes = {
-  changePossible: PropTypes.object,
+  changePossible: PropTypes.bool,
   participant: PropTypes.object.isRequired
 };
 

@@ -2,11 +2,10 @@ import React from 'react';
 import './MainPage.css';
 import '../setup_window.css';
 import SlotsWindow from '../slotsWindow/SlotsWindow';
-import start from '../../../assets/media/play-circle.svg';
-import gear from '../../../assets/media/gear.svg';
+import start from '../../../../public/media/play-circle.svg';
+import gear from '../../../../public/media/gear.svg';
 import ErrorModal from '../../modals/errorModal/ErrorModal';
 import SettingsModal from '../../modals/settingsModal/SettingsModal';
-import ParticipantList from '../participantWindow/ParticipantWindow';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
 import { Card, Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
@@ -14,6 +13,7 @@ import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../shared/context/SettingsContext';
+import ParticipantWindow from "../participantWindow/ParticipantWindow";
 
 function MainPage () {
   const [algorithmErrorObject, setAlgorithmErrorObject] =
@@ -49,7 +49,7 @@ function MainPage () {
                 <Row className={'participant-slots-container'}>
                     <Col md={12} lg={8} className="mb-3 mb-md-0 pl-0">
                         {/* added context to participant store */}
-                        <ParticipantList/>
+                        <ParticipantWindow/>
                     </Col>
                     {/* replace with component */}
                     <Col md={12} lg={4} className={'mb-3 mb-md-0 slots-setup-container'}>

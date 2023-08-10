@@ -1,12 +1,12 @@
 import './DeleteModal.css';
 import Modal from 'react-bootstrap/Modal';
-import exit from '../../../assets/media/x-circle.svg';
+import exit from '../../../../public/media/x-circle.svg';
 import PropTypes from 'prop-types';
 import ParticipantModal from '../participantModals/addEditModal/ParticipantModal';
 import { Col, Image, Row } from 'react-bootstrap';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
-function deleteModal ({ onDeleteClick, deleteObject, titleObject, textObject, onHide, ...props }) {
+function deleteModal ({ onDeleteClick, deleteObject, titleObject, textType, textObject, onHide, ...props }) {
   const deleteItem = () => {
     onDeleteClick(deleteObject);
   };
@@ -25,8 +25,15 @@ function deleteModal ({ onDeleteClick, deleteObject, titleObject, textObject, on
             </Modal.Header>
             <Modal.Body>
                 <div className={'text-container text-center'}>
-                    <div className={'delete-title-subheadline'} style={{ whiteSpace: 'pre-line' }}>
-                        Are you sure you want to delete {textObject} <br/><br/>
+                    <div className={'delete-title-subheadline'}>
+                        Are you sure you want to delete {textType}
+                    </div>
+                    <hr/>
+                    <div className={'delete-title-subheadline overflow-auto'} style={{ whiteSpace: 'pre-line', maxHeight: '30vh' }}>
+                         {textObject} <br/><br/>
+                    </div>
+                    <hr/>
+                    <div className={'delete-title-subheadline'}>
                         This Action can&lsquo;t be undone.
                     </div>
                 </div>
@@ -52,6 +59,7 @@ function deleteModal ({ onDeleteClick, deleteObject, titleObject, textObject, on
 }
 ParticipantModal.propTypes = {
   textObject: PropTypes.string,
+  textType: PropTypes.string,
   titleObject: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func,

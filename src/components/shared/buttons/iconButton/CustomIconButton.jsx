@@ -3,7 +3,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './CustomIconButton.css';
 import PropTypes from 'prop-types';
 
-function CustomIconButton ({ toolTip, onButtonClick, children }) {
+function CustomIconButton ({ toolTip, onButtonClick, children, as: Component = 'button' }) {
   const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
             {toolTip}
@@ -19,10 +19,9 @@ function CustomIconButton ({ toolTip, onButtonClick, children }) {
                 delay={500}
 
             >
-                <button className={'icon-button'}
-                        onClick={onButtonClick}>
-                    {children}
-                </button>
+                <Component className={'icon-button'} onClick={onButtonClick}>
+                  {children}
+                </Component>
             </OverlayTrigger>
 
         </>

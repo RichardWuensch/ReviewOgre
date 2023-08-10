@@ -2,7 +2,7 @@ import React from 'react';
 import './DataImportCheckModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import exit from '../../../assets/media/x-circle.svg';
+import exit from '../../../../public/media/x-circle.svg';
 import { Accordion, ListGroup, Image, Table } from 'react-bootstrap';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import SlotCard from '../../window/slotsWindow/Slot';
@@ -12,7 +12,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
   return (
         <Modal
             {...props}
-            size="sm"
+            size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
             className={'modal-dataimportcheck'}

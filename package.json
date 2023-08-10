@@ -1,6 +1,6 @@
 {
   "name": "reviewogerreloaded",
-  "version": "2.0.0alpha",
+  "version": "2.0.1alpha",
   "private": true,
   "dependencies": {
     "@dnd-kit/core": "^6.0.8",
