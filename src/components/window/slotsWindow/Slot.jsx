@@ -1,11 +1,11 @@
 import './Slot.css';
 import React, { useState } from 'react';
 import { Accordion, Card, Col, Image, Row, useAccordionButton } from 'react-bootstrap';
-import locationImage from '../../../../public/media/geo-alt-fill.svg';
-import deleteButton from '../../../../public/media/trash.svg';
-import alarmImage from '../../../../public/media/alarm-fill.svg';
-import editImage from '../../../../public/media/pencil-square.svg';
-import copyImage from '../../../../public/media/files.svg';
+import locationImage from '../../../media/geo-alt-fill.svg';
+import deleteButton from '../../../media/trash.svg';
+import alarmImage from '../../../media/alarm-fill.svg';
+import editImage from '../../../media/pencil-square.svg';
+import copyImage from '../../../media/files.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
 import AddCopyModal from '../../modals/slotRoomModal/SlotRoomModal';

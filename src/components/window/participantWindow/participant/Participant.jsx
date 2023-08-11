@@ -1,5 +1,5 @@
-import edit from '../../../../../public/media/pencil-square.svg';
-import deleteButton from '../../../../../public/media/trash.svg';
+import edit from '../../../../media/pencil-square.svg';
+import deleteButton from '../../../../media/trash.svg';
 import React from 'react';
 import { Image } from 'react-bootstrap';
 import DeleteModal from '../../../modals/deleteModal/DeleteModal';

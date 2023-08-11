@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { Form, Image } from 'react-bootstrap';
 import './ParticipantModal.css';
-import exit from '../../../../../public/media/x-circle.svg';
+import exit from '../../../../media/x-circle.svg';
 import PropTypes from 'prop-types';
 import Participant from '../../../../data/models/Participant';
 import ModalButton from '../../../shared/buttons/modalButton/ModalButton';
@@ -138,7 +138,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                             <ModalButton
                                 backgroundColor={'#B0D7AF'}
                                 onButtonClick={() => handleSubmit()}
-                            > {newParticipant ? 'Add Participant' : 'Save Changes'} </ModalButton>
+                            > <div className='participant-modal-submit'>{newParticipant ? 'Add Participant' : 'Save Changes'} </div></ModalButton>
                         </div>
                     </Form>)}
                 </Formik>
