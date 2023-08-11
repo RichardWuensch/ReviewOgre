@@ -85,7 +85,7 @@ function MainPage () {
                                                 height={20}
                                                 width={20}
                                             />
-                                            <span className="button-start-text">Compute assignment </span>
+                                            <span className="button-start-text e2e-testing-compute-assignment">Compute assignment </span>
                                         </CustomButton>
                                     </Col>
                                 </Row>
