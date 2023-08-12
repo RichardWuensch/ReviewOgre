@@ -1,12 +1,14 @@
 import './Slot.css';
 import React, { useState } from 'react';
 import { Accordion, Card, Col, Image, Row, useAccordionButton } from 'react-bootstrap';
-import locationImage from '../../../assets/media/geo-alt-fill.svg';
-import deleteButton from '../../../assets/media/trash.svg';
-import alarmImage from '../../../assets/media/alarm-fill.svg';
-import editImage from '../../../assets/media/pencil-square.svg';
+import locationImage from '../../../media/geo-alt-fill.svg';
+import deleteButton from '../../../media/trash.svg';
+import alarmImage from '../../../media/alarm-fill.svg';
+import editImage from '../../../media/pencil-square.svg';
+import copyImage from '../../../media/files.svg';
 import SlotModal from '../../modals/slotRoomModal/SlotRoomModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
+import AddCopyModal from '../../modals/slotRoomModal/SlotRoomModal';
 import { useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import PropTypes from 'prop-types';
@@ -15,6 +17,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [showModalDeleteSlot, setShowModalDeleteSlot] = useState(false);
   const [showModalEditSlot, setShowModalEditSlot] = useState(false);
+  const [showModalAddSlotCopyRooms, setShowModalAddSlotCopyRooms] = React.useState(false);
 
   const openAccordion = useAccordionButton(eventKey, () => {});
 
@@ -52,6 +55,15 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
     /* eslint-enable object-shorthand */
   };
 
+  const saveNewSlot = (slot) => {
+    /* eslint-disable object-shorthand */
+    roomSlotDispatch({
+      type: 'added',
+      newRoomSlot: slot
+    });
+    /* eslint-enable object-shorthand */
+  };
+
   const slotContent = (
         <>
             <Card>
@@ -71,6 +83,12 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                             {changePossible
                               ? (
                                     <>
+                                        <CustomIconButton
+                                            as="button"
+                                            onButtonClick={() => setShowModalAddSlotCopyRooms(true)}
+                                            toolTip={'Copy the rooms of this slot in a new slot.'}>
+                                            <Image src={copyImage} alt={'icon'}/>
+                                        </CustomIconButton>
                                         <CustomIconButton
                                             as="button"
                                             onButtonClick={() => setShowModalEditSlot(true)}
@@ -123,9 +141,17 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                 onHide={() => setShowModalDeleteSlot(false)}
                 onSave={handleDelete}
                 titleObject={'Slot'}
-                textObject={'the selected Slot ?\n\n\'' + getSlotDescription() + '\''}
+                textType={'the selected Slot and the associated rooms?\n\n'}
+                textObject={'\'' + getSlotDescription() + '\''}
                 deleteObject={roomSlot}
                 onDeleteClick={(slot) => removeSlot(slot)}/>
+            <AddCopyModal
+                /* open Slot Modal with copied rooms */
+                show={showModalAddSlotCopyRooms}
+                onHide={() => setShowModalAddSlotCopyRooms(false)}
+                header={'New Time Slot'}
+                copiedRooms={roomSlot.getRooms()}
+                onSaveClick={(slot) => saveNewSlot(slot)}/>
         </>
 
   );

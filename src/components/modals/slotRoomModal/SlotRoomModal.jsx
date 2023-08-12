@@ -1,16 +1,16 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import './SlotRoomModal.css';
-import exit from '../../../assets/media/x-circle.svg';
-import add from '../../../assets/media/plus-circle.svg';
-import info from '../../../assets/media/info-circle.svg';
+import exit from '../../../media/x-circle.svg';
+import add from '../../../media/plus-circle.svg';
+import info from '../../../media/info-circle.svg';
 import React, { useEffect, useState } from 'react';
 import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
 import RoomSlot from '../../../data/models/RoomSlot';
 import Room from '../../../data/models/Room';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
-import deleteButton from '../../../assets/media/trash.svg';
+import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
@@ -21,7 +21,7 @@ const noErrorState = {
   tooltipText: null
 };
 
-function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
+function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
   const slotId = roomslot?.getId() ?? -1;
   const [date, setDate] = useState(roomslot?.getDate() ?? new Date());
   const [startTime, setStartTime] = useState(roomslot?.getFormattedStartTime() ?? '00:00');
@@ -30,7 +30,8 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
   const [isEditMode] = useState(props.edit === 'true');
   const [items, setItems] = useState(roomslot
     ?.getRooms()
-    .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
+    .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? copiedRooms
+    ?.map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
 
   const roomSlots = useRoomSlots();
 
@@ -39,7 +40,8 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
     const tempInitialItems =
       roomslot
         ?.getRooms()
-        .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
+        .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? copiedRooms
+        ?.map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
     setItems(tempInitialItems);
   }, [roomslot]);
 
@@ -376,7 +378,7 @@ function SlotModal ({ roomslot, onSaveClick, onHide, ...props }) {
             <ModalButton
                 backgroundColor={errorOccured() ? '#bbbbbb' : '#B0D7AF'}
                 onButtonClick={saveClick}>
-              <span className={'add-slot-text'}>
+              <span className={'add-slot-text e2e-location-add-slot-button'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>
             </ModalButton>
