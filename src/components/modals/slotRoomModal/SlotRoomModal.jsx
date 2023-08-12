@@ -1,16 +1,16 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import './SlotRoomModal.css';
-import exit from '../../../../public/media/x-circle.svg';
-import add from '../../../../public/media/plus-circle.svg';
-import info from '../../../../public/media/info-circle.svg';
+import exit from '../../../media/x-circle.svg';
+import add from '../../../media/plus-circle.svg';
+import info from '../../../media/info-circle.svg';
 import React, { useEffect, useState } from 'react';
 import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
 import RoomSlot from '../../../data/models/RoomSlot';
 import Room from '../../../data/models/Room';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
-import deleteButton from '../../../../public/media/trash.svg';
+import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
@@ -378,7 +378,7 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
             <ModalButton
                 backgroundColor={errorOccured() ? '#bbbbbb' : '#B0D7AF'}
                 onButtonClick={saveClick}>
-              <span className={'add-slot-text'}>
+              <span className={'add-slot-text e2e-location-add-slot-button'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>
             </ModalButton>

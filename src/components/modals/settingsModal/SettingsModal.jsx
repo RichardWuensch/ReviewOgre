@@ -1,7 +1,7 @@
 import './SettingsModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import exit from '../../../../public/media/x-circle.svg';
+import exit from '../../../media/x-circle.svg';
 import { Image } from 'react-bootstrap';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
 import { useSettings, useSettingsDispatch } from '../../shared/context/SettingsContext';

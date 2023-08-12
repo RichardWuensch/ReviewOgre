@@ -1,0 +1,853 @@
+{
+ "participants": [
+  {
+   "firstName": "Claudia",
+   "lastName": "Delacruz",
+   "email": "nulla.magna.malesuada@turpis.ca",
+   "group": "1"
+  },
+  {
+   "firstName": "Abel",
+   "lastName": "Waters",
+   "email": "leo.Vivamus@sapien.com",
+   "group": "1"
+  },
+  {
+   "firstName": "Dominic",
+   "lastName": "Lawson",
+   "email": "velit.eu@Fuscemi.edu",
+   "group": "1"
+  },
+  {
+   "firstName": "Leilani",
+   "lastName": "Tate",
+   "email": "malesuada.augue.ut@anteVivamus.edu",
+   "group": "2"
+  },
+  {
+   "firstName": "Grady",
+   "lastName": "Hammond",
+   "email": "Mauris@penatibuset.org",
+   "group": "2"
+  },
+  {
+   "firstName": "Bernard",
+   "lastName": "Munoz",
+   "email": "molestie.sodales.Mauris@semmagna.com",
+   "group": "2"
+  },
+  {
+   "firstName": "Randall",
+   "lastName": "Rogers",
+   "email": "semper@non.ca",
+   "group": "3"
+  },
+  {
+   "firstName": "Hop",
+   "lastName": "Chandler",
+   "email": "arcu.et.pede@tinciduntneque.co.uk",
+   "group": "3"
+  },
+  {
+   "firstName": "Thaddeus",
+   "lastName": "Harrington",
+   "email": "cursus.et@eleifendvitaeerat.ca",
+   "group": "3"
+  },
+  {
+   "firstName": "Winifred",
+   "lastName": "Mendez",
+   "email": "bibendum.fermentum@velesttempor.org",
+   "group": "4"
+  },
+  {
+   "firstName": "Nero",
+   "lastName": "Gillespie",
+   "email": "pharetra.Quisque@malesuada.edu",
+   "group": "4"
+  },
+  {
+   "firstName": "Idola",
+   "lastName": "Bray",
+   "email": "Donec.consectetuer@pede.org",
+   "group": "4"
+  },
+  {
+   "firstName": "Cameran",
+   "lastName": "Shelton",
+   "email": "et.eros@Nullamvitaediam.ca",
+   "group": "5"
+  },
+  {
+   "firstName": "Martin",
+   "lastName": "Briggs",
+   "email": "blandit.congue.In@etmagnis.edu",
+   "group": "5"
+  },
+  {
+   "firstName": "Dana",
+   "lastName": "Woodard",
+   "email": "molestie.tellus.Aenean@egestaslaciniaSed.org",
+   "group": "5"
+  },
+  {
+   "firstName": "Nevada",
+   "lastName": "Odonnell",
+   "email": "venenatis@lectus.edu",
+   "group": "6"
+  },
+  {
+   "firstName": "Karyn",
+   "lastName": "Donaldson",
+   "email": "metus.vitae.velit@acmi.ca",
+   "group": "6"
+  },
+  {
+   "firstName": "Tamekah",
+   "lastName": "Burt",
+   "email": "ac.nulla@in.ca",
+   "group": "6"
+  },
+  {
+   "firstName": "Leigh",
+   "lastName": "Bradshaw",
+   "email": "auctor.quis.tristique@Vivamus.ca",
+   "group": "7"
+  },
+  {
+   "firstName": "Samson",
+   "lastName": "Jones",
+   "email": "eget.lacus@a.co.uk",
+   "group": "7"
+  },
+  {
+   "firstName": "Ebony",
+   "lastName": "Moore",
+   "email": "egestas@Aenean.net",
+   "group": "7"
+  },
+  {
+   "firstName": "Yvette",
+   "lastName": "Randall",
+   "email": "risus@ultriciesligula.net",
+   "group": "8"
+  },
+  {
+   "firstName": "Jolie",
+   "lastName": "Leonard",
+   "email": "erat.eget.tincidunt@natoque.edu",
+   "group": "8"
+  },
+  {
+   "firstName": "Zachary",
+   "lastName": "Scott",
+   "email": "volutpat.Nulla@quisdiam.co.uk",
+   "group": "8"
+  },
+  {
+   "firstName": "Breanna",
+   "lastName": "Hull",
+   "email": "fringilla.cursus.purus@primisinfaucibus.org",
+   "group": "9"
+  },
+  {
+   "firstName": "Calista",
+   "lastName": "Castillo",
+   "email": "Sed.nec.metus@metusInnec.ca",
+   "group": "9"
+  },
+  {
+   "firstName": "Martina",
+   "lastName": "Swanson",
+   "email": "Duis.gravida.Praesent@Inatpede.co.uk",
+   "group": "9"
+  },
+  {
+   "firstName": "Madeline",
+   "lastName": "Dixon",
+   "email": "ipsum.Phasellus@Intinciduntcongue.ca",
+   "group": "10"
+  },
+  {
+   "firstName": "Gray",
+   "lastName": "Miranda",
+   "email": "est.tempor.bibendum@vehiculaetrutrum.net",
+   "group": "10"
+  },
+  {
+   "firstName": "Remedios",
+   "lastName": "Koch",
+   "email": "dictum.ultricies.ligula@sitametrisus.org",
+   "group": "10"
+  },
+  {
+   "firstName": "Chaney",
+   "lastName": "Dean",
+   "email": "a@tinciduntnuncac.com",
+   "group": "11"
+  },
+  {
+   "firstName": "Fleur",
+   "lastName": "Weber",
+   "email": "Nulla.tempor.augue@neceuismodin.net",
+   "group": "11"
+  },
+  {
+   "firstName": "Bertha",
+   "lastName": "Jensen",
+   "email": "enim.condimentum@insodaleselit.org",
+   "group": "11"
+  },
+  {
+   "firstName": "Finn",
+   "lastName": "Moses",
+   "email": "eget.lacus.Mauris@feugiatSed.org",
+   "group": "12"
+  },
+  {
+   "firstName": "Tiger",
+   "lastName": "Pearson",
+   "email": "viverra@sodalesnisi.ca",
+   "group": "12"
+  },
+  {
+   "firstName": "Felix",
+   "lastName": "Armstrong",
+   "email": "nibh@anteipsum.org",
+   "group": "12"
+  },
+  {
+   "firstName": "Brielle",
+   "lastName": "Mcneil",
+   "email": "ad.litora@nibhlaciniaorci.com",
+   "group": "13"
+  },
+  {
+   "firstName": "Cadman",
+   "lastName": "Macias",
+   "email": "velit@Craseget.com",
+   "group": "13"
+  },
+  {
+   "firstName": "Zahir",
+   "lastName": "Kirby",
+   "email": "metus.Aliquam.erat@ligulaDonecluctus.net",
+   "group": "13"
+  },
+  {
+   "firstName": "Doris",
+   "lastName": "Humphrey",
+   "email": "nonummy.ac.feugiat@ornareplacerat.com",
+   "group": "14"
+  },
+  {
+   "firstName": "Addison",
+   "lastName": "Calderon",
+   "email": "Aenean.gravida@Maecenasmifelis.co.uk",
+   "group": "14"
+  },
+  {
+   "firstName": "Keith",
+   "lastName": "Wolf",
+   "email": "id.ante@magnaPraesent.ca",
+   "group": "14"
+  },
+  {
+   "firstName": "Dawn",
+   "lastName": "Chase",
+   "email": "eget.massa.Suspendisse@metus.com",
+   "group": "15"
+  },
+  {
+   "firstName": "Adrienne",
+   "lastName": "Townsend",
+   "email": "placerat.velit.Quisque@hendreritnequeIn.co.uk",
+   "group": "15"
+  },
+  {
+   "firstName": "Shea",
+   "lastName": "Cameron",
+   "email": "vitae.risus.Duis@faucibus.edu",
+   "group": "15"
+  },
+  {
+   "firstName": "Dane",
+   "lastName": "Sargent",
+   "email": "elit@semegetmassa.co.uk",
+   "group": "16"
+  },
+  {
+   "firstName": "Mona",
+   "lastName": "Massey",
+   "email": "fringilla.mi.lacinia@commodo.co.uk",
+   "group": "16"
+  },
+  {
+   "firstName": "Sara",
+   "lastName": "Weiss",
+   "email": "lorem.luctus.ut@maurisanunc.edu",
+   "group": "16"
+  },
+  {
+   "firstName": "Wilma",
+   "lastName": "Emerson",
+   "email": "elementum.lorem.ut@nectellus.net",
+   "group": "17"
+  },
+  {
+   "firstName": "Amaya",
+   "lastName": "Griffith",
+   "email": "odio@maurisrhoncus.net",
+   "group": "17"
+  },
+  {
+   "firstName": "Zia",
+   "lastName": "Drake",
+   "email": "ultrices.iaculis.odio@et.co.uk",
+   "group": "17"
+  },
+  {
+   "firstName": "Kevyn",
+   "lastName": "Mcintosh",
+   "email": "Donec@Donecfelisorci.com",
+   "group": "18"
+  },
+  {
+   "firstName": "Eden",
+   "lastName": "Murray",
+   "email": "in.consectetuer.ipsum@ornare.co.uk",
+   "group": "18"
+  },
+  {
+   "firstName": "Maxine",
+   "lastName": "Brennan",
+   "email": "tortor.Nunc@inmagna.edu",
+   "group": "18"
+  },
+  {
+   "firstName": "Akeem",
+   "lastName": "Massey",
+   "email": "mauris.Suspendisse@nonlacinia.org",
+   "group": "19"
+  },
+  {
+   "firstName": "Ahmed",
+   "lastName": "Wood",
+   "email": "cubilia.Curae@sit.edu",
+   "group": "19"
+  },
+  {
+   "firstName": "Wynter",
+   "lastName": "Rush",
+   "email": "adipiscing.elit.Etiam@rutrum.net",
+   "group": "19"
+  },
+  {
+   "firstName": "Buffy",
+   "lastName": "Gonzalez",
+   "email": "id.risus.quis@diam.edu",
+   "group": "20"
+  },
+  {
+   "firstName": "Benedict",
+   "lastName": "Tate",
+   "email": "mattis.velit@Donecelementum.net",
+   "group": "20"
+  },
+  {
+   "firstName": "Dora",
+   "lastName": "Mendez",
+   "email": "ultrices.iaculis@eleifend.net",
+   "group": "20"
+  },
+  {
+   "firstName": "Carter",
+   "lastName": "Farrell",
+   "email": "lobortis.ultrices@Donecnonjusto.net",
+   "group": "21"
+  },
+  {
+   "firstName": "Kirby",
+   "lastName": "Cochran",
+   "email": "semper.auctor@gravidamolestiearcu.edu",
+   "group": "21"
+  },
+  {
+   "firstName": "Aspen",
+   "lastName": "Blackburn",
+   "email": "in.dolor@aliquet.org",
+   "group": "21"
+  },
+  {
+   "firstName": "Emily",
+   "lastName": "Cantu",
+   "email": "sollicitudin.commodo@ut.edu",
+   "group": "22"
+  },
+  {
+   "firstName": "Xenos",
+   "lastName": "Carpenter",
+   "email": "faucibus@mieleifend.ca",
+   "group": "22"
+  },
+  {
+   "firstName": "Kelsie",
+   "lastName": "Sloan",
+   "email": "Curabitur@laciniamattisInteger.edu",
+   "group": "22"
+  },
+  {
+   "firstName": "Andrew",
+   "lastName": "Bruce",
+   "email": "Donec.luctus.aliquet@nullaInteger.org",
+   "group": "23"
+  },
+  {
+   "firstName": "Willa",
+   "lastName": "Mendez",
+   "email": "et.magna.Praesent@utaliquamiaculis.org",
+   "group": "23"
+  },
+  {
+   "firstName": "Lydia",
+   "lastName": "Ray",
+   "email": "natoque.penatibus@eratEtiamvestibulum.ca",
+   "group": "23"
+  },
+  {
+   "firstName": "Baxter",
+   "lastName": "Cameron",
+   "email": "amet.nulla@portaelit.ca",
+   "group": "24"
+  },
+  {
+   "firstName": "Azalia",
+   "lastName": "Merrill",
+   "email": "dis.parturient.montes@nonmagna.edu",
+   "group": "24"
+  },
+  {
+   "firstName": "Grant",
+   "lastName": "Bentley",
+   "email": "lectus.ante@vestibulummassa.co.uk",
+   "group": "24"
+  },
+  {
+   "firstName": "Kiayada",
+   "lastName": "Hubbard",
+   "email": "Vestibulum.ante.ipsum@nisi.net",
+   "group": "25"
+  },
+  {
+   "firstName": "Carissa",
+   "lastName": "Becker",
+   "email": "ultrices.iaculis.odio@Fusce.net",
+   "group": "25"
+  },
+  {
+   "firstName": "Tobias",
+   "lastName": "Watts",
+   "email": "cursus@auctor.net",
+   "group": "25"
+  },
+  {
+   "firstName": "Wilma",
+   "lastName": "Schmidt",
+   "email": "facilisis.magna@iaculislacus.edu",
+   "group": "26"
+  },
+  {
+   "firstName": "Madison",
+   "lastName": "Ramirez",
+   "email": "lobortis.quam.a@diam.ca",
+   "group": "26"
+  },
+  {
+   "firstName": "Jermaine",
+   "lastName": "Cohen",
+   "email": "eleifend.nunc.risus@inmolestie.edu",
+   "group": "26"
+  },
+  {
+   "firstName": "Shannon",
+   "lastName": "Golden",
+   "email": "ante.dictum.mi@purusactellus.net",
+   "group": "27"
+  },
+  {
+   "firstName": "Elijah",
+   "lastName": "Bauer",
+   "email": "eu.tellus.eu@adipiscing.co.uk",
+   "group": "27"
+  },
+  {
+   "firstName": "Arsenio",
+   "lastName": "Lester",
+   "email": "semper.rutrum@Sedid.co.uk",
+   "group": "27"
+  },
+  {
+   "firstName": "Germaine",
+   "lastName": "Mitchell",
+   "email": "id.nunc@Duis.co.uk",
+   "group": "28"
+  },
+  {
+   "firstName": "Yardley",
+   "lastName": "Santiago",
+   "email": "convallis.est@dapibusligula.com",
+   "group": "28"
+  },
+  {
+   "firstName": "Cedric",
+   "lastName": "Crane",
+   "email": "mi@commodo.ca",
+   "group": "28"
+  },
+  {
+   "firstName": "Cherokee",
+   "lastName": "Hyde",
+   "email": "lobortis.mauris@In.com",
+   "group": "29"
+  },
+  {
+   "firstName": "Kasimir",
+   "lastName": "Mercado",
+   "email": "Suspendisse@Suspendisse.org",
+   "group": "29"
+  },
+  {
+   "firstName": "Maxine",
+   "lastName": "Bartlett",
+   "email": "sem.ut@tincidunt.ca",
+   "group": "29"
+  },
+  {
+   "firstName": "Christen",
+   "lastName": "Cash",
+   "email": "ut.lacus.Nulla@mollisvitae.co.uk",
+   "group": "30"
+  },
+  {
+   "firstName": "Kadeem",
+   "lastName": "Shannon",
+   "email": "nisl.Maecenas@sit.co.uk",
+   "group": "30"
+  },
+  {
+   "firstName": "Ariel",
+   "lastName": "Duffy",
+   "email": "Curae.Phasellus.ornare@convallisligulaDonec.edu",
+   "group": "30"
+  },
+  {
+   "firstName": "Barclay",
+   "lastName": "Newman",
+   "email": "iaculis.lacus@duiFuscediam.edu",
+   "group": "31"
+  },
+  {
+   "firstName": "Tatum",
+   "lastName": "Greene",
+   "email": "eu@eunibhvulputate.edu",
+   "group": "31"
+  },
+  {
+   "firstName": "Adara",
+   "lastName": "Beasley",
+   "email": "volutpat.Nulla@In.org",
+   "group": "31"
+  },
+  {
+   "firstName": "Raymond",
+   "lastName": "Rogers",
+   "email": "odio.sagittis@nunc.org",
+   "group": "32"
+  },
+  {
+   "firstName": "Hilary",
+   "lastName": "Knight",
+   "email": "Quisque@sedpede.net",
+   "group": "32"
+  },
+  {
+   "firstName": "Clarke",
+   "lastName": "Ferrell",
+   "email": "tempor@Praesentinterdum.co.uk",
+   "group": "32"
+  },
+  {
+   "firstName": "Kevin",
+   "lastName": "Martin",
+   "email": "Suspendisse.sed.dolor@et.com",
+   "group": "33"
+  },
+  {
+   "firstName": "Maisie",
+   "lastName": "Talley",
+   "email": "placerat.velit@sagittisplaceratCras.net",
+   "group": "33"
+  },
+  {
+   "firstName": "Yolanda",
+   "lastName": "Pugh",
+   "email": "ipsum.Donec.sollicitudin@fringillapurusmauris.ca",
+   "group": "33"
+  },
+  {
+   "firstName": "Oliver",
+   "lastName": "Cobb",
+   "email": "lectus@tellus.co.uk",
+   "group": "34"
+  },
+  {
+   "firstName": "Forrest",
+   "lastName": "Santos",
+   "email": "Mauris.nulla@velconvallisin.com",
+   "group": "34"
+  },
+  {
+   "firstName": "Nasim",
+   "lastName": "Mann",
+   "email": "Fusce.aliquam.enim@adipiscingligulaAenean.edu",
+   "group": "34"
+  },
+  {
+   "firstName": "Maxine",
+   "lastName": "Bush",
+   "email": "eget@arcuAliquam.co.uk",
+   "group": "35"
+  },
+  {
+   "firstName": "Pandora",
+   "lastName": "Mcgowan",
+   "email": "dis.parturient.montes@acturpisegestas.ca",
+   "group": "35"
+  },
+  {
+   "firstName": "Eaton",
+   "lastName": "Mckee",
+   "email": "nisl.arcu@Vestibulum.com",
+   "group": "35"
+  },
+  {
+   "firstName": "Risa",
+   "lastName": "Davis",
+   "email": "non.sollicitudin.a@dapibusgravida.com",
+   "group": "36"
+  },
+  {
+   "firstName": "Fay",
+   "lastName": "Russell",
+   "email": "iaculis@atlacusQuisque.org",
+   "group": "36"
+  },
+  {
+   "firstName": "Jaden",
+   "lastName": "Kemp",
+   "email": "ante.blandit@urnaUttincidunt.ca",
+   "group": "36"
+  }
+ ],
+ "roomSlots": [
+  {
+   "date": "2014-10-19",
+   "startTime": "17:00",
+   "endTime": "18:40",
+   "rooms": [
+    {
+     "name": "1.212",
+     "beamer": false
+    },
+    {
+     "name": "1.014",
+     "beamer": false
+    },
+    {
+     "name": "1.020",
+     "beamer": false
+    },
+    {
+     "name": "1.168",
+     "beamer": false
+    },
+    {
+     "name": "0.463",
+     "beamer": false
+    },
+    {
+     "name": "0.457",
+     "beamer": false
+    },
+    {
+     "name": "0.447",
+     "beamer": false
+    }
+   ]
+  },
+  {
+   "date": "2014-10-20",
+   "startTime": "15:20",
+   "endTime": "17:00",
+   "rooms": [
+    {
+     "name": "1.212",
+     "beamer": false
+    },
+    {
+     "name": "1.014",
+     "beamer": false
+    },
+    {
+     "name": "1.020",
+     "beamer": false
+    },
+    {
+     "name": "1.168",
+     "beamer": false
+    }
+   ]
+  },
+  {
+   "date": "2014-10-20",
+   "startTime": "17:00",
+   "endTime": "18:40",
+   "rooms": [
+    {
+     "name": "1.212",
+     "beamer": false
+    },
+    {
+     "name": "1.014",
+     "beamer": false
+    },
+    {
+     "name": "1.020",
+     "beamer": false
+    },
+    {
+     "name": "1.168",
+     "beamer": false
+    },
+    {
+     "name": "0.463",
+     "beamer": false
+    },
+    {
+     "name": "0.457",
+     "beamer": false
+    }
+   ]
+  },
+  {
+   "date": "2014-10-20",
+   "startTime": "09:20",
+   "endTime": "11:00",
+   "rooms": [
+    {
+     "name": "1.014",
+     "beamer": false
+    },
+    {
+     "name": "1.020",
+     "beamer": false
+    },
+    {
+     "name": "1.168",
+     "beamer": false
+    }
+   ]
+  },
+  {
+   "date": "2014-10-20",
+   "startTime": "13:30",
+   "endTime": "15:15",
+   "rooms": [
+    {
+     "name": "1.212",
+     "beamer": false
+    },
+    {
+     "name": "1.014",
+     "beamer": false
+    },
+    {
+     "name": "1.020",
+     "beamer": false
+    },
+    {
+     "name": "1.168",
+     "beamer": false
+    },
+    {
+     "name": "0.463",
+     "beamer": false
+    }
+   ]
+  },
+  {
+   "date": "2014-10-20",
+   "startTime": "17:00",
+   "endTime": "18:40",
+   "rooms": [
+    {
+     "name": "1.212",
+     "beamer": false
+    },
+    {
+     "name": "1.014",
+     "beamer": false
+    },
+    {
+     "name": "1.020",
+     "beamer": false
+    },
+    {
+     "name": "1.168",
+     "beamer": false
+    },
+    {
+     "name": "0.463",
+     "beamer": false
+    },
+    {
+     "name": "0.457",
+     "beamer": false
+    },
+    {
+     "name": "0.447",
+     "beamer": false
+    }
+   ]
+  },
+  {
+   "date": "2014-10-20",
+   "startTime": "09:20",
+   "endTime": "11:00",
+   "rooms": [
+    {
+     "name": "1.212",
+     "beamer": false
+    },
+    {
+     "name": "1.014",
+     "beamer": false
+    },
+    {
+     "name": "1.020",
+     "beamer": false
+    },
+    {
+     "name": "1.168",
+     "beamer": false
+    }
+   ]
+  }
+ ],
+ "settings": {
+  "authorIsNotary": false,
+  "breakForModeratorAndReviewer": false,
+  "abReview": false,
+  "internationalGroups": false
+ }
+}

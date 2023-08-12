@@ -44,3 +44,29 @@ Run es lint to show errors and warnings. Eslint will enforce coding styles and f
 ### `npm run lint:txt`
 
 Creates a txt report of the styling issues in the project
+
+
+> All of the following test scripts require the application to be started
+> Please first use `npm install` to install al required dependencies
+
+### `npm run cy:open-e2e`
+
+Opens the cypress GUI in the configured browser. The GUI
+will show the available test scripts.
+
+### `npm run cy:open-unit`
+
+Opens the cypress GUI with the configured browser. The GUI
+will show the available unit tests.
+
+### `npm run cy:run-e2e`
+
+Runs the e2e tests in the terminal. The test results will be displayed
+in the terminal. The runs are available as .mp4 files in './cypress/videos'
+
+
+### `npm run cy:run-unit`
+
+Runs the unit tests in the terminal. The test results will be displayed
+in the terminal.
+
