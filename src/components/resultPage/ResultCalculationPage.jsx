@@ -4,7 +4,7 @@ import React from 'react';
 import { useRoomSlots } from '../shared/context/RoomSlotContext';
 // import ReviewWindowV1 from './reviewWindowV1/ReviewWindowV1';
 import ReviewWindow from './reviewWindow/ReviewWindow';
-import {HashLink} from "react-router-hash-link";
+// import {HashLink} from "react-router-hash-link";
 
 function ResultCalculationPage () {
   const roomSlots = useRoomSlots();
@@ -19,7 +19,7 @@ function ResultCalculationPage () {
       <div className="review-page">
           {hasReviewResults()
             ? <Container>
-                  <ReviewWindowV1 />
+                  <ReviewWindow />
               </Container>
             : <Container className="d-flex justify-content-center align-items-center">
                 <h3>No Reviews calculated yet</h3>
