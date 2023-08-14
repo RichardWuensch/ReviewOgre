@@ -54,20 +54,23 @@ function ReviewWindow () {
   const settings = useSettings();
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
-  const { participantState } = useState(useParticipants());
   const [sortedParticipants, setSortedParticipants] = useState([]);
   const [showExportOptions, setShowExportOptions] = useState(false);
 
   const [deleteTrigger, setDeleteTrigger] = useState(0);
 
   React.useEffect(() => {
-    const avgParticipantTotalCount = items.reduce((sum, participant) => sum += participant.getTotalCount(), 0) / items.length;
-    const avgParticipantReviewerCount = items.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / items.length;
-    for (const participant of items ) {
+    calculateFairness();
+  }, []);
+
+  const calculateFairness = () => {
+    const avgParticipantTotalCount = Math.round(items.reduce((sum, participant) => sum += participant.getTotalCount(), 0) / items.length);
+    const avgParticipantReviewerCount = Math.round(items.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / items.length);
+    for (const participant of items) {
       participant.calculateFairness(avgParticipantTotalCount, avgParticipantReviewerCount);
     }
     setSortedParticipants(ParticipantFairness.sortParticipantsByFairness(items));
-  }, participantState);
+  };
 
   const handleDragEnd = (event) => {
     try {
@@ -82,6 +85,7 @@ function ReviewWindow () {
         const room = roomSlot.getRooms()[roomId];
         room.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
 
+        calculateFairness();
         setContainerOfItem({
           ...containerOfItem,
           [active.id]: over.id
@@ -96,6 +100,7 @@ function ReviewWindow () {
     try {
       room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
       console.log(deleteTrigger);
+      calculateFairness();
       setDeleteTrigger(prev => prev + 1);
     } catch (error) {
       alert(error.message);

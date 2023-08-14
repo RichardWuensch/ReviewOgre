@@ -97,18 +97,30 @@ function ExportOptions ({ onHide, ...props }) {
                             <Col>
                                 <Card style={{ backgroundColor: '#cccccc' }}>
                                     <Card.Body>
-                                        <Card.Title>Room Plan</Card.Title>
+                                        <Card.Title>Room Plan PDF</Card.Title>
                                         <CustomButton
                                             backgroundColor={'#B0D7AF'}
-                                            onButtonClick={() => new SaveRoomPlan(roomSlots).runSave()}
-                                            toolTip={'Download results in pdf format'}
+                                            onButtonClick={() => new SaveRoomPlan(roomSlots).runSaveAsTable()}
+                                            toolTip={'Download Room Plan as simple Table'}
                                         >
                                             <Image
                                                 src={download}
                                                 alt="exportResult"
                                                 className={'button-icon'}
                                             />
-                                            Download pdf
+                                            Download Table
+                                        </CustomButton>
+                                        <CustomButton
+                                            backgroundColor={'#B0D7AF'}
+                                            onButtonClick={() => new SaveRoomPlan(roomSlots).runSaveAsMatrix()}
+                                            toolTip={'Download Room Plan as Matrix'}
+                                        >
+                                            <Image
+                                                src={download}
+                                                alt="exportResult"
+                                                className={'button-icon'}
+                                            />
+                                            Download Matrix
                                         </CustomButton>
                                     </Card.Body>
                                 </Card>
