@@ -181,7 +181,6 @@ export default class Review {
   }
 
   deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
-    console.log(reviewer);
     reviewer.decreaseReviewerCount();
     reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index], false)); // Todo hier war index +1
     reviewer.deleteSlotFromActiveInSlotsAsReviewer(this.getSlotFromRoomSlot(roomSlots[index], false));
@@ -199,7 +198,6 @@ export default class Review {
     this.#reviewers = this.#reviewers.filter(r => r !== reviewer);
     this.#addParticipantToPossibleParticipants(reviewer);
     this.validateReview();
-    console.log(reviewer);
   }
 
   getPossibleParticipants () {
