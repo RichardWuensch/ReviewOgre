@@ -1,3 +1,5 @@
+import ParticipantFairness from './ParticipantFairness';
+
 export default class Participant {
   #id;
   #firstName;
@@ -42,10 +44,7 @@ export default class Participant {
     }
 
     this.#activeInSlots = [];
-    this.#fairness = {
-      totalCountHigherThanAvg: false,
-      onlyOneRole: false
-    };
+    this.#fairness = this.calculateFairness();
   }
 
   setId (id) {
@@ -184,24 +183,16 @@ export default class Participant {
     return this.#activeInSlots;
   }
 
+  getTotalCount () {
+    return this.#activeInSlots.filter(slot => slot.getBreakSlotForUser() !== true).length;
+  }
+
   getFairness () {
     return this.#fairness;
   }
 
-  calculateFairness (meanParticipantTotalCount) {
-    const totalCount = this.#activeInSlots.length;
-
-    if (totalCount > meanParticipantTotalCount) {
-      this.#fairness.totalCountHigherThanAvg = true;
-    }
-
-    if (this.#reviewerCount === totalCount ||
-      this.#notaryCount === totalCount ||
-      this.#authorCount === totalCount ||
-      this.#moderatorCount === totalCount ||
-      this.#reviewerCount === totalCount) {
-      this.#fairness.onlyOneRole = true;
-    }
+  calculateFairness (meanParticipantTotalCount = 0, meanParticipantReviewerCount = 0) {
+    this.#fairness = ParticipantFairness.calculateFairness(this, meanParticipantTotalCount, meanParticipantReviewerCount);
   }
 
   /**
