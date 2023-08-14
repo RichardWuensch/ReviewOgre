@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import './ReviewWindow.css';
 import { Col, Image, Row, Table } from 'react-bootstrap';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
@@ -8,6 +8,7 @@ import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import { useParticipants } from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import ExportOptions from '../exportOptions/ExportOptions';
+import { useSettings } from '../../shared/context/SettingsContext';
 import ParticipantFairness from '../../../data/models/ParticipantFairness';
 import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
 
@@ -50,11 +51,12 @@ function Draggable ({ id, children }) {
 
 function ReviewWindow () {
   const roomSlots = useRoomSlots();
+  const settings = useSettings();
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
-  const { participantState } = useState(useParticipants()); 
+  const { participantState } = useState(useParticipants());
   const [sortedParticipants, setSortedParticipants] = useState([]);
-  const [showExportOptions, setShowExportOptions] = useState(false); 
+  const [showExportOptions, setShowExportOptions] = useState(false);
 
   const [deleteTrigger, setDeleteTrigger] = useState(0);
 
@@ -78,7 +80,7 @@ function ReviewWindow () {
 
         const roomSlot = roomSlots[roomSlotId];
         const room = roomSlot.getRooms()[roomId];
-        room.getReview().addReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+        room.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
 
         setContainerOfItem({
           ...containerOfItem,
@@ -92,7 +94,8 @@ function ReviewWindow () {
 
   const deleteFromReview = (room, roomSlot, reviewer) => {
     try {
-      room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+      room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
+      console.log(deleteTrigger);
       setDeleteTrigger(prev => prev + 1);
     } catch (error) {
       alert(error.message);

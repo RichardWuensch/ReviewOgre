@@ -14,6 +14,7 @@ export default class Participant {
   #notaryCount;
   #moderatorCount;
   #activeInSlots;
+  #activeInSlotsAsReviewer = new Map();
   #fairness;
 
   constructor (jsonParticipant, id, firstName, lastName, email, group, topic, languageLevel) {
@@ -176,7 +177,7 @@ export default class Participant {
   }
 
   deleteSlotFromActiveList (slotToDelete) {
-    this.#activeInSlots.filter(item => item.slot !== slotToDelete);
+    this.#activeInSlots = this.#activeInSlots.filter(s => s.getId() !== slotToDelete.getId());
   }
 
   getActiveSlots () {
@@ -184,7 +185,23 @@ export default class Participant {
   }
 
   getTotalCount () {
-    return this.#activeInSlots.filter(slot => slot.getBreakSlotForUser() !== true).length;
+    return this.getActiveSlotsWithoutBrakes().length;
+  }
+
+  getActiveSlotsWithoutBrakes () {
+    return this.#activeInSlots.filter(s => s.getBreakSlotForUser() === false);
+  }
+
+  addSlotToActiveInSlotsAsReviewer (reviewName, slot) {
+    this.#activeInSlotsAsReviewer.set(slot, reviewName);
+  }
+
+  deleteSlotFromActiveInSlotsAsReviewer (slotToDelete) {
+    this.#activeInSlotsAsReviewer.delete(Array.from(this.#activeInSlotsAsReviewer.keys()).find(s => s.getId() === slotToDelete.getId()));
+  }
+
+  getActiveInSlotsAsReviewer () {
+    return this.#activeInSlotsAsReviewer;
   }
 
   getFairness () {

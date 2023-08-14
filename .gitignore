@@ -63,6 +63,9 @@ typings/
 # next.js build output
 .next
 
+# pipeline
+.gitlab-ci
+
 .cache/
 
 dist/

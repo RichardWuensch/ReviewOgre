@@ -32,8 +32,13 @@ e2e:
   stage: e2e
   image: cypress/base
   script:
+    # install cypress
+    - npx cypress install
+    # start the application in the background
     - npm start &
+    # give time to start
     - sleep 15
+    # run 2e2 tests
     - npm run cy:run-e2e
 
 # run eslint
