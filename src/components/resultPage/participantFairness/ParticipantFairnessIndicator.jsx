@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-import personUp from '../../../assets/media/person-fill-up.svg';
-import personDown from '../../../assets/media/person-fill-down.svg'
-import reviewerUp from '../../../assets/media/reviewer-role-up.svg';
-import oneRole from '../../../assets/media/1-circle-fill.svg';
+import personUp from '../../../media/person-fill-up.svg';
+import personDown from '../../../media/person-fill-down.svg'
+import reviewerUp from '../../../media/reviewer-role-up.svg';
+import oneRole from '../../../media/1-circle-fill.svg';
 import './ParticipantFairnessIncicator.css';
 
 function ParticipantFairnessIndicator ({ participant, ...props }) {
