@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Getting Started with Vite
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Vite](https://vitejs.dev/guide/).
 
 
 ## Visit the current deploy from main-branch under:
@@ -11,10 +11,6 @@ Netlify: [ReviewOger Reloaded](https://reviewogerreloaded.netlify.app)
 
 
 In the project directory, you can run:
-
-### `npm run lint:fix`
-
-Run this script to enforce coding conventions. Eslint will throw an error if coding styles are not followed.
 
 ### `npm start`
 > make sure to run `npm install` before starting the application
@@ -28,9 +24,8 @@ You may also see any lint errors in the console.
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### `npm build`
 > make sure to run `npm install` before the build
 
 Builds the app for production to the `build` folder.\
@@ -39,47 +34,39 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run preview`
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `npm run lint:fix`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Run es lint to show errors and warnings. Eslint will enforce coding styles and fix styling issues.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### `npm run lint:txt`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Creates a txt report of the styling issues in the project
 
-### `npm run lint`
 
-Run es lint to show errors and warnings. Eslint will enforce conding styles as well.
-## Learn More
+> All of the following test scripts require the application to be started
+> Please first use `npm install` to install al required dependencies
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### `npm run cy:open-e2e`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Opens the cypress GUI in the configured browser. The GUI
+will show the available test scripts.
 
-### Code Splitting
+### `npm run cy:open-unit`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Opens the cypress GUI with the configured browser. The GUI
+will show the available unit tests.
 
-### Analyzing the Bundle Size
+### `npm run cy:run-e2e`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Runs the e2e tests in the terminal. The test results will be displayed
+in the terminal. The runs are available as .mp4 files in './cypress/videos'
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### `npm run cy:run-unit`
 
-### Advanced Configuration
+Runs the unit tests in the terminal. The test results will be displayed
+in the terminal.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

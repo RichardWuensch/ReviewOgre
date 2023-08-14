@@ -1,0 +1,27 @@
+.review-text{
+    color: black;
+    width: 25%;
+    display: inline-block;
+    float: left;
+    text-align: left;
+}
+.review-header{
+    display: inline-block;
+    width: 100%;
+    float: left;
+}
+
+.reviews-infos{
+    width: 100%;
+    display: flex;
+}
+
+.overflow-container {
+    overflow: auto;
+    max-height: 70vh;
+}
+
+.overflow-container .list-group {
+    --bs-list-group-item-padding-x: 0rem;
+    --bs-list-group-item-padding-y: 0rem;
+}
