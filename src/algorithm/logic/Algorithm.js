@@ -84,6 +84,58 @@ export default class Algorithm {
         }
       }
     }
+    let notReviewerList = this.#participants.filter(p => p.getReviewerCount() === 0);
+    const toOftenReviewerList = this.#participants.filter(p => p.getReviewerCount() > 1);
+    if (notReviewerList.length > 0 && toOftenReviewerList.length > 0) {
+      this.#swapReviewer(notReviewerList, toOftenReviewerList);
+    }
+    notReviewerList = this.#participants.filter(p => p.getReviewerCount() === 0);
+    if (notReviewerList.length > 0) {
+      this.#addReviewToParticipantsWithoutReviewerRole(notReviewerList);
+    }
+  }
+
+  #addReviewToParticipantsWithoutReviewerRole (notReviewerList) {
+    let i = 0;
+    while (notReviewerList.length > 0) {
+      for (const s of this.#roomSlots) {
+        for (const notReviewer of notReviewerList) {
+          if (i >= s.getRooms().length) break;
+          const review = s.getRooms()[i].getReview();
+          try {
+            review.addReviewer(this.#roomSlots, this.#roomSlots.indexOf(s), notReviewer, false);
+            notReviewerList = notReviewerList.filter(p => p !== notReviewer);
+            break;
+          } catch (error) {
+            // do nothing
+          }
+        }
+      }
+      i++;
+    }
+  }
+
+  #swapReviewer (notReviewerList, toOftenReviewerList) {
+    for (const toOftenReviewer of toOftenReviewerList) {
+      let found = false;
+      const reviewSlotsMap = toOftenReviewer.getActiveInSlotsAsReviewer();
+      for (const notReviewer of notReviewerList) {
+        for (const reviewSlot of Array.from(reviewSlotsMap.keys())) {
+          if (!notReviewer.getActiveSlots().includes(reviewSlot)) {
+            try {
+              reviewSlotsMap.get(reviewSlot).addReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), notReviewer, this.#breakForModeratorAndReviewer);
+              reviewSlotsMap.get(reviewSlot).deleteReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), toOftenReviewer, this.#breakForModeratorAndReviewer);
+              notReviewerList = notReviewerList.filter(p => p !== notReviewer);
+              found = true;
+              break;
+            } catch {
+              found = false;
+            }
+          }
+        }
+        if (found) break;
+      }
+    }
   }
 
   #checkSkipRoom (notNeeded, roomTopic, reviewTopic) {
@@ -280,8 +332,8 @@ export default class Algorithm {
     while (true) {
       const filteredModerator = review.getPossibleParticipants()
         .filter((m) => m.getModeratorCount() < counter)
-        .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
-        .filter((p, i, arr) => p.getActiveSlots().length === arr[0].getActiveSlots().length);
+        .sort((a, b) => a.getActiveSlotsWithoutBrakes().length - b.getActiveSlotsWithoutBrakes().length)
+        .filter((p, i, arr) => p.getActiveSlotsWithoutBrakes().length === arr[0].getActiveSlotsWithoutBrakes().length);
       if (filteredModerator.length > 0) {
         const rand = Math.floor(Math.random() * filteredModerator.length);
         review.setModerator(this.#roomSlots, this.#roomSlots.indexOf(roomSlot), filteredModerator[rand], this.#breakForModeratorAndReviewer);
@@ -304,9 +356,9 @@ export default class Algorithm {
       let counter = 1;
       while (true) {
         const filteredNotary = review.getPossibleParticipants()
-          .filter((m) => m.getModeratorCount() < counter)
-          .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
-          .filter((p, i, arr) => p.getActiveSlots().length === arr[0].getActiveSlots().length);
+          .filter((m) => m.getNotaryCount() < counter)
+          .sort((a, b) => a.getActiveSlotsWithoutBrakes().length - b.getActiveSlotsWithoutBrakes().length)
+          .filter((p, i, arr) => p.getActiveSlotsWithoutBrakes().length === arr[0].getActiveSlotsWithoutBrakes().length);
         if (filteredNotary.length > 0) {
           const rand = Math.floor(Math.random() * filteredNotary.length);
           review.setNotary(roomSlot, filteredNotary[rand], false);
@@ -337,9 +389,9 @@ export default class Algorithm {
         let counter = 1;
         while (true) {
           const filteredReviewer = review.getPossibleParticipants()
-            .filter((m) => m.getModeratorCount() < counter)
-            .sort((a, b) => a.getActiveSlots().length - b.getActiveSlots().length)
-            .filter((p, i, arr) => p.getActiveSlots().length === arr[0].getActiveSlots().length);
+            .filter((r) => r.getReviewerCount() < counter)
+            .sort((a, b) => a.getActiveSlotsWithoutBrakes().length - b.getActiveSlotsWithoutBrakes().length) // TODO filter brakes see printer
+            .filter((p, i, arr) => p.getActiveSlotsWithoutBrakes().length === arr[0].getActiveSlotsWithoutBrakes().length);
           if (filteredReviewer.length > 0) {
             const rand = Math.floor(Math.random() * filteredReviewer.length);
             review.addReviewer(this.#roomSlots, this.#roomSlots.indexOf(roomSlot), filteredReviewer[rand], this.#breakForModeratorAndReviewer);
@@ -440,10 +492,10 @@ export default class Algorithm {
     let i = 0;
     const a = this.#participants;
     a.sort((a, b) => {
-      const x = a.getActiveSlots().filter(s => s.getBreakSlotForUser() === false);
-      const y = b.getActiveSlots().filter(s => s.getBreakSlotForUser() === false);
+      const x = a.getActiveSlotsWithoutBrakes();
+      const y = b.getActiveSlotsWithoutBrakes();
       return x.length - y.length;
-    }).forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlots().filter(s => s.getBreakSlotForUser() === false).length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
+    }).forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
   }
 
   printJSONinLocalStorage () {

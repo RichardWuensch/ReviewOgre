@@ -8,6 +8,7 @@ import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import { useParticipants } from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import ExportOptions from '../exportOptions/ExportOptions';
+import { useSettings } from '../../shared/context/SettingsContext';
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -48,6 +49,7 @@ function Draggable ({ id, children }) {
 
 function ReviewWindow () {
   const roomSlots = useRoomSlots();
+  const settings = useSettings();
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
   const [showExportOptions, setShowExportOptions] = useState(false);
@@ -65,7 +67,7 @@ function ReviewWindow () {
 
         const roomSlot = roomSlots[roomSlotId];
         const room = roomSlot.getRooms()[roomId];
-        room.getReview().addReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+        room.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
 
         setContainerOfItem({
           ...containerOfItem,
@@ -79,7 +81,7 @@ function ReviewWindow () {
 
   const deleteFromReview = (room, roomSlot, reviewer) => {
     try {
-      room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+      room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
       console.log(deleteTrigger);
       setDeleteTrigger(prev => prev + 1);
     } catch (error) {
