@@ -40,9 +40,8 @@ export default class ParticipantFairness {
   }
 
   static sortParticipantsByFairness (participants) {
-    return participants.sort((a, b) => 
+    return participants.sort((a, b) =>
       ParticipantFairness.getNumericalFairnessForSorting(a) - ParticipantFairness.getNumericalFairnessForSorting(b)
     );
   }
 }
-
