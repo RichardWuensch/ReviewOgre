@@ -181,12 +181,17 @@ export default class Review {
   }
 
   deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
+    console.log(reviewer);
     reviewer.decreaseReviewerCount();
     reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index], false)); // Todo hier war index +1
-    reviewer.deleteSlotFromActiveInSlotsAsReviewer(this.#groupName);
+    reviewer.deleteSlotFromActiveInSlotsAsReviewer(this.getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
       if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
-        if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
+        const dateCurrentSlot = roomSlots[index].getDate();
+        const dateNextSlot = roomSlots[index + 1].getDate();
+        const dateCurrent = new Date(dateCurrentSlot.getFullYear(), dateCurrentSlot.getMonth(), dateCurrentSlot.getDate());
+        const dateNext = new Date(dateNextSlot.getFullYear(), dateNextSlot.getMonth(), dateNextSlot.getDate());
+        if (dateCurrent.getTime() === dateNext.getTime()) {
           reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], false));
         }
       }
@@ -194,6 +199,7 @@ export default class Review {
     this.#reviewers = this.#reviewers.filter(r => r !== reviewer);
     this.#addParticipantToPossibleParticipants(reviewer);
     this.validateReview();
+    console.log(reviewer);
   }
 
   getPossibleParticipants () {

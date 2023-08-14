@@ -178,7 +178,7 @@ export default class Participant {
   }
 
   deleteSlotFromActiveList (slotToDelete) {
-    this.#activeInSlots = this.#activeInSlots.filter(item => item.slot !== slotToDelete);
+    this.#activeInSlots = this.#activeInSlots.filter(s => s.getId() !== slotToDelete.getId());
   }
 
   getActiveSlots () {
@@ -193,8 +193,8 @@ export default class Participant {
     this.#activeInSlotsAsReviewer.set(slot, reviewName);
   }
 
-  deleteSlotFromActiveInSlotsAsReviewer (reviewName) {
-    this.#activeInSlotsAsReviewer.delete(reviewName);
+  deleteSlotFromActiveInSlotsAsReviewer (slotToDelete) {
+    this.#activeInSlotsAsReviewer.delete(Array.from(this.#activeInSlotsAsReviewer.keys()).find(s => s.getId() === slotToDelete.getId()));
   }
 
   getActiveInSlotsAsReviewer () {
