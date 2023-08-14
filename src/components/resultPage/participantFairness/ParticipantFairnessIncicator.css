@@ -1,0 +1,7 @@
+.participant-fairness-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: row;
+    gap: 8px;
+}

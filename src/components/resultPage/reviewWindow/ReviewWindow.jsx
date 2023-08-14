@@ -9,6 +9,8 @@ import { useParticipants } from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import ExportOptions from '../exportOptions/ExportOptions';
 import { useSettings } from '../../shared/context/SettingsContext';
+import ParticipantFairness from '../../../data/models/ParticipantFairness';
+import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -52,9 +54,20 @@ function ReviewWindow () {
   const settings = useSettings();
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
+  const { participantState } = useState(useParticipants());
+  const [sortedParticipants, setSortedParticipants] = useState([]);
   const [showExportOptions, setShowExportOptions] = useState(false);
 
   const [deleteTrigger, setDeleteTrigger] = useState(0);
+
+  React.useEffect(() => {
+    const avgParticipantTotalCount = items.reduce((sum, participant) => sum += participant.getTotalCount(), 0) / items.length;
+    const avgParticipantReviewerCount = items.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / items.length;
+    for (const participant of items ) {
+      participant.calculateFairness(avgParticipantTotalCount, avgParticipantReviewerCount);
+    }
+    setSortedParticipants(ParticipantFairness.sortParticipantsByFairness(items));
+  }, participantState);
 
   const handleDragEnd = (event) => {
     try {
@@ -180,14 +193,20 @@ function ReviewWindow () {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Fairness</th>
                 </tr>
                 </thead>
-                {items.map((reviewer) => (
+                <tbody>
+                {sortedParticipants.map((reviewer) => (
                     <Draggable key={reviewer.getId()} id={reviewer.getId().toString()}>
                       <td>{reviewer.getFirstName() + ' ' + reviewer.getLastName()}</td>
                       <td>{reviewer.getEmail()}</td>
+                      <td>
+                        <ParticipantFairnessIndicator participant={reviewer} />
+                      </td>
                     </Draggable>
                 ))}
+                </tbody>
               </Table>
             </Col>
           </Row>
