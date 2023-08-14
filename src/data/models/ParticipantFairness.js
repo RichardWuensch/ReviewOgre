@@ -21,7 +21,7 @@ export default class ParticipantFairness {
     let fairnessNumber = 0;
 
     if (fairnessObject.totalCountHigherThanAvg) {
-      fairnessNumber--;
+      fairnessNumber -= 2;
     }
 
     if (fairnessObject.totalCountLowerThanAvg) {
