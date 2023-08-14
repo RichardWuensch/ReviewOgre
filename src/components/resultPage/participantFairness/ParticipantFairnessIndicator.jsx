@@ -7,7 +7,7 @@ import oneRole from '../../../media/1-circle-fill.svg';
 import './ParticipantFairnessIncicator.css';
 
 function ParticipantFairnessIndicator ({ participant, ...props }) {
-  const [fairnessIndicatorChildren, setFairnessIncicatorChildren] = useState([]);
+  const [fairnessIndicatorChildren, setFairnessIndicatorChildren] = useState([]);
 
   useEffect(() => {
     const children = [];
@@ -44,7 +44,7 @@ function ParticipantFairnessIndicator ({ participant, ...props }) {
       children.push(getIconWithTooltip(oneRole, 'One Role', tooltipText));
     }
 
-    setFairnessIncicatorChildren(children);
+    setFairnessIndicatorChildren(children);
   }, [participant.getFairness()]);
 
   function getIconWithTooltip (icon, alt, tooltipText) {
