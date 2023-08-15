@@ -51,7 +51,6 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
       type: 'changed',
       updatedRoomSlot: roomSlot
     });
-
     /* eslint-enable object-shorthand */
   };
 
@@ -134,7 +133,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                 header={'Edit Slot'}
                 roomslot={roomSlot}
                 edit={'true'}
-                onSaveClick={(slot) => updateSlot(slot) }/>
+                onSaveClick={(slot) => updateSlot(slot)}/>
             <DeleteModal
                 // modal to delete the whole slot
                 show={showModalDeleteSlot}
@@ -151,6 +150,7 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                 onHide={() => setShowModalAddSlotCopyRooms(false)}
                 header={'New Time Slot'}
                 copiedRooms={roomSlot.getRooms()}
+                copy={'true'}
                 onSaveClick={(slot) => saveNewSlot(slot)}/>
         </>
 
