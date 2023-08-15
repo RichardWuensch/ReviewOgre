@@ -13,7 +13,7 @@ import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../shared/context/SettingsContext';
-import ParticipantWindow from "../participantWindow/ParticipantWindow";
+import ParticipantWindow from '../participantWindow/ParticipantWindow';
 
 function MainPage () {
   const [algorithmErrorObject, setAlgorithmErrorObject] =

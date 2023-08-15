@@ -65,9 +65,9 @@ export default class Review {
   }
 
   setModerator (roomSlots, index, moderator, breakForModeratorAndReviewer) {
-    if (!this.#possibleParticipants.includes(moderator)) { // TODO check if a suitable frontend exists
+    /* if (!this.#possibleParticipants.includes(moderator)) { // TODO check if a suitable frontend exists
       throw new Error('Moderator is not possible for this review');
-    }
+    } */
     this.#moderator = moderator;
     this.#moderator.increaseModeratorCount();
     this.#moderator.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
@@ -100,9 +100,9 @@ export default class Review {
   }
 
   setNotary (roomSlot, notary, authorIsNotary) {
-    if (!this.#possibleParticipants.includes(notary) && authorIsNotary === false) { // TODO check if a suitable frontend exists
+    /* if (!this.#possibleParticipants.includes(notary) && authorIsNotary === false) { // TODO check if a suitable frontend exists
       throw new Error('Notary is not possible for this review');
-    }
+    } */
     this.#notary = notary;
     this.#notary.increaseNotaryCount();
     if (authorIsNotary === false) {
