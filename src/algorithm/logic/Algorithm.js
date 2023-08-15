@@ -314,8 +314,8 @@ export default class Algorithm {
             try {
               this.#assignReviewersToReview(roomSlot, review);
               errorFound = false;
-              break;
               found = true;
+              break;
             } catch (error) {
               console.log(error.message);
               errorFound = true; // must be reset bc we don't break out of 2 nested for loops
