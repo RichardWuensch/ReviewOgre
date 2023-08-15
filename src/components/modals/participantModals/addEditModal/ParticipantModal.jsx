@@ -52,7 +52,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                       email: participant?.getEmail() ?? '',
                       group: participant?.getGroup() ?? '',
                       topic: participant?.getTopic() ?? '',
-                      languageLevel: participant?.getFirstName() ?? 'Native Speaker'
+                      languageLevel: participant?.getLanguageLevel() ?? 'Native Speaker'
                     }}
                 >
                     {({ handleSubmit, handleChange, values, touched, errors }) => (
