@@ -10,10 +10,12 @@ export default class Algorithm {
   #authorIsNotary;
   #abReview;
   #breakForModeratorAndReviewer;
+  #internationalGroups;
 
   #participantsDispatch;
   #roomSlotsDispatch;
 
+  #notGermanSpeaker;
   #maximumTries;
 
   constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch, settings, maximumTries) {
@@ -25,6 +27,7 @@ export default class Algorithm {
     this.#authorIsNotary = settings.authorIsNotary;
     this.#abReview = settings.abReview;
     this.#breakForModeratorAndReviewer = settings.breakForModeratorAndReviewer;
+    this.#internationalGroups = settings.internationalGroups;
     this.#maximumTries = (maximumTries === undefined) ? 300 : maximumTries;
   }
 
@@ -50,8 +53,8 @@ export default class Algorithm {
   * @returns {boolean} - return true if very thing was fine
   */
   run () {
-    const groups = this.#getAllGroups();
-    this.#prechecks(groups.length);
+    this.#prechecks();
+    const groups = Array.from(this.#getGroupMap(this.#participants).keys());
 
     let errorFound = true;
     let errorCounter = 0;
@@ -158,12 +161,20 @@ export default class Algorithm {
    * there must be as many rooms as reviews
    * per Slot are only as many rooms necessary as amount of Participants divided by amount of participants per review (the rest of the rooms can be returned to the roomplaner)
    * there must be at least as many slots as the result from the amount of Groups divided by max number of rooms calculated in the step before
-   * @param {int} groupsLength
    * @throws {Error} - to show what's the problem
    */
-  #prechecks (groupsLength) {
+  #prechecks () {
     if (this.#abReview === false) {
-      const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(this.#participants.length, groupsLength);
+      if (this.#internationalGroups === true) {
+        this.#participants.forEach(p => {
+          if (p.getLanguageLevel() === undefined) {
+            throw new Error('Some participants have no German Skill Level', { cause: 'prechecksFailed' });
+          }
+        });
+        this.checksLanguageLevel();
+        this.#participants = this.#participants.filter(p => p.getLanguageLevel() !== 'A1' && p.getLanguageLevel() !== 'A2' && p.getLanguageLevel() !== 'B1');
+      }
+      const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(this.#participants.length, this.#getAllGroups().length);
       this.#numberOfReviewers = sumOfParticipantsAndReviewerPerReview.numberOfReviewers;
       this.#participantsPerReview = sumOfParticipantsAndReviewerPerReview.participantsPerReview;
       this.checks(this.#participants);
@@ -250,6 +261,70 @@ export default class Algorithm {
     }
     if (errorMessage) {
       throw new Error(errorMessage, { cause: 'prechecksFailed' });
+    }
+  }
+
+  checksLanguageLevel () {
+    this.#notGermanSpeaker = this.#participants.filter(p => p.getLanguageLevel() === 'A1' || p.getLanguageLevel() === 'A2' || p.getLanguageLevel() === 'B1');
+    this.#numberOfReviewers = 3;
+    this.#participantsPerReview = 6;
+    const groupMap = this.#getGroupMap(this.#notGermanSpeaker);
+    let errorMessage = '';
+
+    if (groupMap.size < 2) {
+      errorMessage += 'At least 2 groups are needed.\n';
+    }
+    for (const participantsPerGroup of groupMap.values()) {
+      if (this.#notGermanSpeaker.length - participantsPerGroup.length < 3) {
+        errorMessage += 'There are not enough participants to build review groups.\n';
+        break;
+      }
+    }
+    if (errorMessage) {
+      throw new Error(errorMessage, { cause: 'prechecksFailed' });
+    }
+
+    let errorFound = true;
+    let errorCounter = 0;
+    while (errorFound) {
+      if (errorCounter > this.#maximumTries) {
+        throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.',
+          { cause: 'noSolution' }
+        );
+      }
+
+      // this.#setAuthorOfRandomGroupMember(Array.from(groupMap.keys()));
+
+      for (let participantsPerGroup of groupMap.values()) {
+        let found = false;
+        for (const roomSlot of this.#roomSlots) {
+          if (found) break;
+          for (const room of roomSlot.getRooms()) {
+            if (room.getReview() === null) {
+              room.setReview(new Review(roomSlot, participantsPerGroup[0]));
+            }
+            const review = room.getReview();
+            participantsPerGroup = participantsPerGroup.filter(p => p !== review.getAuthor());
+            review.setModerator(this.#roomSlots, this.#roomSlots.indexOf(roomSlot), participantsPerGroup[0], false);
+            participantsPerGroup = participantsPerGroup.filter(p => p !== review.getModerator());
+            console.log(participantsPerGroup);
+            review.setNotary(roomSlot, participantsPerGroup[0], false);
+
+            room.getReview().fillPossibleParticipantsOfReview(roomSlot, this.#notGermanSpeaker, false);
+            try {
+              this.#assignReviewersToReview(roomSlot, review);
+              errorFound = false;
+              break;
+              found = true;
+            } catch (error) {
+              console.log(error.message);
+              errorFound = true; // must be reset bc we don't break out of 2 nested for loops
+              errorCounter++;
+              this.#clearReviews();
+            }
+          }
+        }
+      }
     }
   }
 
@@ -496,6 +571,8 @@ export default class Algorithm {
       const y = b.getActiveSlotsWithoutBrakes();
       return x.length - y.length;
     }).forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
+    console.log('------------------------------');
+    this.#notGermanSpeaker.forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
   }
 
   printJSONinLocalStorage () {
