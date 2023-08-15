@@ -22,7 +22,6 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
   });
 
   const saveClick = (formData) => {
-    console.log(formData);
     const participantTemp = new Participant(undefined, formData.id, formData.firstName, formData.lastName,
       formData.email, formData.group, formData.topic, formData.languageLevel);
     onSaveClick(participantTemp);
@@ -47,6 +46,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                     validationSchema={schema}
                     onSubmit={(formData) => saveClick(formData)}
                     initialValues={{
+                      id: participant?.getId() ?? undefined,
                       firstName: participant?.getFirstName() ?? '',
                       lastName: participant?.getLastName() ?? '',
                       email: participant?.getEmail() ?? '',
