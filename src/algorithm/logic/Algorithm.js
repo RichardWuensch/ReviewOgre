@@ -97,6 +97,7 @@ export default class Algorithm {
 
   #addReviewToParticipantsWithoutReviewerRole (notReviewerList) {
     let i = 0;
+    let numberOfTries = 0;
     while (notReviewerList.length > 0) {
       for (const s of this.#roomSlots) {
         for (const notReviewer of notReviewerList) {
@@ -112,6 +113,15 @@ export default class Algorithm {
         }
       }
       i++;
+      if (i > this.#roomSlots[this.#roomSlots.length - 1].getRooms().length) {
+        if (numberOfTries < 10) {
+          numberOfTries++;
+          i = 0;
+        } else {
+          console.log('no swap possible');
+          break;
+        }
+      }
     }
   }
 
