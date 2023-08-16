@@ -4,7 +4,7 @@ import './SlotRoomModal.css';
 import exit from '../../../media/x-circle.svg';
 import add from '../../../media/plus-circle.svg';
 import info from '../../../media/info-circle.svg';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
 import RoomSlot from '../../../data/models/RoomSlot';
 import Room from '../../../data/models/Room';
@@ -45,9 +45,63 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
     setItems(tempInitialItems);
   }, [roomslot]);
 
+  const [activeItem, setActiveItem] = useState(null);
+  const [activeItemIndex, setActiveItemIndex] = useState(null);
+
+  useEffect(() => {
+    if (activeItemIndex !== null && accordionContainerRef.current) {
+      const activeItem = accordionContainerRef.current.querySelector(`[data-index="${activeItemIndex}"]`);
+      if (activeItem) {
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [activeItemIndex]);
+
+  const accordionContainerRef = useRef(null);
+  const [addedItemIndex, setAddedItemIndex] = useState(null);
+  // const addedItemRef = useRef(null);
+
   const addItem = () => {
-    setItems([...items, new Room('', false)]);
+    const newItem = new Room('', false);
+    setItems([...items, newItem]);
+    setAddedItemIndex(items.length); // Setze den Index des hinzugefügten Elements
   };
+
+  useEffect(() => {
+    if (addedItemIndex !== null && accordionContainerRef.current) {
+      const addedItem = accordionContainerRef.current.querySelector(`[data-index="${addedItemIndex}"]`);
+      if (addedItem) {
+        addedItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }, [addedItemIndex]);
+
+  /* useEffect(() => {
+    if (addedItemRef.current && accordionContainerRef.current) {
+      const containerRect = accordionContainerRef.current.getBoundingClientRect();
+      const itemRect = addedItemRef.current.getBoundingClientRect();
+      const offset = itemRect.top - containerRect.top;
+
+      if (offset + itemRect.height > containerRect.height) {
+        accordionContainerRef.current.scrollTop += offset;
+      }
+    }
+  }, [addedItemRef.current]); */
+
+
+  const [activeItemRef, setActiveItemRef] = useState(null);
+
+  useEffect(() => {
+    if (activeItemRef?.current && accordionContainerRef.current) {
+      const containerRect = accordionContainerRef.current.getBoundingClientRect();
+      const itemRect = activeItemRef?.current.getBoundingClientRect();
+      const offset = itemRect.top - containerRect.top;
+
+      if (offset + itemRect.height > containerRect.height) {
+        accordionContainerRef.current.scrollTop += offset;
+      }
+    }
+  }, [activeItemRef?.current]);
 
   function filterDeletedRoom (rooms, roomIdToDelete) {
     return rooms.filter((room) => room.getId() !== roomIdToDelete);
@@ -242,7 +296,7 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className={'modal'}
+      className={'modal-slotRoomModal'}
     >
       <Modal.Header>
         <Modal.Title>{props.header}</Modal.Title>
@@ -317,7 +371,7 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
               ? 'Edit or Add Rooms to this Slot:'
               : 'Create Rooms for this Time Slot:'}
           </span>
-          <div style={{ marginTop: 10, maxHeight: '20vh', overflowY: 'auto' }}>
+          <div ref={accordionContainerRef} style={{ marginTop: 10, maxHeight: '50vh', overflowY: 'auto' }}>
             <Accordion
               defaultActiveKey="0"
               style={{ backgroundColor: '#F5F5F5' }}
@@ -328,9 +382,12 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
                     <Accordion.Item
                       style={{ background: '#F5F5F5' }}
                       eventKey={item.getId()}
+                      data-index={index}
+                      ref={activeItem === item.getId() ? setActiveItemRef : null}
                     >
                       <Accordion.Header
                         className={'header-style list-item border-0'}
+                        onClick={() => setActiveItem(item.getId())}
                       >
                         <Form.Control
                           className={'item-text'}
