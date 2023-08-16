@@ -2,6 +2,34 @@
 
 ## [Released]
 
+## [2.0.0beta] - 2023-08-15
+
+## Added
+- participantlist at the result page is ordered by fairness score
+- icons to show fairness issues
+
+## Changed
+
+## Fixed
+- path of the SVG imports
+## Removed
+
+## [1.2.0] - 2023-08-15
+
+## Added
+- User Docs
+- Developer.md
+- cypress tests
+- switch for result page view (old and dragndrop)
+- room plan as matrix available
+
+## Changed
+
+## Fixed
+- distribution of the reviewer role - swap if necessary
+
+## Removed
+
 ## [2.0.0alpha] - 2023-08-03
 
 ## Added
@@ -25,6 +53,7 @@
 - Importing of 'simple' csv data now possible
 - Overlapping timeslots will be flagged instantly
 - Preview modals shows the data found in the imported file
+- Precheck of data if there is a possibility for the algorithm to find a solution
 
 ## Changed
 - Moved navbar items to the right

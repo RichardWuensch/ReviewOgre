@@ -2,7 +2,7 @@ import React from 'react';
 import './DataImportCheckModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
-import exit from '../../../../public/media/x-circle.svg';
+import exit from '../../../media/x-circle.svg';
 import { Accordion, ListGroup, Image, Table } from 'react-bootstrap';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import SlotCard from '../../window/slotsWindow/Slot';

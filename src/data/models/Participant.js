@@ -1,3 +1,5 @@
+import ParticipantFairness from './ParticipantFairness';
+
 export default class Participant {
   #id;
   #firstName;
@@ -12,6 +14,7 @@ export default class Participant {
   #notaryCount;
   #moderatorCount;
   #activeInSlots;
+  #activeInSlotsAsReviewer = new Map();
   #fairness;
 
   constructor (jsonParticipant, id, firstName, lastName, email, group, topic, languageLevel) {
@@ -42,10 +45,7 @@ export default class Participant {
     }
 
     this.#activeInSlots = [];
-    this.#fairness = {
-      totalCountHigherThanAvg: false,
-      onlyOneRole: false
-    };
+    this.#fairness = this.calculateFairness();
   }
 
   setId (id) {
@@ -177,31 +177,39 @@ export default class Participant {
   }
 
   deleteSlotFromActiveList (slotToDelete) {
-    this.#activeInSlots.filter(item => item.slot !== slotToDelete);
+    this.#activeInSlots = this.#activeInSlots.filter(s => s.getId() !== slotToDelete.getId());
   }
 
   getActiveSlots () {
     return this.#activeInSlots;
   }
 
+  getTotalCount () {
+    return this.getActiveSlotsWithoutBrakes().length;
+  }
+
+  getActiveSlotsWithoutBrakes () {
+    return this.#activeInSlots.filter(s => s.getBreakSlotForUser() === false);
+  }
+
+  addSlotToActiveInSlotsAsReviewer (reviewName, slot) {
+    this.#activeInSlotsAsReviewer.set(slot, reviewName);
+  }
+
+  deleteSlotFromActiveInSlotsAsReviewer (slotToDelete) {
+    this.#activeInSlotsAsReviewer.delete(Array.from(this.#activeInSlotsAsReviewer.keys()).find(s => s.getId() === slotToDelete.getId()));
+  }
+
+  getActiveInSlotsAsReviewer () {
+    return this.#activeInSlotsAsReviewer;
+  }
+
   getFairness () {
     return this.#fairness;
   }
 
-  calculateFairness (meanParticipantTotalCount) {
-    const totalCount = this.#activeInSlots.length;
-
-    if (totalCount > meanParticipantTotalCount) {
-      this.#fairness.totalCountHigherThanAvg = true;
-    }
-
-    if (this.#reviewerCount === totalCount ||
-      this.#notaryCount === totalCount ||
-      this.#authorCount === totalCount ||
-      this.#moderatorCount === totalCount ||
-      this.#reviewerCount === totalCount) {
-      this.#fairness.onlyOneRole = true;
-    }
+  calculateFairness (meanParticipantTotalCount = 0, meanParticipantReviewerCount = 0) {
+    this.#fairness = ParticipantFairness.calculateFairness(this, meanParticipantTotalCount, meanParticipantReviewerCount);
   }
 
   /**

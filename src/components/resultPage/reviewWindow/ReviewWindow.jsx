@@ -3,11 +3,14 @@ import './ReviewWindow.css';
 import { Col, Image, Row, Table } from 'react-bootstrap';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
-import deleteButton from '../../../../public/media/trash.svg';
+import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import { useParticipants } from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import ExportOptions from '../exportOptions/ExportOptions';
+import { useSettings } from '../../shared/context/SettingsContext';
+import ParticipantFairness from '../../../data/models/ParticipantFairness';
+import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -48,11 +51,26 @@ function Draggable ({ id, children }) {
 
 function ReviewWindow () {
   const roomSlots = useRoomSlots();
+  const settings = useSettings();
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
+  const [sortedParticipants, setSortedParticipants] = useState([]);
   const [showExportOptions, setShowExportOptions] = useState(false);
 
   const [deleteTrigger, setDeleteTrigger] = useState(0);
+
+  React.useEffect(() => {
+    calculateFairness();
+  }, []);
+
+  const calculateFairness = () => {
+    const avgParticipantTotalCount = Math.round(items.reduce((sum, participant) => sum += participant.getTotalCount(), 0) / items.length);
+    const avgParticipantReviewerCount = Math.round(items.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / items.length);
+    for (const participant of items) {
+      participant.calculateFairness(avgParticipantTotalCount, avgParticipantReviewerCount);
+    }
+    setSortedParticipants(ParticipantFairness.sortParticipantsByFairness(items));
+  };
 
   const handleDragEnd = (event) => {
     try {
@@ -65,8 +83,9 @@ function ReviewWindow () {
 
         const roomSlot = roomSlots[roomSlotId];
         const room = roomSlot.getRooms()[roomId];
-        room.getReview().addReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+        room.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
 
+        calculateFairness();
         setContainerOfItem({
           ...containerOfItem,
           [active.id]: over.id
@@ -79,8 +98,9 @@ function ReviewWindow () {
 
   const deleteFromReview = (room, roomSlot, reviewer) => {
     try {
-      room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer);
+      room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
       console.log(deleteTrigger);
+      calculateFairness();
       setDeleteTrigger(prev => prev + 1);
     } catch (error) {
       alert(error.message);
@@ -178,14 +198,20 @@ function ReviewWindow () {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Fairness</th>
                 </tr>
                 </thead>
-                {items.map((reviewer) => (
+                <tbody>
+                {sortedParticipants.map((reviewer) => (
                     <Draggable key={reviewer.getId()} id={reviewer.getId().toString()}>
                       <td>{reviewer.getFirstName() + ' ' + reviewer.getLastName()}</td>
                       <td>{reviewer.getEmail()}</td>
+                      <td>
+                        <ParticipantFairnessIndicator participant={reviewer} />
+                      </td>
                     </Draggable>
                 ))}
+                </tbody>
               </Table>
             </Col>
           </Row>

@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { Form, Image } from 'react-bootstrap';
 import './ParticipantModal.css';
-import exit from '../../../../../public/media/x-circle.svg';
+import exit from '../../../../media/x-circle.svg';
 import PropTypes from 'prop-types';
 import Participant from '../../../../data/models/Participant';
 import ModalButton from '../../../shared/buttons/modalButton/ModalButton';
@@ -22,7 +22,6 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
   });
 
   const saveClick = (formData) => {
-    console.log(formData);
     const participantTemp = new Participant(undefined, formData.id, formData.firstName, formData.lastName,
       formData.email, formData.group, formData.topic, formData.languageLevel);
     onSaveClick(participantTemp);
@@ -47,12 +46,13 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                     validationSchema={schema}
                     onSubmit={(formData) => saveClick(formData)}
                     initialValues={{
+                      id: participant?.getId() ?? undefined,
                       firstName: participant?.getFirstName() ?? '',
                       lastName: participant?.getLastName() ?? '',
                       email: participant?.getEmail() ?? '',
                       group: participant?.getGroup() ?? '',
                       topic: participant?.getTopic() ?? '',
-                      languageLevel: participant?.getFirstName() ?? 'Native Speaker'
+                      languageLevel: participant?.getLanguageLevel() ?? 'Native Speaker'
                     }}
                 >
                     {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -138,7 +138,7 @@ function ParticipantModal ({ participant, onClose, onSaveClick, newParticipant, 
                             <ModalButton
                                 backgroundColor={'#B0D7AF'}
                                 onButtonClick={() => handleSubmit()}
-                            > {newParticipant ? 'Add Participant' : 'Save Changes'} </ModalButton>
+                            > <div className='participant-modal-submit'>{newParticipant ? 'Add Participant' : 'Save Changes'} </div></ModalButton>
                         </div>
                     </Form>)}
                 </Formik>

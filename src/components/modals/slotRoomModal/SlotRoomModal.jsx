@@ -1,16 +1,16 @@
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 import './SlotRoomModal.css';
-import exit from '../../../../public/media/x-circle.svg';
-import add from '../../../../public/media/plus-circle.svg';
-import info from '../../../../public/media/info-circle.svg';
+import exit from '../../../media/x-circle.svg';
+import add from '../../../media/plus-circle.svg';
+import info from '../../../media/info-circle.svg';
 import React, { useEffect, useState } from 'react';
 import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
 import RoomSlot from '../../../data/models/RoomSlot';
 import Room from '../../../data/models/Room';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
 import ConverterForPrinting from '../../../api/ConverterForPrinting';
-import deleteButton from '../../../../public/media/trash.svg';
+import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
@@ -323,68 +323,68 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
                 ? 'Edit or Add Rooms to this Slot:'
                 : 'Create Rooms for this Time Slot:'}
           </span>
-            <div style={{ marginTop: 10, maxHeight: '20vh', overflowY: 'auto' }}>
-              <Accordion
-                  defaultActiveKey="0"
-                  style={{ backgroundColor: '#F5F5F5' }}
-              >
-                <ul className={'list-style'}>
-                  {items?.map((item, index) => (
-                      <li key={item.getId()} style={{ marginBottom: '1%' }}>
-                        <Accordion.Item
-                            style={{ background: '#F5F5F5' }}
-                            eventKey={item.getId()}
-                        >
-                          <Accordion.Header
-                              className={'header-style list-item border-0'}
-                          >
-                            <Form.Control
-                                className={'item-text'}
-                                type="text"
-                                defaultValue={item.getName()} // Hier den defaultValue-Prop verwenden
-                                placeholder={'Room'}
-                                onChange={(event) => handleInputChange(item.getId(), event)}
-                                style={{
-                                  backgroundColor: '#FFFFFF',
-                                  border: 'none',
-                                  boxShadow: 'none'
-                                }}
-                            />
-                            <div className={'options-delete'}>
-                              <CustomIconButton as="div" toolTip={'Delete this room'} onButtonClick={(event) => deleteItem(item.getId(), event)}>
-                                <Image src={deleteButton} alt={'icon'} />
-                              </CustomIconButton>
-                            </div>
-                          </Accordion.Header>
-                          <Accordion.Body>
-                            <Card.Body>
-                              <div className={'beamer-properties'}>
-                                <CustomSwitch
-                                    onSwitchClick={() => handleBeamerChange(item.getId())}
-                                    isChecked={item.getBeamerNeeded()}>
-                                  <span style={{ paddingLeft: 5 }}> Beamer needed </span>
-                                </CustomSwitch>
-                              </div>
-                            </Card.Body>
-                          </Accordion.Body>
-                        </Accordion.Item>
-                      </li>
-                  ))}
-                </ul>
-              </Accordion>
-            </div>
-            <Button
-                variant={'light'}
-                type={'button'}
-                className={'add-room-button'}
-                onClick={addItem}>
-              <Image src={add} alt={'addRoomIcon'} />
-            </Button>
-            <div className={'text-center'}>
-              <ModalButton
-                  backgroundColor={errorOccured() ? '#bbbbbb' : '#B0D7AF'}
-                  onButtonClick={saveClick}>
-              <span className={'add-slot-text'}>
+          <div style={{ marginTop: 10, maxHeight: '20vh', overflowY: 'auto' }}>
+            <Accordion
+              defaultActiveKey="0"
+              style={{ backgroundColor: '#F5F5F5' }}
+            >
+              <ul className={'list-style'}>
+                {items?.map((item, index) => (
+                  <li key={item.getId()} style={{ marginBottom: '1%' }}>
+                    <Accordion.Item
+                      style={{ background: '#F5F5F5' }}
+                      eventKey={item.getId()}
+                    >
+                      <Accordion.Header
+                        className={'header-style list-item border-0'}
+                      >
+                        <Form.Control
+                          className={'item-text'}
+                          type="text"
+                          defaultValue={item.getName()} // Hier den defaultValue-Prop verwenden
+                          placeholder={'Room'}
+                          onChange={(event) => handleInputChange(item.getId(), event)}
+                          style={{
+                            backgroundColor: '#FFFFFF',
+                            border: 'none',
+                            boxShadow: 'none'
+                          }}
+                        />
+                        <div className={'options-delete'}>
+                          <CustomIconButton as="div" toolTip={'Delete this room'} onButtonClick={(event) => deleteItem(item.getId(), event)}>
+                            <Image src={deleteButton} alt={'icon'} />
+                          </CustomIconButton>
+                        </div>
+                      </Accordion.Header>
+                      <Accordion.Body>
+                        <Card.Body>
+                          <div className={'beamer-properties'}>
+                            <CustomSwitch
+                                onSwitchClick={() => handleBeamerChange(item.getId())}
+                                isChecked={item.getBeamerNeeded()}>
+                              <span style={{ paddingLeft: 5 }}> Beamer needed </span>
+                            </CustomSwitch>
+                          </div>
+                        </Card.Body>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </li>
+                ))}
+              </ul>
+            </Accordion>
+          </div>
+          <Button
+            variant={'light'}
+            type={'button'}
+            className={'add-room-button'}
+            onClick={addItem}>
+            <Image src={add} alt={'addRoomIcon'} />
+          </Button>
+          <div className={'text-center'}>
+            <ModalButton
+                backgroundColor={errorOccured() ? '#bbbbbb' : '#B0D7AF'}
+                onButtonClick={saveClick}>
+              <span className={'add-slot-text e2e-location-add-slot-button'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>
               </ModalButton>
