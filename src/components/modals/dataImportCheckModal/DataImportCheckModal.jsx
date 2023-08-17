@@ -9,6 +9,10 @@ import SlotCard from '../../window/slotsWindow/Slot';
 import Participant from '../../window/participantWindow/participant/Participant';
 
 function DataImportCheckModal ({ importedRoomSlots, importedParticipants, importedSettings, onAddData, onOverwriteData, title, text, onHide, ...props }) {
+  function handleButtonClick (funcToTrigger) {
+    funcToTrigger();
+    onHide();
+  }
   return (
         <Modal
             {...props}
@@ -130,7 +134,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                       <CustomButton
                         toolTip={'Overwrite the already existing data'}
                         backgroundColor={ '#B0D7AF' }
-                        onButtonClick={() => { onOverwriteData(); onHide(); }}
+                        onButtonClick={() => { handleButtonClick(onOverwriteData); }}
                       > Overwrite </CustomButton>
                     </div>
                     <div className={'button-import-options'}>
@@ -138,7 +142,7 @@ function DataImportCheckModal ({ importedRoomSlots, importedParticipants, import
                         toolTip={'Add the imported data to the already existing data'}
                         className={'button-import-options'}
                         backgroundColor={ '#B0D7AF' }
-                        onButtonClick={() => { onAddData(); onHide(); }}
+                        onButtonClick={() => { handleButtonClick(onAddData); }}
                       > Add </CustomButton>
                     </div>
                     <div className={'button-import-options'}>

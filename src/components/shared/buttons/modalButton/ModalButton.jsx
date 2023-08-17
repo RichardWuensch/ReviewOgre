@@ -3,14 +3,13 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-function ModalButton ({ onButtonClick, backgroundColor, children }) {
+function ModalButton ({ onButtonClick, backgroundColor, width, children }) {
   return (
         <Button
-            style={{ backgroundColor, border: 'none', marginTop: '10px' }}
+            style={{ backgroundColor, border: 'none', marginTop: '10px', width: width ?? 'auto' }}
             variant="light"
             className="save-button"
-            onClick={onButtonClick}
-        >
+            onClick={onButtonClick}>
             {children}
         </Button>
   );
