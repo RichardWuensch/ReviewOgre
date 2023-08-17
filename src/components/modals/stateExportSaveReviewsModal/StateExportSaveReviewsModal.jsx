@@ -10,7 +10,7 @@ function StateExportSaveReviewsModal ({ saveState, onHide, ...props }) {
   return (
         <Modal
             {...props}
-            size="sm"
+            size="m"
             aria-labelledby="contained-modal-title-vcenter"
             centered
             className={'modal'}
@@ -27,28 +27,26 @@ function StateExportSaveReviewsModal ({ saveState, onHide, ...props }) {
                     </div>
                 </div>
                 <div className={'footer'}>
-                    <Row>
-                        <Col>
+                    <Col>
+                        <Row>
                             <ModalButton
                                 backgroundColor={ '#B0D7AF' }
                                 onButtonClick={() => { onHide(); saveState(true); }}
-                            > Yes </ModalButton>
-                        </Col>
-                        <Col>
+                                width={'60%'}> Save with Reviews </ModalButton>
+                        </Row>
+                        <Row>
                             <ModalButton
                                 backgroundColor={ '#B0D7AF' }
                                 onButtonClick={() => { onHide(); saveState(false); }}
-                            > No </ModalButton>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
+                                width={'60%'}> Save without Reviews </ModalButton>
+                        </Row>
+                        <Row>
                             <ModalButton
                                 backgroundColor={ '#C40233' }
                                 onButtonClick={onHide}
-                            > Cancel </ModalButton>
-                        </Col>
-                    </Row>
+                                width={'60%'}> Cancel </ModalButton>
+                        </Row>
+                    </Col>
                 </div>
             </Modal.Body>
         </Modal>
