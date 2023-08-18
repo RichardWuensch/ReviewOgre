@@ -31,7 +31,7 @@ function Draggable ({ id, children }) {
 
   const style = transform
     ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        transform: `translate3d(${transform.x}px, ${transform.y - scrollY}px, 0)`,
         backgroundColor: '#D3D3D3',
         position: 'fixed',
         display: 'flex',
