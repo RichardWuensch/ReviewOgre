@@ -8,6 +8,7 @@ import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCh
 import LoadState from '../../../api/LoadState';
 import StoreState from '../../../api/StoreState';
 import StateExportSaveReviewsModal from '../../modals/stateExportSaveReviewsModal/StateExportSaveReviewsModal';
+import ErrorModal from '../../modals/errorModal/ErrorModal';
 import { useSettings, useSettingsDispatch } from '../context/SettingsContext';
 import './CustomNavbar.css';
 
@@ -24,11 +25,7 @@ function CustomNavbar () {
   const [importedRoomSlots, setImportedRoomSlots] = React.useState([]);
   const [importedParticipants, setImportedParticipants] = React.useState([]);
   const [importedSettings, setImportedSettings] = React.useState({});
-
-  async function importDataCheck (event) {
-    loadStateIntoLocalObjects(event);
-    setShowModalDataImportCheck(true);
-  }
+  const [stateImportError, setStateImportError] = React.useState(null);
 
   function checkForAssignedReviews () {
     const firstAssignedReview = roomSlots[0]?.getRooms()[0]?.getReview();
@@ -44,17 +41,31 @@ function CustomNavbar () {
   }
 
   async function loadStateIntoLocalObjects (event) {
-    const loadState = new LoadState();
-    await loadState.runStateImport(event);
-    setImportedRoomSlots(loadState.getRoomSlots());
-    setImportedParticipants(loadState.getParticipants());
-    setImportedSettings(loadState.getSettings());
+    try {
+      const loadState = new LoadState();
+      await loadState.runStateImport(event);
+      setImportedRoomSlots(loadState.getRoomSlots());
+      setImportedParticipants(loadState.getParticipants());
+      setImportedSettings(loadState.getSettings());
+      setStateImportError(null);
+      setShowModalDataImportCheck(true);
+    } catch (error) {
+      setStateImportError(error);
+      resetImportedObjects();
+    }
+  }
+
+  function resetImportedObjects () {
+    setImportedRoomSlots([]);
+    setImportedParticipants([]);
+    setImportedSettings({});
   }
 
   function addLocalObjectsToContext () {
     addRoomSlotListToContext(importedRoomSlots);
     addParticipantListToContext(importedParticipants);
     addSettingsToContext(importedSettings);
+    resetImportedObjects();
   }
 
   function addParticipantListToContext (list) {
@@ -129,7 +140,7 @@ function CustomNavbar () {
                                  id="file-input-config"
                                  className='e2e-testing-load-state'
                                  style={{ display: 'none' }}
-                                 onChange={() => { importDataCheck(event); }}
+                                 onChange={() => { loadStateIntoLocalObjects(event); }}
                                  accept='application/json'/>
                           <NavDropdown.Item onClick={checkForAssignedReviews}>Save State</NavDropdown.Item>
                       </NavDropdown>
@@ -158,6 +169,11 @@ function CustomNavbar () {
             onHide={() => setShowSaveReviewsModal(false)}
             onClose={() => setShowSaveReviewsModal(false)}
           />
+          <ErrorModal
+              show={stateImportError !== null}
+              errorObject={stateImportError}
+              modalHeader={'Error while importing State'}
+              onHide={() => setStateImportError(null)} />
       </Navbar>
   );
 }
