@@ -28,12 +28,13 @@ function Droppable ({ id, children }) {
 
 function Draggable ({ id, children }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
-
+  const tdStyle = transform ? { backgroundColor: 'transparent' } : { backgroundColor: 'white' };
   const style = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y - scrollY}px, 0)`,
         backgroundColor: '#D3D3D3',
         position: 'fixed',
+        zIndex: 10,
         display: 'flex',
         justifyContent: 'space-between',
         width: '25vw',
@@ -44,7 +45,9 @@ function Draggable ({ id, children }) {
 
   return (
       <tr ref={setNodeRef} style={style} {...listeners} {...attributes}>
-        {children}
+        {React.Children.map(children, child =>
+            React.cloneElement(child, { style: tdStyle })
+        )}
       </tr>
   );
 }
