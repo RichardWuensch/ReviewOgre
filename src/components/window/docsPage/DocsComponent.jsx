@@ -48,20 +48,15 @@ function DocsComponent () {
                                                 choose the file you want to import from the file explorer. The data will be previewed before
                                                 it is imported into the application.
                                             </li>
-                                            <li>
-                                                Participant import:
+                                            <li id='participant-import'>
+                                                <b style={{ fontWeight: 'bold' }}>Participant import:</b> Participants can be imported from 3 different csv files: from moodle, ilias or directly.
+                                                <ol>
+                                                    <li>Moodle is a system used by our university and it offers an export of participants in a course. The outgoing file can be imported here.</li>
+                                                    <li>Ilias is a system used by another university, which offers a different export. The export file can be imported too</li>
+                                                    <li>The direct import uses this syntax without a header line: firstname;lastname;email;group</li>
+                                                </ol>
                                             </li>
                                         </ol>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet mi
-                                    vitae augue ultricies, eget vulputate nisi vestibulum. Fusce aliquam enim sit
-                                    amet orci aliquet, at cursus neque feugiat. Pellentesque quis mauris et odio
-                                    molestie vestibulum. Nullam fermentum efficitur ex nec volutpat. Proin nec
-                                    vestibulum lectus. Nullam facilisis auctor risus. Sed vitae pellentesque leo.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet mi
-                                    vitae augue ultricies, eget vulputate nisi vestibulum. Fusce aliquam enim sit
-                                    amet orci aliquet, at cursus neque feugiat. Pellentesque quis mauris et odio
-                                    molestie vestibulum. Nullam fermentum efficitur ex nec volutpat. Proin nec
-                                    vestibulum lectus. Nullam facilisis auctor risus. Sed vitae pellentesque leo.
                                     </span>
                                 </Card.Text>
                             </Card.Body>
