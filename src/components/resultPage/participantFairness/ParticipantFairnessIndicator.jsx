@@ -6,26 +6,29 @@ import reviewerUp from '../../../media/reviewer-role-up.svg';
 import oneRole from '../../../media/1-circle-fill.svg';
 import './ParticipantFairnessIncicator.css';
 
-function ParticipantFairnessIndicator ({ participant, ...props }) {
+function ParticipantFairnessIndicator ({ participant, avgCounts, ...props }) {
   const [fairnessIndicatorChildren, setFairnessIndicatorChildren] = useState([]);
 
   useEffect(() => {
     const children = [];
+    let tooltipText = '';
 
     if (participant.getFairness()?.totalCountHigherThanAvg) {
-      children.push(getIconWithTooltip(personUp, 'Person up', 'Takes part in more Reviews than average'));
+      tooltipText = `Takes part in ${participant.getTotalCount()} Review${participant.getTotalCount() === 1 ? '' : 's'} while the average is ${avgCounts.totalCount}`;
+      children.push(getIconWithTooltip(personUp, 'Person up', tooltipText));
     }
 
     if (participant.getFairness()?.totalCountLowerThanAvg) {
-      children.push(getIconWithTooltip(personDown, 'Person down', 'Takes part in less Reviews than average'));
+      tooltipText = `Takes part in ${participant.getTotalCount()} Review${participant.getTotalCount() === 1 ? '' : 's'} while the average is ${avgCounts.totalCount}`;
+      children.push(getIconWithTooltip(personDown, 'Person down', tooltipText));
     }
     
     if (participant.getFairness()?.reviewerCountHigherThanAvg) {
-      children.push(getIconWithTooltip(reviewerUp, 'Reviewer up', 'Is Reviewer in more Reviews than average'));
+      tooltipText = `Is Reviewer in ${participant.getReviewerCount()} Review${participant.getReviewerCount() === 1 ? '' : 's'} while the average is ${avgCounts.reviewerCount}`;
+      children.push(getIconWithTooltip(reviewerUp, 'Reviewer up', tooltipText));
     }
 
     if (participant.getFairness()?.onlyOneRole) {
-      let tooltipText = 'Only has 1 role';
       if (participant.getAuthorCount() > 0) {
         tooltipText = 'Only has Author role';
       }
