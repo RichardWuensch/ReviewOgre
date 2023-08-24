@@ -486,11 +486,11 @@ export default class Algorithm {
                      ' bis ' + converter.getTimeHHmm(s.getEndTime()) +
                      ' in ' + room.getName());
         console.log(room.getBeamerNeeded() ? 'Beamer verfügbar' : 'Kein Beamer verfügbar');
-        console.log('Author: ', converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()));
-        console.log('Moderator: ', converter.getParticipantAttributsForPrinting(room.getReview().getModerator()));
-        console.log('Notary: ', converter.getParticipantAttributsForPrinting(room.getReview().getNotary()));
+        console.log('Author: ', converter.getParticipantAttributesForPrintingEnglish(room.getReview().getAuthor()));
+        console.log('Moderator: ', converter.getParticipantAttributesForPrintingEnglish(room.getReview().getModerator()));
+        console.log('Notary: ', converter.getParticipantAttributesForPrintingEnglish(room.getReview().getNotary()));
         for (const reviewer of room.getReview().getReviewer()) {
-          console.log('Reviewer: ', converter.getParticipantAttributsForPrinting(reviewer));
+          console.log('Reviewer: ', converter.getParticipantAttributesForPrintingEnglish(reviewer));
         }
         console.log('*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x');
       }

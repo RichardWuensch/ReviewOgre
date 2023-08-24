@@ -37,7 +37,19 @@ export default class ConverterForPrinting {
   * @param {participant} participant
   * @returns {string} - in format 'FirstName LastName Email Group Topic'
   */
-  getParticipantAttributsForPrinting (participant) {
-    return participant.getFirstName() + ' ' + participant.getLastName() + ' ' + participant.getEmail() + ' Gruppe ' + participant.getGroup() + ' Topic ' + participant.getTopic();
+  getParticipantAttributesForPrintingEnglish (participant) {
+    let attributes = `${participant.getFirstName()} ${participant.getLastName()} ${participant.getEmail()} Group ${participant.getGroup()}`;
+    if (participant.getTopic()) {
+      attributes += ` Topic ${participant.getTopic()}`;
+    }
+    return attributes;
+  }
+
+  getParticipantAttributesForPrintingGerman (participant) {
+    let attributes = `${participant.getFirstName()} ${participant.getLastName()} ${participant.getEmail()} Gruppe ${participant.getGroup()}`;
+    if (participant.getTopic()) {
+      attributes += ` Thema ${participant.getTopic()}`;
+    }
+    return attributes;
   }
 }

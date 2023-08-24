@@ -105,11 +105,11 @@ export default class StoreState {
             ' to ' + converter.getTimeHHmm(s.getEndTime()) +
             ' in ' + room.getName() + '\n';
         result += (room.getBeamerNeeded() ? 'Beamer needed' : 'No Beamer needed') + '\n';
-        result += 'Author: ' + converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()) + '\n';
-        result += 'Moderator: ' + converter.getParticipantAttributsForPrinting(room.getReview().getModerator()) + '\n';
-        result += 'Notary: ' + converter.getParticipantAttributsForPrinting(room.getReview().getNotary()) + '\n';
+        result += 'Author: ' + converter.getParticipantAttributesForPrintingEnglish(room.getReview().getAuthor()) + '\n';
+        result += 'Moderator: ' + converter.getParticipantAttributesForPrintingEnglish(room.getReview().getModerator()) + '\n';
+        result += 'Notary: ' + converter.getParticipantAttributesForPrintingEnglish(room.getReview().getNotary()) + '\n';
         for (const reviewer of room.getReview().getReviewer()) {
-          result += 'Reviewer: ' + converter.getParticipantAttributsForPrinting(reviewer) + '\n';
+          result += 'Reviewer: ' + converter.getParticipantAttributesForPrintingEnglish(reviewer) + '\n';
         }
         result += '*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x' + '\n';
       }
