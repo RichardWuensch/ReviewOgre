@@ -105,6 +105,35 @@ export default class Algorithm {
     }
   }
 
+  /**
+   * Tries to swap the participants with a high reviewer-roles-count with that ones without that role
+   */
+  #swapReviewer (notReviewerList, toOftenReviewerList) {
+    for (const toOftenReviewer of toOftenReviewerList) {
+      let found = false;
+      const reviewSlotsMap = toOftenReviewer.getActiveInSlotsAsReviewer();
+      for (const notReviewer of notReviewerList) {
+        for (const reviewSlot of Array.from(reviewSlotsMap.keys())) {
+          if (!notReviewer.getActiveSlots().includes(reviewSlot)) {
+            try {
+              reviewSlotsMap.get(reviewSlot).addReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), notReviewer, this.#breakForModeratorAndReviewer);
+              reviewSlotsMap.get(reviewSlot).deleteReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), toOftenReviewer, this.#breakForModeratorAndReviewer);
+              notReviewerList = notReviewerList.filter(p => p !== notReviewer);
+              found = true;
+              break;
+            } catch {
+              found = false;
+            }
+          }
+        }
+        if (found) break;
+      }
+    }
+  }
+
+  /**
+   * Add every participant who takes never part as reviewer in a review this role
+   */
   #addReviewToParticipantsWithoutReviewerRole (notReviewerList) {
     let i = 0;
     let numberOfTries = 0;
@@ -131,29 +160,6 @@ export default class Algorithm {
           console.log('no swap possible');
           break;
         }
-      }
-    }
-  }
-
-  #swapReviewer (notReviewerList, toOftenReviewerList) {
-    for (const toOftenReviewer of toOftenReviewerList) {
-      let found = false;
-      const reviewSlotsMap = toOftenReviewer.getActiveInSlotsAsReviewer();
-      for (const notReviewer of notReviewerList) {
-        for (const reviewSlot of Array.from(reviewSlotsMap.keys())) {
-          if (!notReviewer.getActiveSlots().includes(reviewSlot)) {
-            try {
-              reviewSlotsMap.get(reviewSlot).addReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), notReviewer, this.#breakForModeratorAndReviewer);
-              reviewSlotsMap.get(reviewSlot).deleteReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), toOftenReviewer, this.#breakForModeratorAndReviewer);
-              notReviewerList = notReviewerList.filter(p => p !== notReviewer);
-              found = true;
-              break;
-            } catch {
-              found = false;
-            }
-          }
-        }
-        if (found) break;
       }
     }
   }
@@ -191,7 +197,7 @@ export default class Algorithm {
         this.checksLanguageLevel();
         this.#participants = this.#participants.filter(p => p.getLanguageLevel() !== 'A1' && p.getLanguageLevel() !== 'A2' && p.getLanguageLevel() !== 'B1');
       }
-      const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(this.#participants.length, this.#getAllGroups().length);
+      const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(this.#participants.length, [...this.#getGroupMap(this.#participants)].length);
       this.#numberOfReviewers = sumOfParticipantsAndReviewerPerReview.numberOfReviewers;
       this.#participantsPerReview = sumOfParticipantsAndReviewerPerReview.participantsPerReview;
       this.checks(this.#participants);
@@ -303,13 +309,19 @@ export default class Algorithm {
     this.#calcIntGroups(groupMap);
   }
 
+  /**
+   * Set the reviews of the participants with a german language skill level lower than B2
+   * The function tries to set the moderator and the notary from a other group than the creator group,
+   * but in case there are not enough participants the function use the members of the creator group for this role
+   * to make the english spoken review possible
+   * @param {map} groupMap - Map with key= group name and value= group members
+   */
   #calcIntGroups (groupMap) {
     let numberOfTries = 0;
     let i = 0;
     const groupMapCopy = groupMap;
     while (groupMapCopy.size > 0 && numberOfTries < 10) {
       for (const group of groupMapCopy) {
-        console.log(group);
         for (const s of this.#roomSlots) {
           const [groupNum, creator] = group;
           if (i >= s.getRooms().length) {
@@ -318,8 +330,6 @@ export default class Algorithm {
           let review;
           const room = s.getRooms()[i];
           if (room.getReview() === null) {
-            const part = this.#notGermanSpeaker.filter((p) => creator[0].getGroup() !== p.getGroup() && !p.isActiveInSlot(s));
-            console.log(part);
             const numPosParticipants = this.#notGermanSpeaker.filter((p) => creator[0].getGroup() !== p.getGroup() && !p.isActiveInSlot(s)).length;
             if (numPosParticipants < 3) {
               continue;
@@ -354,7 +364,6 @@ export default class Algorithm {
               // do nothing
             }
           }
-          // }
         }
         i++;
         if (i > this.#roomSlots[this.#roomSlots.length - 1].getRooms().length) {
@@ -370,19 +379,9 @@ export default class Algorithm {
   }
 
   /**
-  * Loops over all participants and create a array with the groupNumber
-  * @return {array} Array of all group numbers in the participant list
-  */
-  #getAllGroups () {
-    const groups = [];
-    for (const p of this.#participants) {
-      if (!groups.includes(p.getGroup())) {
-        groups.push(p.getGroup());
-      }
-    }
-    return groups;
-  }
-
+   * Loops over all participants and create a group map with key= group name and value= group members
+   * @return {map} Map<groupName,List<groupMember>>
+   */
   #getGroupMap (participants) {
     const groupMap = new Map();
     for (const p of participants) {
@@ -395,6 +394,10 @@ export default class Algorithm {
     return groupMap;
   }
 
+  /**
+   * Loops over all participants and create a group map with key= topic and value= all participants that worked on this topic
+   * @return {map} Map<topic,List<participants>>
+   */
   #getTopicMap () {
     const topicMap = new Map();
     for (const p of this.#participants) {
@@ -612,8 +615,8 @@ export default class Algorithm {
       const y = b.getActiveSlotsWithoutBrakes();
       return x.length - y.length;
     }).forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
-    console.log('------------------------------');
     if (this.#internationalGroups) {
+      console.log('------------international Students------------------');
       this.#notGermanSpeaker.forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
     }
   }
