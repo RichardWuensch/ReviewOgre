@@ -69,7 +69,14 @@ export default class Algorithm {
       for (const roomSlot of this.#roomSlots) {
         for (const room of roomSlot.getRooms()) {
           const review = room.getReview();
-          if (review === null) {
+          let reviewAlreadySet;
+          try {
+            room.getReview().getModerator().getFirstName();
+            reviewAlreadySet = true;
+          } catch (error) {
+            reviewAlreadySet = false;
+          }
+          if (review === null || reviewAlreadySet) {
             continue;
           }
           room.getReview().fillPossibleParticipantsOfReview(roomSlot, this.#participants, this.#abReview);
@@ -293,45 +300,69 @@ export default class Algorithm {
     if (errorMessage) {
       throw new Error(errorMessage, { cause: 'prechecksFailed' });
     }
+    this.#calcIntGroups(groupMap);
+  }
 
-    let errorFound = true;
-    let errorCounter = 0;
-    while (errorFound) {
-      if (errorCounter > this.#maximumTries) {
-        throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.',
-          { cause: 'noSolution' }
-        );
-      }
-
-      // this.#setAuthorOfRandomGroupMember(Array.from(groupMap.keys()));
-
-      for (let participantsPerGroup of groupMap.values()) {
-        let found = false;
-        for (const roomSlot of this.#roomSlots) {
-          if (found) break;
-          for (const room of roomSlot.getRooms()) {
-            if (room.getReview() === null) {
-              room.setReview(new Review(roomSlot, participantsPerGroup[0]));
+  #calcIntGroups (groupMap) {
+    let numberOfTries = 0;
+    let i = 0;
+    const groupMapCopy = groupMap;
+    while (groupMapCopy.size > 0 && numberOfTries < 10) {
+      for (const group of groupMapCopy) {
+        console.log(group);
+        for (const s of this.#roomSlots) {
+          const [groupNum, creator] = group;
+          if (i >= s.getRooms().length) {
+            continue;
+          }
+          let review;
+          const room = s.getRooms()[i];
+          if (room.getReview() === null) {
+            const part = this.#notGermanSpeaker.filter((p) => creator[0].getGroup() !== p.getGroup() && !p.isActiveInSlot(s));
+            console.log(part);
+            const numPosParticipants = this.#notGermanSpeaker.filter((p) => creator[0].getGroup() !== p.getGroup() && !p.isActiveInSlot(s)).length;
+            if (numPosParticipants < 3) {
+              continue;
             }
-            const review = room.getReview();
-            participantsPerGroup = participantsPerGroup.filter(p => p !== review.getAuthor());
-            review.setModerator(this.#roomSlots, this.#roomSlots.indexOf(roomSlot), participantsPerGroup[0], false);
-            participantsPerGroup = participantsPerGroup.filter(p => p !== review.getModerator());
-            console.log(participantsPerGroup);
-            review.setNotary(roomSlot, participantsPerGroup[0], false);
-
-            room.getReview().fillPossibleParticipantsOfReview(roomSlot, this.#notGermanSpeaker, false);
+            room.setReview(new Review(s, creator[0]));
+            review = room.getReview();
+            review.fillPossibleParticipantsOfReview(s, this.#notGermanSpeaker, false);
+            if (numPosParticipants === 3 && creator.length >= 3) {
+              review.setModerator(this.#roomSlots, this.#roomSlots.indexOf(s), creator[1], this.#breakForModeratorAndReviewer);
+              review.setNotary(s, creator[2], this.#authorIsNotary);
+            } else if (numPosParticipants === 4 && creator.length >= 2) {
+              this.#assignModeratorToReview(s, review);
+              if (this.#authorIsNotary === true) {
+                review.setNotary(s, review.getModerator(), this.#authorIsNotary);
+              } else {
+                review.setNotary(s, creator[1], this.#authorIsNotary);
+              }
+            } else if (numPosParticipants > 5) {
+              this.#assignModeratorToReview(s, review);
+              this.#assignNotaryToReview(s, review);
+            } else {
+              continue;
+            }
             try {
-              this.#assignReviewersToReview(roomSlot, review);
-              errorFound = false;
-              found = true;
+              review.fillPossibleParticipantsOfReview(s, this.#notGermanSpeaker, false);
+              this.#numberOfReviewers = 3;
+              this.#assignReviewersToReview(s, review);
+              groupMapCopy.delete(groupNum);
+              i = 0;
               break;
             } catch (error) {
-              console.log(error.message);
-              errorFound = true; // must be reset bc we don't break out of 2 nested for loops
-              errorCounter++;
-              this.#clearReviews();
+              // do nothing
             }
+          }
+          // }
+        }
+        i++;
+        if (i > this.#roomSlots[this.#roomSlots.length - 1].getRooms().length) {
+          if (numberOfTries < 10) {
+            numberOfTries++;
+            i = 0;
+          } else {
+            break;
           }
         }
       }
@@ -582,7 +613,9 @@ export default class Algorithm {
       return x.length - y.length;
     }).forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
     console.log('------------------------------');
-    this.#notGermanSpeaker.forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
+    if (this.#internationalGroups) {
+      this.#notGermanSpeaker.forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
+    }
   }
 
   printJSONinLocalStorage () {
