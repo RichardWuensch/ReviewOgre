@@ -1,3 +1,35 @@
+## Requirements
+
+The application requires JavaScript to be activated in the browser.
+
+We are using a [Font](fonts/roboto-v30-latin-regular.woff2) that is included locally in the project.
+This font does not support legacy browsers. Minimum versions are
+- Chrome 36+, 
+- Opera 23+, 
+- Firefox 39+, 
+- Safari 12+, 
+- iOS 10+
+
+As of the creation of the project Vite requires Node.js version
+14.18+ or higher. Vite doesn't support the legacy browser versions as well.
+If you need to support these versions look into the vite-legacy plugin.
+
+Cypress requires at least Node.js version 14+ as well.
+
+To push to the repository your commit needs to pass the pipeline.
+This requires at least one active GitLab Runner. For more information 
+visit the chapter on the [Pipeline](#Pipeline).
+
+## Recommended extension for VS Code
+
+- ES7+ React/Redux/React-Native snippets
+- Material Icon Theme
+- Quokka.js
+- ESLint
+- Git Graph
+- IntelliSense for CSS class names in HTML
+
+These recommendations however, are purely optional.
 
 ## Pipeline
 
