@@ -34,6 +34,7 @@ function MainPage () {
         roomSlotsDispatch,
         settings);
       algo.run();
+      // algo.printParticipantsSortByAmountOfActiveInSlots();
 
       // successful run
       navigate('/reviews');
