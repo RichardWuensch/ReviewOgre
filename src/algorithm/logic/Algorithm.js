@@ -27,7 +27,6 @@ export default class Algorithm {
     this.#authorIsNotary = settings.authorIsNotary;
     this.#abReview = settings.abReview;
     this.#breakForModeratorAndReviewer = settings.breakForModeratorAndReviewer;
-    this.#internationalGroups = settings.internationalGroups;
     this.#maximumTries = (maximumTries === undefined) ? 300 : maximumTries;
   }
 
@@ -138,7 +137,6 @@ export default class Algorithm {
    */
   #addReviewToParticipantsWithoutReviewerRole (notReviewerList) {
     let i = 0;
-    let numberOfTries = 0;
     while (notReviewerList.length > 0) {
       for (const s of this.#roomSlots) {
         for (const notReviewer of notReviewerList) {
@@ -161,6 +159,7 @@ export default class Algorithm {
         } else {
           break;
         }
+        if (found) break;
       }
     }
   }
