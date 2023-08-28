@@ -9,11 +9,11 @@ import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
 import { Card, Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
-import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../shared/context/SettingsContext';
 import ParticipantWindow from '../participantWindow/ParticipantWindow';
+import Algorithm from '../../../algorithm/logic/Algorithm';
 
 function MainPage () {
   const [algorithmErrorObject, setAlgorithmErrorObject] =
@@ -28,13 +28,12 @@ function MainPage () {
 
   function runAlgorithm () {
     try {
-      new Runner().runAlgorithm(
-        participants,
+      const algo = new Algorithm(participants,
         participantsDispatch,
         roomSlots,
         roomSlotsDispatch,
-        settings
-      );
+        settings);
+      algo.run();
 
       // successful run
       navigate('/reviews');
