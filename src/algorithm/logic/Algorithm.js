@@ -96,6 +96,7 @@ export default class Algorithm {
       }
     }
     let notReviewerList = this.#participants.filter(p => p.getReviewerCount() === 0);
+    // eslint-disable-next-line no-return-assign
     const toOftenReviewerList = this.#participants.filter(p => p.getReviewerCount() > Math.round(this.#participants.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / this.#participants.length));
     if (notReviewerList.length > 0 && toOftenReviewerList.length > 0) {
       this.#swapReviewer(notReviewerList, toOftenReviewerList);
