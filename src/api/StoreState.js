@@ -88,8 +88,8 @@ export default class StoreState {
   }
 
   /**
-   * save the result as .txt-File
-   * @param {list} roomSlots - all neccessary information from the result
+   * opens the result in txt form in a new browser tab
+   * @param {list} roomSlots - all necessary information from the result
    */
   saveAsTXT (roomSlots) {
     let result = '';
@@ -114,7 +114,16 @@ export default class StoreState {
         result += '*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x' + '\n';
       }
     }
-    const blob = new Blob([result], { type: 'text/plain' });
-    saveAs(blob, 'result.txt');
+    const newTab = window.open();
+    newTab.document.title = 'result.txt';
+    newTab.document.write(`
+        <html>
+            <head>
+                <title>mail.txt</title>
+            </head>
+            <body>
+                <pre>${result}</pre>
+            </body>
+          </html>`);
   }
 }

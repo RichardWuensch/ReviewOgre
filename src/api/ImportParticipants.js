@@ -29,7 +29,7 @@ export default class ImportParticipants {
         }
       }
 
-      const parsedData = parsedContent.data.filter(row => row[0] !== 'sep='); // delete seperator metadata line
+      const parsedData = parsedContent.data.filter(row => row[0] !== 'sep='); // delete separator metadata line
       if (parsedData[0].length === 1) {
         throw new Error('Error: The first line could not be split. This can happen, if the whole line is enclosed in " ".');
       }

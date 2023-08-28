@@ -220,9 +220,9 @@ export default class Participant {
   }
 
   /**
-  * check if this participant is currently bussy in a slot
+  * check if this participant is currently busy in a slot
   * @param {Slot} slot - to check if the slot is in the activeInSlots list of the participant
-  * @returns {boolean} - true if bussy, false if not
+  * @returns {boolean} - true if busy, false if not
   */
   isActiveInSlot (slot) {
     for (const activeInSlot of this.#activeInSlots) {

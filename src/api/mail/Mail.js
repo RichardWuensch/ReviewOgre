@@ -98,7 +98,7 @@ export default class Mail {
   }
 
   /**
-   * Saves the mails in a .txt-file -> can be used to save the result and send it later via copy+paste in a mail client
+   * open mails in a new browser tab in txt format -> can be used to save the result and send it later via copy+paste in a mail client
    */
   saveMailsInTxt () {
     let result = '';

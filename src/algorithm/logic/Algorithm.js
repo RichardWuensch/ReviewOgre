@@ -50,7 +50,9 @@ export default class Algorithm {
   /**
   * Main function that runs through all necessary parts
   * the algorithm works gready and tries as often as no solution is found or the maximumTries are achieved
-  * @returns {boolean} - return true if very thing was fine
+  * After a successful run the result will be checked if there a some participants without the reviewer role
+  * and if there is someone it tries to swap with somebody that takes more times part as a reviewer than the average
+  * are there still somebody without a reviewer role, this one is added as a additional reviewer to any review
   */
   run () {
     this.#prechecks();
@@ -95,7 +97,7 @@ export default class Algorithm {
       }
     }
     let notReviewerList = this.#participants.filter(p => p.getReviewerCount() === 0);
-    const toOftenReviewerList = this.#participants.filter(p => p.getReviewerCount() > 1);
+    const toOftenReviewerList = this.#participants.filter(p => p.getReviewerCount() > Math.round(this.#participants.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / this.#participants.length));
     if (notReviewerList.length > 0 && toOftenReviewerList.length > 0) {
       this.#swapReviewer(notReviewerList, toOftenReviewerList);
     }
@@ -114,7 +116,7 @@ export default class Algorithm {
       const reviewSlotsMap = toOftenReviewer.getActiveInSlotsAsReviewer();
       for (const notReviewer of notReviewerList) {
         for (const reviewSlot of Array.from(reviewSlotsMap.keys())) {
-          if (!notReviewer.getActiveSlots().includes(reviewSlot)) {
+          if (notReviewer.getActiveSlots().includes(reviewSlot) === false) {
             try {
               reviewSlotsMap.get(reviewSlot).addReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), notReviewer, this.#breakForModeratorAndReviewer);
               reviewSlotsMap.get(reviewSlot).deleteReviewer(this.#roomSlots, this.#roomSlots.indexOf(this.#roomSlots.filter(rs => rs.getId() === reviewSlot.getId())[0]), toOftenReviewer, this.#breakForModeratorAndReviewer);
@@ -157,7 +159,6 @@ export default class Algorithm {
           numberOfTries++;
           i = 0;
         } else {
-          console.log('no swap possible');
           break;
         }
       }
@@ -177,13 +178,7 @@ export default class Algorithm {
   }
 
   /**
-   * Do some prechecks before the algorithm run to make sure that there is a possibility that a solution can be found
-   * Criteria:
-   * there must be at least 4 groups
-   * there must be at least 12 participants
-   * there must be as many rooms as reviews
-   * per Slot are only as many rooms necessary as amount of Participants divided by amount of participants per review (the rest of the rooms can be returned to the roomplaner)
-   * there must be at least as many slots as the result from the amount of Groups divided by max number of rooms calculated in the step before
+   * Checks if the settings are possible with the input data call corresponding next methods
    * @throws {Error} - to show what's the problem
    */
   #prechecks () {
@@ -227,6 +222,16 @@ export default class Algorithm {
     }
   }
 
+  /**
+   * Do some checks before the algorithm run to make sure that there is a possibility that a solution can be found
+   * Criteria:
+   * there must be at least 2 groups
+   * there must be enough participants to fill the reviews
+   * there must be as many rooms as reviews
+   * per Slot are only as many rooms necessary as amount of Participants divided by amount of participants per review (the rest of the rooms can be returned to the roomplaner)
+   * there must be at least as many slots as the result from the amount of Groups divided by max number of rooms calculated in the step before
+   * @throws {Error} - to show what's the problem
+   */
   checks (participants, topic) {
     let roomCount = 0;
     let roomCountWithNotNeededRooms = 0;
@@ -263,16 +268,9 @@ export default class Algorithm {
       }
     }
     for (const value of this.#getGroupMap(participants).values()) {
-      if (this.#abReview === false) {
-        if ((participants.length - value.length) < (this.#participantsPerReview - 1)) {
-          errorMessage += 'There are not enough participants to build review groups.\n';
-          break;
-        }
-      } else {
-        if ((participants.length) < (this.#participantsPerReview - 1)) { // TODO einfach per OR mit der vorherigen Bedingung verknüpfen ????????
-          errorMessage += 'There are not enough participants to build review groups.\n';
-          break;
-        }
+      if ((this.#abReview === false && ((participants.length - value.length) < (this.#participantsPerReview - 1))) || ((participants.length) < (this.#participantsPerReview - 1))) {
+        errorMessage += 'There are not enough participants to build review groups.\n';
+        break;
       }
     }
     if (this.#authorIsNotary === false && groupMap.size === 2 && this.#participantsPerReview < 6) errorMessage += 'If only 2 groups per topic exist, authorIsNotary must be active.\n';
@@ -287,6 +285,10 @@ export default class Algorithm {
     }
   }
 
+  /**
+   * Because the generation of non english reviews is a bit different, they get their own checks after filtration of non german participants
+   * @throws {Error} - to show what's the problem
+   */
   checksLanguageLevel () {
     this.#notGermanSpeaker = this.#participants.filter(p => p.getLanguageLevel() === 'A1' || p.getLanguageLevel() === 'A2' || p.getLanguageLevel() === 'B1');
     this.#numberOfReviewers = 3;
@@ -294,6 +296,9 @@ export default class Algorithm {
     const groupMap = this.#getGroupMap(this.#notGermanSpeaker);
     let errorMessage = '';
 
+    if (this.#notGermanSpeaker.length === this.#participants.length) {
+      throw new Error('All participants are unable to make german reviews. You should disable the \'international Groups\' Setting in this case.', { cause: 'prechecksFailed' }); // TODO check in frontend
+    }
     if (groupMap.size < 2) {
       errorMessage += 'At least 2 groups are needed.\n';
     }
@@ -311,7 +316,7 @@ export default class Algorithm {
 
   /**
    * Set the reviews of the participants with a german language skill level lower than B2
-   * The function tries to set the moderator and the notary from a other group than the creator group,
+   * The function tries to set the moderator and the notary from another group than the creator group,
    * but in case there are not enough participants the function use the members of the creator group for this role
    * to make the english spoken review possible
    * @param {map} groupMap - Map with key= group name and value= group members
@@ -337,13 +342,17 @@ export default class Algorithm {
             room.setReview(new Review(s, creator[0]));
             review = room.getReview();
             review.fillPossibleParticipantsOfReview(s, this.#notGermanSpeaker, false);
-            if (numPosParticipants === 3 && creator.length >= 3) {
+            if (numPosParticipants === 3 && (creator.length >= 3 || (creator.length === 2 && this.#authorIsNotary === true))) {
               review.setModerator(this.#roomSlots, this.#roomSlots.indexOf(s), creator[1], this.#breakForModeratorAndReviewer);
-              review.setNotary(s, creator[2], this.#authorIsNotary);
+              if (this.#authorIsNotary === true) {
+                review.setNotary(s, review.getAuthor(), this.#authorIsNotary);
+              } else {
+                review.setNotary(s, creator[2], this.#authorIsNotary);
+              }
             } else if (numPosParticipants === 4 && creator.length >= 2) {
               this.#assignModeratorToReview(s, review);
               if (this.#authorIsNotary === true) {
-                review.setNotary(s, review.getModerator(), this.#authorIsNotary);
+                review.setNotary(s, review.getAuthor(), this.#authorIsNotary);
               } else {
                 review.setNotary(s, creator[1], this.#authorIsNotary);
               }
@@ -441,10 +450,10 @@ export default class Algorithm {
 
   /**
   * assign the moderator to the review
-  * the selected participant should be part of the possibleParticipants list and should have a as lowest moderatorCount as possible
+  * the selected participant should be part of the possibleParticipants list and should have an as lowest moderatorCount as possible
   * this will make sure that moderator role is equally distributed
-  * @param {RoomSlot} roomSlot - to add the roomSlot in the activeInSlot list of the selected particpant
-  * @param {Review} review -to get some nessecary parameter of the review
+  * @param {RoomSlot} roomSlot - to add the roomSlot in the activeInSlot list of the selected participant
+  * @param {Review} review -to get some necessary parameter of the review
   */
   #assignModeratorToReview (roomSlot, review) {
     let counter = 1;
@@ -465,10 +474,10 @@ export default class Algorithm {
   /**
   * assign the notary to the review
   * if the author should be the notary in a double role, the author is set as notary
-  * if not the selected participant should be part of the possibleParticipants list and should have a as lowest notaryCount as possible
+  * if not the selected participant should be part of the possibleParticipants list and should have an as lowest notaryCount as possible
   * this will make sure that notary role is equally distributed
-  * @param {RoomSlot} roomSlot - to add the roomSlot in the activeInSlot list of the selected particpant
-  * @param {Review} review -to get some nessecary parameter of the review
+  * @param {RoomSlot} roomSlot - to add the roomSlot in the activeInSlot list of the selected participant
+  * @param {Review} review -to get some necessary parameter of the review
   */
   #assignNotaryToReview (roomSlot, review) {
     if (this.#authorIsNotary === false) {
@@ -492,11 +501,11 @@ export default class Algorithm {
 
   /**
   * assign the reviewers to the review
-  * the selected participant should be part of the possibleParticipants list and should have a as lowest reviewerCount as possible
+  * the selected participant should be part of the possibleParticipants list and should have an as lowest reviewerCount as possible
   * this will make sure that notary role is equally distributed
-  * @param {RoomSlot} roomSlot - to add the roomSlot in the activeInSlot list of the selected particpant
-  * @param {Review} review -to get some nessecary parameter of the review
-  * @throws {Error} throws a error in case of not enough participants or no founded solution
+  * @param {RoomSlot} roomSlot - to add the roomSlot in the activeInSlot list of the selected participant
+  * @param {Review} review -to get some necessary parameter of the review
+  * @throws {Error} throws an error in case of not enough participants or no founded solution
   */
   #assignReviewersToReview (roomSlot, review) {
     if (review.getPossibleParticipants().length < this.#numberOfReviewers) {
@@ -546,7 +555,6 @@ export default class Algorithm {
       numberOfReviewers = Math.floor((2 * participantsLength) / numberOfGroups - 3);
       if (numberOfReviewers < 3) numberOfReviewers = 3;
       participantsPerReview = numberOfReviewers + 3;
-      // numberOfReviewers = 2;
     } else {
       numberOfReviewers = Math.floor((2 * participantsLength) / numberOfGroups - 3);
       if (numberOfReviewers < 3) numberOfReviewers = 3;

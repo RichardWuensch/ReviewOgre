@@ -46,28 +46,18 @@ export default class Review {
     this.#deleteParticipantFromPossibleParticipants(this.#author);
   }
 
-  setAuthorSuccessPage (roomSlot, author) {
-    if (!this.#possibleParticipants.includes(author)) { // TODO check if a suitable frontend exists
-      throw new Error('Author is not possible for this review');
-    }
-    this.setAuthor(roomSlot, author);
-  }
-
-  deleteAuthor (roomSlot) { // TODO check if a suitable frontend exists
-    this.#author.decreaseAuthorCount();
-    this.#author.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlot, false));
-    this.#addParticipantToPossibleParticipants(this.#author);
-    this.#author = null;
-  }
-
   getModerator () {
     return this.#moderator;
   }
 
+  /**
+   * Check if this participant is possible for the review and add him if it is so
+   * @param {array} roomSlots - the list of all roomSlots
+   * @param {int} index - index of the current roomSlot (this is needed to add also the next slot to the active list if breakForModeratorAndReviewer is true)
+   * @param {Participant} moderator - the participant that should be the moderator
+   * @param {boolean} breakForModeratorAndReviewer - is true if the moderator should get a break of one slot (only if the next slot is on the same day)
+   */
   setModerator (roomSlots, index, moderator, breakForModeratorAndReviewer) {
-    /* if (!this.#possibleParticipants.includes(moderator)) { // TODO check if a suitable frontend exists
-      throw new Error('Moderator is not possible for this review');
-    } */
     this.#moderator = moderator;
     this.#moderator.increaseModeratorCount();
     this.#moderator.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
@@ -81,28 +71,11 @@ export default class Review {
     this.#deleteParticipantFromPossibleParticipants(this.#moderator);
   }
 
-  deleteModerator (roomSlots, index, moderator, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
-    moderator.decreaseModeratorCount();
-    moderator.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], false));
-    if (breakForModeratorAndReviewer) {
-      if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
-        if (roomSlots[index].getDate().getTime() === roomSlots[index + 1].getDate().getTime()) {
-          moderator.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index + 1], false));
-        }
-      }
-    }
-    this.#moderator = null;
-    this.#addParticipantToPossibleParticipants(moderator);
-  }
-
   getNotary () {
     return this.#notary;
   }
 
   setNotary (roomSlot, notary, authorIsNotary) {
-    /* if (!this.#possibleParticipants.includes(notary) && authorIsNotary === false) { // TODO check if a suitable frontend exists
-      throw new Error('Notary is not possible for this review');
-    } */
     this.#notary = notary;
     this.#notary.increaseNotaryCount();
     if (authorIsNotary === false) {
@@ -113,14 +86,6 @@ export default class Review {
     }
   }
 
-  deleteNotary (roomSlot, notary) { // TODO check if a suitable frontend exists
-    this.#notary = notary;
-    this.#notary.decreaseNotaryCount();
-    this.#notary.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlot, false));
-    this.#addParticipantToPossibleParticipants(this.#notary);
-    // no check against authorIsNotary to make it possible to break this rule in some cases in the successful calc page
-  }
-
   getReviewer () {
     return this.#reviewers;
   }
@@ -129,6 +94,14 @@ export default class Review {
     this.#reviewers = reviewers;
   }
 
+  /**
+   * Check if the participant can be reviewer for this review
+   * if this participant is possible the add will be performed by additional method
+   * @param {array} roomSlots - the list of all roomSlots
+   * @param {int} index - index of the current roomSlot (this is needed to add also the next slot to the active list if breakForModeratorAndReviewer is true)
+   * @param {Participant} participant - the participant that should be a reviewer
+   * @param {boolean} breakForModeratorAndReviewer - is true if the reviewer should get a break of one slot (only if the next slot is on the same day)
+   */
   addReviewer (roomSlots, index, participant, breakForModeratorAndReviewer) {
     if (!this.#possibleParticipants.includes(participant)) {
       throw new Error('Participant is not possible for this review');
@@ -144,10 +117,14 @@ export default class Review {
         }
       }
     }
-    this.#performAdd(participant, roomSlots, index);
+    this.#performAdd(participant, this.getSlotFromRoomSlot(roomSlots[index], false));
   }
 
-  addReviewerDragnDrop (roomSlots, index, participant, breakForModeratorAndReviewer) { // TODO check possibility of refactoring, method must exist bc break-Error will always thrown (by execution from algo possibleParticipants of the next slots are always empty)
+  /**
+   * From principle the same functionality as addReviewer method. A separate method was needed bc by execution from algo
+   * possibleParticipants of the next slots are always empty and so the break error would be always thrown
+   */
+  addReviewerDragnDrop (roomSlots, index, participant, breakForModeratorAndReviewer) {
     if (!this.#possibleParticipants.includes(participant)) {
       throw new Error('Participant is not possible for this review');
     }
@@ -168,21 +145,33 @@ export default class Review {
         }
       }
     }
-    this.#performAdd(participant, roomSlots, index);
+    this.#performAdd(participant, this.getSlotFromRoomSlot(roomSlots[index], false));
   }
 
-  #performAdd (participant, roomSlots, index) {
+  /**
+   * Add the participant to the review
+   * @param {Participant} participant - the participant that should be a reviewer
+   * @param {Slot} roomSlot - the list of all roomSlots
+   */
+  #performAdd (participant, roomSlot) {
     participant.increaseReviewerCount();
-    participant.addSlotToActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
-    participant.addSlotToActiveInSlotsAsReviewer(this, this.getSlotFromRoomSlot(roomSlots[index])); // check in method
+    participant.addSlotToActiveList(roomSlot, false);
+    participant.addSlotToActiveInSlotsAsReviewer(this, roomSlot);
     this.#reviewers.push(participant);
     this.#deleteParticipantFromPossibleParticipants(participant);
     this.validateReview();
   }
 
-  deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) { // TODO check if a suitable frontend exists
+  /**
+   * Delete the participant from the review
+   * @param {array} roomSlots - the list of all roomSlots
+   * @param {int} index - index of the current roomSlot (this is needed to delete also the next slot to the active list if breakForModeratorAndReviewer is true)
+   * @param {Participant} reviewer - the participant that should be deleted as reviewer
+   * @param {boolean} breakForModeratorAndReviewer - is true if the reviewer has the next slot as break slot (only if the next slot is on the same day)
+   * */
+  deleteReviewer (roomSlots, index, reviewer, breakForModeratorAndReviewer) {
     reviewer.decreaseReviewerCount();
-    reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index], false)); // Todo hier war index +1
+    reviewer.deleteSlotFromActiveList(this.getSlotFromRoomSlot(roomSlots[index], false));
     reviewer.deleteSlotFromActiveInSlotsAsReviewer(this.getSlotFromRoomSlot(roomSlots[index], false));
     if (breakForModeratorAndReviewer) {
       if (breakForModeratorAndReviewer && index < roomSlots.length - 1) {
@@ -262,11 +251,7 @@ export default class Review {
    * at least 3 reviewer
    */
   validateReview () {
-    if (this.#author === {} || this.#moderator === {} || this.#notary === {} || this.#reviewers.length < 3) {
-      this.#invalidReview = true;
-    } else {
-      this.#invalidReview = false;
-    }
+    this.#invalidReview = this.#author === {} || this.#moderator === {} || this.#notary === {} || this.#reviewers.length < 3;
   }
 
   isReviewValid () {
