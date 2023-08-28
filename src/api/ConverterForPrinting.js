@@ -33,7 +33,7 @@ export default class ConverterForPrinting {
   }
 
   /**
-  * Makes the participant to a simple string with the nessecary attributes
+  * Makes the participant to a simple string with the necessary attributes
   * @param {participant} participant
   * @returns {string} - in format 'FirstName LastName Email Group Topic'
   */

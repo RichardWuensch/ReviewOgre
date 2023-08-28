@@ -1,5 +1,4 @@
 import ConverterForPrinting from '../ConverterForPrinting';
-import { saveAs } from 'file-saver';
 
 export default class Mail {
   #converter = new ConverterForPrinting();
@@ -15,19 +14,17 @@ export default class Mail {
           continue;
         }
         const moderator = review.getModerator();
-        // if (moderator.getLanguagelevel()==='Native Speaker'){
-        this.#englishVersion(roomSlot, room, review, moderator);
-        /* }else{
+        if (moderator.getLanguageLevel() === 'A1' || moderator.getLanguageLevel() === 'A2' || moderator.getLanguageLevel() === 'B2') {
           this.#englishVersion(roomSlot, room, review, moderator);
-        } */
+        } else {
+          this.#germanVersion(roomSlot, room, review, moderator);
+        }
       }
     }
   }
 
-  // this.#mails.forEach(m => this.openMailClient(m.recipient, m.ccRecipients, m.subject, m.body));
-
   /**
-  * Generate content of the Mail in german and call the openMailClient-function
+  * Generate content of the Mail in german and call
   * @param {RoomSlot} roomSlot
   * @param {Room} room
   * @param {Review} review
@@ -57,7 +54,7 @@ export default class Mail {
   }
 
   /**
-  * Generate content of the Mail in englisch and call the openMailClient-function
+  * Generate content of the Mail in english and call
   * @param {RoomSlot} roomSlot
   * @param {Room} room
   * @param {Review} review
@@ -101,7 +98,7 @@ export default class Mail {
   }
 
   /**
-   * Saves the mails in a .txt-file -> can be used to save the result and send it later via copy+paste in a mail client
+   * open mails in a new browser tab in txt format -> can be used to save the result and send it later via copy+paste in a mail client
    */
   saveMailsInTxt () {
     let result = '';
@@ -112,7 +109,16 @@ export default class Mail {
       result += 'BODY: \n' + mail.body + '\n';
       result += '*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x' + '\n\n';
     }
-    const blob = new Blob([result], { type: 'text/plain' });
-    saveAs(blob, 'mail.txt');
+    const newTab = window.open();
+    newTab.document.title = 'mail.txt';
+    newTab.document.write(`
+        <html>
+            <head>
+                <title>mail.txt</title>
+            </head>
+            <body>
+                <pre>${result}</pre>
+            </body>
+          </html>`);
   }
 }
