@@ -95,6 +95,7 @@ function ParticipantWindow () {
                             toolTip={'Add Participant manually'}
                             onButtonClick={() => setShowModalParticipant(true)}
                             backgroundColor={'#B0D7AF'}
+                            routeSection={'participants'}
                         >
                             <Image
                                 src={add}
@@ -112,6 +113,7 @@ function ParticipantWindow () {
                               onButtonClick={() => setShowModalEditMultipleParticipants(true)}
                               backgroundColor={'#B0D7AF'}
                               disabled={ selectedParticipants.length === 0 }
+                              routeSection={'participants'}
                           >
                               <Image
                                   src={edit}
@@ -146,6 +148,7 @@ function ParticipantWindow () {
                           toolTip={'Import Participants from csv file'}
                           onButtonClick={() => document.getElementById('student-input').click()}
                           backgroundColor={'#B0D7AF'}
+                          routeSection={'import'}
                       >
                           <span className="button-text"> Import Participants</span>
                       </CustomButton>
@@ -162,6 +165,7 @@ function ParticipantWindow () {
                               toolTip={'Edit multiple participants simultaneously'}
                               onButtonClick={() => setIsEditModeActive(true)}
                               backgroundColor={'#B0D7AF'}
+                              routeSection={'participants'}
                           >
                               <Image
                                   src={edit}
@@ -180,6 +184,7 @@ function ParticipantWindow () {
                           onButtonClick={() => setShowModalDeleteParticipant(true)}
                           backgroundColor={'#C40233'}
                           disabled={ selectedParticipants.length === 0 }
+                          routeSection={'participants'}
                       >
                           <Image
                               src={deleteButton}

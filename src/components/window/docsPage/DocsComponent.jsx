@@ -74,7 +74,7 @@ function DocsComponent () {
                 <Row>
                     <Col>
                         <Card>
-                            <Card.Body>
+                            <Card.Body id='participants'>
                                 <Card.Title>Manage your participants</Card.Title>
                                 <Card.Text>
                                     <span className={'docs-text'}>
@@ -110,7 +110,7 @@ function DocsComponent () {
                 <Row>
                     <Col>
                         <Card>
-                            <Card.Body>
+                            <Card.Body id='slots-and-rooms'>
                                 <Card.Title>Manage Slots and Rooms</Card.Title>
                                 <Card.Text>
                                     <span className={'docs-text'}>
@@ -146,7 +146,7 @@ function DocsComponent () {
                 <Row>
                     <Col>
                         <Card>
-                            <Card.Body>
+                            <Card.Body id='settings'>
                                 <Card.Title>Choosing the Settings</Card.Title>
                                 <Card.Text>
                                     <span className={'docs-text'}>
@@ -177,7 +177,7 @@ function DocsComponent () {
                 <Row>
                     <Col>
                         <Card>
-                            <Card.Body id='section-three'>
+                            <Card.Body id='working-with-results'>
                                 <Card.Title>Working with the results</Card.Title>
                                 <Card.Text>
                                     <span className={'docs-text'}>

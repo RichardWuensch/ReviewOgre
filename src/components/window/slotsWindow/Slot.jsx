@@ -71,7 +71,8 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                         <Col lg={9} md={9} sm={9}>
                             <CustomIconButton
                                 onButtonClick={() => expandAndToggle()}
-                                toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}>
+                                toolTip={isAccordionOpen ? 'Click to hide rooms' : 'Click to show rooms'}
+                                routeSection={'slots-and-rooms'}>
                                 <Image src={alarmImage} alt={'alarmImage'} />
                                 <span className={'w-100'} style={{ paddingLeft: 5 }}>
                                 {getSlotDescription()}
@@ -85,19 +86,22 @@ function SlotCard ({ roomSlot, eventKey, changePossible, ...props }) {
                                         <CustomIconButton
                                             as="button"
                                             onButtonClick={() => setShowModalAddSlotCopyRooms(true)}
-                                            toolTip={'Copy the rooms of this slot in a new slot.'}>
+                                            toolTip={'Copy the rooms of this slot in a new slot.'}
+                                            routeSection={'slots-and-rooms'}>
                                             <Image src={copyImage} alt={'icon'}/>
                                         </CustomIconButton>
                                         <CustomIconButton
                                             as="button"
                                             onButtonClick={() => setShowModalEditSlot(true)}
-                                            toolTip={'Edit this slot'}>
+                                            toolTip={'Edit this slot'}
+                                            routeSection={'slots-and-rooms'}>
                                             <Image src={editImage} alt={'icon'}/>
                                         </CustomIconButton>
                                         <CustomIconButton
                                             as="button"
                                             onButtonClick={() => setShowModalDeleteSlot(true)}
-                                            toolTip={'Delete this slot and linked rooms'}>
+                                            toolTip={'Delete this slot and linked rooms'}
+                                            routeSection={'slots-and-rooms'}>
                                             <Image src={deleteButton} alt={'icon'}/>
                                         </CustomIconButton>
                                     </>
