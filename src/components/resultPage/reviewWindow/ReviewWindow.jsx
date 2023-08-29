@@ -55,17 +55,27 @@ function ReviewWindow () {
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
   const [sortedParticipants, setSortedParticipants] = useState([]);
+  const [avgCounts, setAvgCounts] = useState({
+    totalCount: 0,
+    reviewerCount: 0
+  });
   const [showExportOptions, setShowExportOptions] = useState(false);
 
   const [deleteTrigger, setDeleteTrigger] = useState(0);
 
   React.useEffect(() => {
+    console.log(avgCounts);
     calculateFairness();
+    console.log(avgCounts);
   }, []);
 
   const calculateFairness = () => {
     const avgParticipantTotalCount = Math.round(items.reduce((sum, participant) => sum += participant.getTotalCount(), 0) / items.length);
     const avgParticipantReviewerCount = Math.round(items.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / items.length);
+    setAvgCounts({
+      totalCount: avgParticipantTotalCount,
+      reviewerCount: avgParticipantReviewerCount
+    });
     for (const participant of items) {
       participant.calculateFairness(avgParticipantTotalCount, avgParticipantReviewerCount);
     }
@@ -207,7 +217,7 @@ function ReviewWindow () {
                       <td>{reviewer.getFirstName() + ' ' + reviewer.getLastName()}</td>
                       <td>{reviewer.getEmail()}</td>
                       <td>
-                        <ParticipantFairnessIndicator participant={reviewer} />
+                        <ParticipantFairnessIndicator participant={reviewer} avgCounts={avgCounts} />
                       </td>
                     </Draggable>
                 ))}

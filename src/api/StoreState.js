@@ -88,8 +88,8 @@ export default class StoreState {
   }
 
   /**
-   * save the result as .txt-File
-   * @param {list} roomSlots - all neccessary information from the result
+   * opens the result in txt form in a new browser tab
+   * @param {list} roomSlots - all necessary information from the result
    */
   saveAsTXT (roomSlots) {
     let result = '';
@@ -105,16 +105,25 @@ export default class StoreState {
             ' to ' + converter.getTimeHHmm(s.getEndTime()) +
             ' in ' + room.getName() + '\n';
         result += (room.getBeamerNeeded() ? 'Beamer needed' : 'No Beamer needed') + '\n';
-        result += 'Author: ' + converter.getParticipantAttributsForPrinting(room.getReview().getAuthor()) + '\n';
-        result += 'Moderator: ' + converter.getParticipantAttributsForPrinting(room.getReview().getModerator()) + '\n';
-        result += 'Notary: ' + converter.getParticipantAttributsForPrinting(room.getReview().getNotary()) + '\n';
+        result += 'Author: ' + converter.getParticipantAttributesForPrintingEnglish(room.getReview().getAuthor()) + '\n';
+        result += 'Moderator: ' + converter.getParticipantAttributesForPrintingEnglish(room.getReview().getModerator()) + '\n';
+        result += 'Notary: ' + converter.getParticipantAttributesForPrintingEnglish(room.getReview().getNotary()) + '\n';
         for (const reviewer of room.getReview().getReviewer()) {
-          result += 'Reviewer: ' + converter.getParticipantAttributsForPrinting(reviewer) + '\n';
+          result += 'Reviewer: ' + converter.getParticipantAttributesForPrintingEnglish(reviewer) + '\n';
         }
         result += '*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x' + '\n';
       }
     }
-    const blob = new Blob([result], { type: 'text/plain' });
-    saveAs(blob, 'result.txt');
+    const newTab = window.open();
+    newTab.document.title = 'result.txt';
+    newTab.document.write(`
+        <html>
+            <head>
+                <title>mail.txt</title>
+            </head>
+            <body>
+                <pre>${result}</pre>
+            </body>
+          </html>`);
   }
 }

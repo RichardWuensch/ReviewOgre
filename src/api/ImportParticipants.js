@@ -15,7 +15,7 @@ export default class ImportParticipants {
     }
     return new Promise((resolve) => {
       if (fileContent.includes(',') && fileContent.includes(';')) {
-        throw new Error('Both Delimitors "," and ";" were found in file');
+        throw new Error('Both Delimiters "," and ";" were found in the file.');
       }
 
       const parsedContent = Papa.parse(fileContent, { skipEmptyLines: true });
@@ -23,16 +23,22 @@ export default class ImportParticipants {
         if (parsedContent.errors.length === 1) {
           throw new Error(parsedContent.errors[1].message);
         } else if (parsedContent.errors.length > 1) {
-          throw new Error('Multiple Errors occured while parsing the file');
+          throw new Error('Multiple Errors occurred while parsing the file.');
         } else {
           throw new Error('The parsed file content is empty.');
         }
       }
 
-      const parsedData = parsedContent.data.filter(row => row[0] !== 'sep='); // delete seperator metadata line
+      const parsedData = parsedContent.data.filter(row => row[0] !== 'sep='); // delete separator metadata line
+      if (parsedData[0].length === 1) {
+        throw new Error('Error: The first line could not be split. This can happen, if the whole line is enclosed in " ".');
+      }
       if (this.isMoodleLine(parsedData[0])) {
         const groups = parsedData.slice(1); // get all groups without the header
-        resolve(this.parseParticipantsFromGroups(groups));
+        resolve(this.parseParticipantsFromMoodleGroups(groups));
+      } else if (this.isIliasLine(parsedData[0])) {
+        const iliasParticipants = parsedData.slice(1); // without header
+        resolve(this.parseParticipantsFromIlias(iliasParticipants));
       } else {
         // direct import: firstname;lastname;email;group
         const participantList = parsedData.slice(0);
@@ -46,10 +52,10 @@ export default class ImportParticipants {
             line[1] === 'Group Name' &&
             line[2] === 'Group Size' &&
             line[3] === 'Group Description') ||
-          line.size > 4; // does not need header to classify
+          line.length > 6; // does not need header to classify
   }
 
-  parseParticipantsFromGroups (groups) {
+  parseParticipantsFromMoodleGroups (groups) {
     const participants = [];
     for (const group of groups) {
       if (group[1] === '') {
@@ -57,13 +63,13 @@ export default class ImportParticipants {
       }
       const groupSize = group[2];
       if (group.length !== 8 + groupSize * 5) { // 8 attributes before members, 5 attributes for every member
-        throw new Error(`Group Size attribute (=${groupSize}) is not equal to actual size on group "${group[1]}"`);
+        throw new Error(`Group Size attribute (=${groupSize}) is not equal to actual size for group "${group[1]}".`);
       }
 
       // for every member in a group: create a new Participant object
       let groupIndex = 10; // firstname of first group member
       for (let participantIndex = 0; participantIndex < groupSize; participantIndex++) {
-        participants.push(new Participant(undefined, -1,
+        participants.push(new Participant(undefined, undefined,
           group[groupIndex], // firstname
           group[groupIndex + 1], // lastname
           group[groupIndex + 2], // email
@@ -73,6 +79,35 @@ export default class ImportParticipants {
       }
     }
 
+    return participants;
+  }
+
+  isIliasLine (line) {
+    return (line[0] === 'Rolle/Status' &&
+        line[1] === 'Nachname' &&
+        line[2] === 'Vorname' &&
+        line[3] === 'Benutzername') ||
+      line.length === 6;
+  }
+
+  parseParticipantsFromIlias (iliasParticipants) {
+    const participants = [];
+    let lineNumber = 1;
+    for (const participantRow of iliasParticipants) {
+      if (participantRow.length < 6) {
+        throw new Error(`Participants must have the 6 attributes Rolle/Status, Nachname, Vorname, Benutzername, Email and Gruppenmitgliedschaften. File line: ${lineNumber}`);
+      } else if (participantRow[5] === '') {
+        throw new Error(`Group Name cannot be empty. File line: ${lineNumber}`);
+      }
+
+      participants.push(new Participant(undefined, undefined,
+        participantRow[2], // firstname
+        participantRow[1], // lastname
+        participantRow[4], // email
+        participantRow[5] // group name
+      ));
+      lineNumber++;
+    }
     return participants;
   }
 
@@ -86,7 +121,7 @@ export default class ImportParticipants {
         throw new Error(`Group Name cannot be empty. File line: ${lineNumber}`);
       }
 
-      participants.push(new Participant(undefined, -1,
+      participants.push(new Participant(undefined, undefined,
         participantRow[0], // firstname
         participantRow[1], // lastname
         participantRow[2], // email

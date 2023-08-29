@@ -145,7 +145,8 @@ function ParticipantWindow () {
                 : (
                   <div className={'button-container-participants'}>
                       <CustomButton
-                          toolTip={'Import Participants from csv file'}
+                          toolTip={'Import Participants from csv file (moodle, ilias or directly)'}
+                          routeSection={'participant-import'}
                           onButtonClick={() => document.getElementById('student-input').click()}
                           backgroundColor={'#B0D7AF'}
                           routeSection={'import'}
