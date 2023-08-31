@@ -11,6 +11,7 @@ import ExportOptions from '../exportOptions/ExportOptions';
 import { useSettings } from '../../shared/context/SettingsContext';
 import ParticipantFairness from '../../../data/models/ParticipantFairness';
 import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
+import ErrorModal from "../../modals/errorModal/ErrorModal";
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -54,6 +55,7 @@ function ReviewWindow () {
   const settings = useSettings();
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
+  const [participantDragError, setParticipantDragError] = React.useState(null);
   const [sortedParticipants, setSortedParticipants] = useState([]);
   const [avgCounts, setAvgCounts] = useState({
     totalCount: 0,
@@ -102,7 +104,7 @@ function ReviewWindow () {
         });
       }
     } catch (error) {
-      alert(error.message);
+      setParticipantDragError(error);
     }
   };
 
@@ -229,6 +231,11 @@ function ReviewWindow () {
               show={showExportOptions}
               onHide={() => setShowExportOptions(false)}
           />
+          <ErrorModal
+              show={participantDragError !== null}
+              errorObject={participantDragError}
+              modalHeader={"Can't put Participant in this Review"}
+              onHide={() => setParticipantDragError(null)} />
         </DndContext>
   );
 }
