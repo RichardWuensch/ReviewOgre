@@ -125,8 +125,11 @@ function ReviewWindow () {
             <Col xl={8}>
                 <div style={{ maxHeight: '100%' }}>
                   {roomSlots.map((roomSlot, roomSlotIndex) =>
-                    roomSlot.getRooms().map((room, roomIndex) => {
-                      const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
+                      roomSlot
+                          .getRooms()
+                          .filter(room => room.getReview()?.getAuthor())
+                          .map((room, roomIndex) => {
+                            const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
 
                       return (
                               <Droppable id={accordionItemKey} key={accordionItemKey}>
