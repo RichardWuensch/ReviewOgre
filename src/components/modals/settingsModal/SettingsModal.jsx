@@ -38,6 +38,7 @@ function SettingsModal (props) {
   function toggleAbReview () {
     const settingsTemp = getSettingsCopy();
     settingsTemp.abReview = !settingsTemp.abReview;
+    settingsTemp.internationalGroups = false;
 
     updateSettings(settingsTemp);
   }
@@ -45,6 +46,7 @@ function SettingsModal (props) {
   function toggleInternationalGroups () {
     const settingsTemp = getSettingsCopy();
     settingsTemp.internationalGroups = !settingsTemp.internationalGroups;
+    settingsTemp.abReview = false;
 
     updateSettings(settingsTemp);
   }
