@@ -59,7 +59,7 @@ function SettingsModal (props) {
     setlanguageLevelState(settingsTemp.internationalGroups);
     setTimeout(() => {
       setModalShow(false);
-    }, 5000);
+    }, 10000);
 
     updateSettings(settingsTemp);
   }
@@ -105,7 +105,9 @@ function SettingsModal (props) {
               <br></br>
               {languageLevelState ?
                   (<span>
-                  Change Text to if languageLevel is enabled
+                  To ensure reviews with at least 6 international students in 2 groups,
+                    RevOger works slightly different by using participants
+                    from the author group for the roles of notary and moderator.
                 </span>)
                   :
                   (<span>

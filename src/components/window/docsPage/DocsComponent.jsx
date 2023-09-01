@@ -44,7 +44,8 @@ function DocsComponent () {
                                     This tool offers multiple ways to import data:
                                         <ol>
                                             <li>
-                                                Import you previous state from your local device: You able to import data you have
+                                                <b style={{ fontWeight: 'bold' }}>Import you previous state from your local device: </b>
+                                                 You  are able to import data you have
                                                 previously downloaded from the application. This includes all of the participants, slots,
                                                 rooms and settings. If you have already calculated the reviews these will be available as well.
                                                 To import find the 'Save/Load Options' in the Navbar. Choose the 'Load State' option. You can
@@ -149,17 +150,24 @@ function DocsComponent () {
                                         by clicking the "Settings" Button in the bottom right corner. This will open a popup with following options:
                                         <ul>
                                             <li>
-                                                <strong>Author is Notary</strong>:
+                                                <b style={{ fontWeight: 'bold' }}>Author is Notary: </b>
                                             </li>
                                             <li>
-                                                <strong>Break for Moderator and Reviewer</strong>: This option will allow participants that have the role of moderator or reviewer to
+                                                 <b style={{ fontWeight: 'bold' }}>Break for Moderator and Reviewer: </b>
+                                                 This option will allow participants that have the role of moderator or reviewer to
                                                 have a break before their next review by skipping their next possible review
                                             </li>
                                             <li>
-                                                <strong>A/B Review</strong>:
+                                                 <b style={{ fontWeight: 'bold' }}>A/B Review: </b>
                                             </li>
                                             <li>
-                                                <strong>International Groups</strong>: This option will assign students which are not proficient in german to be in reviews together so the reviews can be held in english
+                                                 <b style={{ fontWeight: 'bold' }}>International Groups:  </b>
+                                                The RevOger primarily tries to assign the international reviews according to
+                                                the same scheme as the others. In order to offer a high-quality review experience
+                                                to non-German-speaking participants and to enable reviews with at least 6 international
+                                                students in 2 groups, the RevOger works slightly differently in these cases and uses
+                                                participants from the author group for the roles of notary and moderator.
+                                                Alternatively, you can also conduct a separate run exclusively for the international students.
                                             </li>
                                         </ul>
 
@@ -176,11 +184,29 @@ function DocsComponent () {
                                 <Card.Title>Working with the results</Card.Title>
                                 <Card.Text>
                                     <span className={'docs-text'}>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet mi
-                                    vitae augue ultricies, eget vulputate nisi vestibulum. Fusce aliquam enim sit
-                                    amet orci aliquet, at cursus neque feugiat. Pellentesque quis mauris et odio
-                                    molestie vestibulum. Nullam fermentum efficitur ex nec volutpat. Proin nec
-                                    vestibulum lectus. Nullam facilisis auctor risus. Sed vitae pellentesque leo.
+                                        When the algorithm has successfully calculated a schedule you will be redirected to
+                                        a results page:
+                                        <p>
+                                            An overview of all scheduled reviews in each room will be displayed
+                                            with each role assigned to a participant.
+                                        </p>
+                                        <p>
+                                            You can export the results by clicking the "Show Export Options" Button
+                                        </p>
+                                        <p>
+                                            You have following options to change the results:
+                                        </p>
+
+                                            <ul>
+                                            <li>
+                                                <b style={{ fontWeight: 'bold' }}>Change assignments:  </b>
+                                                You have the option to change the calculated by dragging a participant
+                                                from the right column into the review you want. This participant will then be assigned
+                                                to this review as another reviewer. You can also remove reviewers from their reviews.
+                                                ReviewOger will tell you if a participant is not available
+                                                for the review you dragged the participant into.
+                                            </li>
+                                        </ul>
                                     </span>
                                 </Card.Text>
                             </Card.Body>
