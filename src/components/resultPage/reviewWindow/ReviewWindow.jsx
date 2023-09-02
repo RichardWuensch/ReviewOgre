@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './ReviewWindow.css';
 import { Col, Image, Row, Table } from 'react-bootstrap';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
@@ -29,8 +29,12 @@ function Droppable ({ id, children }) {
 function Draggable ({ id, children }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
   const tdStyle = transform ? { backgroundColor: 'transparent' } : { backgroundColor: 'white' };
-  const style = transform
-    ? {
+  const [scrollY, setScrollY] = useState(0);
+
+  const calculateTransform = () => {
+    if (transform) {
+
+      return {
         transform: `translate3d(${transform.x}px, ${transform.y - scrollY}px, 0)`,
         backgroundColor: '#D3D3D3',
         position: 'fixed',
@@ -40,11 +44,21 @@ function Draggable ({ id, children }) {
         width: '25vw',
         borderRadius: '5px',
         fontWeight: 'bold'
-      }
-    : undefined;
+      };
+    }
+
+    return undefined;
+  };
+
+  useEffect(() => {
+    const tableContainer = document.querySelector('.participant-result-list-container .table-container');
+    if (tableContainer) {
+      setScrollY(tableContainer.scrollTop);
+    }
+  }, [transform]);
 
   return (
-      <tr ref={setNodeRef} style={style} {...listeners} {...attributes}>
+      <tr ref={setNodeRef} style={calculateTransform()} {...listeners} {...attributes}>
         {React.Children.map(children, child =>
             React.cloneElement(child, { style: tdStyle })
         )}
@@ -114,6 +128,7 @@ function ReviewWindow () {
         <DndContext onDragEnd={handleDragEnd}>
           <Row style={{ maxHeight: '75vh' }}>
             <Col xl={8}>
+              <div className={'review-list-container'}>
                 <div style={{ maxHeight: '100%' }}>
                   {roomSlots.map((roomSlot, roomSlotIndex) =>
                     roomSlot.getRooms().map((room, roomIndex) => {
@@ -121,9 +136,8 @@ function ReviewWindow () {
 
                       return (
                               <Droppable id={accordionItemKey} key={accordionItemKey}>
-                                  <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
+                                <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
                                       ' from ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime() + ' o\'Clock'}</h5>
-
                                   <Table
                                       responsive
                                       borderless
@@ -182,6 +196,7 @@ function ReviewWindow () {
                     })
                   )}
                 </div>
+              </div>
             </Col>
             <Col xl={4}>
               <CustomButton
@@ -190,12 +205,11 @@ function ReviewWindow () {
                   toolTip={'Click to show export options, e.g. export results, room plan, RevAger Lite files, ...'}>
                 Show Export Options
               </CustomButton>
-
+              <div className={'participant-result-list-container'}>
+                <div className={'table-container'}>
               <Table
                   responsive
                   borderless
-                  className={'reviews-table'}
-                  style={{ zIndex: 0, marginTop: '20px' }}
               >
                 <thead>
                 <tr>
@@ -216,6 +230,8 @@ function ReviewWindow () {
                 ))}
                 </tbody>
               </Table>
+              </div>
+              </div>
             </Col>
           </Row>
           <ExportOptions
