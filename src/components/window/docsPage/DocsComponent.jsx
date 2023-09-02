@@ -26,8 +26,8 @@ function DocsComponent () {
                                         your data. The app can even be used without an internet connection - just click the install button
                                         in the search bar and you'll be able to use the tool whenever you need.
                                         <br /><br />
-                                        This tools is best used in combination with the RevAger/RevAgerLite application, as we offer
-                                        export-files which can be directly imported into these tools.
+                                        This tools is best used in combination with the <a href={'https://gitlab.com/kkohut/revager-lite'} target="_blank">RevAger/RevAgerLite</a>
+                                        application, as we offer export-files which can be directly imported into these tools.
                                     </span>
                                 </Card.Text>
                             </Card.Body>
@@ -190,13 +190,9 @@ function DocsComponent () {
                                             An overview of all scheduled reviews in each room will be displayed
                                             with each role assigned to a participant.
                                         </p>
-                                        <p>
-                                            You can export the results by clicking the "Show Export Options" Button
-                                        </p>
-                                        <p>
+                                         <p>
                                             You have following options to change the results:
                                         </p>
-
                                             <ul>
                                             <li>
                                                 <b style={{ fontWeight: 'bold' }}>Change assignments:  </b>
@@ -207,6 +203,47 @@ function DocsComponent () {
                                                 for the review you dragged the participant into.
                                             </li>
                                         </ul>
+                                        <p>
+                                            You can export the results by clicking the "Show Export Options" Button.
+                                            This will open a popup with different export options:
+                                            <ul>
+                                                <li>
+                                                     <b style={{ fontWeight: 'bold' }}>Open in Mailclient:  </b> This will
+                                                    open your preferred mail-provider and allow you to directly send invitations
+                                                    to all moderators with details about the upcoming review and its participants.
+                                                </li>
+                                                <li>
+                                                    <b style={{ fontWeight: 'bold' }}>Export Mail list:  </b> Another browser window will
+                                                    open and give you the mail text as well as addresses in plain text that you
+                                                    can download and alter to your liking
+                                                </li>
+                                                <li>
+                                                    <b style={{ fontWeight: 'bold' }}>Result as txt:  </b> This will download the
+                                                    results in .txt file format.
+                                                </li>
+                                                <li>
+                                                    <b style={{ fontWeight: 'bold' }}>Result as JSON:  </b> This will download the
+                                                    results in .json file format.
+                                                </li>
+                                                 <li>
+                                                    <b style={{ fontWeight: 'bold' }}>Download Table:  </b> This will download
+                                                     a PDF to your system with a room plan for the scheduled reviews to give you an
+                                                     overview of the rooms that are used in the respective time slot.
+                                                </li>
+                                                <li>
+                                                    <b style={{ fontWeight: 'bold' }}>Download Matrix:  </b> This will download
+                                                     a PDF to your system with matrix to give you a better understanding
+                                                    when rooms are occupied and when they are unused to eventually cancel
+                                                    the booking of unused rooms.
+                                                </li>
+                                                <li>
+                                                    <b style={{ fontWeight: 'bold' }}>Export reviews:  </b> A file compatible
+                                                    with the <a href={'https://gitlab.com/kkohut/revager-lite'} target="_blank">RevAgerLite</a> file format will be downloaded
+                                                    for further enhancement and improving quality of the reviews.
+                                                </li>
+                                            </ul>
+                                        </p>
+
                                     </span>
                                 </Card.Text>
                             </Card.Body>
