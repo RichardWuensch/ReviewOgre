@@ -1,72 +1,38 @@
-# Getting Started with Vite
+# ReviewOgerReloaded
 
-This project was bootstrapped with [Vite](https://vitejs.dev/guide/).
-
-
-## Visit the current deploy from main-branch under:
-
-Netlify: [ReviewOger Reloaded](https://reviewogerreloaded.netlify.app)
-
-## Available Scripts
+![Static Badge](https://img.shields.io/badge/project_status-active-green)
+![Static Badge](https://img.shields.io/badge/licence-MIT-blue)
+![Static Badge](https://img.shields.io/badge/version-2.0.0beta-green)
 
 
-In the project directory, you can run:
 
-### `npm start`
-> make sure to run `npm install` before starting the application
+## Description
+The software will be designed for the organization of a Technical Review, with special emphasis on the computer science sphere. However, anyone who may want to organize a technical review can use this product.
+This tool covers all steps necessary to arrange the groups based on roles and individual preferences by the organizer of the Review.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+For more in depth information on the requirements of this project visit
+our [SRS](https://docs.google.com/document/d/1VXwYljbB-xUfxrqCXUcMfloGxVUukZHKZIkH_6c83AA/edit?usp=sharing).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Visuals
+To get a quick overview on the looks of the application visit our latest 
+deploy: [ReviewOger Reloaded](https://reviewogerreloaded.netlify.app)
 
-### `npm test`
+## Usage
+The user documentation is provided in the application. Open the application in your
+browser and visit the docs-page to get information on how to use this tool.
 
-Launches the test runner in the interactive watch mode.\
+## Contributing
 
-### `npm build`
-> make sure to run `npm install` before the build
+If you want to contribute to this project please adhere to the rules outlined in
+the [Contributing.md](CONTRIBUTING.md)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+We provide a list of scripts for local development which are listed [here](docs/SCRIPTS.md).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Our in depth [developer documentation](docs/DEVELOPER.md) will help you to get a better understanding of the 
+project.
 
-### `npm run preview`
+## Authors and acknowledgment
+Show your appreciation to those who have contributed to the project.
 
-
-### `npm run lint:fix`
-
-Run es lint to show errors and warnings. Eslint will enforce coding styles and fix styling issues.
-
-### `npm run lint:txt`
-
-Creates a txt report of the styling issues in the project
-
-
-> All of the following test scripts require the application to be started
-> Please first use `npm install` to install al required dependencies
-
-### `npm run cy:open-e2e`
-
-Opens the cypress GUI in the configured browser. The GUI
-will show the available test scripts.
-
-### `npm run cy:open-unit`
-
-Opens the cypress GUI with the configured browser. The GUI
-will show the available unit tests.
-
-### `npm run cy:run-e2e`
-
-Runs the e2e tests in the terminal. The test results will be displayed
-in the terminal. The runs are available as .mp4 files in './cypress/videos'
-
-
-### `npm run cy:run-unit`
-
-Runs the unit tests in the terminal. The test results will be displayed
-in the terminal.
-
+## License
+This project is licensed under the [MIT License](LICENSE).
