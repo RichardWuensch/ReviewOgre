@@ -50,13 +50,15 @@ function Participant ({ participant, changePossible }) {
                                 <CustomIconButton
                                     as="button"
                                     onButtonClick={() => setShowModalEditParticipant(true)}
-                                    toolTip={'Edit this participant'}>
+                                    toolTip={'Edit this participant'}
+                                    routeSection={'participants'}>
                                     <Image src={edit} alt={'icon'}/>
                                 </CustomIconButton>
                                 <CustomIconButton
                                     as="button"
                                     onButtonClick={() => setShowModalDelete(true)}
-                                    toolTip={'Delete this participant'}>
+                                    toolTip={'Delete this participant'}
+                                    routeSection={'participants'}>
                                     <Image src={deleteButton} alt={'icon'}/>
                                 </CustomIconButton>
                             </div>

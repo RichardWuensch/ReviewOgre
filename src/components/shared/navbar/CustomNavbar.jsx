@@ -10,7 +10,9 @@ import StoreState from '../../../api/StoreState';
 import StateExportSaveReviewsModal from '../../modals/stateExportSaveReviewsModal/StateExportSaveReviewsModal';
 import ErrorModal from '../../modals/errorModal/ErrorModal';
 import { useSettings, useSettingsDispatch } from '../context/SettingsContext';
+import CustomIconButton from '../buttons/iconButton/CustomIconButton';
 import './CustomNavbar.css';
+import edit from "../../../media/pencil-square.svg";
 
 function CustomNavbar () {
   const location = useLocation();
@@ -131,17 +133,29 @@ function CustomNavbar () {
               <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto"></Nav>
                   <Nav>
-                      <Nav.Link className={(isActiveTab('/') ? 'active' : '')} as={ Link } to="/">Home</Nav.Link>
+                      <CustomIconButton
+                          as="div"
+                          toolTip={''}
+                          place={"bottom"}
+                          routeSection={'get-started'}>
+                          <Nav.Link className={(isActiveTab('/') ? 'active' : '')} as={ Link } to="/">Home</Nav.Link>
+                      </CustomIconButton>
                       <Nav.Link className={(isActiveTab('/reviews') ? 'active' : '') + 'cypress-e2e-review-page-nav'} as={ Link } to="/reviews">Reviews</Nav.Link>
                       <Nav.Link className={(isActiveTab('/docs') ? 'active' : '')} as={ Link } to="/docs">Docs</Nav.Link>
                       <NavDropdown title="Save/Load Options" id="basic-nav-dropdown">
-                          <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
-                          <input type="file"
-                                 id="file-input-config"
-                                 className='e2e-testing-load-state'
-                                 style={{ display: 'none' }}
-                                 onChange={() => { loadStateIntoLocalObjects(event); }}
-                                 accept='application/json'/>
+                          <CustomIconButton
+                              as="div"
+                              toolTip={''}
+                              place={"right"}
+                              routeSection={'import'}>
+                              <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
+                              <input type="file"
+                                     id="file-input-config"
+                                     className='e2e-testing-load-state'
+                                     style={{ display: 'none' }}
+                                     onChange={() => { loadStateIntoLocalObjects(event); }}
+                                     accept='application/json'/>
+                          </CustomIconButton>
                           <NavDropdown.Item onClick={checkForAssignedReviews}>Save State</NavDropdown.Item>
                       </NavDropdown>
                   </Nav>
