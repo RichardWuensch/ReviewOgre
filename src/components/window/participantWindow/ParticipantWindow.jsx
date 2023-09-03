@@ -9,7 +9,7 @@ import './ParticipantWindow.css';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
 import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
-import ImportParticipants from '../../../api/ImportParticipants';
+import ImportParticipants from '../../../import_export/ImportParticipants';
 import { Container, Image, Table } from 'react-bootstrap';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';

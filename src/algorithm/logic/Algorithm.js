@@ -1,4 +1,4 @@
-import ConverterForPrinting from '../../api/ConverterForPrinting';
+import ConverterForPrinting from '../../import_export/ConverterForPrinting';
 import Review from '../../data/models/Review';
 
 export default class Algorithm {

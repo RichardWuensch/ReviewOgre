@@ -5,14 +5,13 @@ import { useParticipants, useParticipantsDispatch } from '../context/Participant
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 import { Link, useLocation } from 'react-router-dom';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
-import LoadState from '../../../api/LoadState';
-import StoreState from '../../../api/StoreState';
+import LoadState from '../../../import_export/LoadState';
+import StoreState from '../../../import_export/StoreState';
 import StateExportSaveReviewsModal from '../../modals/stateExportSaveReviewsModal/StateExportSaveReviewsModal';
 import ErrorModal from '../../modals/errorModal/ErrorModal';
 import { useSettings, useSettingsDispatch } from '../context/SettingsContext';
 import CustomIconButton from '../buttons/iconButton/CustomIconButton';
 import './CustomNavbar.css';
-import edit from "../../../media/pencil-square.svg";
 
 function CustomNavbar () {
   const location = useLocation();
@@ -136,7 +135,7 @@ function CustomNavbar () {
                       <CustomIconButton
                           as="div"
                           toolTip={''}
-                          place={"bottom"}
+                          place={'bottom'}
                           routeSection={'get-started'}>
                           <Nav.Link className={(isActiveTab('/') ? 'active' : '')} as={ Link } to="/">Home</Nav.Link>
                       </CustomIconButton>
@@ -146,7 +145,7 @@ function CustomNavbar () {
                           <CustomIconButton
                               as="div"
                               toolTip={''}
-                              place={"right"}
+                              place={'right'}
                               routeSection={'import'}>
                               <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
                               <input type="file"

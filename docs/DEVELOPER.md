@@ -49,7 +49,7 @@ root/
 ├── fonts/                                  (locally included fonts)
 ├── src/
 │   ├── algorithm/
-│   ├── api/                                (import/export functionality)
+│   ├── import_export/                      (import/export functionality)
 │   ├── components                          (UI components)
 │   ├── data/                               (models)
 │   └── media/
