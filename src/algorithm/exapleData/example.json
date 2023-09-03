@@ -5,7 +5,7 @@
    "lastName": "Delacruz",
    "email": "nulla.magna.malesuada@turpis.ca",
    "group": "1"
-  },
+ },
   {
    "firstName": "Abel",
    "lastName": "Waters",
@@ -16,24 +16,6 @@
    "firstName": "Dominic",
    "lastName": "Lawson",
    "email": "velit.eu@Fuscemi.edu",
-   "group": "1"
-  },
-  {
-   "firstName": "sd",
-   "lastName": "Lawssdfon",
-   "email": "sdf.eu@Fuscemi.edu",
-   "group": "1"
-  },
-  {
-   "firstName": "dg",
-   "lastName": "dfg",
-   "email": "dfggrtb.dfg@Fuscemi.edu",
-   "group": "1"
-  },
-  {
-   "firstName": "gberrel",
-   "lastName": "dv",
-   "email": "sdf.dfg@Fuscemi.edu",
    "group": "1"
   },
   {
@@ -664,7 +646,9 @@
    "firstName": "Jaden",
    "lastName": "Kemp",
    "email": "ante.blandit@urnaUttincidunt.ca",
-   "group": "36"
+   "group": "36",
+   "topic": "B",
+   "languageLevel": "Native Speaker"
   }
  ],
  "roomSlots": [

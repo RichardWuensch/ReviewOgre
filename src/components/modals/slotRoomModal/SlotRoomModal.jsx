@@ -9,7 +9,7 @@ import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } fr
 import RoomSlot from '../../../data/models/RoomSlot';
 import Room from '../../../data/models/Room';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
-import ConverterForPrinting from '../../../api/ConverterForPrinting';
+import ConverterForPrinting from '../../../import_export/ConverterForPrinting';
 import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
@@ -30,9 +30,9 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
   const [isEditMode] = useState(props.edit === 'true');
   const [isCopyMode] = useState(props.copy === 'true');
   const [items, setItems] = useState(copiedRooms
-      ?.map((roomTemp2) => new Room(roomTemp2.getName(), roomTemp2.getBeamerNeeded())) ?? roomslot
-      ?.getRooms()
-      .map((roomTemp1) => new Room(roomTemp1.getName(), roomTemp1.getBeamerNeeded())) ?? []);
+    ?.map((roomTemp2) => new Room(roomTemp2.getName(), roomTemp2.getBeamerNeeded())) ?? roomslot
+    ?.getRooms()
+    .map((roomTemp1) => new Room(roomTemp1.getName(), roomTemp1.getBeamerNeeded())) ?? []);
 
   const roomSlots = useRoomSlots();
 
@@ -40,9 +40,9 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
     // register deleted rooms
     const tempInitialItems =
         copiedRooms
-            ?.map((roomTemp2) => new Room(roomTemp2.getName(), roomTemp2.getBeamerNeeded())) ?? roomslot
-            ?.getRooms()
-            .map((roomTemp1) => new Room(roomTemp1.getName(), roomTemp1.getBeamerNeeded())) ?? [];
+          ?.map((roomTemp2) => new Room(roomTemp2.getName(), roomTemp2.getBeamerNeeded())) ?? roomslot
+          ?.getRooms()
+          .map((roomTemp1) => new Room(roomTemp1.getName(), roomTemp1.getBeamerNeeded())) ?? [];
     setItems(tempInitialItems);
   }, [roomslot, copiedRooms]);
 
@@ -88,7 +88,6 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
       }
     }
   }, [addedItemRef.current]); */
-
 
   const [activeItemRef, setActiveItemRef] = useState(null);
 
@@ -137,21 +136,21 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
   function parseTime (time) {
     const [hours, minutes] = time.split(':');
     return new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDay(),
-        parseInt(hours, 10),
-        parseInt(minutes, 10)
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDay(),
+      parseInt(hours, 10),
+      parseInt(minutes, 10)
     );
   }
 
   function createTempRoomSlot () {
     return new RoomSlot(
-        slotId,
-        date,
-        parseTime(startTime),
-        parseTime(endTime),
-        items
+      slotId,
+      date,
+      parseTime(startTime),
+      parseTime(endTime),
+      items
     );
   }
 
@@ -375,8 +374,8 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
             </Row>
             <span>
             {isEditMode
-                ? 'Edit or Add Rooms to this Slot:'
-                : 'Create Rooms for this Time Slot:'}
+              ? 'Edit or Add Rooms to this Slot:'
+              : 'Create Rooms for this Time Slot:'}
           </span>
           <div ref={accordionContainerRef} style={{ marginTop: 10, maxHeight: '50vh', overflowY: 'auto' }}>
             <Accordion

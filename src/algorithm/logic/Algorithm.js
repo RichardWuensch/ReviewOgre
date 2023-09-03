@@ -1,4 +1,4 @@
-import ConverterForPrinting from '../../api/ConverterForPrinting';
+import ConverterForPrinting from '../../import_export/ConverterForPrinting';
 import Review from '../../data/models/Review';
 
 export default class Algorithm {
@@ -19,31 +19,17 @@ export default class Algorithm {
   #maximumTries;
 
   constructor (participants, participantsDispatch, roomSlots, roomSlotsDispatch, settings, maximumTries) {
-    this.#participants = this.#resetParticipants(participants);
+    this.#participants = participants;
     this.#participantsDispatch = participantsDispatch;
     this.#roomSlotsDispatch = roomSlotsDispatch;
-    this.#roomSlots = this.#resetRoomSlots(roomSlots);
+    this.#roomSlots = roomSlots;
+    this.#clearReviews();
 
     this.#authorIsNotary = settings.authorIsNotary;
     this.#abReview = settings.abReview;
     this.#breakForModeratorAndReviewer = settings.breakForModeratorAndReviewer;
+    this.#internationalGroups = settings.internationalGroups;
     this.#maximumTries = (maximumTries === undefined) ? 300 : maximumTries;
-  }
-
-  #resetRoomSlots (roomSlots) {
-    for (const roomSlot of roomSlots) {
-      for (const room of roomSlot.getRooms()) {
-        room.resetReview();
-      }
-    }
-    return roomSlots;
-  }
-
-  #resetParticipants (participants) {
-    for (const p of participants) {
-      p.resetStatistics();
-    }
-    return participants;
   }
 
   /**
@@ -54,17 +40,25 @@ export default class Algorithm {
   * are there still somebody without a reviewer role, this one is added as a additional reviewer to any review
   */
   run () {
-    this.#prechecks();
-    const groups = Array.from(this.#getGroupMap(this.#participants).keys());
+    this.prechecks();
+    const groups = Array.from(this.getGroupMap(this.#participants).keys());
 
     let errorFound = true;
     let errorCounter = 0;
     while (errorFound) {
       if (errorCounter > this.#maximumTries) {
+        if (this.#abReview === true) {
+          for (const roomSlot of this.#roomSlots) {
+            for (const room of roomSlot.getRooms()) {
+              room.resetNotNeeded();
+            }
+          }
+        }
         throw new Error('No solution found after ' + errorCounter + ' tries of running algorithm.',
           { cause: 'noSolution' }
         );
       }
+      let breaker = false;
 
       this.#setAuthorOfRandomGroupMember(groups);
       for (const roomSlot of this.#roomSlots) {
@@ -90,8 +84,14 @@ export default class Algorithm {
             console.log(error.message);
             errorFound = true; // must be reset bc we don't break out of 2 nested for loops
             errorCounter++;
+            this.printResult();
             this.#clearReviews();
+            breaker = true;
+            break;
           }
+        }
+        if (breaker === true) {
+          break;
         }
       }
     }
@@ -182,7 +182,7 @@ export default class Algorithm {
    * Checks if the settings are possible with the input data call corresponding next methods
    * @throws {Error} - to show what's the problem
    */
-  #prechecks () {
+  prechecks () {
     if (this.#abReview === false) {
       if (this.#internationalGroups === true) {
         this.#participants.forEach(p => {
@@ -193,7 +193,7 @@ export default class Algorithm {
         this.checksLanguageLevel();
         this.#participants = this.#participants.filter(p => p.getLanguageLevel() !== 'A1' && p.getLanguageLevel() !== 'A2' && p.getLanguageLevel() !== 'B1');
       }
-      const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(this.#participants.length, [...this.#getGroupMap(this.#participants)].length);
+      const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(this.#participants.length, [...this.getGroupMap(this.#participants)].length);
       this.#numberOfReviewers = sumOfParticipantsAndReviewerPerReview.numberOfReviewers;
       this.#participantsPerReview = sumOfParticipantsAndReviewerPerReview.participantsPerReview;
       this.checks(this.#participants);
@@ -203,14 +203,14 @@ export default class Algorithm {
           throw new Error('Some participants have no topic', { cause: 'prechecksFailed' });
         }
       });
-      const topicMap = this.#getTopicMap();
+      const topicMap = this.getTopicMap();
       if (topicMap.size < 2) {
-        throw new Error('For AB-Reviews at least 2 different topics are needed', { cause: 'prechecksFailed' }); // TODO check in frontend
+        throw new Error('For AB-Reviews at least 2 different topics are needed', { cause: 'prechecksFailed' });
       }
       const listOfNumberOfReviewers = [];
       const listOfParticipantsPerReview = [];
       for (const participantsPerTopic of topicMap.values()) {
-        const groupMap = this.#getGroupMap(participantsPerTopic);
+        const groupMap = this.getGroupMap(participantsPerTopic);
         const sumOfParticipantsAndReviewerPerReview = this.#calculateNumberOfReviewer(participantsPerTopic.length, groupMap.size);
         listOfNumberOfReviewers.push(sumOfParticipantsAndReviewerPerReview.numberOfReviewers);
         listOfParticipantsPerReview.push(sumOfParticipantsAndReviewerPerReview.participantsPerReview);
@@ -237,14 +237,21 @@ export default class Algorithm {
     let roomCount = 0;
     let roomCountWithNotNeededRooms = 0;
     let errorMessage = '';
-    const groupMap = this.#getGroupMap(participants);
+    const groupMap = this.getGroupMap(participants);
 
-    const maxNumberOfRoomsInSlots = Math.floor(participants.length / this.#participantsPerReview); // if there are more rooms they can be shown as unnecessary and the booking can canceled
+    if (participants.length === 0) {
+      throw new Error('There are no participants.', { cause: 'prechecksFailed' });
+    }
+
+    const maxNumberOfRoomsInSlots = Math.floor((participants.length - ((this.#authorIsNotary === true && this.#abReview === true) ? 2 : (this.#authorIsNotary === false && this.#abReview === true) ? 1 : 0) * groupMap.size) / this.#participantsPerReview); // if there are more rooms they can be shown as unnecessary and the booking can canceled
     const minAmountOfSlots = Math.ceil(this.#breakForModeratorAndReviewer ? (groupMap.size / maxNumberOfRoomsInSlots) * 2 : (groupMap.size / maxNumberOfRoomsInSlots));
     for (const s of this.#roomSlots) {
+      if (roomCount >= groupMap.size) {
+        break;
+      }
       let rooms = [];
       if (this.#abReview === true) {
-        rooms = s.getRooms().filter(r => (r.getNotNeeded().bool === true && r.getNotNeeded().topic !== topic) || r.getNotNeeded().topic === '');
+        rooms = s.getRooms().filter(r => ((r.getNotNeeded().bool === true && r.getNotNeeded().topic !== topic) || r.getNotNeeded().topic === ''));
       } else {
         rooms = s.getRooms();
       }
@@ -260,7 +267,7 @@ export default class Algorithm {
             rooms[i].setNotNeeded(true, topic);
           }
         } else {
-          for (let i = maxNumberOfRoomsInSlots - 1; i < rooms.length; i++) {
+          for (let i = maxNumberOfRoomsInSlots; i < rooms.length; i++) {
             rooms[i].setNotNeeded(true, topic);
           }
         }
@@ -268,16 +275,15 @@ export default class Algorithm {
         roomCount += rooms.length;
       }
     }
-    for (const value of this.#getGroupMap(participants).values()) {
+    if (this.#authorIsNotary === false && groupMap.size === 2 && this.#participantsPerReview === 6) throw new Error('If only 2 groups per topic exist, authorIsNotary must be active.', { cause: 'prechecksFailed' });
+    if (groupMap.size < 2) throw new Error('At least 2 groups are needed.', { cause: 'prechecksFailed' });
+    for (const value of this.getGroupMap(participants).values()) {
       if ((this.#abReview === false && ((participants.length - value.length) < (this.#participantsPerReview - 1))) || ((participants.length) < (this.#participantsPerReview - 1))) {
-        errorMessage += 'There are not enough participants to build review groups.\n';
-        break;
+        throw new Error('There are not enough participants to build review groups.', { cause: 'prechecksFailed' });
       }
     }
-    if (this.#authorIsNotary === false && groupMap.size === 2 && this.#participantsPerReview < 6) errorMessage += 'If only 2 groups per topic exist, authorIsNotary must be active.\n';
-    if (groupMap.size < 2) errorMessage += 'At least 2 groups are needed.\n';
     if (!errorMessage) {
-      if (groupMap.size > roomCountWithNotNeededRooms) errorMessage += `There are not enough rooms for ${groupMap.size} groups.\n`;
+      if (groupMap.size > roomCountWithNotNeededRooms) errorMessage += `There are not enough rooms for ${Array.from(this.getGroupMap(this.#participants).keys()).length} groups with this settings.\n`;
       else if (groupMap.size > roomCount) errorMessage += `With the current configuration only ${maxNumberOfRoomsInSlots} rooms per slot can be used to schedule reviews. Please add more rooms to the slots with less then ${maxNumberOfRoomsInSlots} rooms or create more slots.\n`;
       if (minAmountOfSlots > this.#roomSlots.length) errorMessage += `There are not enough slots. Minimum amount: ${minAmountOfSlots}\n`;
     }
@@ -294,23 +300,18 @@ export default class Algorithm {
     this.#notGermanSpeaker = this.#participants.filter(p => p.getLanguageLevel() === 'A1' || p.getLanguageLevel() === 'A2' || p.getLanguageLevel() === 'B1');
     this.#numberOfReviewers = 3;
     this.#participantsPerReview = 6;
-    const groupMap = this.#getGroupMap(this.#notGermanSpeaker);
-    let errorMessage = '';
+    const groupMap = this.getGroupMap(this.#notGermanSpeaker);
 
     if (this.#notGermanSpeaker.length === this.#participants.length) {
       throw new Error('All participants are unable to make german reviews. You should disable the \'international Groups\' Setting in this case.', { cause: 'prechecksFailed' }); // TODO check in frontend
     }
     if (groupMap.size < 2) {
-      errorMessage += 'At least 2 groups are needed.\n';
+      throw new Error('At least 2 international groups are needed.');
     }
     for (const participantsPerGroup of groupMap.values()) {
       if (this.#notGermanSpeaker.length - participantsPerGroup.length < 3) {
-        errorMessage += 'There are not enough participants to build review groups.\n';
-        break;
+        throw new Error('There are not enough participants to build international review groups.');
       }
-    }
-    if (errorMessage) {
-      throw new Error(errorMessage, { cause: 'prechecksFailed' });
     }
     this.#calcIntGroups(groupMap);
   }
@@ -392,7 +393,7 @@ export default class Algorithm {
    * Loops over all participants and create a group map with key= group name and value= group members
    * @return {map} Map<groupName,List<groupMember>>
    */
-  #getGroupMap (participants) {
+  getGroupMap (participants) {
     const groupMap = new Map();
     for (const p of participants) {
       const group = p.getGroup();
@@ -408,7 +409,7 @@ export default class Algorithm {
    * Loops over all participants and create a group map with key= topic and value= all participants that worked on this topic
    * @return {map} Map<topic,List<participants>>
    */
-  #getTopicMap () {
+  getTopicMap () {
     const topicMap = new Map();
     for (const p of this.#participants) {
       const topic = p.getTopic();
@@ -519,7 +520,7 @@ export default class Algorithm {
         while (true) {
           const filteredReviewer = review.getPossibleParticipants()
             .filter((r) => r.getReviewerCount() < counter)
-            .sort((a, b) => a.getActiveSlotsWithoutBrakes().length - b.getActiveSlotsWithoutBrakes().length) // TODO filter brakes see printer
+            .sort((a, b) => a.getActiveSlotsWithoutBrakes().length - b.getActiveSlotsWithoutBrakes().length)
             .filter((p, i, arr) => p.getActiveSlotsWithoutBrakes().length === arr[0].getActiveSlotsWithoutBrakes().length);
           if (filteredReviewer.length > 0) {
             const rand = Math.floor(Math.random() * filteredReviewer.length);
@@ -537,7 +538,7 @@ export default class Algorithm {
 
   /**
   * calculates the number of needed reviewers
-  * the number depends on the authorIsNotary-setting and the number of participants
+  * the number depends on the settings and the number of participants
   * @param {int} participantsLength
   * @param {int} numberOfGroups
   */
@@ -571,7 +572,7 @@ export default class Algorithm {
   #clearReviews () {
     for (const roomSlot of this.#roomSlots) {
       for (const room of roomSlot.getRooms()) {
-        room.setReview(null);
+        room.resetReview();
       }
     }
 
@@ -599,10 +600,10 @@ export default class Algorithm {
           continue;
         }
         console.log('Review: ' + room.getReview().getGroupName() +
-                     ' am ' + converter.getDataDDmmYYYYforPrinting(s.getDate()) +
-                     ' von ' + converter.getTimeHHmm(s.getStartTime()) +
-                     ' bis ' + converter.getTimeHHmm(s.getEndTime()) +
-                     ' in ' + room.getName());
+            ' am ' + converter.getDataDDmmYYYYforPrinting(s.getDate()) +
+            ' von ' + converter.getTimeHHmm(s.getStartTime()) +
+            ' bis ' + converter.getTimeHHmm(s.getEndTime()) +
+            ' in ' + room.getName());
         console.log(room.getBeamerNeeded() ? 'Beamer verfügbar' : 'Kein Beamer verfügbar');
         console.log('Author: ', converter.getParticipantAttributesForPrintingEnglish(room.getReview().getAuthor()));
         console.log('Moderator: ', converter.getParticipantAttributesForPrintingEnglish(room.getReview().getModerator()));
