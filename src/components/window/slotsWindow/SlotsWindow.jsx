@@ -31,6 +31,7 @@ function SlotsWindow () {
                       toolTip={'Add Slot manually'}
                       onButtonClick={() => setShowModalAddSlot(true)}
                       backgroundColor={'#B0D7AF'}
+                      routeSection={'slots-and-rooms'}
                   >
                       <Image
                           src={add}

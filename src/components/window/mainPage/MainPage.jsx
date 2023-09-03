@@ -63,6 +63,7 @@ function MainPage () {
                                             toolTip={'Change the settings for the computation'}
                                             onButtonClick={() => setShowModalSettings(true)}
                                             backgroundColor={'#B0D7AF'}
+                                            routeSection={'settings'}
                                         >
                                             <Image
                                                 src={gear}
@@ -78,6 +79,7 @@ function MainPage () {
                                             toolTip={'Starts the computation. Results will be shown in a separate window'}
                                             onButtonClick={runAlgorithm}
                                             backgroundColor={'#B0D7AF'}
+                                            routeSection={'working-with-results'}
                                         >
                                             <Image
                                                 src={start}
