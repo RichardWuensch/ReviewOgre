@@ -151,6 +151,7 @@ function DocsComponent () {
                                         <ul>
                                             <li>
                                                 <b style={{ fontWeight: 'bold' }}>Author is Notary: </b>
+                                                The author of each review is also the notary.
                                             </li>
                                             <li>
                                                  <b style={{ fontWeight: 'bold' }}>Break for Moderator and Reviewer: </b>
@@ -159,6 +160,7 @@ function DocsComponent () {
                                             </li>
                                             <li>
                                                  <b style={{ fontWeight: 'bold' }}>A/B Review: </b>
+                                                The review participants worked on a different topic than the author. This setting is intended to prevent idea theft and can only be used if international groups are disabled.
                                             </li>
                                             <li>
                                                  <b style={{ fontWeight: 'bold' }}>International Groups:  </b>
