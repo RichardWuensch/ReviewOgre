@@ -129,10 +129,11 @@ GitLab offers extensive information on the installations process
 based on the target OS. The information can be found here:
 [GitLab Runner installation guilde](https://docs.gitlab.com/runner/install/)
 
-####Example for Docker on Windows
+##### Example for Docker on Windows
 - Open CMD and run:
-   ```docker run -d --name gitlab-runner --restart always -v //var/run/docker.sock:/var/run/docker.sock -v path/were/you/want/to/store/your/config:/etc/gitlab-runner gitlab/gitlab-runner:latest```
-   ```docker exec -it gitlab-runner gitlab-runner register```
+```docker run -d --name gitlab-runner --restart always -v //var/run/docker.sock:/var/run/docker.sock -v path/were/you/want/to/store/your/config:/etc/gitlab-runner gitlab/gitlab-runner:latest```
+
+```docker exec -it gitlab-runner gitlab-runner register```
 
 ### 2. Register
 
