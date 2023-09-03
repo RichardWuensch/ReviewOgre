@@ -59,6 +59,10 @@ export default class Room {
     this.#notNeeded.topic = topic;
   }
 
+  resetNotNeeded () {
+    this.#notNeeded = { bool: false, topic: '' };
+  }
+
   getReview () {
     return this.#review;
   }
@@ -69,6 +73,5 @@ export default class Room {
 
   resetReview () {
     this.#review = null;
-    this.#notNeeded = { bool: false, topic: '' };
   }
 }
