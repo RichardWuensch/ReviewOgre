@@ -16,7 +16,6 @@ function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
 
   const style = {
-    color: isOver ? 'grey' : undefined
   };
 
   return (
@@ -96,11 +95,12 @@ function ReviewWindow () {
     try {
       const { active, over } = event;
 
-      if (over) {
-        const reviewer = items.find(item => item.getId().toString() === active.id);
-        const roomSlotId = over.id.split('-')[0];
-        const roomId = over.id.split('-')[1];
+      console.log('called');
+      console.log(active.id);
 
+        const reviewer = items.find(item => item.getId().toString() === active.id);
+
+        console.log(reviewer);
         console.log('slot' + selectedSlot);
         console.log('room in handleDragEnd' + selectedRoom);
         selectedRoom.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(selectedSlot), reviewer, settings.breakForModeratorAndReviewer);
@@ -111,9 +111,8 @@ function ReviewWindow () {
         calculateFairness();
         setContainerOfItem({
           ...containerOfItem,
-          [active.id]: over.id
+          [active.id]: active.id
         });
-      }
     } catch (error) {
       alert(error.message);
     }
@@ -142,11 +141,15 @@ function ReviewWindow () {
 
                       return (
                             <div
+                                id={accordionItemKey}
                                 style={{ fontWeight: selectedRoom === room ? 'bold' : 'normal'}}
-                                onMouseEnter={() => {setSelectedSlot(roomSlot); setSelectedRoom(room); console.log(room)}}>
+                                onMouseEnter={() => {setSelectedSlot(roomSlot); setSelectedRoom(room); console.log(room); console.log(roomSlot)}}>
                               <Droppable id={accordionItemKey} key={accordionItemKey}>
                                 <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
                                       ' from ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime() + ' o\'Clock'}</h5>
+                                { room.getReview().isReviewValid() ?
+                                  <h5 style={{color: 'red'}}>Review is invalid</h5> : null
+                                }
                                   <Table
                                       responsive
                                       borderless
