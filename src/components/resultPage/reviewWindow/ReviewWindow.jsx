@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './ReviewWindow.css';
-import { Col, Image, Row, Table } from 'react-bootstrap';
-import { useRoomSlots } from '../../shared/context/RoomSlotContext';
-import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+import {Col, Image, Row, Table} from 'react-bootstrap';
+import {useRoomSlots} from '../../shared/context/RoomSlotContext';
+import {DndContext, useDraggable, useDroppable} from '@dnd-kit/core';
 import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
-import { useParticipants } from '../../shared/context/ParticipantsContext';
+import {useParticipants} from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import ExportOptions from '../exportOptions/ExportOptions';
-import { useSettings } from '../../shared/context/SettingsContext';
+import {useSettings} from '../../shared/context/SettingsContext';
 import ParticipantFairness from '../../../data/models/ParticipantFairness';
 import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
 import ErrorModal from "../../modals/errorModal/ErrorModal";
@@ -17,7 +17,6 @@ function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
 
   const style = {
-    color: isOver ? 'grey' : undefined
   };
 
   return (
@@ -29,23 +28,40 @@ function Droppable ({ id, children }) {
 
 function Draggable ({ id, children }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
+  const tdStyle = transform ? { backgroundColor: 'transparent' } : { backgroundColor: 'white' };
+  const [scrollY, setScrollY] = useState(0);
 
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+  const calculateTransform = () => {
+    if (transform) {
+
+      return {
+        transform: `translate3d(${transform.x}px, ${transform.y - scrollY}px, 0)`,
         backgroundColor: '#D3D3D3',
         position: 'fixed',
+        zIndex: 10,
         display: 'flex',
         justifyContent: 'space-between',
         width: '25vw',
         borderRadius: '5px',
         fontWeight: 'bold'
-      }
-    : undefined;
+      };
+    }
+
+    return undefined;
+  };
+
+  useEffect(() => {
+    const tableContainer = document.querySelector('.participant-result-list-container .table-container');
+    if (tableContainer) {
+      setScrollY(tableContainer.scrollTop);
+    }
+  }, [transform]);
 
   return (
-      <tr ref={setNodeRef} style={style} {...listeners} {...attributes}>
-        {children}
+      <tr ref={setNodeRef} style={calculateTransform()} {...listeners} {...attributes}>
+        {React.Children.map(children, child =>
+            React.cloneElement(child, { style: tdStyle })
+        )}
       </tr>
   );
 }
@@ -62,6 +78,9 @@ function ReviewWindow () {
     reviewerCount: 0
   });
   const [showExportOptions, setShowExportOptions] = useState(false);
+
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const [deleteTrigger, setDeleteTrigger] = useState(0);
 
@@ -88,21 +107,24 @@ function ReviewWindow () {
     try {
       const { active, over } = event;
 
-      if (over) {
-        const reviewer = items.find(item => item.getId().toString() === active.id);
-        const roomSlotId = over.id.split('-')[0];
-        const roomId = over.id.split('-')[1];
+      console.log('called');
+      console.log(active.id);
 
-        const roomSlot = roomSlots[roomSlotId];
-        const room = roomSlot.getRooms()[roomId];
-        room.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
+        const reviewer = items.find(item => item.getId().toString() === active.id);
+
+        console.log(reviewer);
+        console.log('slot' + selectedSlot);
+        console.log('room in handleDragEnd' + selectedRoom);
+        selectedRoom.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(selectedSlot), reviewer, settings.breakForModeratorAndReviewer);
+
+        setSelectedSlot(null);
+        setSelectedRoom(null);
 
         calculateFairness();
         setContainerOfItem({
           ...containerOfItem,
-          [active.id]: over.id
+          [active.id]: active.id
         });
-      }
     } catch (error) {
       setParticipantDragError(error);
     }
@@ -123,6 +145,7 @@ function ReviewWindow () {
         <DndContext onDragEnd={handleDragEnd}>
           <Row style={{ maxHeight: '75vh' }}>
             <Col xl={8}>
+              <div className={'review-list-container'}>
                 <div style={{ maxHeight: '100%' }}>
                   {roomSlots.map((roomSlot, roomSlotIndex) =>
                       roomSlot
@@ -132,10 +155,16 @@ function ReviewWindow () {
                             const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
 
                       return (
+                            <div
+                                id={accordionItemKey}
+                                style={{ fontWeight: selectedRoom === room ? 'bold' : 'normal'}}
+                                onMouseEnter={() => {setSelectedSlot(roomSlot); setSelectedRoom(room); console.log(room); console.log(roomSlot)}}>
                               <Droppable id={accordionItemKey} key={accordionItemKey}>
-                                  <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
+                                <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
                                       ' from ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime() + ' o\'Clock'}</h5>
-
+                                { room.getReview().isReviewValid() ?
+                                  <h5 style={{color: 'red'}}>Review is invalid</h5> : null
+                                }
                                   <Table
                                       responsive
                                       borderless
@@ -190,10 +219,12 @@ function ReviewWindow () {
                                       ))}
                                   </Table>
                               </Droppable>
+                            </div>
                       );
                     })
                   )}
                 </div>
+              </div>
             </Col>
             <Col xl={4}>
               <CustomButton
@@ -202,12 +233,11 @@ function ReviewWindow () {
                   toolTip={'Click to show export options, e.g. export results, room plan, RevAger Lite files, ...'}>
                 Show Export Options
               </CustomButton>
-
+              <div className={'participant-result-list-container'}>
+                <div className={'table-container'}>
               <Table
                   responsive
                   borderless
-                  className={'reviews-table'}
-                  style={{ zIndex: 0, marginTop: '20px' }}
               >
                 <thead>
                 <tr>
@@ -228,6 +258,8 @@ function ReviewWindow () {
                 ))}
                 </tbody>
               </Table>
+              </div>
+              </div>
             </Col>
           </Row>
           <ExportOptions
