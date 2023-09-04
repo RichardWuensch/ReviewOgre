@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import './ReviewWindow.css';
-import { Col, Image, Row, Table } from 'react-bootstrap';
-import { useRoomSlots } from '../../shared/context/RoomSlotContext';
-import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
+import {Col, Image, Row, Table} from 'react-bootstrap';
+import {useRoomSlots} from '../../shared/context/RoomSlotContext';
+import {DndContext, useDraggable, useDroppable} from '@dnd-kit/core';
 import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
-import { useParticipants } from '../../shared/context/ParticipantsContext';
+import {useParticipants} from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import ExportOptions from '../exportOptions/ExportOptions';
-import { useSettings } from '../../shared/context/SettingsContext';
+import {useSettings} from '../../shared/context/SettingsContext';
 import ParticipantFairness from '../../../data/models/ParticipantFairness';
 import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
 
@@ -74,6 +74,9 @@ function ReviewWindow () {
   const [sortedParticipants, setSortedParticipants] = useState([]);
   const [showExportOptions, setShowExportOptions] = useState(false);
 
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
   const [deleteTrigger, setDeleteTrigger] = useState(0);
 
   React.useEffect(() => {
@@ -98,9 +101,12 @@ function ReviewWindow () {
         const roomSlotId = over.id.split('-')[0];
         const roomId = over.id.split('-')[1];
 
-        const roomSlot = roomSlots[roomSlotId];
-        const room = roomSlot.getRooms()[roomId];
-        room.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
+        console.log('slot' + selectedSlot);
+        console.log('room in handleDragEnd' + selectedRoom);
+        selectedRoom.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(selectedSlot), reviewer, settings.breakForModeratorAndReviewer);
+
+        setSelectedSlot(null);
+        setSelectedRoom(null);
 
         calculateFairness();
         setContainerOfItem({
@@ -135,6 +141,9 @@ function ReviewWindow () {
                       const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
 
                       return (
+                            <div
+                                style={{ fontWeight: selectedRoom === room ? 'bold' : 'normal'}}
+                                onMouseEnter={() => {setSelectedSlot(roomSlot); setSelectedRoom(room); console.log(room)}}>
                               <Droppable id={accordionItemKey} key={accordionItemKey}>
                                 <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
                                       ' from ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime() + ' o\'Clock'}</h5>
@@ -192,6 +201,7 @@ function ReviewWindow () {
                                       ))}
                                   </Table>
                               </Droppable>
+                            </div>
                       );
                     })
                   )}
