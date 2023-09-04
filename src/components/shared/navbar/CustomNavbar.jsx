@@ -5,10 +5,12 @@ import { useParticipants, useParticipantsDispatch } from '../context/Participant
 import { useRoomSlots, useRoomSlotsDispatch } from '../context/RoomSlotContext';
 import { Link, useLocation } from 'react-router-dom';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
-import LoadState from '../../../api/LoadState';
-import StoreState from '../../../api/StoreState';
+import LoadState from '../../../import_export/LoadState';
+import StoreState from '../../../import_export/StoreState';
 import StateExportSaveReviewsModal from '../../modals/stateExportSaveReviewsModal/StateExportSaveReviewsModal';
+import ErrorModal from '../../modals/errorModal/ErrorModal';
 import { useSettings, useSettingsDispatch } from '../context/SettingsContext';
+import CustomIconButton from '../buttons/iconButton/CustomIconButton';
 import './CustomNavbar.css';
 
 function CustomNavbar () {
@@ -24,11 +26,7 @@ function CustomNavbar () {
   const [importedRoomSlots, setImportedRoomSlots] = React.useState([]);
   const [importedParticipants, setImportedParticipants] = React.useState([]);
   const [importedSettings, setImportedSettings] = React.useState({});
-
-  async function importDataCheck (event) {
-    loadStateIntoLocalObjects(event);
-    setShowModalDataImportCheck(true);
-  }
+  const [stateImportError, setStateImportError] = React.useState(null);
 
   function checkForAssignedReviews () {
     const firstAssignedReview = roomSlots[0]?.getRooms()[0]?.getReview();
@@ -44,17 +42,31 @@ function CustomNavbar () {
   }
 
   async function loadStateIntoLocalObjects (event) {
-    const loadState = new LoadState();
-    await loadState.runStateImport(event);
-    setImportedRoomSlots(loadState.getRoomSlots());
-    setImportedParticipants(loadState.getParticipants());
-    setImportedSettings(loadState.getSettings());
+    try {
+      const loadState = new LoadState();
+      await loadState.runStateImport(event);
+      setImportedRoomSlots(loadState.getRoomSlots());
+      setImportedParticipants(loadState.getParticipants());
+      setImportedSettings(loadState.getSettings());
+      setStateImportError(null);
+      setShowModalDataImportCheck(true);
+    } catch (error) {
+      setStateImportError(error);
+      resetImportedObjects();
+    }
+  }
+
+  function resetImportedObjects () {
+    setImportedRoomSlots([]);
+    setImportedParticipants([]);
+    setImportedSettings({});
   }
 
   function addLocalObjectsToContext () {
     addRoomSlotListToContext(importedRoomSlots);
     addParticipantListToContext(importedParticipants);
     addSettingsToContext(importedSettings);
+    resetImportedObjects();
   }
 
   function addParticipantListToContext (list) {
@@ -120,17 +132,29 @@ function CustomNavbar () {
               <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto"></Nav>
                   <Nav>
-                      <Nav.Link className={(isActiveTab('/') ? 'active' : '')} as={ Link } to="/">Home</Nav.Link>
+                      <CustomIconButton
+                          as="div"
+                          toolTip={''}
+                          place={'bottom'}
+                          routeSection={'get-started'}>
+                          <Nav.Link className={(isActiveTab('/') ? 'active' : '')} as={ Link } to="/">Home</Nav.Link>
+                      </CustomIconButton>
                       <Nav.Link className={(isActiveTab('/reviews') ? 'active' : '') + 'cypress-e2e-review-page-nav'} as={ Link } to="/reviews">Reviews</Nav.Link>
                       <Nav.Link className={(isActiveTab('/docs') ? 'active' : '')} as={ Link } to="/docs">Docs</Nav.Link>
                       <NavDropdown title="Save/Load Options" id="basic-nav-dropdown">
-                          <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
-                          <input type="file"
-                                 id="file-input-config"
-                                 className='e2e-testing-load-state'
-                                 style={{ display: 'none' }}
-                                 onChange={() => { importDataCheck(event); }}
-                                 accept='application/json'/>
+                          <CustomIconButton
+                              as="div"
+                              toolTip={''}
+                              place={'right'}
+                              routeSection={'import'}>
+                              <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
+                              <input type="file"
+                                     id="file-input-config"
+                                     className='e2e-testing-load-state'
+                                     style={{ display: 'none' }}
+                                     onChange={() => { loadStateIntoLocalObjects(event); }}
+                                     accept='application/json'/>
+                          </CustomIconButton>
                           <NavDropdown.Item onClick={checkForAssignedReviews}>Save State</NavDropdown.Item>
                       </NavDropdown>
                   </Nav>
@@ -158,6 +182,11 @@ function CustomNavbar () {
             onHide={() => setShowSaveReviewsModal(false)}
             onClose={() => setShowSaveReviewsModal(false)}
           />
+          <ErrorModal
+              show={stateImportError !== null}
+              errorObject={stateImportError}
+              modalHeader={'Error while importing State'}
+              onHide={() => setStateImportError(null)} />
       </Navbar>
   );
 }

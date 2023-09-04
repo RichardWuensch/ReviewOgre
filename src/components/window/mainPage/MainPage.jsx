@@ -9,11 +9,11 @@ import SettingsModal from '../../modals/settingsModal/SettingsModal';
 import { useParticipants, useParticipantsDispatch } from '../../shared/context/ParticipantsContext';
 import { Card, Col, Image, Row } from 'react-bootstrap';
 import { useRoomSlots, useRoomSlotsDispatch } from '../../shared/context/RoomSlotContext';
-import Runner from '../../../algorithm/logic/Runner';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../shared/context/SettingsContext';
-import ParticipantWindow from "../participantWindow/ParticipantWindow";
+import ParticipantWindow from '../participantWindow/ParticipantWindow';
+import Algorithm from '../../../algorithm/logic/Algorithm';
 
 function MainPage () {
   const [algorithmErrorObject, setAlgorithmErrorObject] =
@@ -28,13 +28,13 @@ function MainPage () {
 
   function runAlgorithm () {
     try {
-      new Runner().runAlgorithm(
-        participants,
+      const algo = new Algorithm(participants,
         participantsDispatch,
         roomSlots,
         roomSlotsDispatch,
-        settings
-      );
+        settings);
+      algo.run();
+      // algo.printParticipantsSortByAmountOfActiveInSlots();
 
       // successful run
       navigate('/reviews');
@@ -63,6 +63,7 @@ function MainPage () {
                                             toolTip={'Change the settings for the computation'}
                                             onButtonClick={() => setShowModalSettings(true)}
                                             backgroundColor={'#B0D7AF'}
+                                            routeSection={'settings'}
                                         >
                                             <Image
                                                 src={gear}
@@ -78,6 +79,7 @@ function MainPage () {
                                             toolTip={'Starts the computation. Results will be shown in a separate window'}
                                             onButtonClick={runAlgorithm}
                                             backgroundColor={'#B0D7AF'}
+                                            routeSection={'working-with-results'}
                                         >
                                             <Image
                                                 src={start}

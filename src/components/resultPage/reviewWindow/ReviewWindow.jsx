@@ -11,6 +11,7 @@ import ExportOptions from '../exportOptions/ExportOptions';
 import {useSettings} from '../../shared/context/SettingsContext';
 import ParticipantFairness from '../../../data/models/ParticipantFairness';
 import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
+import ErrorModal from "../../modals/errorModal/ErrorModal";
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -70,7 +71,12 @@ function ReviewWindow () {
   const settings = useSettings();
   const [containerOfItem, setContainerOfItem] = useState({});
   const items = useParticipants();
+  const [participantDragError, setParticipantDragError] = React.useState(null);
   const [sortedParticipants, setSortedParticipants] = useState([]);
+  const [avgCounts, setAvgCounts] = useState({
+    totalCount: 0,
+    reviewerCount: 0
+  });
   const [showExportOptions, setShowExportOptions] = useState(false);
 
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -79,12 +85,18 @@ function ReviewWindow () {
   const [deleteTrigger, setDeleteTrigger] = useState(0);
 
   React.useEffect(() => {
+    console.log(avgCounts);
     calculateFairness();
+    console.log(avgCounts);
   }, []);
 
   const calculateFairness = () => {
     const avgParticipantTotalCount = Math.round(items.reduce((sum, participant) => sum += participant.getTotalCount(), 0) / items.length);
     const avgParticipantReviewerCount = Math.round(items.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / items.length);
+    setAvgCounts({
+      totalCount: avgParticipantTotalCount,
+      reviewerCount: avgParticipantReviewerCount
+    });
     for (const participant of items) {
       participant.calculateFairness(avgParticipantTotalCount, avgParticipantReviewerCount);
     }
@@ -114,7 +126,7 @@ function ReviewWindow () {
           [active.id]: active.id
         });
     } catch (error) {
-      alert(error.message);
+      setParticipantDragError(error);
     }
   };
 
@@ -136,8 +148,11 @@ function ReviewWindow () {
               <div className={'review-list-container'}>
                 <div style={{ maxHeight: '100%' }}>
                   {roomSlots.map((roomSlot, roomSlotIndex) =>
-                    roomSlot.getRooms().map((room, roomIndex) => {
-                      const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
+                      roomSlot
+                          .getRooms()
+                          .filter(room => room.getReview()?.getAuthor())
+                          .map((room, roomIndex) => {
+                            const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
 
                       return (
                             <div
@@ -237,7 +252,7 @@ function ReviewWindow () {
                       <td>{reviewer.getFirstName() + ' ' + reviewer.getLastName()}</td>
                       <td>{reviewer.getEmail()}</td>
                       <td>
-                        <ParticipantFairnessIndicator participant={reviewer} />
+                        <ParticipantFairnessIndicator participant={reviewer} avgCounts={avgCounts} />
                       </td>
                     </Draggable>
                 ))}
@@ -251,6 +266,11 @@ function ReviewWindow () {
               show={showExportOptions}
               onHide={() => setShowExportOptions(false)}
           />
+          <ErrorModal
+              show={participantDragError !== null}
+              errorObject={participantDragError}
+              modalHeader={"Can't put Participant in this Review"}
+              onHide={() => setParticipantDragError(null)} />
         </DndContext>
   );
 }

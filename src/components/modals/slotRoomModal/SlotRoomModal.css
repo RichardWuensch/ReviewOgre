@@ -1,3 +1,13 @@
+.modal-slotRoomModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.modal-slotRoomModal .modal-dialog{
+    max-height: 70vh;
+}
+
 .span-style{
     font-family: 'Roboto', sans-serif;
     font-weight: 100;

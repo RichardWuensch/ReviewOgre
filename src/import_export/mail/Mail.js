@@ -1,5 +1,4 @@
 import ConverterForPrinting from '../ConverterForPrinting';
-import { saveAs } from 'file-saver';
 
 export default class Mail {
   #converter = new ConverterForPrinting();
@@ -15,19 +14,17 @@ export default class Mail {
           continue;
         }
         const moderator = review.getModerator();
-        // if (moderator.getLanguagelevel()==='Native Speaker'){
-        this.#germanVersion(roomSlot, room, review, moderator);
-        /* }else{
-          this.#englischVersion(roomSlot, room, review, moderator);
-        } */
+        if (moderator.getLanguageLevel() === 'A1' || moderator.getLanguageLevel() === 'A2' || moderator.getLanguageLevel() === 'B2') {
+          this.#englishVersion(roomSlot, room, review, moderator);
+        } else {
+          this.#germanVersion(roomSlot, room, review, moderator);
+        }
       }
     }
   }
 
-  // this.#mails.forEach(m => this.openMailClient(m.recipient, m.ccRecipients, m.subject, m.body));
-
   /**
-  * Generate content of the Mail in german and call the openMailClient-function
+  * Generate content of the Mail in german and call
   * @param {RoomSlot} roomSlot
   * @param {Room} room
   * @param {Review} review
@@ -44,29 +41,29 @@ export default class Mail {
                      ' von ' + this.#converter.getTimeHHmm(roomSlot.getStartTime()) +
                      ' bis ' + this.#converter.getTimeHHmm(roomSlot.getEndTime()) +
                      ' in Raum ' + room.getName();
-    body += room.getBeamerNeeded() ? '\nBeamer needed' : '\nNo Beamer needed';
-    body += '\nAutor: ' + this.#converter.getParticipantAttributsForPrinting(review.getAuthor());
-    body += '\nNotar: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
+    body += room.getBeamerNeeded() ? '\nBeamer benötigt' : '\nKein Beamer benötigt';
+    body += '\nAutor: ' + this.#converter.getParticipantAttributesForPrintingGerman(review.getAuthor());
+    body += '\nNotar: ' + this.#converter.getParticipantAttributesForPrintingGerman(review.getNotary());
     for (const reviewer of review.getReviewer()) {
-      body += '\nReviewer: ' + this.#converter.getParticipantAttributsForPrinting(reviewer);
+      body += '\nReviewer: ' + this.#converter.getParticipantAttributesForPrintingGerman(reviewer);
     }
     body += '\n\nBitte kontaktieren Sie Ihre Teilnehmer mit den entsprechenden Aufgaben.';
     body += '\nDie RevAger-Lite-Datei im Anhang hilft Ihnen bei der Vorbereitung des Reviews.';
-    // this.openMailClient(recipient, ccRecipients, subject, body);
+
     this.#mails.push({ recipient, ccRecipients, subject, body });
   }
 
   /**
-  * Generate content of the Mail in englisch and call the openMailClient-function
+  * Generate content of the Mail in english and call
   * @param {RoomSlot} roomSlot
   * @param {Room} room
   * @param {Review} review
   * @param {Moderator} moderator
   */
-  #englischVersion (roomSlot, room, review, moderator) {
+  #englishVersion (roomSlot, room, review, moderator) {
     const recipient = moderator.getEmail();
     const ccRecipients = [review.getAuthor().getEmail(), review.getNotary().getEmail(), ...review.getReviewer().map(r => r.getEmail())];
-    const subject = 'Your are the moderator of ' + review.getGroupName();
+    const subject = 'Your are the moderator of Review ' + review.getGroupName();
     let body = 'Hello ' + moderator.getFirstName() + ' ' + moderator.getLastName() + ',\n' +
           'You have been designated as the moderator. Here are the most important information: \n';
     body += '\n' + 'Review: ' + review.getGroupName() +
@@ -75,13 +72,13 @@ export default class Mail {
                      ' to ' + this.#converter.getTimeHHmm(roomSlot.getEndTime()) +
                      ' in room ' + room.getName();
     body += room.getBeamerNeeded() ? '\nBeamer needed' : '\nNo Beamer needed';
-    body += '\nAuthor: ' + this.#converter.getParticipantAttributsForPrinting(review.getAuthor());
-    body += '\nNotary: ' + this.#converter.getParticipantAttributsForPrinting(review.getNotary());
+    body += '\nAuthor: ' + this.#converter.getParticipantAttributesForPrintingEnglish(review.getAuthor());
+    body += '\nNotary: ' + this.#converter.getParticipantAttributesForPrintingEnglish(review.getNotary());
     for (const reviewer of review.getReviewer()) {
-      body += '\nReviewer: ' + this.#converter.getParticipantAttributsForPrinting(reviewer);
+      body += '\nReviewer: ' + this.#converter.getParticipantAttributesForPrintingEnglish(reviewer);
     }
     body += '\n\nPlease contact your participants with the appropriate tasks.';
-    body += '\nThe RevAger Lite file in the appendix will help you prepaing the review.';
+    body += '\nThe RevAger Lite file in the appendix will help you preparing the review.';
 
     this.#mails.push({ recipient, ccRecipients, subject, body });
   }
@@ -101,7 +98,7 @@ export default class Mail {
   }
 
   /**
-   * Saves the mails in a .txt-file -> can be used to save the result and send it later via copy+paste in a mail client
+   * open mails in a new browser tab in txt format -> can be used to save the result and send it later via copy+paste in a mail client
    */
   saveMailsInTxt () {
     let result = '';
@@ -112,7 +109,16 @@ export default class Mail {
       result += 'BODY: \n' + mail.body + '\n';
       result += '*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x*x' + '\n\n';
     }
-    const blob = new Blob([result], { type: 'text/plain' });
-    saveAs(blob, 'mail.txt');
+    const newTab = window.open();
+    newTab.document.title = 'mail.txt';
+    newTab.document.write(`
+        <html>
+            <head>
+                <title>mail.txt</title>
+            </head>
+            <body>
+                <pre>${result}</pre>
+            </body>
+          </html>`);
   }
 }

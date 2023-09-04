@@ -4,12 +4,12 @@ import './SlotRoomModal.css';
 import exit from '../../../media/x-circle.svg';
 import add from '../../../media/plus-circle.svg';
 import info from '../../../media/info-circle.svg';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Accordion, Alert, Button, Card, Col, Form, FormControl, Image, Row } from 'react-bootstrap';
 import RoomSlot from '../../../data/models/RoomSlot';
 import Room from '../../../data/models/Room';
 import { useRoomSlots } from '../../shared/context/RoomSlotContext';
-import ConverterForPrinting from '../../../api/ConverterForPrinting';
+import ConverterForPrinting from '../../../import_export/ConverterForPrinting';
 import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
 import ModalButton from '../../shared/buttons/modalButton/ModalButton';
@@ -28,26 +28,80 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
   const [endTime, setEndTime] = useState(roomslot?.getFormattedEndTime() ?? '00:00');
   const [error, setError] = useState(noErrorState);
   const [isEditMode] = useState(props.edit === 'true');
-  const [items, setItems] = useState(roomslot
+  const [isCopyMode] = useState(props.copy === 'true');
+  const [items, setItems] = useState(copiedRooms
+    ?.map((roomTemp2) => new Room(roomTemp2.getName(), roomTemp2.getBeamerNeeded())) ?? roomslot
     ?.getRooms()
-    .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? copiedRooms
-    ?.map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? []);
+    .map((roomTemp1) => new Room(roomTemp1.getName(), roomTemp1.getBeamerNeeded())) ?? []);
 
   const roomSlots = useRoomSlots();
 
   useEffect(() => {
     // register deleted rooms
     const tempInitialItems =
-      roomslot
-        ?.getRooms()
-        .map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? copiedRooms
-        ?.map((room) => new Room(room.getName(), room.getBeamerNeeded())) ?? [];
+        copiedRooms
+          ?.map((roomTemp2) => new Room(roomTemp2.getName(), roomTemp2.getBeamerNeeded())) ?? roomslot
+          ?.getRooms()
+          .map((roomTemp1) => new Room(roomTemp1.getName(), roomTemp1.getBeamerNeeded())) ?? [];
     setItems(tempInitialItems);
-  }, [roomslot]);
+  }, [roomslot, copiedRooms]);
+
+  const [activeItem, setActiveItem] = useState(null);
+  const [activeItemIndex, setActiveItemIndex] = useState(null);
+
+  useEffect(() => {
+    if (activeItemIndex !== null && accordionContainerRef.current) {
+      const activeItem = accordionContainerRef.current.querySelector(`[data-index="${activeItemIndex}"]`);
+      if (activeItem) {
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [activeItemIndex]);
+
+  const accordionContainerRef = useRef(null);
+  const [addedItemIndex, setAddedItemIndex] = useState(null);
+  // const addedItemRef = useRef(null);
 
   const addItem = () => {
-    setItems([...items, new Room('', false)]);
+    const newItem = new Room('', false);
+    setItems([...items, newItem]);
+    setAddedItemIndex(items.length); // Setze den Index des hinzugefügten Elements
   };
+
+  useEffect(() => {
+    if (addedItemIndex !== null && accordionContainerRef.current) {
+      const addedItem = accordionContainerRef.current.querySelector(`[data-index="${addedItemIndex}"]`);
+      if (addedItem) {
+        addedItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }, [addedItemIndex]);
+
+  /* useEffect(() => {
+    if (addedItemRef.current && accordionContainerRef.current) {
+      const containerRect = accordionContainerRef.current.getBoundingClientRect();
+      const itemRect = addedItemRef.current.getBoundingClientRect();
+      const offset = itemRect.top - containerRect.top;
+
+      if (offset + itemRect.height > containerRect.height) {
+        accordionContainerRef.current.scrollTop += offset;
+      }
+    }
+  }, [addedItemRef.current]); */
+
+  const [activeItemRef, setActiveItemRef] = useState(null);
+
+  useEffect(() => {
+    if (activeItemRef?.current && accordionContainerRef.current) {
+      const containerRect = accordionContainerRef.current.getBoundingClientRect();
+      const itemRect = activeItemRef?.current.getBoundingClientRect();
+      const offset = itemRect.top - containerRect.top;
+
+      if (offset + itemRect.height > containerRect.height) {
+        accordionContainerRef.current.scrollTop += offset;
+      }
+    }
+  }, [activeItemRef?.current]);
 
   function filterDeletedRoom (rooms, roomIdToDelete) {
     return rooms.filter((room) => room.getId() !== roomIdToDelete);
@@ -113,10 +167,16 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
       setDate(new Date());
       setStartTime('00:00');
       setEndTime('00:00');
-      setItems([]);
+      if (isCopyMode) {
+        setItems(copiedRooms);
+      } else {
+        setItems([]);
+      }
     } else {
+      setDate(roomslot.getDate());
       setStartTime(roomslot.getFormattedStartTime());
       setEndTime(roomslot.getFormattedEndTime());
+      setItems(roomslot.getRooms());
     }
     setError(noErrorState);
     onHide();
@@ -136,9 +196,9 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
       });
     } else {
       const overlappingSlotError =
-      `Error: The current slot is overlapping with ${overlappingSlots.length} slot${
-        overlappingSlots.length > 1 ? 's' : ''
-      }. `;
+          `Error: The current slot is overlapping with ${overlappingSlots.length} slot${
+              overlappingSlots.length > 1 ? 's' : ''
+          }. `;
 
       const converter = new ConverterForPrinting();
       let overlappingSlotsTooltipText = `Overlapping slots on ${converter.getDataDDmmYYYYforPrinting(date)}:`;
@@ -220,7 +280,7 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
 
   function errorOccured () {
     return error.overlappingSlots ||
-      error.endTimeAndStartTimeNotCompliant;
+        error.endTimeAndStartTimeNotCompliant;
   }
 
   function styleIfError (...errors) {
@@ -236,88 +296,88 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
   }
 
   return (
-    <Modal
-      onExit={hideModal}
-      {...props}
-      size="sm"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      className={'modal'}
-    >
-      <Modal.Header>
-        <Modal.Title>{props.header}</Modal.Title>
-        <Image
-          src={exit}
-          alt={'exitSlotModal'}
-          className={'modal-header-icon'}
-          onClick={hideModal}
-        />
-      </Modal.Header>
-      <Modal.Body>
-        <Form style={{ padding: 5 }}>
-          {errorOccured() && (
-            <Alert
-              variant="danger"
-              data-bs-toggle="tooltip"
-              title={buildGlobalTooltipText()}
-            >
-              {error.overlappingSlots?.message}
-              {error.endTimeAndStartTimeNotCompliant?.message}
-              <Image src={info} alt={'errorInfoIcon'} className='error-info-icon'/>
-            </Alert>
-          )}
-          <Form.Group>
-            <FormControl
-              type={'date'}
-              aria-label={'Enter Date'}
-              className={'input-date-container'}
-              value={date.toISOString().slice(0, 10)}
-              onChange={(e) => checkAndSetDate(e)}
-              style={styleIfError(false, error.overlappingSlots)}
-            />
-          </Form.Group>
-          <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
-            <Form.Group as={Col} xs={6}>
-              <Row style={{ alignContent: 'center' }}>
-                <Col xs={4}>
-                  <Form.Label>From:</Form.Label>
-                </Col>
-                <Col xs={8}>
-                  <Form.Control
-                    className={'input-time-container'}
-                    aria-label={'Enter start time'}
-                    type={'time'}
-                    value={startTime}
-                    onChange={(e) => checkAndSetStartTime(e)}
-                    style={styleIfError(false, error.overlappingSlots, error.endTimeAndStartTimeNotCompliant)}
-                  />
-                </Col>
-              </Row>
+      <Modal
+          onExit={hideModal}
+          {...props}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          className={'modal-slotRoomModal'}
+      >
+        <Modal.Header>
+          <Modal.Title>{props.header}</Modal.Title>
+          <Image
+              src={exit}
+              alt={'exitSlotModal'}
+              className={'modal-header-icon'}
+              onClick={hideModal}
+          />
+        </Modal.Header>
+        <Modal.Body>
+          <Form style={{ padding: 5 }}>
+            {errorOccured() && (
+                <Alert
+                    variant="danger"
+                    data-bs-toggle="tooltip"
+                    title={buildGlobalTooltipText()}
+                >
+                  {error.overlappingSlots?.message}
+                  {error.endTimeAndStartTimeNotCompliant?.message}
+                  <Image src={info} alt={'errorInfoIcon'} className='error-info-icon'/>
+                </Alert>
+            )}
+            <Form.Group>
+              <FormControl
+                  type={'date'}
+                  aria-label={'Enter Date'}
+                  className={'input-date-container'}
+                  value={date.toISOString().slice(0, 10)}
+                  onChange={(e) => checkAndSetDate(e)}
+                  style={styleIfError(false, error.overlappingSlots)}
+              />
             </Form.Group>
-            <Form.Group as={Col} xs={6}>
-              <Row style={{ alignContent: 'center' }}>
-                <Col xs={4}>
-                  <Form.Label>To:</Form.Label>
-                </Col>
-                <Col xs={8}>
-                  <Form.Control
-                    className={'input-time-container'}
-                    aria-label={'enter end time'}
-                    type={'time'}
-                    value={endTime}
-                    onChange={(e) => checkAndSetEndTime(e)}
-                    style={styleIfError(false, error.overlappingSlots, error.endTimeAndStartTimeNotCompliant)}
-                  />
-                </Col>
-              </Row>
-            </Form.Group>
-          </Row>
-          <span>
+            <Row style={{ paddingBottom: 20, paddingTop: 20 }}>
+              <Form.Group as={Col} xs={6}>
+                <Row style={{ alignContent: 'center' }}>
+                  <Col xs={4}>
+                    <Form.Label>From:</Form.Label>
+                  </Col>
+                  <Col xs={8}>
+                    <Form.Control
+                        className={'input-time-container'}
+                        aria-label={'Enter start time'}
+                        type={'time'}
+                        value={startTime}
+                        onChange={(e) => checkAndSetStartTime(e)}
+                        style={styleIfError(false, error.overlappingSlots, error.endTimeAndStartTimeNotCompliant)}
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+              <Form.Group as={Col} xs={6}>
+                <Row style={{ alignContent: 'center' }}>
+                  <Col xs={4}>
+                    <Form.Label>To:</Form.Label>
+                  </Col>
+                  <Col xs={8}>
+                    <Form.Control
+                        className={'input-time-container'}
+                        aria-label={'enter end time'}
+                        type={'time'}
+                        value={endTime}
+                        onChange={(e) => checkAndSetEndTime(e)}
+                        style={styleIfError(false, error.overlappingSlots, error.endTimeAndStartTimeNotCompliant)}
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Row>
+            <span>
             {isEditMode
               ? 'Edit or Add Rooms to this Slot:'
               : 'Create Rooms for this Time Slot:'}
           </span>
-          <div style={{ marginTop: 10, maxHeight: '20vh', overflowY: 'auto' }}>
+          <div ref={accordionContainerRef} style={{ marginTop: 10, maxHeight: '50vh', overflowY: 'auto' }}>
             <Accordion
               defaultActiveKey="0"
               style={{ backgroundColor: '#F5F5F5' }}
@@ -328,9 +388,12 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
                     <Accordion.Item
                       style={{ background: '#F5F5F5' }}
                       eventKey={item.getId()}
+                      data-index={index}
+                      ref={activeItem === item.getId() ? setActiveItemRef : null}
                     >
                       <Accordion.Header
                         className={'header-style list-item border-0'}
+                        onClick={() => setActiveItem(item.getId())}
                       >
                         <Form.Control
                           className={'item-text'}
@@ -381,11 +444,11 @@ function SlotModal ({ roomslot, copiedRooms, onSaveClick, onHide, ...props }) {
               <span className={'add-slot-text e2e-location-add-slot-button'}>
                 {isEditMode ? 'Save Changes' : 'Add Slot'}
               </span>
-            </ModalButton>
-          </div>
-        </Form>
-      </Modal.Body>
-    </Modal>
+              </ModalButton>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
   );
 }
 SlotModal.propTypes = {
@@ -394,10 +457,10 @@ SlotModal.propTypes = {
   id: PropTypes.number,
   header: PropTypes.string,
   edit: PropTypes.string,
+  copy: PropTypes.string,
   date: PropTypes.number,
   startTime: PropTypes.string,
   endTime: PropTypes.string,
-  items: PropTypes.any,
   onSaveClick: PropTypes.func.isRequired
 };
 export default SlotModal;

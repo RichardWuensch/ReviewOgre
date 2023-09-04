@@ -8,14 +8,18 @@ import ModalButton from '../../shared/buttons/modalButton/ModalButton';
 
 function ErrorModal ({ errorObject, modalHeader, onHide, ...props }) {
   const [showModal, setShowModal] = useState(true);
-  const [header, setHeader] = useState(modalHeader);
+  const [header, setHeader] = useState('');
 
   const handleClose = () => {
     setShowModal(false);
   };
 
   useEffect(() => {
-    if (!errorObject || modalHeader) {
+    if (!errorObject) {
+      return;
+    }
+    if (modalHeader) {
+      setHeader(modalHeader);
       return;
     }
     switch (errorObject.cause) {

@@ -54,6 +54,8 @@
 - Overlapping timeslots will be flagged instantly
 - Preview modals shows the data found in the imported file
 - Precheck of data if there is a possibility for the algorithm to find a solution
+- "Save/Load Configuration" is now "Save/Load State", with or without the calculated Reviews
+- Configuration files from Version [1.0.0] can be imported too
 
 ## Changed
 - Moved navbar items to the right
@@ -62,6 +64,7 @@
 - Overlapping items in the slotList on certain screen ratios
 - Overlapping items in 'settings'-button
 - Active tab highlighted in navbar
+- Overlapping Slots and invalid times now show an error
 
 ## Removed
 - Sample data in tables

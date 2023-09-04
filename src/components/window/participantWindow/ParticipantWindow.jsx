@@ -9,7 +9,7 @@ import './ParticipantWindow.css';
 import ParticipantModal from '../../modals/participantModals/addEditModal/ParticipantModal';
 import EditMultipleParticipantsModal from '../../modals/participantModals/editMultipleModal/EditMultipleParticipantsModal';
 import DeleteModal from '../../modals/deleteModal/DeleteModal';
-import ImportParticipants from '../../../api/ImportParticipants';
+import ImportParticipants from '../../../import_export/ImportParticipants';
 import { Container, Image, Table } from 'react-bootstrap';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import DataImportCheckModal from '../../modals/dataImportCheckModal/DataImportCheckModal';
@@ -95,6 +95,7 @@ function ParticipantWindow () {
                             toolTip={'Add Participant manually'}
                             onButtonClick={() => setShowModalParticipant(true)}
                             backgroundColor={'#B0D7AF'}
+                            routeSection={'participants'}
                         >
                             <Image
                                 src={add}
@@ -112,6 +113,7 @@ function ParticipantWindow () {
                               onButtonClick={() => setShowModalEditMultipleParticipants(true)}
                               backgroundColor={'#B0D7AF'}
                               disabled={ selectedParticipants.length === 0 }
+                              routeSection={'participants'}
                           >
                               <Image
                                   src={edit}
@@ -143,9 +145,11 @@ function ParticipantWindow () {
                 : (
                   <div className={'button-container-participants'}>
                       <CustomButton
-                          toolTip={'Import Participants from csv file'}
+                          toolTip={'Import Participants from csv file (moodle, ilias or directly)'}
+                          routeSection={'participant-import'}
                           onButtonClick={() => document.getElementById('student-input').click()}
                           backgroundColor={'#B0D7AF'}
+                          routeSection={'import'}
                       >
                           <span className="button-text"> Import Participants</span>
                       </CustomButton>
@@ -162,6 +166,7 @@ function ParticipantWindow () {
                               toolTip={'Edit multiple participants simultaneously'}
                               onButtonClick={() => setIsEditModeActive(true)}
                               backgroundColor={'#B0D7AF'}
+                              routeSection={'participants'}
                           >
                               <Image
                                   src={edit}
@@ -180,6 +185,7 @@ function ParticipantWindow () {
                           onButtonClick={() => setShowModalDeleteParticipant(true)}
                           backgroundColor={'#C40233'}
                           disabled={ selectedParticipants.length === 0 }
+                          routeSection={'participants'}
                       >
                           <Image
                               src={deleteButton}
