@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './ReviewWindow.css';
-import {Col, Image, Row, Table} from 'react-bootstrap';
-import {useRoomSlots} from '../../shared/context/RoomSlotContext';
-import {DndContext, useDraggable, useDroppable} from '@dnd-kit/core';
+import { Col, Image, Row, Table } from 'react-bootstrap';
+import { useRoomSlots } from '../../shared/context/RoomSlotContext';
+import { DndContext, useDraggable, useDroppable } from '@dnd-kit/core';
 import deleteButton from '../../../media/trash.svg';
 import CustomIconButton from '../../shared/buttons/iconButton/CustomIconButton';
-import {useParticipants} from '../../shared/context/ParticipantsContext';
+import { useParticipants } from '../../shared/context/ParticipantsContext';
 import CustomButton from '../../shared/buttons/button/CustomButton';
 import ExportOptions from '../exportOptions/ExportOptions';
-import {useSettings} from '../../shared/context/SettingsContext';
+import { useSettings } from '../../shared/context/SettingsContext';
 import ParticipantFairness from '../../../data/models/ParticipantFairness';
 import ParticipantFairnessIndicator from '../participantFairness/ParticipantFairnessIndicator';
-import ErrorModal from "../../modals/errorModal/ErrorModal";
+import ErrorModal from '../../modals/errorModal/ErrorModal';
 
 function Droppable ({ id, children }) {
   const { isOver, setNodeRef } = useDroppable({ id });
@@ -33,7 +33,6 @@ function Draggable ({ id, children }) {
 
   const calculateTransform = () => {
     if (transform) {
-
       return {
         transform: `translate3d(${transform.x}px, ${transform.y - scrollY}px, 0)`,
         backgroundColor: '#D3D3D3',
@@ -60,7 +59,7 @@ function Draggable ({ id, children }) {
   return (
       <tr ref={setNodeRef} style={calculateTransform()} {...listeners} {...attributes}>
         {React.Children.map(children, child =>
-            React.cloneElement(child, { style: tdStyle })
+          React.cloneElement(child, { style: tdStyle })
         )}
       </tr>
   );
@@ -110,21 +109,21 @@ function ReviewWindow () {
       console.log('called');
       console.log(active.id);
 
-        const reviewer = items.find(item => item.getId().toString() === active.id);
+      const reviewer = items.find(item => item.getId().toString() === active.id);
 
-        console.log(reviewer);
-        console.log('slot' + selectedSlot);
-        console.log('room in handleDragEnd' + selectedRoom);
-        selectedRoom.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(selectedSlot), reviewer, settings.breakForModeratorAndReviewer);
+      console.log(reviewer);
+      console.log('slot' + selectedSlot);
+      console.log('room in handleDragEnd' + selectedRoom);
+      selectedRoom.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(selectedSlot), reviewer, settings.breakForModeratorAndReviewer);
 
-        setSelectedSlot(null);
-        setSelectedRoom(null);
+      setSelectedSlot(null);
+      setSelectedRoom(null);
 
-        calculateFairness();
-        setContainerOfItem({
-          ...containerOfItem,
-          [active.id]: active.id
-        });
+      calculateFairness();
+      setContainerOfItem({
+        ...containerOfItem,
+        [active.id]: active.id
+      });
     } catch (error) {
       setParticipantDragError(error);
     }
@@ -148,22 +147,22 @@ function ReviewWindow () {
               <div className={'review-list-container'}>
                 <div style={{ maxHeight: '100%' }}>
                   {roomSlots.map((roomSlot, roomSlotIndex) =>
-                      roomSlot
-                          .getRooms()
-                          .filter(room => room.getReview()?.getAuthor())
-                          .map((room, roomIndex) => {
-                            const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
+                    roomSlot
+                      .getRooms()
+                      .filter(room => room.getReview()?.getAuthor())
+                      .map((room, roomIndex) => {
+                        const accordionItemKey = `${roomSlotIndex}-${roomIndex}`;
 
-                      return (
+                        return (
                             <div
                                 id={accordionItemKey}
-                                style={{ fontWeight: selectedRoom === room ? 'bold' : 'normal'}}
-                                onMouseEnter={() => {setSelectedSlot(roomSlot); setSelectedRoom(room); console.log(room); console.log(roomSlot)}}>
+                                style={{ fontWeight: selectedRoom === room ? 'bold' : 'normal' }}
+                                onMouseEnter={() => { setSelectedSlot(roomSlot); setSelectedRoom(room); console.log(room); console.log(roomSlot); }}>
                               <Droppable id={accordionItemKey} key={accordionItemKey}>
-                                <h5>{'Group ' + room.getReview()?.getGroupName() + ' meeting in Room ' + room.getName() +
-                                      ' from ' + roomSlot.getFormattedStartTime() + ' to ' + roomSlot.getFormattedEndTime() + ' o\'Clock'}</h5>
-                                { room.getReview().isReviewValid() ?
-                                  <h5 style={{color: 'red'}}>Review is invalid</h5> : null
+                                <h5>{`Group ${room.getReview()?.getGroupName()} in Room ${room.getName()} on ${roomSlot.getFormattedDate()} from ${roomSlot.getFormattedStartTime()} to ${roomSlot.getFormattedEndTime()}`}</h5>
+                                { room.getReview().isReviewValid()
+                                  ? <h5 style={{ color: 'red' }}>Review is invalid</h5>
+                                  : null
                                 }
                                   <Table
                                       responsive
@@ -220,8 +219,8 @@ function ReviewWindow () {
                                   </Table>
                               </Droppable>
                             </div>
-                      );
-                    })
+                        );
+                      })
                   )}
                 </div>
               </div>
