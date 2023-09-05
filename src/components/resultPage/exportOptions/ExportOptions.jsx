@@ -2,9 +2,9 @@ import './ExportOptions.css';
 import { Card, Col, Container, Image, Offcanvas, Row } from 'react-bootstrap';
 import Mail from '../../../import_export/mail/Mail';
 import mail from '../../../media/envelope-at.svg';
-import upload from '../../../media/upload.svg';
 import StoreState from '../../../import_export/StoreState';
 import SaveRoomPlan from '../../../import_export/SaveRoomPlan';
+import openInBrowser from '../../../media/open-in-browser.svg';
 import download from '../../../media/download.svg';
 import RevagerLiteExport from '../../../import_export/RevagerLiteExport';
 import React from 'react';
@@ -54,7 +54,7 @@ function ExportOptions ({ onHide, ...props }) {
                                             toolTip={'Export Mail list'}
                                         >
                                             <Image
-                                                src={upload}
+                                                src={openInBrowser}
                                                 alt="mailExport"
                                                 className={'button-icon'}
                                             />
@@ -73,7 +73,7 @@ function ExportOptions ({ onHide, ...props }) {
                                             toolTip={'Export results in txt format'}
                                         >
                                             <Image
-                                                src={upload}
+                                                src={openInBrowser}
                                                 alt="exportResult"
                                                 className={'button-icon'}
                                             />
@@ -85,7 +85,7 @@ function ExportOptions ({ onHide, ...props }) {
                                             toolTip={'Export results in json format'}
                                         >
                                             <Image
-                                                src={upload}
+                                                src={download}
                                                 alt="exportResult"
                                                 className={'button-icon'}
                                             />
@@ -104,7 +104,7 @@ function ExportOptions ({ onHide, ...props }) {
                                             toolTip={'Download Room Plan as simple Table'}
                                         >
                                             <Image
-                                                src={download}
+                                                src={openInBrowser}
                                                 alt="exportResult"
                                                 className={'button-icon'}
                                             />
@@ -116,7 +116,7 @@ function ExportOptions ({ onHide, ...props }) {
                                             toolTip={'Download Room Plan as Matrix'}
                                         >
                                             <Image
-                                                src={download}
+                                                src={openInBrowser}
                                                 alt="exportResult"
                                                 className={'button-icon'}
                                             />
@@ -137,7 +137,7 @@ function ExportOptions ({ onHide, ...props }) {
                                             toolTip={'Export reviews; can be imported into RevAger Lite'}
                                         >
                                             <Image
-                                                src={upload}
+                                                src={download}
                                                 alt="exportResult"
                                                 className={'button-icon'}
                                             />
