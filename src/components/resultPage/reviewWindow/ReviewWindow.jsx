@@ -125,7 +125,14 @@ function ReviewWindow () {
         [active.id]: active.id
       });
     } catch (error) {
-      setParticipantDragError(error);
+      if(error.message === 'Participant is not possible for this review' ||
+      error.message === 'Because of breakForModeratorAndReviewer is selected, this participant is not possible for this review. ' +
+          'If you want to break the rule, please change the appropriate setting and return.') {
+        setParticipantDragError(error);
+      } else {
+        //TODO: this is a quick fix! Needs to be fixed permanently
+        console.log(error.message);
+      }
     }
   };
 
@@ -157,7 +164,7 @@ function ReviewWindow () {
                             <div
                                 id={accordionItemKey}
                                 style={{ fontWeight: selectedRoom === room ? 'bold' : 'normal' }}
-                                onMouseEnter={() => { setSelectedSlot(roomSlot); setSelectedRoom(room); console.log(room); console.log(roomSlot); }}>
+                                onMouseEnter={() => { setSelectedSlot(roomSlot); setSelectedRoom(room); }}>
                               <Droppable id={accordionItemKey} key={accordionItemKey}>
                                 <h5>{`Group ${room.getReview()?.getGroupName()} in Room ${room.getName()} on ${roomSlot.getFormattedDate()} from ${roomSlot.getFormattedStartTime()} to ${roomSlot.getFormattedEndTime()}`}</h5>
                                 { room.getReview().isReviewValid()
