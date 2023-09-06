@@ -1,6 +1,13 @@
+/*
+ReviewOgerReloaded is a software that supports the user by organizing technical reviews.
+Copyright (C) 2023 Hannah Meinhardt, Jakob Rechberger, Bastian Schindler, Nicolas Stoll, Richard Wünsch
+
+ReviewOgerReloaded is made available under the terms of the MIT license. See the file LICENSE in the repository root for details.
+*/
+
 import './DocsComponent.css';
 import React from 'react';
-import {Container, Row, Col, Card, Image} from 'react-bootstrap';
+import { Container, Row, Col, Card, Image } from 'react-bootstrap';
 import edit from '../../../media/pencil-square.svg';
 import deleteButton from '../../../media/trash.svg';
 import add from '../../../media/plus-circle.svg';

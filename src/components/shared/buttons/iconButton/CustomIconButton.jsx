@@ -1,10 +1,15 @@
+/*
+ReviewOgerReloaded is a software that supports the user by organizing technical reviews.
+Copyright (C) 2023 Hannah Meinhardt, Jakob Rechberger, Bastian Schindler, Nicolas Stoll, Richard Wünsch
+
+ReviewOgerReloaded is made available under the terms of the MIT license. See the file LICENSE in the repository root for details.
+*/
+
 import React from 'react';
-import {Image, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import { Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './CustomIconButton.css';
 import PropTypes from 'prop-types';
-import {HashLink} from "react-router-hash-link";
-import edit from "../../../../media/pencil-square.svg";
-import deleteButton from "../../../../media/trash.svg";
+import { HashLink } from 'react-router-hash-link';
 
 function CustomIconButton ({ toolTip, onButtonClick, place, children, as: Component = 'button', routeSection = null }) {
   const renderTooltip = (props) => (
@@ -18,13 +23,13 @@ function CustomIconButton ({ toolTip, onButtonClick, place, children, as: Compon
         <>
             <OverlayTrigger
                 trigger={['hover', 'focus']}
-                placement={place ? place : "top"}
+                placement={place || 'top'}
                 overlay={renderTooltip}
-                delay={{show: 500, hide: 900}}
+                delay={{ show: 500, hide: 900 }}
 
             >
                 <Component className={'icon-button'}
-                           onClick={onButtonClick ? onButtonClick : null}>
+                           onClick={onButtonClick || null}>
                   {children}
                 </Component>
             </OverlayTrigger>

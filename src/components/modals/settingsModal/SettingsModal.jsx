@@ -1,3 +1,10 @@
+/*
+ReviewOgerReloaded is a software that supports the user by organizing technical reviews.
+Copyright (C) 2023 Hannah Meinhardt, Jakob Rechberger, Bastian Schindler, Nicolas Stoll, Richard Wünsch
+
+ReviewOgerReloaded is made available under the terms of the MIT license. See the file LICENSE in the repository root for details.
+*/
+
 import './SettingsModal.css';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
@@ -6,7 +13,7 @@ import exclamation from '../../../media/exclamation-circle.svg';
 import { Image } from 'react-bootstrap';
 import CustomSwitch from '../../shared/buttons/switch/CustomSwitch';
 import { useSettings, useSettingsDispatch } from '../../shared/context/SettingsContext';
-import {useState} from "react";
+import { useState } from 'react';
 
 function SettingsModal (props) {
   const settings = useSettings();
@@ -42,7 +49,7 @@ function SettingsModal (props) {
   function toggleAbReview () {
     const settingsTemp = getSettingsCopy();
     settingsTemp.abReview = !settingsTemp.abReview;
-    if (settingsTemp.internationalGroups){
+    if (settingsTemp.internationalGroups) {
       settingsTemp.internationalGroups = false;
       setModalShow(!modalShow);
       setlanguageLevelState(settingsTemp.internationalGroups);
@@ -91,7 +98,7 @@ function SettingsModal (props) {
               <Image
                   src={exclamation}
                   alt={'exclamation-circle'}
-                  style={{color:'#82868B', height:'20px', width:'20px'}}
+                  style={{ color: '#82868B', height: '20px', width: '20px' }}
               />
               <Modal.Title>Algorithm works differently now.</Modal.Title>
               <Image
