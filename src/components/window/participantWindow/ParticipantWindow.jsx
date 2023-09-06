@@ -59,7 +59,6 @@ function ParticipantWindow () {
     const importParticipants = new ImportParticipants();
     importParticipants.runStudentImport(event)
       .then(participantList => {
-        console.log(participantList);
         setImportedParticipants(participantList);
         setShowModalDataImportCheck(true);
       })

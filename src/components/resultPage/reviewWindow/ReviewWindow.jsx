@@ -84,13 +84,13 @@ function ReviewWindow () {
   const [deleteTrigger, setDeleteTrigger] = useState(0);
 
   React.useEffect(() => {
-    console.log(avgCounts);
     calculateFairness();
-    console.log(avgCounts);
   }, []);
 
   const calculateFairness = () => {
+    // eslint-disable-next-line no-return-assign
     const avgParticipantTotalCount = Math.round(items.reduce((sum, participant) => sum += participant.getTotalCount(), 0) / items.length);
+    // eslint-disable-next-line no-return-assign
     const avgParticipantReviewerCount = Math.round(items.reduce((sum, participant) => sum += participant.getReviewerCount(), 0) / items.length);
     setAvgCounts({
       totalCount: avgParticipantTotalCount,
@@ -106,14 +106,8 @@ function ReviewWindow () {
     try {
       const { active, over } = event;
 
-      console.log('called');
-      console.log(active.id);
-
       const reviewer = items.find(item => item.getId().toString() === active.id);
 
-      console.log(reviewer);
-      console.log('slot' + selectedSlot);
-      console.log('room in handleDragEnd' + selectedRoom);
       selectedRoom.getReview().addReviewerDragnDrop(roomSlots, roomSlots.indexOf(selectedSlot), reviewer, settings.breakForModeratorAndReviewer);
 
       setSelectedSlot(null);
@@ -125,13 +119,11 @@ function ReviewWindow () {
         [active.id]: active.id
       });
     } catch (error) {
-      if(error.message === 'Participant is not possible for this review' ||
+      // TODO: this is a quick fix! Needs to be fixed permanently
+      if (error.message === 'Participant is not possible for this review' ||
       error.message === 'Because of breakForModeratorAndReviewer is selected, this participant is not possible for this review. ' +
           'If you want to break the rule, please change the appropriate setting and return.') {
         setParticipantDragError(error);
-      } else {
-        //TODO: this is a quick fix! Needs to be fixed permanently
-        console.log(error.message);
       }
     }
   };
@@ -139,7 +131,6 @@ function ReviewWindow () {
   const deleteFromReview = (room, roomSlot, reviewer) => {
     try {
       room.getReview().deleteReviewer(roomSlots, roomSlots.indexOf(roomSlot), reviewer, settings.breakForModeratorAndReviewer);
-      console.log(deleteTrigger);
       calculateFairness();
       setDeleteTrigger(prev => prev + 1);
     } catch (error) {

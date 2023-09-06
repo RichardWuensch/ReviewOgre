@@ -630,10 +630,4 @@ export default class Algorithm {
       this.#notGermanSpeaker.forEach((p) => console.log('id:' + ++i + 'active:' + p.getActiveSlotsWithoutBrakes().length + p.getLastName() + ' ' + p.getFirstName() + ' n:' + p.getNotaryCount() + ' a:' + p.getAuthorCount() + ' m:' + p.getModeratorCount() + ' r:' + p.getReviewerCount()));
     }
   }
-
-  printJSONinLocalStorage () {
-    // load the result as JSON-String in the LocalStorage of the Browser
-    // it is possible to have a nicer look of the result with a formatter
-    localStorage.setItem('roomSlots', JSON.stringify(this.#roomSlots));
-  }
 }
