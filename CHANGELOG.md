@@ -2,6 +2,26 @@
 
 ## [Released]
 
+## [2.0.1] - 2023-09-06
+
+## Added
+- developers docu
+- user docu
+- tooltip with direct link to the correct part of the user docu
+- participant import for ilias exports
+- international Groups as option for the algorithm
+- unittests
+
+## Changed
+- add the review dates on the resultpage
+- .txt exports only opened in a new browser tab - no direct download
+- better error description by participant import 
+
+## Fixed
+- usability of the DragNDrop functionality
+
+## Removed
+
 ## [2.0.0beta] - 2023-08-15
 
 ## Added
