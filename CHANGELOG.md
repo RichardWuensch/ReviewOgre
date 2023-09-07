@@ -2,7 +2,7 @@
 
 ## [Released]
 
-## [2.0.1] - 2023-09-06
+## [2.0.0] - 2023-09-07
 
 ## Added
 - developers docu
@@ -11,6 +11,7 @@
 - participant import for ilias exports
 - international Groups as option for the algorithm
 - unittests
+- copyright headers
 
 ## Changed
 - add the review dates on the resultpage
