@@ -48,9 +48,9 @@ function DocsComponent () {
                                 <Card.Title>Import/Export Data</Card.Title>
                                 <Card.Text>
                                     <span className={'docs-text'}>
-                                    This tool offers multiple ways to import data:
+                                    This tool offers multiple ways to import/export data:
                                         <ol>
-                                            <li>
+                                            <li id='load-state'>
                                                 <b style={{ fontWeight: 'bold' }}>Import you previous state from your local device: </b>
                                                  You  are able to import data you have
                                                 previously downloaded from the application. This includes all of the participants, slots,
@@ -66,6 +66,11 @@ function DocsComponent () {
                                                     <li>Ilias is a system used by another university, which offers a different export. The export file can be imported too</li>
                                                     <li>The direct import uses this syntax without a header line: firstname;lastname;email;group</li>
                                                 </ol>
+                                            </li>
+                                            <li id='save-state'>
+                                                <b style={{ fontWeight: 'bold' }}>Save your configuration: </b>
+                                                ReviewOgre does not store your data. However you can save your configuration on your local device and import it again
+                                                by clicking the "Save State" Button in the dropdown of the navigation bar.
                                             </li>
                                         </ol>
                                     </span>

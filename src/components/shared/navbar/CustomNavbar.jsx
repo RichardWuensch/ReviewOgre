@@ -151,9 +151,9 @@ function CustomNavbar () {
                       <NavDropdown title="Save/Load Options" id="basic-nav-dropdown">
                           <CustomIconButton
                               as="div"
-                              toolTip={''}
+                              toolTip={'Load preconfigured data into ReviewOgre'}
                               place={'right'}
-                              routeSection={'import'}>
+                              routeSection={'load-state'}>
                               <NavDropdown.Item onClick={() => document.getElementById('file-input-config').click()}>Load State</NavDropdown.Item>
                               <input type="file"
                                      id="file-input-config"
@@ -162,7 +162,13 @@ function CustomNavbar () {
                                      onChange={() => { loadStateIntoLocalObjects(event); }}
                                      accept='application/json'/>
                           </CustomIconButton>
-                          <NavDropdown.Item onClick={checkForAssignedReviews}>Save State</NavDropdown.Item>
+                          <CustomIconButton
+                              as="div"
+                              toolTip={'Save the current state of your configuration'}
+                              place={'right'}
+                              routeSection={'save-state'}>
+                              <NavDropdown.Item onClick={checkForAssignedReviews}>Save State</NavDropdown.Item>
+                          </CustomIconButton>
                       </NavDropdown>
                   </Nav>
               </Navbar.Collapse>
